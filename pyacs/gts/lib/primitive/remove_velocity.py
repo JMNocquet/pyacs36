@@ -28,7 +28,7 @@ def remove_velocity(self,vel_neu,in_place=False):
     else:    
         ref_date=np.mean(self.data[0,0])
     
-    v_neu=vel_neu[0:3]
+    v_neu= np.array( vel_neu[0:3] )
     
     
     new_data=self.data.copy()

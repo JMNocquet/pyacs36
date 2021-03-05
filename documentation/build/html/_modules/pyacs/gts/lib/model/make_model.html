@@ -1,0 +1,373 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.gts.lib.model.make_model &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../model.html">pyacs.gts.lib.model</a> &raquo;</li>
+        
+      <li>pyacs.gts.lib.model.make_model</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.gts.lib.model.make_model</h1><div class="highlight"><pre>
+<span></span><span class="c1">######################################################################################################################</span>
+<span class="c1">## estimate the offsets of time serie: y = a + b.t + [c.sin(2.pi.t)+d.cos(2.pi.t)]+[e.sin(4.pi.t)+f.cos(4.pi.t)] + offsets</span>
+<span class="c1">######################################################################################################################</span>
+<div class="viewcode-block" id="make_model"><a class="viewcode-back" href="../../../../../pyacs.gts.lib.model.html#pyacs.gts.Gts.make_model">[docs]</a><span class="k">def</span> <span class="nf">make_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option</span><span class="o">=</span><span class="s1">&#39;detrend&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;L2&#39;</span><span class="p">,</span> <span class="n">loutlier</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Estimate linear model parameters using least squares</span>
+<span class="sd">        input: data: Gts format</span>
+<span class="sd">        option are: &#39;detrend&#39;/&#39;detrend_annual&#39;/&#39;detrend_seasonal&#39;</span>
+<span class="sd">        output: new Gts object: time series is now the residuals wrt to the model and its associated values (vel, annual, semi-annual etc)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">from</span> <span class="nn">pyacs.gts.Gts</span> <span class="kn">import</span> <span class="n">Gts</span>
+    <span class="kn">import</span> <span class="nn">inspect</span>
+
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># check data is not None</span>
+    <span class="kn">from</span> <span class="nn">pyacs.gts.lib.errors</span> <span class="kn">import</span> <span class="n">GtsInputDataNone</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># raise exception</span>
+            <span class="k">raise</span> <span class="n">GtsInputDataNone</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">GtsInputDataNone</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+        <span class="c1"># print PYACS WARNING</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    <span class="c1">###########################################################################</span>
+
+    <span class="kn">import</span> <span class="nn">pyacs.lib.glinalg</span> <span class="k">as</span> <span class="nn">glinalg</span>
+    <span class="kn">import</span> <span class="nn">pyacs.lib.robustestimators</span> <span class="k">as</span> <span class="nn">RobEst</span>
+
+    <span class="c1">#    from gts_estimators import least_square</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="c1">### REMOVE OUTLIERS FOR LINEAR ESTIMATION</span>
+    <span class="k">if</span> <span class="n">loutlier</span><span class="p">:</span> <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">loutlier</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1">### REMOVE OFFSET DATES OUTSIDE THE TIME SPAN OF THE TIME SERIES</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">offsets_dates</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">offsets_dates</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># keep offsets_dates only within the time series</span>
+        <span class="n">sel_offsets_dates</span> <span class="o">=</span> \
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">offsets_dates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">offsets_dates</span><span class="p">))</span> <span class="k">if</span>
+             <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">offsets_dates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">offsets_dates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])]</span>
+        <span class="n">noffset</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sel_offsets_dates</span><span class="p">)</span>
+
+        <span class="c1">### offsets_values = [time_offsets offsets_NEU s_offsets_NEU]</span>
+        <span class="n">offsets_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">noffset</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+        <span class="n">offsets_values</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offsets_dates</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">noffset</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">offsets_values</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># REF DATES</span>
+
+    <span class="n">t_ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">t_ref_seasonal</span> <span class="o">=</span> <span class="mf">2010.0</span>
+
+    <span class="c1"># INDEX</span>
+    <span class="k">if</span> <span class="n">option</span> <span class="o">==</span> <span class="s1">&#39;detrend_seasonal&#39;</span><span class="p">:</span>
+        <span class="n">del_index</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">n_default_unknown</span> <span class="o">=</span> <span class="mi">6</span>
+    <span class="k">elif</span> <span class="n">option</span> <span class="o">==</span> <span class="s1">&#39;detrend_annual&#39;</span><span class="p">:</span>
+        <span class="n">del_index</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+        <span class="n">n_default_unknown</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="k">elif</span> <span class="n">option</span> <span class="o">==</span> <span class="s1">&#39;detrend&#39;</span><span class="p">:</span>
+        <span class="n">del_index</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+        <span class="n">n_default_unknown</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    ERROR!!! check the option of estimation: detrend/detrend_seasonal/detrend_annual&#39;</span><span class="p">)</span>
+
+    <span class="c1"># INIT VEL, ANNUAL, SEMI_ANNUAL, RESIDUALS ARRAYS</span>
+    <span class="c1">### vel = [vel_N vel_E vel_U svel_N s_vel_E svel_U]</span>
+    <span class="n">vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+    <span class="c1">### annual = [amplitude_NEU phase_NEU]</span>
+    <span class="n">annual</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1">### semi_annual = [amplitude_NEU phase_NEU]</span>
+    <span class="n">semi_annual</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">residuals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">residuals</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">ndate</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># BUILD LINEAR SYSTEM</span>
+
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+
+        <span class="c1">## write matrix A in general case</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">ndate</span><span class="p">,</span> <span class="p">(</span><span class="mi">6</span> <span class="o">+</span> <span class="n">noffset</span><span class="p">)],</span> <span class="nb">float</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ndate</span><span class="p">):</span>
+            <span class="n">ti</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span> <span class="p">(</span><span class="n">ti</span> <span class="o">-</span> <span class="n">t_ref</span><span class="p">),</span> \
+                                                                   <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">2.</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">ti</span> <span class="o">-</span> <span class="n">t_ref_seasonal</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span>
+                <span class="mf">2.</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">ti</span> <span class="o">-</span> <span class="n">t_ref_seasonal</span><span class="p">)),</span> \
+                                                                   <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">4.</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">ti</span> <span class="o">-</span> <span class="n">t_ref_seasonal</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span>
+                <span class="mf">4.</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">ti</span> <span class="o">-</span> <span class="n">t_ref_seasonal</span><span class="p">))</span>
+            <span class="c1">## for offsets</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">noffset</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">ti</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">offsets_dates</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="mi">6</span> <span class="o">+</span> <span class="n">j</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">1.</span>
+
+        <span class="c1">### take the design matrix</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">del_index</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># solve</span>
+
+        <span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">COV</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span> <span class="o">=</span> <span class="n">glinalg</span><span class="o">.</span><span class="n">lsw_full</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">data</span><span class="p">[:,</span> <span class="n">k</span><span class="p">],</span> <span class="n">data</span><span class="p">[:,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">3</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;L1&#39;</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span> <span class="o">=</span> <span class="n">RobEst</span><span class="o">.</span><span class="n">Dikin</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">data</span><span class="p">[:,</span> <span class="n">k</span><span class="p">],</span> <span class="n">data</span><span class="p">[:,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">3</span><span class="p">],</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1.0E-4</span><span class="p">)</span>
+
+        <span class="n">s_X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">COV</span><span class="p">))</span>
+
+        <span class="c1">## calculate residuals, predicted mb_files</span>
+        <span class="n">residuals</span><span class="p">[:,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">V</span>
+        <span class="n">residuals</span><span class="p">[:,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span>
+
+        <span class="c1">## velocity</span>
+        <span class="n">vel</span><span class="p">[</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">vel</span><span class="p">[</span><span class="n">k</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">s_X</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1">## calculate the offset amplitudes</span>
+        <span class="k">if</span> <span class="n">noffset</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">offsets_values</span><span class="p">[:,</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">n_default_unknown</span><span class="p">:(</span><span class="n">n_default_unknown</span> <span class="o">+</span> <span class="n">noffset</span><span class="p">)]</span>
+            <span class="n">offsets_values</span><span class="p">[:,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">s_X</span><span class="p">[</span><span class="n">n_default_unknown</span><span class="p">:(</span><span class="n">n_default_unknown</span> <span class="o">+</span> <span class="n">noffset</span><span class="p">)]</span>
+
+        <span class="k">if</span> <span class="n">option</span> <span class="o">==</span> <span class="s1">&#39;detrend_annual&#39;</span><span class="p">:</span>
+            <span class="c1">## calculate the annual motion: amplitude &amp; phase</span>
+            <span class="n">annual</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">X</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+
+        <span class="k">if</span> <span class="n">option</span> <span class="o">==</span> <span class="s1">&#39;detrend_seasonal&#39;</span><span class="p">:</span>
+            <span class="c1">## calculate the annual motion: amplitude &amp; phase</span>
+            <span class="n">annual</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">X</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+            <span class="c1">## calculate the annual motion: amplitude &amp; phase</span>
+            <span class="n">semi_annual</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">X</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="mi">5</span><span class="p">]))</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">annual</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">annual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">annual</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">annual</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">semi_annual</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">semi_annual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">semi_annual</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">semi_annual</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">new_Gts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="n">new_Gts</span><span class="o">.</span><span class="n">offsets_values</span> <span class="o">=</span> <span class="n">offsets_values</span>
+    <span class="n">new_Gts</span><span class="o">.</span><span class="n">annual</span> <span class="o">=</span> <span class="n">annual</span>
+    <span class="n">new_Gts</span><span class="o">.</span><span class="n">semi_annual</span> <span class="o">=</span> <span class="n">semi_annual</span>
+    <span class="n">new_Gts</span><span class="o">.</span><span class="n">velocity</span> <span class="o">=</span> <span class="n">vel</span>
+
+    <span class="n">new_Gts</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">residuals</span>
+
+    <span class="k">if</span> <span class="n">in_place</span><span class="p">:</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="n">new_Gts</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">del</span> <span class="n">new_Gts</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">new_Gts</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

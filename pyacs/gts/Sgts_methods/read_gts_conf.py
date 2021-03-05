@@ -14,7 +14,8 @@ def read_gts_conf(self,gts_conf_file,verbose=False):
     # import
     import numpy as np
     from pyacs.lib.astrotime import guess_date
-    
+    import pyacs.lib.astrotime as at
+
     New_Sgts=self.copy()
     
     conf=open(gts_conf_file,'r')
@@ -40,12 +41,19 @@ def read_gts_conf(self,gts_conf_file,verbose=False):
     
              
             date=guess_date(sdate)
+
             if code in H_apply_offsets:
-                if verbose:print('-- adding offset to ',code,date,dn,de,du)
+                if verbose:
+                    str_date = at.decyear2datetime(date).isoformat().split('.')[0]
+                    print("-- read offset to %s at %s: N %10.2lf E %10.2lf U %10.2lf " % (code,str_date,dn*1E3,de*1E3,du*1E3))
+
                 H_apply_offsets[code]=np.vstack((H_apply_offsets[code],np.array([date,dn,de,du])))
                 H_offsets_dates[code].append(date)
             else:
-                print('-- adding new offset to ',code,date,dn,de,du)
+                if verbose:
+                    str_date = at.decyear2datetime(date).isoformat().split('.')[0]
+                    print("-- read offset to %s at %s: N %10.2lf E %10.2lf U %10.2lf " % (code,str_date,dn*1E3,de*1E3,du*1E3))
+
                 H_apply_offsets[code]=np.array([[date,dn,de,du]])
                 H_offsets_dates[code]=[date]
      
@@ -56,8 +64,6 @@ def read_gts_conf(self,gts_conf_file,verbose=False):
             #gts.offsets_dates+=H_offsets_dates[gts.code]
             try:
                 New_Sgts.__dict__[gts.code]=gts.apply_offsets(H_apply_offsets[gts.code],verbose=verbose)
-                if verbose:
-                    print("-- applying offset ", H_apply_offsets[gts.code])
             except (RuntimeError, TypeError, NameError):
                 print("!!! Error applying offset to ",gts.code)
                 continue

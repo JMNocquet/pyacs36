@@ -215,4 +215,17 @@ class GtsReadFileError(GtsError):
         return_str = red( "[PYACS ERROR] method %s from %s: Could not read file: %s" % 
                           ( self.method_name, self.lib , self.file_name   ) ) 
         return( return_str )
-    
+
+
+###############################################################################
+class GtsMethodError(GtsError):
+###############################################################################
+    def __init__(self, method_name, lib, file_name):
+        self.method_name = method_name
+        self.file_name = file_name
+        self.lib = lib
+
+    def __str__(self):
+        return_str = red("[PYACS ERROR] running method %s from %s" %
+                         (self.method_name, self.lib))
+        return (return_str)

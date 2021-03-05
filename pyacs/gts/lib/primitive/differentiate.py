@@ -3,7 +3,6 @@ def differentiate(self):
 ###################################################################
     """
     differentiate the current time series
-    
     :return: the differentiated time series as a new Gts object
     :note : differentiation is made on .data. .data_xyz is set to None.
     """

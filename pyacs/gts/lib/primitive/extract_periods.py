@@ -1,5 +1,5 @@
 ###################################################################
-def extract_periods(self,lperiod,in_place=False,verbose=False):
+def extract_periods(self,lperiod,in_place=False,verbose=False, no_reset=False):
 ###################################################################
     """
     extract periods of a Gts
@@ -108,13 +108,17 @@ def extract_periods(self,lperiod,in_place=False,verbose=False):
             upd_offsets.append(offset_date)
     
     # handles X0,Y0,Z0
-    
-    new_gts.X0 = sel_data_xyz[0,1]
-    new_gts.Y0 = sel_data_xyz[0,2]
-    new_gts.Z0 = sel_data_xyz[0,3]
-    
-    # re-generate NEU time series
-    new_gts.xyz2neu(corr=True)
+    if not no_reset:
+        new_gts.X0 = sel_data_xyz[0,1]
+        new_gts.Y0 = sel_data_xyz[0,2]
+        new_gts.Z0 = sel_data_xyz[0,3]
+    else:
+        new_gts.X0 = self.X0
+        new_gts.Y0 = self.Y0
+        new_gts.Z0 = self.Z0
+
+# re-generate NEU time series
+    new_gts.xyz2neu(corr=True, ref_xyz = [new_gts.X0,new_gts.Y0,new_gts.Z0])
 
     # re-populate the uncertainties columns
     new_gts.data[:,4:] = new_sigma

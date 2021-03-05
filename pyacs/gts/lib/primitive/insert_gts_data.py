@@ -5,7 +5,7 @@ def insert_gts_data(self,gts,in_place=False, verbose=False):
 
     insert data (and/or) .data_xyz of a gts into the current gts
     
-    :param gts: tie series to be inserted
+    :param gts: time series to be inserted
     :param in_place: boolean, if True add_obs to the current Gts, if False, returns a new Gts
     :param verbose: verbose mode 
   

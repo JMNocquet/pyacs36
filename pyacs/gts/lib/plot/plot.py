@@ -1,52 +1,54 @@
 ###############################################################################
-def plot(self,\
-         title=None,\
-         loffset=True,\
-         loutliers=True,\
-         verbose=False,\
-         date=[],\
-         yaxis=None, \
-         yupaxis=None, \
-         xticks_minor_locator=1, \
-         lcomponent=['N','E','U'],\
-         error_scale=1.0, \
-         lperiod=[[]],\
-         lvline=[],\
-         save_dir_plots='.', \
-         save=None,\
-         show=True,\
-         unit='mm',\
-         date_unit='cal', \
-         date_ref=0.0, center=True,\
-         superimposed=None, \
-         lcolor=['r','g','c','m','y','k','b'], \
-         label=None, \
-         legend=False, \
-         set_zero_at_date=None, \
-         grid=True, \
-         plot_size=None, \
-         info = [], \
-         xlabel_fmt = None, \
+def plot(self,
+         title=None,
+         loffset=True,
+         loutliers=True,
+         verbose=False,
+         date=[],
+         yaxis=None,
+         min_yaxis=None,
+         yupaxis=None,
+         xticks_minor_locator=1,
+         lcomponent=['N','E','U'],
+         error_scale=1.0,
+         lperiod=[[]],
+         lvline=[],
+         save_dir_plots='.',
+         save=None,
+         show=True,
+         unit='mm',
+         date_unit='cal',
+         date_ref=0.0, center=True,
+         superimposed=None,
+         lcolor=['r','g','c','m','y','k','b'],
+         label=None,
+         legend=False,
+         set_zero_at_date=None,
+         grid=True,
+         plot_size=None,
+         info = [],
+         xlabel_fmt = None,
          **kwargs):
 ###############################################################################
     """
     Create a plot of a North-East-Up time series and related info (offsets, outliers) using Matplotlib
+
     Coordinates of the time series are assumed to be in meters
     default plots units will be mm; Use unit='m' to get meters instead
-    
+
     :param title: string to be added to the site name as a plot title
     :param loffset: boolean
-                     print a dash vertical line at offset dates
+        print a dash vertical line at offset dates
     :param loutliers: boolean
-                     print outliers
+        print outliers
     :param verbose: boolean
-                     verbose mode
+        verbose mode
     :param date: [sdate,edate]
-                     start and end date for plots
-                     sdate and edate in decimal years if date_unit is either 'decyear' or 'cal', or in days if date_unit is 'days'
+        start and end date for plots
+        sdate and edate in decimal years if date_unit is either 'decyear' or 'cal', or in days if date_unit is 'days'
     :param yaxis: [min_y,max_y]
-                     min and max value for the yaxis
-                     if not provided automatically adjusted
+        min and max value for the yaxis
+        if not provided automatically adjusted
     :param yupaxis: same as yaxis but applies to the up component only
     :param xticks_minor_locator: where xticks_minor_locator will be placed. Float when date_unit is 'decyear' or 'days', a string '%Y','%m','%d' is date_unit is 'cal'.  
     :param lcomponent: list of components to be plotted (default =['N','E','U'])
@@ -107,7 +109,8 @@ def plot(self,\
     import pyacs.lib.utils
     import pyacs.gts.lib.plot.make_stitle
     import pyacs.gts.lib.plot.gts_to_ts
-    
+
+
     ###########################################################################
     # lcolor
     ###########################################################################
@@ -243,7 +246,13 @@ def plot(self,\
     plt.ioff()
     f , ax = plt.subplots( len(lcomponent) , sharex=True , figsize=plot_size)
 
-    # handle case where only one component and ax is not subscriptable
+
+    ###########################################################################
+    # rotate xticks labels
+    ###########################################################################
+    f.autofmt_xdate(bottom=0.2, rotation=30, ha='right')
+
+# handle case where only one component and ax is not subscriptable
     if not isinstance(ax,np.ndarray):
         ax = np.array([ ax ])
 
@@ -423,6 +432,21 @@ def plot(self,\
     # yaxis
     ###########################################################################
 
+
+    # added JMN 13/01/2021 to set a minimum value for y-scale
+    if (min_yaxis is not None) and (yaxis is None):
+
+        idx_ax = 0
+        for component in lcomponent:
+            if component in ['N', 'E']:
+                cyaxis=ax[idx_ax].get_ylim()
+                ax[idx_ax].set_ylim( np.min([cyaxis[0],-min_yaxis]), np.max([cyaxis[1],min_yaxis]))
+            if component == 'U':
+                cyupaxis=ax[idx_ax].get_ylim()
+                ax[idx_ax].set_ylim( np.min([cyupaxis[0],-min_yaxis]), np.max([cyupaxis[1],min_yaxis]))
+
+            idx_ax = idx_ax + 1
+
     if yaxis is not None:
         idx_ax = 0
         for component in lcomponent:
@@ -433,6 +457,44 @@ def plot(self,\
             
             idx_ax = idx_ax + 1
 
+
+    # date
+    ###########################################################################
+
+    if date != []:
+
+        # case 'days'
+        if date_unit == 'days':
+            if (date_ref is None) or (date_ref == 0):
+                np_date_x = pyacs.lib.astrotime.decyear2mjd(np.array(date)) - pyacs.lib.astrotime.decyear2mjd(
+                    date[0])
+            else:
+                np_date_x = pyacs.lib.astrotime.decyear2mjd(np.array(date)) - pyacs.lib.astrotime.decyear2mjd(
+                    date_ref)
+
+        # case 'decyear'
+        if date_unit == 'decyear':
+            if (date_ref is None) or (date_ref == 0):
+                np_date_x = np.array(date)
+            else:
+                np_date_x = np.array(date) - date_ref
+
+        # case 'cal'
+        if date_unit == 'cal':
+            print('cal case')
+            np_date_x = pyacs.lib.astrotime.decyear2datetime(np.array(date))
+            print(np_date_x)
+            print(date)
+        idx_ax = 0
+        for component in lcomponent:
+            if component in ['N', 'E']:
+                print('code ', self.code)
+                print('np_date_x ',np_date_x)
+                ax[idx_ax].set_xlim(np_date_x[0], np_date_x[1])
+            if component == 'U' and yupaxis is not None:
+                ax[idx_ax].set_xlim(np_date_x[0], np_date_x[1])
+
+            idx_ax = idx_ax + 1
 
     # X Label
     ###########################################################################

@@ -1,0 +1,414 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.gts.lib.filters.el1_trend &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.gts.lib.filters.el1_trend</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.gts.lib.filters.el1_trend</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Taken from https://github.com/wudingcheng/TSAnalyzer/blob/master/TSAnalyzer/algorithms/l1extensive.py</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">cvxpy</span> <span class="k">as</span> <span class="nn">cvx</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">eye</span><span class="p">,</span> <span class="n">csr_matrix</span><span class="p">,</span> <span class="n">hstack</span><span class="p">,</span> <span class="n">linalg</span>
+<span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">argrelextrema</span>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="el1_trend"><a class="viewcode-back" href="../../../../../pyacs.gts.lib.filters.html#pyacs.gts.Gts.el1_trend">[docs]</a><span class="k">def</span> <span class="nf">el1_trend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lam</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_offset</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_periodic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">component</span><span class="o">=</span><span class="s1">&#39;NEU&#39;</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    extensive l1 trend filtering</span>
+
+<span class="sd">    :param lam: weight of regularization of filtered data</span>
+<span class="sd">    :param rho: weight of regularization of offsets</span>
+<span class="sd">    :param period: tuple, periods to be estimated (1.,0.5) will estimate annual and semi-annual terms</span>
+<span class="sd">    :param in_place: if True then replace the current time series</span>
+<span class="sd">    :param return_offset: if True also return offset time serie</span>
+<span class="sd">    :param return_periodic: if True also return periodic time serie</span>
+<span class="sd">    :param verbose: boolean, verbose mode</span>
+<span class="sd">    :param component: string. Default &#39;NEU&#39;</span>
+<span class="sd">    :return: the filtered time series</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># import</span>
+    <span class="kn">from</span> <span class="nn">pyacs.gts.lib.message</span> <span class="kn">import</span> <span class="n">message</span>
+
+    <span class="c1">### copy</span>
+    <span class="n">new_gts_f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">data_xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">new_gts_o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">data_xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">new_gts_s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">data_xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">new_gts_f</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">4</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.E-3</span>
+    <span class="n">new_gts_o</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.E-3</span>
+    <span class="n">new_gts_s</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.E-3</span>
+
+<span class="c1">### filter</span>
+    <span class="k">if</span> <span class="s1">&#39;N&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="n">message</span><span class="p">(</span><span class="s1">&#39;Computing extensive L1 trend filter for component North&#39;</span><span class="p">)</span>
+        <span class="n">new_gts_f</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span><span class="n">new_gts_o</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span><span class="n">new_gts_s</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">l1filter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">lam</span><span class="o">=</span><span class="n">lam</span><span class="p">,</span><span class="n">rho</span><span class="o">=</span><span class="n">rho</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="n">periods</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="n">cvx</span><span class="o">.</span><span class="n">MOSEK</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s1">&#39;E&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="n">message</span><span class="p">(</span><span class="s1">&#39;Computing extensive L1 trend filter for component East&#39;</span><span class="p">)</span>
+        <span class="n">new_gts_f</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span><span class="n">new_gts_o</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span><span class="n">new_gts_s</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">l1filter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">lam</span><span class="o">=</span><span class="n">lam</span><span class="p">,</span><span class="n">rho</span><span class="o">=</span><span class="n">rho</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="n">periods</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="n">cvx</span><span class="o">.</span><span class="n">MOSEK</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s1">&#39;U&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="n">message</span><span class="p">(</span><span class="s1">&#39;Computing extensive L1 trend filter for component Up&#39;</span><span class="p">)</span>
+        <span class="n">new_gts_f</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">],</span><span class="n">new_gts_o</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">],</span><span class="n">new_gts_s</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">l1filter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">lam</span><span class="o">=</span><span class="n">lam</span><span class="p">,</span><span class="n">rho</span><span class="o">=</span><span class="n">rho</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="n">periods</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="n">cvx</span><span class="o">.</span><span class="n">MOSEK</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+
+    <span class="c1">### return</span>
+    <span class="k">if</span> <span class="n">in_place</span><span class="p">:</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="n">new_gts_f</span>
+
+    <span class="k">if</span> <span class="n">return_offset</span> <span class="ow">and</span> <span class="n">return_periodic</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">new_gts_f</span><span class="p">,</span><span class="n">new_gts_o</span><span class="p">,</span> <span class="n">new_gts_s</span>
+
+    <span class="k">if</span> <span class="n">return_offset</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">return_periodic</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">new_gts_f</span><span class="p">,</span> <span class="n">new_gts_o</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">return_offset</span> <span class="ow">and</span> <span class="n">return_periodic</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">new_gts_f</span><span class="p">,</span> <span class="n">new_gts_s</span>
+
+    <span class="k">return</span> <span class="n">new_gts_f</span></div>
+
+<div class="viewcode-block" id="gen_d2"><a class="viewcode-back" href="../../../../../pyacs.gts.lib.filters.html#pyacs.gts.Gts.gen_d2">[docs]</a><span class="k">def</span> <span class="nf">gen_d2</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate the 2nd difference matrix.</span>
+<span class="sd">    :param n: int, length of time series</span>
+<span class="sd">    :return: csr_matrix, sparse matrix</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">I2</span> <span class="o">=</span> <span class="n">eye</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">O2</span> <span class="o">=</span> <span class="n">csr_matrix</span><span class="p">((</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">hstack</span><span class="p">((</span><span class="n">I2</span><span class="p">,</span> <span class="n">O2</span><span class="p">,</span> <span class="n">O2</span><span class="p">))</span> <span class="o">+</span> <span class="n">hstack</span><span class="p">((</span><span class="n">O2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">I2</span><span class="p">,</span> <span class="n">O2</span><span class="p">))</span> <span class="o">+</span> <span class="n">hstack</span><span class="p">((</span><span class="n">O2</span><span class="p">,</span> <span class="n">O2</span><span class="p">,</span> <span class="n">I2</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="gen_d1"><a class="viewcode-back" href="../../../../../pyacs.gts.lib.filters.html#pyacs.gts.Gts.gen_d1">[docs]</a><span class="k">def</span> <span class="nf">gen_d1</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate the 1st difference matrix</span>
+<span class="sd">    :param n: int, length of time series</span>
+<span class="sd">    :return: csr_matrix, sparse matrix</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">I1</span> <span class="o">=</span> <span class="n">eye</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">O1</span> <span class="o">=</span> <span class="n">csr_matrix</span><span class="p">((</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">hstack</span><span class="p">((</span><span class="n">I1</span><span class="p">,</span> <span class="n">O1</span><span class="p">))</span> <span class="o">-</span> <span class="n">hstack</span><span class="p">((</span><span class="n">O1</span><span class="p">,</span> <span class="n">I1</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="get_max_lam"><a class="viewcode-back" href="../../../../../pyacs.gts.lib.filters.html#pyacs.gts.Gts.get_max_lam">[docs]</a><span class="k">def</span> <span class="nf">get_max_lam</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the max lambda value for given time series y</span>
+<span class="sd">    :param y: np.array, time series given</span>
+<span class="sd">    :return: float, max lambda value</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">gen_d2</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+    <span class="n">ddt</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">dy</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">linalg</span><span class="o">.</span><span class="n">spsolve</span><span class="p">(</span><span class="n">ddt</span><span class="p">,</span> <span class="n">dy</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_max_rho"><a class="viewcode-back" href="../../../../../pyacs.gts.lib.filters.html#pyacs.gts.Gts.get_max_rho">[docs]</a><span class="k">def</span> <span class="nf">get_max_rho</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the max rho value for given time series y,</span>
+<span class="sd">    :param y: np.array, time series given</span>
+<span class="sd">    :return: float, max rho value</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">gen_d1</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+    <span class="n">ddt</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">dy</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">linalg</span><span class="o">.</span><span class="n">spsolve</span><span class="p">(</span><span class="n">ddt</span><span class="p">,</span> <span class="n">dy</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="l1filter"><a class="viewcode-back" href="../../../../../pyacs.gts.lib.filters.html#pyacs.gts.Gts.l1filter">[docs]</a><span class="k">def</span> <span class="nf">l1filter</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>
+             <span class="n">lam</span><span class="o">=</span><span class="mi">1200</span><span class="p">,</span>
+             <span class="n">rho</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span>
+             <span class="n">periods</span><span class="o">=</span><span class="p">(</span><span class="mf">365.25</span><span class="p">,</span> <span class="mf">182.625</span><span class="p">),</span>
+             <span class="n">solver</span><span class="o">=</span><span class="n">cvx</span><span class="o">.</span><span class="n">MOSEK</span><span class="p">,</span>
+             <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Do l1 regularize for given time series.</span>
+<span class="sd">    :param t: np.array, time</span>
+<span class="sd">    :param y: np.array, time series value</span>
+<span class="sd">    :param lam: lambda value</span>
+<span class="sd">    :param rho: rho value</span>
+<span class="sd">    :param periods: list, periods, same unit as t</span>
+<span class="sd">    :param solver: cvx.solver</span>
+<span class="sd">    :param verbose: bool, show verbose or not</span>
+<span class="sd">    :return: x, w, s, if periods is not None, else return x, w</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">t</span> <span class="o">-</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">t</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">gen_d2</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">errs</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">x</span> <span class="o">-</span> <span class="n">w</span>
+    <span class="n">seasonal</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">periods</span><span class="p">:</span>
+        <span class="n">tpi_t</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">t</span>
+        <span class="k">for</span> <span class="n">period</span> <span class="ow">in</span> <span class="n">periods</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Variable</span><span class="p">()</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Variable</span><span class="p">()</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">tpi_t</span> <span class="o">/</span> <span class="n">period</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">tpi_t</span> <span class="o">/</span> <span class="n">period</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">seasonal</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">seasonal</span> <span class="o">=</span> <span class="n">temp</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">seasonal</span> <span class="o">+=</span> <span class="n">temp</span>
+        <span class="n">errs</span> <span class="o">=</span> <span class="n">errs</span> <span class="o">-</span> <span class="n">seasonal</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Minimize</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">cvx</span><span class="o">.</span><span class="n">sum_squares</span><span class="p">(</span><span class="n">errs</span><span class="p">)</span> <span class="o">+</span>
+<span class="c1">#                       lam * cvx.sum_squares(D * x) +</span>
+<span class="c1">#                       lam * cvx.norm(D * x, 2) +</span>
+                       <span class="n">lam</span> <span class="o">*</span> <span class="n">cvx</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">D</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span>
+                       <span class="n">rho</span> <span class="o">*</span> <span class="n">cvx</span><span class="o">.</span><span class="n">tv</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+    <span class="n">prob</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Problem</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="n">prob</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span><span class="o">=</span><span class="n">solver</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">periods</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">value</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">seasonal</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">value</span><span class="p">),</span> <span class="kc">None</span>
+
+    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">dx</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">mul_elemwise</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">cvx</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="n">x_term</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">tv</span><span class="p">(</span><span class="n">dx</span><span class="p">)</span>
+    <span class="n">dw</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">mul_elemwise</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">cvx</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">w</span><span class="p">))</span>
+    <span class="n">w_term</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">dw</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">errs</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">x</span> <span class="o">-</span> <span class="n">w</span>
+    <span class="n">seasonal</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">periods</span><span class="p">:</span>
+        <span class="n">tpi_t</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">t</span>
+        <span class="k">for</span> <span class="n">period</span> <span class="ow">in</span> <span class="n">periods</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Variable</span><span class="p">()</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Variable</span><span class="p">()</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">tpi_t</span> <span class="o">/</span> <span class="n">period</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">tpi_t</span> <span class="o">/</span> <span class="n">period</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">seasonal</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">seasonal</span> <span class="o">=</span> <span class="n">temp</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">seasonal</span> <span class="o">+=</span> <span class="n">temp</span>
+        <span class="n">errs</span> <span class="o">=</span> <span class="n">errs</span> <span class="o">-</span> <span class="n">seasonal</span>
+
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Minimize</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">cvx</span><span class="o">.</span><span class="n">sum_squares</span><span class="p">(</span><span class="n">errs</span><span class="p">)</span> <span class="o">+</span> <span class="n">lam</span> <span class="o">*</span> <span class="n">x_term</span> <span class="o">+</span> <span class="n">rho</span> <span class="o">*</span> <span class="n">w_term</span><span class="p">)</span>
+    <span class="n">prob</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Problem</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;solving&#39;</span><span class="p">)</span>
+    <span class="n">prob</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span><span class="o">=</span><span class="n">solver</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">periods</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">value</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">seasonal</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">value</span><span class="p">),</span> <span class="kc">None</span></div>
+
+
+
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -91,17 +91,17 @@ def save_np_array_with_string(A,S,fmt,outfile,comment=''):
     out.close()
 
 ###################################################################
-def make_grid(outfile, min_lon,max_lon,min_lat,max_lat, \
-              nx=None, ny=None, step_x=None, step_y=None, format='psvelo' , comment=''):
+def make_grid(min_lon,max_lon,min_lat,max_lat, \
+              nx=None, ny=None, step_x=None, step_y=None, outfile=None, format='psvelo' , comment=''):
 ###################################################################
     """
     Generates a text file as a grid
     
-    :param outfile: output file name
     :param min_lon,max_lon,min_lat,max_lat: grid bounds coordinates in decimal degrees
     :param nx ny: number of points in the grid along longitude. If ny is not provided, ny=nx
     :param step_x,step_y: step for the grid. This is an alternative to nx. If step_y is not provided, step_y=step_x
-    :param format: if format is None, then only lon, lat are written. If format='psvelo' (default), then the line is filled with 0. and sequentially site names   
+    :param outfile: output file name. Default=None, no file written
+    :param format: if format is None, then only lon, lat are written. If format='psvelo' (default), then the line is filled with 0. and sequentially site names
     :param comment: comment to be added to the output file.
     
     :return: the grid as 2D numpy array
@@ -147,11 +147,13 @@ def make_grid(outfile, min_lon,max_lon,min_lat,max_lat, \
         output_np = np.zeros(( grid.shape[0] , 8 ) )
         output_np[:,:2] = grid
         output_np[:,7]  = np.arange( grid.shape[0] ) 
-    
-        np.savetxt(outfile, output_np, "%10.6lf %10.6lf %4.1lf %4.1lf %4.1lf %4.1lf %4.1lf %04d", header=comment)
+
+        if outfile is not None:
+            np.savetxt(outfile, output_np, "%10.6lf %10.6lf %4.1lf %4.1lf %4.1lf %4.1lf %4.1lf %04d", header=comment)
         
     else:
-        np.savetxt(outfile, grid, "%10.6lf %10.6lf", header=comment)
+        if outfile is not None:
+            np.savetxt(outfile, grid, "%10.6lf %10.6lf", header=comment)
         
     return( grid )
     

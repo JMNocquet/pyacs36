@@ -2,6 +2,16 @@ from setuptools import setup
 
 ###############################################################################
 # VERSION HISTORY
+# 0.65.3 on 20210303 : refactoring of gts.lib.__init__.py and gts.Gts. added gts.insert_ts and update --replace in pyacs_make_time_series.py
+# 0.65.2 on 20210302 : refactoring of gts.lib.model
+# 0.65.1 on 20210215 : added pck_only option in pacs_make_time_series.py
+# 0.65.0 on 20210215 : added cvxpy as required in setup.py. Remove the png files.
+# 0.64.9 on 20210113 : add min_yaxis option in ts.plot
+# 0.64.8 on 20201220 : faultslip exploded into individual subroutines. geo2flat changed to use pyproj and web Mercator proj
+# 0.64.7 on 20201204 : added outliers package to gts.lib and a new outliers.find_l1trend function
+# 0.64.6 on 20201115 : extensive l1 trend filtering added and bug in copy in trajectory (data_xyz must be ignored)
+# 0.64.5 on 20201115 : slight change in print Euler pole estimation results
+# 0.64.3 on 20201029 : added l1_trend filter
 # 0.64.2 on 20201001 : change in Sgts.show_map
 # 0.64.1 on 20201001 : correct a bug in pyacs_make_time_series.py when there is a rename in the conf_file and uncertainties are asked
 # 0.64.0 on 20200910 : write pck now use DEFAULT_PROTOCOL instead of HIGHEST for backward compatibility
@@ -91,8 +101,8 @@ from sphinx.setup_command import BuildDoc
 cmdclass = {'build_sphinx': BuildDoc}
 
 name = 'pyacs'
-version = '0.64'
-release = '0.64.2'
+version = '0.65'
+release = '0.65.3'
 
 setup(name=name,
       version=release,
@@ -112,15 +122,19 @@ setup(name=name,
       author_email='nocquet@geoazur.unice.fr',
       license='NA',
       packages=['pyacs',
+                'pyacs.message',
                 'pyacs.lib',
+                'pyacs.lib.faultslip',
                 # gts
                 'pyacs.gts',
                 'pyacs.gts.lib',
-                'pyacs.gts.lib.non_linear_model',
+#                'pyacs.gts.lib.non_linear_model',
                 'pyacs.gts.lib.filters',
                 'pyacs.gts.lib.format',
                 'pyacs.gts.lib.primitive',
                 'pyacs.gts.lib.plot',
+                'pyacs.gts.lib.outliers',
+                'pyacs.gts.lib.model',
                 # sol & sinex
                 'pyacs.sol',
                 'pyacs.sinex',
@@ -158,8 +172,12 @@ setup(name=name,
                         'pyshp>=2.0.1',
                         'contextily',
                         'geopandas',
-                        'cartopy',
-                        'descartes'
+                        #'cartopy',
+                        'descartes',
+                        'cvxpy',
+                        'sphinx_jekyll_builder',
+                        'sphinx_rtd_theme'
+#                        'l1tf @ git+https://github.com/ivannz/l1_tf.git'
                         #                        'pwlf' , \
                         #                        'prox_tv'
                         ],

@@ -21,7 +21,7 @@
 ###################################################################
 
 
-import time,os,sys
+import time,os,sys,datetime
 import numpy as np
 import argparse
 import shutil
@@ -46,6 +46,7 @@ from pyacs.gts.Sgts import Sgts
 # START TIME
 ###################################################################
 start = time.time()   
+str_date = datetime.datetime.now().strftime("%Y_%m_%d")
 
 ###################################################################
 # PARSE ARGUMENT LINE
@@ -70,6 +71,7 @@ parser.add_argument('--replace', action='count',default=0,help='replace mode')
 parser.add_argument('--uncertainty', action='count',default=0,help='will calculate daily coordinates uncertainties. Requires either sinex or glx files are provided in lsinex.')
 parser.add_argument('--glred', action='count',default=0,help='will run glred together with pyacs to get the time series. Requires glx files are provided in lsinex.')
 parser.add_argument('--no_clean', action='count',default=0,help='do not remove created sinex files.')
+parser.add_argument('--pck_only', action='count',default=0,help='only writes pck file.')
 
 
 args = parser.parse_args()
@@ -121,6 +123,13 @@ if args.glred:
     glred_opt = True
 else:
     glred_opt = False
+
+# pck only
+if args.pck_only>0:
+    print("-- pck only option. Will only writes a pck file.")
+    pck_only=True
+else:
+    pck_only = False
 
 # save command line
 cmd_line = " ".join(sys.argv)
@@ -198,6 +207,8 @@ print('-- Number of solutions to be processed: %d type: %s' % (len(lsinex), type
 # OUTPUT DIRECTORY
 ###################################################################
 
+wdir = args.expt
+
 if not replace:
 
     ###################################################################
@@ -205,9 +216,7 @@ if not replace:
     ###################################################################
     
     if verbose:print("-- Creating working directory ",args.expt)
-    
-    wdir=args.expt
-    
+
     if os.path.isdir(wdir):
         print('!!! ',wdir,' directory already exists')
         sys.exit()
@@ -215,7 +224,8 @@ if not replace:
     elif os.path.isfile(wdir):
         print('!!! ',wdir,' file already exists')
         sys.exit()
-    
+
+
     else:
         (path_stat,path_res_pos,path_maps,path_pos, path_pck, path_txyz,path_tsg,path_prt,path_lgred_pos,path_log,path_sinex,path_ssc) = \
         pyacs.sol.log.output_directories(wdir)
@@ -225,18 +235,12 @@ else:
 
     if verbose:print("-- Reading working directory ",args.expt)
     
-    wdir=args.expt
     (path_stat,path_res_pos,path_maps,path_pos, path_pck, path_txyz,path_tsg,path_prt,path_lgred_pos,path_log,path_sinex,path_ssc) = \
         pyacs.sol.log.output_directories(wdir)
 
-    try:
-        sts = Sgts( ts_dir = path_pck , read=True , verbose = verbose )
-    except:
-        sts = Sgts( ts_dir = path_pos , read=True , verbose = verbose )
-        
-    if verbose:print("-- Cleaning pos and glred_pos directory of ",args.expt)
 
 # Change JMN 03/09/2019. There is no need to delete them
+# if verbose: print("-- Cleaning pos and glred_pos directory of ", args.expt)
 #    try:
 #        shutil.rmtree(path_pos)
 #        shutil.rmtree(path_pck)
@@ -247,11 +251,17 @@ else:
 #    os.mkdir(path_pos)
 #    os.mkdir(path_lgred_pos)
 
+
 ###################################################################
 # TSG OUTPUT FILES
 ###################################################################
-sum_helmert_file=path_stat+'/residuals_tsg.dat'
-tsg_file = path_tsg+'tsg.dat'
+
+if replace:
+    sum_helmert_file=("%s/residuals_tsg_%s.dat" % (path_stat,str_date))
+    tsg_file=("%s/tsg_%s.dat" % (path_tsg,str_date))
+else:
+    sum_helmert_file=path_stat+'/residuals_tsg.dat'
+    tsg_file = path_tsg+'tsg.dat'
 
 ###################################################################
 # VARIABLES INITIALIZATION
@@ -341,9 +351,8 @@ H_res_helmert = {}
 # Sgts instance for reference sites residual time series
 l_res_ts = Sgts(read=False)
 
-# initialize sts - if replace, it has been done before
-if not replace:
-    sts = Sgts(read=False)
+# initialize sts
+sts = Sgts(read=False)
 
 print('*********************************************************************************')
 print('*********************************************************************************')
@@ -649,24 +658,54 @@ print('*************************************************************************
 
 
 
+###################################################################
+# UPDATE STS
+###################################################################
+
+if replace:
+    print("-- reading original time series")
+    try:
+        ots = Sgts(ts_dir=path_pck, read=True, verbose=verbose)
+    except:
+        ots = Sgts(ts_dir=path_pos, read=True, verbose=verbose)
+
+    print("-- %d time series read" % ots.n() )
+
+    print("-- merging original and new time series")
+
+    i = 1
+    for code in sorted( sts.lcode() ):
+        print('-- mergin time series for ', code, i, ' / ',len( sts.lcode() ))
+        # insert the created ts
+        if ots.has_ts(code):
+            ots.__dict__[code] = ots.__dict__[code].insert_ts(sts.__dict__[code], rounding='hour',data='xyz',overlap=True)
+        # calculates .data from .data_xyz
+        ots.__dict__[code].xyz2neu(corr=True)
+        i=i+1
+
+    sts = ots.copy()
+
+else:
+    print("-- reordering date in times series")
+    sts.gts('reorder')
 
 ###################################################################
 # WRITE TIME SERIES POS FORMAT
 ###################################################################
+if not pck_only:
+    print('-- writing time series as pos files')
 
-print('-- writing time series as pos files')
+    #TS=Sgts(path_txyz,verbose=verbose)
 
-#TS=Sgts(path_txyz,verbose=verbose)
-
-i = 1
-for code in sorted( sts.lcode() ):
-    ts = sts.__dict__[code]
-    print('-- writing time series for ',ts.code, i, ' / ',len( sts.lcode() ))
-    ts.xyz2neu(corr=True)
-    ts.reorder()
-    ts.correct_duplicated_dates(action='correct',tol= .1, in_place=True,verbose=False)    
-    ts.write_pos(path_pos)
-    i = i + 1
+    i = 1
+    for code in sorted( sts.lcode() ):
+        ts = sts.__dict__[code]
+        print('-- writing time series for ',ts.code, i, ' / ',len( sts.lcode() ))
+        ts.xyz2neu(corr=True)
+        ts.reorder()
+        ts.correct_duplicated_dates(action='correct',tol= .1, in_place=True,verbose=False)
+        ts.write_pos(path_pos)
+        i = i + 1
 
 ###################################################################
 # WRITE TIME SERIES PYACS PCK FORMAT
@@ -680,10 +719,12 @@ sts.write_pck( path_pck+'/'+args.expt+'.pck', verbose=verbose)
 # WRITE TSG TIME SERIES
 ###################################################################
 
-if verbose:
-    print('-- writing Helmert parameters values in ',path_tsg+'/tsg.dat')
+if not pck_only:
 
-pyacs.sol.log.write_tsg(lsinex, TSG, path_tsg+'/tsg.dat')
+    if verbose:
+        print('-- writing Helmert parameters values in ',path_tsg+'/tsg.dat')
+
+    pyacs.sol.log.write_tsg(lsinex, TSG, path_tsg+'/tsg.dat')
 
 ###################################################################
 # WRITE RESIDUAL TIME SERIES FOR REFERENCE SITES
@@ -725,66 +766,66 @@ htswrms_file.close()
 ###################################################################
 # APR
 ###################################################################
+if not pck_only:
+    apr_file= path_stat + '/pyacs.apr'
+    print('-- writing apr file in ',apr_file)
 
-apr_file= path_stat + '/pyacs.apr'
-print('-- writing apr file in ',apr_file)
-
-i = 1
-for code in sorted( sts.lcode() ):
-    print('-- ',code,i,' / ',len( sts.lcode() ))
-    ts = sts.__dict__[code]
-    ts.save_apr(apr_file, epoch=None, verbose=False, excluded_periods=None)
-    i = i + 1
+    i = 1
+    for code in sorted( sts.lcode() ):
+        print('-- ',code,i,' / ',len( sts.lcode() ))
+        ts = sts.__dict__[code]
+        ts.save_apr(apr_file, epoch=None, verbose=False, excluded_periods=None)
+        i = i + 1
     
 ###################################################################
 # INFO FILES
 ###################################################################
+if not pck_only:
+    if sts.lcode() == []:
+        print( red("[PYACS WARNING] info file empty. no site processed"))
 
-if sts.lcode() == []:
-    print( red("[PYACS WARNING] info file empty. no site processed"))
-    
-else:
-    print('-- writing information files in ',path_stat)
-    
-    sts.stat_site(save_dir=path_stat)
-    
-    ###################################################################
-    # VELOCITY MAPS GMT PSVELO AND SHAPEFILES
-    ###################################################################
-    
-    import pyacs.lib.shapefile
-    
-    src = path_stat+'/pyacs_vel.dat'
-    dest= path_maps+'/pyacs_vel.dat'
-    shutil.move(src, dest)
-    
-    gmt = dest
-    shp = path_maps+'/pyacs_vel.shp'
-    pyacs.lib.shapefile.psvelo_to_shapefile(gmt, shp, verbose=verbose)
-    
-    src = path_stat+'/pyacs_vel_up.dat'
-    dest= path_maps+'/pyacs_vel_up.dat'
-    shutil.move(src, dest)
-    
-    shp = path_maps+'/pyacs_vel_up.shp'
-    pyacs.lib.shapefile.psvelo_to_shapefile(gmt, shp, verbose=verbose)
+    else:
+        print('-- writing information files in ',path_stat)
+
+        sts.stat_site(save_dir=path_stat)
+
+        ###################################################################
+        # VELOCITY MAPS GMT PSVELO AND SHAPEFILES
+        ###################################################################
+
+        import pyacs.lib.shapefile
+
+        src = path_stat+'/pyacs_vel.dat'
+        dest= path_maps+'/pyacs_vel.dat'
+        shutil.move(src, dest)
+
+        gmt = dest
+        shp = path_maps+'/pyacs_vel.shp'
+        pyacs.lib.shapefile.psvelo_to_shapefile(gmt, shp, verbose=verbose)
+
+        src = path_stat+'/pyacs_vel_up.dat'
+        dest= path_maps+'/pyacs_vel_up.dat'
+        shutil.move(src, dest)
+
+        shp = path_maps+'/pyacs_vel_up.shp'
+        pyacs.lib.shapefile.psvelo_to_shapefile(gmt, shp, verbose=verbose)
 
 
 ###############################################################################
 # CREATES GLRED POS FILE IF TYPE_GLX
 ###############################################################################
+if not pck_only:
+    if type_sol == 'glx' and glred_opt :
 
-if type_sol == 'glx' and glred_opt :
-
-    print("-- Creating GLRED pos files")
-    import subprocess
-    os.chdir(path_prt)
-    cmd='sh_plot_pos -f prt.org -p '
-    print("-- Running ",cmd)
-    subprocess.getstatusoutput(cmd)
-    lpos=glob.glob('*.pos')
-    for pos in lpos:
-        shutil.move(pos, '../glred_pos')
+        print("-- Creating GLRED pos files")
+        import subprocess
+        os.chdir(path_prt)
+        cmd='sh_plot_pos -f prt.org -p '
+        print("-- Running ",cmd)
+        subprocess.getstatusoutput(cmd)
+        lpos=glob.glob('*.pos')
+        for pos in lpos:
+            shutil.move(pos, '../glred_pos')
 
 ###############################################################################
 # REMOVES USELESS DIRECTORIES

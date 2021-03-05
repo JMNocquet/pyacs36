@@ -2,14 +2,12 @@
 def ls(G,d, verbose=False):
 ###############################################################################
     """
-    Solve the least-squares (LS) problem m so that  |Gx-d|**2 is minimum.
+    Solve the least-squares (LS) problem m so that  (Gm-d).T (Gm-d) is minimum.
     
     :param G: m x n model matrix as 2D numpy array
     :param d: m 1D numpy observation vector
     :param verbose: verbose mode
-    
     :return: x,chi2: m (1D numpy array of dim m), chi2 (chi-square)
-    
     :note: solved through numpy.linalg.lstsq
     """
 

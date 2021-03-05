@@ -30,7 +30,8 @@ def gts_to_ts( gts , date=None, unit='mm' , date_unit='decyear' , date_ref=None,
     
     # case date extraction
     if date != []:
-        tmp_gts = tmp_gts.extract_periods( pyacs.lib.utils.__ensure_list_of_list( date ) )
+        #tmp_gts = tmp_gts.extract_periods( pyacs.lib.utils.__ensure_list_of_list( date ) )
+        tmp_gts = tmp_gts.extract_periods( pyacs.lib.utils.__ensure_list_of_list( date ), no_reset=True )
 
     # case set_zero_at_date
     if set_zero_at_date is not None:

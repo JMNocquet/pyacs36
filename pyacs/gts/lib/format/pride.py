@@ -7,13 +7,11 @@ def read_pride(self,tsdir='.',tsfile=None, xyz=True, verbose=False):
 ###############################################################################
     """
     Read PRIDE-PPPAR kinematic result file
-    
     :param tsdir: directory of pride-pppar kinematic files
     :param tsfile: pride-pppar kinematic file to be loaded
     :param verbose: verbose mode
     :return Nothing:
-    :raises Nothing:
-    If file=None, then read_pride will look for a files named kin_*code
+    :note: If file=None, then read_pride will look for a files named kin_*code
     """
 
     # import
@@ -102,7 +100,8 @@ def read_pride_pos(self,tsdir='.',tsfile=None, verbose=False):
     :param tsdir: directory of pride-pppar pos static files
     :param tsfile: pride-pppar pos static file to be loaded
     :param verbose: verbose mode
-    If file=None, then read_pride will look for a files named pos_*code
+    :note:If file=None, then read_pride will look for a files named pos_*code
+
     """
 
     # import

@@ -1,5 +1,5 @@
 ###################################################################
-def common_mode(self, lref=[] , detrend_method='detrend_median', method='median' , verbose=True):
+def common_mode(self, lref=[] , detrend_method='detrend_median', method='median' , center=True, verbose=True):
 ###################################################################
     """
     calculates a common mode
@@ -21,17 +21,20 @@ def common_mode(self, lref=[] , detrend_method='detrend_median', method='median'
     import pyacs.lib.coordinates as coor
 
     # detrend for the reference sites
-    
-    dts = self.gts( detrend_method )
-    
+    if detrend_method is not None:
+        dts = self.gts( detrend_method )
+    else:
+        dts = self.copy()
+
     # creates an obs_tensor instance from the detrend time series
     
     T_OBS_RAW , np_names_t_obs, np_obs_date_s = pyeq.lib.obs_tensor.sgts2obs_tensor.sgts2tensor( dts, rounding='day' , verbose=verbose )
     
     # center time series
-    T_OBS_RAW[:,:,0] = T_OBS_RAW[:,:,0] - np.nanmedian( T_OBS_RAW[:,:,0] , axis=0 ) 
-    T_OBS_RAW[:,:,1] = T_OBS_RAW[:,:,1] - np.nanmedian( T_OBS_RAW[:,:,1] , axis=0 ) 
-    T_OBS_RAW[:,:,2] = T_OBS_RAW[:,:,2] - np.nanmedian( T_OBS_RAW[:,:,2] , axis=0) 
+    if center:
+        T_OBS_RAW[:,:,0] = T_OBS_RAW[:,:,0] - np.nanmedian( T_OBS_RAW[:,:,0] , axis=0 )
+        T_OBS_RAW[:,:,1] = T_OBS_RAW[:,:,1] - np.nanmedian( T_OBS_RAW[:,:,1] , axis=0 )
+        T_OBS_RAW[:,:,2] = T_OBS_RAW[:,:,2] - np.nanmedian( T_OBS_RAW[:,:,2] , axis=0)
     
     # get the index of sites used for the common mode
     

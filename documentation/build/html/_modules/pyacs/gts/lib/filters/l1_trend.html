@@ -1,0 +1,391 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.gts.lib.filters.l1_trend &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.gts.lib.filters.l1_trend</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.gts.lib.filters.l1_trend</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">L1 trend filter</span>
+<span class="sd">    The L1 trend filtering method produces trend estimates that are piecewise linear from the time series 𝑦.</span>
+<span class="sd">    :credit: https://www.cvxpy.org/examples/applications/l1_trend_filter.html</span>
+<span class="sd">    :reference: http://stanford.edu/~boyd/papers/l1_trend_filter.html</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="l1_trend"><a class="viewcode-back" href="../../../../../pyacs.gts.lib.filters.html#pyacs.gts.Gts.l1_trend">[docs]</a><span class="k">def</span> <span class="nf">l1_trend</span><span class="p">(</span><span class="bp">self</span> <span class="p">,</span> <span class="n">vlambda</span> <span class="p">,</span> <span class="n">gap</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">False</span> <span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">component</span><span class="o">=</span><span class="s1">&#39;NEU&#39;</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    return a piecewise linear filtered Gts</span>
+<span class="sd">    </span>
+<span class="sd">    :param vlambda: weight of regularization</span>
+<span class="sd">    :param gap: gap in days to split the time series before applying the filter.default is 10.</span>
+<span class="sd">    :param in_place: if True then replace the current time series</span>
+<span class="sd">    :param verbose: boolean, verbose mode</span>
+<span class="sd">    :param component: string. Default &#39;NEU&#39;</span>
+<span class="sd">    :return: the filtered time series</span>
+<span class="sd">    :note: if there are less than 4 points in a segment, return an L1 estimated trend</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># TODO</span>
+    <span class="c1"># case a segment has obly 1 data is not handled yet</span>
+
+    <span class="c1"># import</span>
+    <span class="kn">from</span> <span class="nn">pyacs.gts.lib.message</span> <span class="kn">import</span> <span class="n">message</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">import</span> <span class="nn">pyacs.lib.astrotime</span> <span class="k">as</span> <span class="nn">at</span>
+
+
+    <span class="c1"># split time series according to gap</span>
+    <span class="n">lgts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_gap</span><span class="p">(</span><span class="n">gap</span><span class="o">=</span><span class="n">gap</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+
+    <span class="c1">### copy</span>
+    <span class="n">new_gts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span> <span class="n">data_xyz</span><span class="o">=</span><span class="kc">None</span> <span class="p">)</span>
+    <span class="n">new_gts</span><span class="o">.</span><span class="n">data_xyz</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">new_gts</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- time series is be filtered for </span><span class="si">%d</span><span class="s2"> segments&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">lgts</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">wgts</span> <span class="ow">in</span> <span class="n">lgts</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="n">datetime1</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span> <span class="n">wgts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+            <span class="n">datetime2</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span> <span class="n">wgts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;---- period </span><span class="si">%s</span><span class="s2"> -- </span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">datetime1</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span> \
+                                             <span class="n">datetime2</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()))</span>
+
+
+
+        <span class="n">new_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">wgts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">10</span><span class="p">))</span>
+        <span class="n">new_data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span> <span class="n">wgts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+        <span class="n">new_data</span><span class="p">[:,</span><span class="mi">4</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.E-3</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1">### filter</span>
+            <span class="k">if</span> <span class="s1">&#39;N&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="n">message</span><span class="p">(</span><span class="s1">&#39;Computing L1 trend filter for component North&#39;</span><span class="p">)</span>
+                <span class="n">new_data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">__l1_trend</span><span class="p">(</span><span class="n">wgts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">wgts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">vlambda</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">wgts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="s1">&#39;E&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="n">message</span><span class="p">(</span><span class="s1">&#39;Computing L1 trend filter for component East&#39;</span><span class="p">)</span>
+                <span class="n">new_data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">__l1_trend</span><span class="p">(</span><span class="n">wgts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">wgts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">vlambda</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">wgts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span>
+
+
+            <span class="k">if</span> <span class="s1">&#39;U&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="n">message</span><span class="p">(</span><span class="s1">&#39;Computing L1 trend filter for component Up&#39;</span><span class="p">)</span>
+                <span class="n">new_data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">__l1_trend</span><span class="p">(</span><span class="n">wgts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">wgts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">vlambda</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">wgts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]</span>
+
+        <span class="k">except</span><span class="p">:</span>
+            <span class="c1"># L1 trend if less than 4 data</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="n">message</span><span class="p">(</span><span class="s1">&#39;not enough data for this segment. Doing an L1 detrend&#39;</span><span class="p">)</span>
+            <span class="n">l1</span> <span class="o">=</span> <span class="n">wgts</span><span class="o">.</span><span class="n">detrend</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;L1&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s1">&#39;N&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+                <span class="n">bias</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span> <span class="n">l1</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+                <span class="n">new_data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">wgts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">l1</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">bias</span>
+            <span class="k">if</span> <span class="s1">&#39;E&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+                <span class="n">bias</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span> <span class="n">l1</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span>
+                <span class="n">new_data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">wgts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">l1</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">bias</span>
+            <span class="k">if</span> <span class="s1">&#39;U&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+                <span class="n">bias</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span> <span class="n">l1</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">])</span>
+                <span class="n">new_data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">wgts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">l1</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">bias</span>
+
+
+        <span class="c1"># adds interpolation to the time series</span>
+        <span class="k">if</span> <span class="n">new_gts</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">new_gts</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">new_data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_gts</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">new_gts</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">new_data</span><span class="p">))</span>
+
+
+<span class="c1">### return</span>
+    <span class="k">if</span> <span class="n">in_place</span><span class="p">:</span>
+            <span class="bp">self</span> <span class="o">=</span> <span class="n">new_gts</span>
+            <span class="k">return</span> <span class="bp">self</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span>  <span class="n">new_gts</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<span class="k">def</span> <span class="nf">__l1_trend</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">vlambda</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param t: dates an 1-D numpy array</span>
+<span class="sd">    :param y: time series value as 1-D numpy array</span>
+<span class="sd">    :param vlambda: weight for filtering</span>
+<span class="sd">    :param verbose: boulean verbose mode</span>
+<span class="sd">    :return: filtered time series</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># import</span>
+    <span class="kn">import</span> <span class="nn">l1tf</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">return</span> <span class="n">l1tf</span><span class="o">.</span><span class="n">l1_filter</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">y</span><span class="p">),</span><span class="n">vlambda</span><span class="p">)</span>
+
+
+<span class="c1">###############################################################################</span>
+<span class="k">def</span> <span class="nf">__l1_trend_cvxopt</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">vlambda</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param t: dates an 1-D numpy array</span>
+<span class="sd">    :param y: time series value as 1-D numpy array</span>
+<span class="sd">    :param vlambda: weight for filtering</span>
+<span class="sd">    :param verbose: boulean verbose mode</span>
+<span class="sd">    :return: filtered time series</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># import</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">import</span> <span class="nn">cvxpy</span> <span class="k">as</span> <span class="nn">cp</span>
+    <span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">scipy</span>
+    <span class="kn">import</span> <span class="nn">cvxopt</span> <span class="k">as</span> <span class="nn">cvxopt</span>
+    <span class="kn">from</span> <span class="nn">pyacs.gts.lib.message</span> <span class="kn">import</span> <span class="n">message</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="c1"># Form second difference matrix.</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">spdiags</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">e</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">e</span><span class="p">,</span> <span class="n">e</span><span class="p">)),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+    <span class="c1"># Solve l1 trend filtering problem.</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">Minimize</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">cp</span><span class="o">.</span><span class="n">sum_squares</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span>
+                      <span class="o">+</span> <span class="n">vlambda</span> <span class="o">*</span> <span class="n">cp</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">D</span><span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
+    <span class="n">prob</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">Problem</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="c1"># ECOS and SCS solvers fail to converge before</span>
+    <span class="c1"># the iteration limit. Use CVXOPT instead.</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="n">message</span><span class="p">(</span> <span class="s1">&#39;solving L1 trend&#39;</span><span class="p">)</span>
+
+    <span class="n">prob</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span><span class="o">=</span><span class="n">cp</span><span class="o">.</span><span class="n">CVXOPT</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="n">my_message</span> <span class="o">=</span> <span class="s1">&#39;Solver status: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prob</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
+        <span class="n">message</span><span class="p">(</span> <span class="n">my_message</span> <span class="p">)</span>
+
+    <span class="c1"># Check for error.</span>
+    <span class="k">if</span> <span class="n">prob</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="n">cp</span><span class="o">.</span><span class="n">OPTIMAL</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Solver did not converge!&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="n">my_message</span> <span class="o">=</span> <span class="s2">&quot;optimal objective value: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">message</span><span class="p">(</span> <span class="n">my_message</span> <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

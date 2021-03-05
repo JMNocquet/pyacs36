@@ -1,47 +1,40 @@
-"""
-    Geodetic Time Series Class & methods
-    
-    A Geodetic time series (Gts) is a series of 3 components North,East,UP as a function of increasing dates
-    
-    The Gts implemented in PYACS has the following structure:
 
-    Basic data
-        - data:            a 2D numpy array with 7 columns including: dec.year, N, E, U, S_N, S_E, S_U
+#from pyacs.gts.lib.offset import __fmt_date
+"""
+    The individual Geodetic Time Series Class
+
+    The Gts implemented in PYACS has the following attributes:
+
+    Mandatory attributes:
+        - data:        a 2D numpy array with 10 columns: dec.year, N, E, U, S_N, S_E, S_U, S_NE, S_NU, S_EU
         - code:            station 4-letters code
+    Coordinates attributes
         - lon,lat,h:       approximate longitude, latitude (geodetic, deg.dec) and ellipsoidal height (m)
-        - X0,Y0,Z0         XYZ reference position in the Geocentric Frame. N,E,U are with respect to X0,Y0,Z0
-        - t0               reference date in decimal year corresponding to the X0,Y0,Z0
-    Optional data
-        - data_xyz:        a 2D numpy array with 7 columns including: dec.year, X, Y, Z, SX, SY, SZ, corr_XY, corr_XZ, corr_YZ
-        - data_corr_neu    a 2D numpy array with 4 columns including: dec.year, corr_ne,corr_nu,corr_eu
-        - data_corr_xyz    a 2D numpy array with 4 columns including: dec.year, corr_xy,corr_xz,corr_yz
-    Analysis results
+        - X0,Y0,Z0         XYZ reference position in the Geocentric Frame. N,E,U are considered with respect to X0,Y0,Z0
+        - t0               reference date in decimal year for X0,Y0,Z0
+    Not persisting attributes
+        - data_xyz:        a 2D numpy array with 10 columns: dec.year, X, Y, Z, SX, SY, SZ, S_XY, S_XZ, S_YZ
+            because many Gts methods are applied on NEU components, .data_xyz is often set to None.
+            it can however be rebuilt using the neu2xyz method
+    Attributes populated after some analysis
         - outliers:        list of index of outliers in a time series (all components)
-        - outliers_east    list of index of outliers on the East component in a time series
-        - outliers_north   list of index of outliers on the North component in a time series
-        - outliers_up      list of index of outliers on the Up component in a time series
         - offsets_values:  a 2D numpy array with 7 columns: dec.year N, E, U, S_N, S_E, S_U
         - offsets_dates:   a list of dates for offsets
         - velocity:        a 1D numpy array with 6 columns: vel_N, vel_E, vel_U, S_vel_N, S_vel_E, S_vel_U
         - annual:          a 1D numpy array with 6 columns: Amplitude_N, Phase_N, Amplitude_E, Phase_E, Amplitude_U, Phase_U
         - semi_annual:     a 1D numpy array with 6 columns: Amplitude_N, Phase_N, Amplitude_E, Phase_E, Amplitude_U, Phase_U
-    Metadata
+    Metadata attributes
         - ifile:          original input file of the time series
         - log:            log of operations
         - metadata:       any information the analyst would like to be recorded
+
     Units Conventions
         - dates are in decimal year
         - coordinates are in meters
         - phases are in radians
-    Programming conventions
-        - singular denotes single values, plural or name starting with l denotes lists or array
-        - in_place=True in methods means that current content of the Gts will be overwritten; default is False  
-        
 """
 
-#from pyacs.gts.lib.offset import __fmt_date
 
- 
 ###################################################################
 def get_index_from_dates(dates,data,tol=0.25):
 ###################################################################
@@ -100,7 +93,8 @@ def get_index_from_dates(dates,data,tol=0.25):
 ## Init Gts
 ###################################################################
 
-class Gts:     
+class Gts:
+
     def __init__ (self,code=None,\
                   lat=None,lon=None,h=None,\
                   X0=None,Y0=None,Z0=None, t0=None,\
@@ -312,6 +306,10 @@ import  pyacs.gts.lib.primitive.correct_duplicated_dates
 import  pyacs.gts.lib.primitive.rotate
 import  pyacs.gts.lib.primitive.insert_gts_data
 import  pyacs.gts.lib.primitive.find_large_uncertainty
+import  pyacs.gts.lib.primitive.split_gap
+import  pyacs.gts.lib.primitive.interpolate
+import  pyacs.gts.lib.primitive.insert_ts
+
 
 Gts.cdata                      = pyacs.gts.lib.primitive.cdata.cdata
 Gts.copy                       = pyacs.gts.lib.primitive.copy.copy
@@ -339,6 +337,10 @@ Gts.correct_duplicated_dates   = pyacs.gts.lib.primitive.correct_duplicated_date
 Gts.rotate                     = pyacs.gts.lib.primitive.rotate.rotate
 Gts.insert_gts_data            = pyacs.gts.lib.primitive.insert_gts_data.insert_gts_data
 Gts.find_large_uncertainty     = pyacs.gts.lib.primitive.find_large_uncertainty.find_large_uncertainty
+Gts.split_gap                  = pyacs.gts.lib.primitive.split_gap.split_gap
+Gts.interpolate                = pyacs.gts.lib.primitive.interpolate.interpolate
+Gts.insert_ts                  = pyacs.gts.lib.primitive.insert_ts.insert_ts
+
 # METADATA
 
 import pyacs.gts.lib.metadata
@@ -358,25 +360,31 @@ import pyacs.gts.lib.plot.plot
 ## plot
 Gts.plot = pyacs.gts.lib.plot.plot.plot
 
-
 # MODEL
 
-import pyacs.gts.lib.model
-import pyacs.gts.lib.trajectory
+import pyacs.gts.lib.model.add_vel_sigma
+import pyacs.gts.lib.model.detrend
+import pyacs.gts.lib.model.detrend_annual
+import pyacs.gts.lib.model.detrend_seasonal
+import pyacs.gts.lib.model.remove_pole
+import pyacs.gts.lib.model.frame
+import pyacs.gts.lib.model.make_model
+import pyacs.gts.lib.model.mmodel
+import pyacs.gts.lib.model.detrend_median
+import pyacs.gts.lib.model.detrend_seasonal_median
+import pyacs.gts.lib.model.trajectory
 
-Gts.add_vel_sigma            = pyacs.gts.lib.model.add_vel_sigma
-Gts.detrend                  = pyacs.gts.lib.model.detrend
-Gts.detrend_annual           = pyacs.gts.lib.model.detrend_annual
-Gts.detrend_seasonal         = pyacs.gts.lib.model.detrend_seasonal
-Gts.remove_pole              = pyacs.gts.lib.model.remove_pole
-Gts.frame                    = pyacs.gts.lib.model.frame
-Gts.spline                   = pyacs.gts.lib.model.spline
-Gts.smooth                   = pyacs.gts.lib.model.smooth
-Gts.make_model               = pyacs.gts.lib.model.make_model
-Gts.mmodel                   = pyacs.gts.lib.model.mmodel
-Gts.detrend_median           = pyacs.gts.lib.model.detrend_median
-Gts.detrend_seasonal_median  = pyacs.gts.lib.model.detrend_seasonal_median
-Gts.trajectory               = pyacs.gts.lib.trajectory.trajectory
+Gts.add_vel_sigma            = pyacs.gts.lib.model.add_vel_sigma.add_vel_sigma
+Gts.detrend                  = pyacs.gts.lib.model.detrend.detrend
+Gts.detrend_annual           = pyacs.gts.lib.model.detrend_annual.detrend_annual
+Gts.detrend_seasonal         = pyacs.gts.lib.model.detrend_seasonal.detrend_seasonal
+Gts.remove_pole              = pyacs.gts.lib.model.remove_pole.remove_pole
+Gts.frame                    = pyacs.gts.lib.model.frame.frame
+Gts.make_model               = pyacs.gts.lib.model.make_model.make_model
+Gts.mmodel                   = pyacs.gts.lib.model.mmodel.mmodel
+Gts.detrend_median           = pyacs.gts.lib.model.detrend_median.detrend_median
+Gts.detrend_seasonal_median  = pyacs.gts.lib.model.detrend_seasonal_median.detrend_seasonal_median
+Gts.trajectory               = pyacs.gts.lib.model.trajectory.trajectory
 
 # OFFSET
 
@@ -398,16 +406,26 @@ Gts.find_offsets_t_scan        = pyacs.gts.lib.offset.find_offsets_t_scan
 # OUTLIERS
 
 import pyacs.gts.lib.outliers
+import pyacs.gts.lib.outliers.find_l1trend
+import pyacs.gts.lib.outliers.find_outliers_percentage
+import pyacs.gts.lib.outliers.find_outliers_sliding_window
+import pyacs.gts.lib.outliers.find_outliers_vondrak
+import pyacs.gts.lib.outliers.remove_outliers
+import pyacs.gts.lib.outliers.find_outliers_around_date
+import pyacs.gts.lib.outliers.find_outliers_simple
 
-Gts.remove_outliers                                   = pyacs.gts.lib.outliers.remove_outliers
-Gts.find_outliers_percentage                          = pyacs.gts.lib.outliers.find_outliers_percentage
-Gts.find_outliers_simple                              = pyacs.gts.lib.outliers.find_outliers_simple
-Gts.find_outliers_and_offsets_through_differentiation = pyacs.gts.lib.outliers.find_outliers_and_offsets_through_differentiation
-Gts.find_outliers_by_RMS_ts                           = pyacs.gts.lib.outliers.find_outliers_by_RMS_ts
-Gts.find_outliers_by_residuals                        = pyacs.gts.lib.outliers.find_outliers_by_residuals
-Gts.find_outliers_sliding_window                      = pyacs.gts.lib.outliers.find_outliers_sliding_window
-Gts.find_outlier_around_date                          = pyacs.gts.lib.outliers.find_outlier_around_date
-Gts.find_outliers_vondrak                             = pyacs.gts.lib.outliers.find_outliers_vondrak
+
+
+Gts.remove_outliers                                   = pyacs.gts.lib.outliers.remove_outliers.remove_outliers
+Gts.find_outliers_percentage                          = pyacs.gts.lib.outliers.find_outliers_percentage.find_outliers_percentage
+Gts.find_outliers_simple                              = pyacs.gts.lib.outliers.find_outliers_simple.find_outliers_simple
+#Gts.find_outliers_and_offsets_through_differentiation = pyacs.gts.lib.outliers_old.find_outliers_and_offsets_through_differentiation
+#Gts.find_outliers_by_RMS_ts                           = pyacs.gts.lib.outliers_old.find_outliers_by_RMS_ts
+#Gts.find_outliers_by_residuals                        = pyacs.gts.lib.outliers_old.find_outliers_by_residuals
+Gts.find_outliers_sliding_window                      = pyacs.gts.lib.outliers.find_outliers_sliding_window.find_outliers_sliding_window
+Gts.find_outlier_around_date                          = pyacs.gts.lib.outliers.find_outliers_around_date.find_outliers_around_date
+Gts.find_outliers_vondrak                             = pyacs.gts.lib.outliers.find_outliers_vondrak.find_outliers_vondrak
+Gts.find_outliers_l1trend                             = pyacs.gts.lib.outliers.find_l1trend.find_l1trend
 
 # NOISE
 
@@ -428,7 +446,13 @@ import pyacs.gts.lib.filters.vondrak
 import pyacs.gts.lib.filters.wiener
 import pyacs.gts.lib.filters.piecewise_linear
 import pyacs.gts.lib.step_detect_edge_filter
+import pyacs.gts.lib.filters.l1_trend
+import pyacs.gts.lib.filters.el1_trend
+import pyacs.gts.lib.filters.spline
+import pyacs.gts.lib.filters.smooth
 
+Gts.spline            = pyacs.gts.lib.filters.spline.spline
+Gts.smooth            = pyacs.gts.lib.filters.smooth.smooth
 Gts.median_filter     = pyacs.gts.lib.filters.median.median_filter
 Gts.minimum_component = pyacs.gts.lib.filters.minimum_component.minimum_component
 Gts.savitzky_golay    = pyacs.gts.lib.filters.savitzky_golay.savitzky_golay
@@ -437,5 +461,7 @@ Gts.tv_l2_filter      = pyacs.gts.lib.filters.total_variation.edge_l2
 Gts.vondrak           = pyacs.gts.lib.filters.vondrak.vondrak
 Gts.wiener            = pyacs.gts.lib.filters.wiener.wiener
 Gts.pwlf              = pyacs.gts.lib.filters.piecewise_linear.pwlf
+Gts.l1_trend          = pyacs.gts.lib.filters.l1_trend.l1_trend
+Gts.el1_trend          = pyacs.gts.lib.filters.el1_trend.el1_trend
 Gts.find_offsets_edge_filter = pyacs.gts.lib.step_detect_edge_filter.find_offsets_edge_filter
 

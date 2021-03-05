@@ -4,8 +4,8 @@ Converts a pyacs gts instance to a pandas DataFrame
 
 def to_pandas_df(self):
     """
+    Converts a pyacs Gts to a pandas dataframe
 
-    :param self:
     :return: pandas DataFrame
 
     :note: uncertainties are not imported.

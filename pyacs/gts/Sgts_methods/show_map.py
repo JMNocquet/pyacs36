@@ -1,4 +1,4 @@
-def show_map( self , bounds = None , highlight=[] , geotiff = None, tile = False, grid=True ):
+def show_map( self , bounds = None , highlight=[] , geotiff = None, tile = False, grid=True ,show=True, save=False ):
     """
 
     :param self: Sgts instance
@@ -27,14 +27,27 @@ def show_map( self , bounds = None , highlight=[] , geotiff = None, tile = False
         llong.append( self.__dict__[code].lon )
         llat.append( self.__dict__[code].lat )
 
+
+
     # get bounds if not provided
     if bounds is None:
         lon_min = np.min( llong )
         lon_max = np.max( llong )
         lat_min = np.min( llat )
         lat_max = np.max( llat )
+        delta_lon = (lon_max-lon_min) / 20.
+        delta_lat = (lat_max-lat_min) / 20.
+        lon_min = lon_min - delta_lon
+        lon_max = lon_max + delta_lon
+        lat_min = lat_min - delta_lat
+        lat_max = lat_max + delta_lat
+
     else:
         [lon_min,lon_max,lat_min,lat_max] = bounds
+        llong.append( lon_min )
+        llong.append( lon_max )
+        llat.append( lat_min )
+        llat.append( lat_max )
 
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
@@ -70,7 +83,14 @@ def show_map( self , bounds = None , highlight=[] , geotiff = None, tile = False
         ax.gridlines(draw_labels=True, dms=False, x_inline=False, y_inline=False)
 
     # show
-    plt.ion()
-    plt.show()
+    if show:
+        plt.ion()
+        plt.show()
+    else:
+        plt.ioff()
+
+    # save
+    if save:
+        fig.savefig( save )
 
     return self

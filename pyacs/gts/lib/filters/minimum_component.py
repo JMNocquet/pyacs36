@@ -7,19 +7,15 @@ def minimum_component(self , mask_period=[], p=1, fcut=None, Q=None , in_place=F
 ###############################################################################
     """
     Minimum component filtering for Gts.
-
     Minimum component filtering is useful for determining the background
     component of a signal in the presence of spikes
-
     :param mask_periods: periods (list or list of lists) which should be ignored for smoothing
     :param p: integer (optional). polynomial degree to be used for the fit (default = 1)
     :param fcut: float (optional). the cutoff frequency for the low-pass filter.  Default value is f_nyq / sqrt(N)
     :param Q: float (optional). the strength of the low-pass filter.  Larger Q means a steeper cutoff. default value is 0.1 * fcut
     :param in_place: if True then replace the current time series
     :param verbose: boolean, verbose mode
-
     :return: the filtered time series
-
     :note:
     This code follows the procedure explained in the book
     "Practical Statistics for Astronomers" by Wall & Jenkins book, as

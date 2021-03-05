@@ -1,0 +1,574 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Sgts class description &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li><code class="docutils literal notranslate"><span class="pre">Sgts</span></code> class description</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/sgts_class.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="sgts-class-description">
+<h1><code class="docutils literal notranslate"><span class="pre">Sgts</span></code> class description<a class="headerlink" href="#sgts-class-description" title="Permalink to this headline">¶</a></h1>
+<p>Sgts is a Super Class of Geodetic Time Series (Gts)</p>
+<p>Sgts is a record of Gts and enables to apply methods at the same time to the Gts it includes</p>
+<dl class="py class">
+<dt id="pyacs.gts.Sgts.Sgts">
+<em class="property">class </em><code class="sig-prename descclassname">pyacs.gts.Sgts.</code><code class="sig-name descname">Sgts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ts_dir</span><span class="o">=</span><span class="default_value">'.'</span></em>, <em class="sig-param"><span class="n">add_key</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">name_filter</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">read</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">sites</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">lexclude</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">type</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">xyz</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/Sgts.html#Sgts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyacs.gts.Sgts.Sgts" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="pyacs.gts.Sgts.Sgts.append">
+<code class="sig-name descname">append</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gts</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Sgts.Sgts.append" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append a Gts to the current Sgts</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>gts</strong> – Gts instance to be appended to the current Sgts instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyacs.gts.Sgts.Sgts.common_mode">
+<code class="sig-name descname">common_mode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lref</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">detrend_method</span><span class="o">=</span><span class="default_value">'detrend_median'</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'median'</span></em>, <em class="sig-param"><span class="n">center</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Sgts.Sgts.common_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculates a common mode</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lref</strong> – liste of site codes used to calculate the common mode</p></li>
+<li><p><strong>detrend_method</strong> – ‘detrend_median’ or ‘detrend’, method used to detrend the reference sites time series</p></li>
+<li><p><strong>method</strong> – method to calculate the common mode ‘median’ or ‘mean’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a Sgts instance with filtered time series. This new instance has a _CMM time series for the common mode</p>
+</dd>
+<dt class="field-odd">Note</dt>
+<dd class="field-odd"><p>time series are assumed to be daily time series</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyacs.gts.Sgts.Sgts.copy">
+<code class="sig-name descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Sgts.Sgts.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>makes a (deep) copy of the Sgts object</p>
+<p>:return : a new Sgts instance</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyacs.gts.Sgts.Sgts.delts">
+<code class="sig-name descname">delts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">code</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Sgts.Sgts.delts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a time series from an Sgts instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>code</strong> – code to be excluded</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyacs.gts.Sgts.Sgts.frame">
+<code class="sig-name descname">frame</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">frame</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">euler</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">w</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Sgts.Sgts.frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotates the time series according to an Euler pole.
+User must provide either frame, euler or w.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frame</strong> – str, implemented values are ‘soam’,’nas’,’nazca’,’inca’,’nas_wrt_soam’,’inca_wrt_soam’.</p></li>
+<li><p><strong>euler</strong> – Euler values provided either as a     string ‘euler_lon/euler_lat/euler_w’, a list [euler_lon,euler_lat,euler_w] or     a 1D numpy array np.array([euler_lon,euler_lat,euler_w])</p></li>
+<li><p><strong>w</strong> – rotation rate vector in rad/yr, provided either as a     string ‘wx/wy/wz’, a list [wx,wy,wz] or     a 1D numpy array np.array([wx,wy,wz])</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the new Sgts instance in new frame</p>
+</dd>
+<dt class="field-odd">Ref</dt>
+<dd class="field-odd"><p>All values for frames are from Nocquet et al., Nat Geosc., 2014.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyacs.gts.Sgts.Sgts.gts">
+<code class="sig-name descname">gts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">method</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Sgts.Sgts.gts" title="Permalink to this definition">¶</a></dt>
+<dd><p>apply a gts method to all Gts instance of the current Sgts object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>method</strong> – Gts method to be applied as string</p></li>
+<li><p><strong>*arg</strong> – <p>arguments for the Gts method to be applied</p>
+</p></li>
+<li><p><strong>**kwarg</strong> – <p>keyword arguments for the Gts method to be applied</p>
+</p></li>
+</ul>
+</dd>
+</dl>
+<p>:example : ts.gts(‘detrend’,periods=[2010.0,2013.0])</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyacs.gts.Sgts.Sgts.has_ts">
+<code class="sig-name descname">has_ts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">code</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Sgts.Sgts.has_ts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests whether a time series exists in the current Sgts instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>code</strong> – 4-character code</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyacs.gts.Sgts.Sgts.lGts">
+<code class="sig-name descname">lGts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lexclude</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">linclude</span><span class="o">=</span><span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Sgts.Sgts.lGts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of Gts in the current Sgts
+:param lexclude: list of sites to be excluded
+:param linclude: list of sites to be included, excluding all other.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyacs.gts.Sgts.Sgts.lcode">
+<code class="sig-name descname">lcode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lexclude</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">linclude</span><span class="o">=</span><span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Sgts.Sgts.lcode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of Gts codes in the current Sgts
+exclude is a list of code to be excluded</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lexclude</strong> – list of sites to be excluded</p></li>
+<li><p><strong>linclude</strong> – list of sites to be included, excluding all other.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyacs.gts.Sgts.Sgts.medvel">
+<code class="sig-name descname">medvel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">outdir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Sgts.Sgts.medvel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Automatic velocity estimates using median estimator.
+The code is adapted from the MIDAS approach (Blewitt et al., 2016).</p>
+<p>medvel fills the velocity attribute of every Gts from the current Sgts instance.</p>
+<p>returns the modified Sgts instance
+Optionally, if outdir option is provided, writes the results in outdir</p>
+<dl class="field-list simple">
+<dt class="field-odd">Param</dt>
+<dd class="field-odd"><p>outdir: output directory, default None</p>
+</dd>
+<dt class="field-even">Param</dt>
+<dd class="field-even"><p>verbose: boolean, verbose mode</p>
+</dd>
+<dt class="field-odd">Param</dt>
+<dd class="field-odd"><p>warning: output warning file</p>
+</dd>
+<dt class="field-even">Reference</dt>
+<dd class="field-even"><p>Blewitt, G., Kreemer, C., Hammond, W. C., &amp; Gazeaux, J. (2016). MIDAS robust trend estimator for accurate GPS station velocities without step detection. Journal of Geophysical Research: Solid Earth, 121(3), 2054-2068.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyacs.gts.Sgts.Sgts.n">
+<code class="sig-name descname">n</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lexclude</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">linclude</span><span class="o">=</span><span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Sgts.Sgts.n" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of Gts codes in the current Sgts
+exclude is a list of code to be excluded</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lexclude</strong> – list of sites to be excluded</p></li>
+<li><p><strong>linclude</strong> – list of sites to be included, excluding all other.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyacs.gts.Sgts.Sgts.read_gmt">
+<code class="sig-name descname">read_gmt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gmt</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">vel</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Sgts.Sgts.read_gmt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a gmt psvelo file and populates lon and lat attributes for each Gts of Sgts</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gmt</strong> – if True tries to read ‘/../stat/pyacs_void.gmt’, if a string then it is the gmt file to be read.</p></li>
+<li><p><strong>verbose</strong> – verbose mode</p></li>
+<li><p><strong>vel</strong> – boolean. If True, fills the .velocity attribute of every time series with the values read in the gmt file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Note</dt>
+<dd class="field-even"><p>this method is always in place.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyacs.gts.Sgts.Sgts.read_gts_conf">
+<code class="sig-name descname">read_gts_conf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gts_conf_file</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Sgts.Sgts.read_gts_conf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a gts_conf_file
+implemented commands in the file are:
+#todo add_break      [site]  [date] # date is either [decyear] [doy year] [mday month year]
+apply_offset   [site]  [offset_north,offset_east,offset_up] [date] # offset  applied is in mm, date is either [decyear] [doy year] [mday month year]
+remove_offset   [site]  [offset_north,offset_east,offset_up] [date] # offset removed is in mm, date is either [decyear] [doy year] [mday month year]
+#todo extract_periods [site] [date1,date2] # date is either [decyear] [doy year] [mday month year]
+#todo exclude_periods [site] [date1,date2] # date is either [decyear] [doy year] [mday month year]
+#todo remove_day    [site] [date]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyacs.gts.Sgts.Sgts.read_soln">
+<code class="sig-name descname">read_soln</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">soln</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Sgts.Sgts.read_soln" title="Permalink to this definition">¶</a></dt>
+<dd><p>read a IGS soln file and add an offsets_dates for any P change in soln.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>soln</strong> – soln.snx IGS file</p>
+</dd>
+<dt class="field-even">Note</dt>
+<dd class="field-even"><p>the method is in place</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyacs.gts.Sgts.Sgts.read_ts">
+<code class="sig-name descname">read_ts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ts_dir</span><span class="o">=</span><span class="default_value">'.'</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">name_filter</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">add_key</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">sites</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">lexclude</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">type</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">xyz</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Sgts.Sgts.read_ts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads time series, trying to guess the format. Current time series format supported are: pos, kenv, mb_file, cats, txyz (pyacs), track (NEU format for high rate)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ts_dir</strong> – directory of time series files</p></li>
+<li><p><strong>name_filter</strong> – string used to filter time series name ‘<em>name_filter</em>’</p></li>
+<li><p><strong>add_key</strong> – adds a string before site code</p></li>
+<li><p><strong>sites</strong> – list of site codes to be read. Any other will be discarded.</p></li>
+<li><p><strong>lexclude</strong> – list of sites to be excluded from reading</p></li>
+<li><p><strong>type</strong> – specifies the format of the time series files. Choose among [‘pos’, ‘kenv’, ‘mb_file’, ‘cats’, ‘txyz’, ‘track’ , ‘pride’,’pck’]</p></li>
+<li><p><strong>xyz</strong> – for pos files, reads the XYZ coordinates rather than dNEU. This is the default.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>an Sgts instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyacs.gts.Sgts.Sgts.same_site">
+<code class="sig-name descname">same_site</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dc</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">in_place</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Sgts.Sgts.same_site" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that all gts in the current Sgts are actually the same site. If a given time series is
+found to be of two separate sites, then a new gts is added to the return Sgts instance.</p>
+<p>param dc: critical distance to decide to split the time series
+param in_place: if True modify current Sgts, False retuen a new Sgts
+param verbose: verbose mode</p>
+<p>return: a new Sgts instance</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyacs.gts.Sgts.Sgts.save_velocity">
+<code class="sig-name descname">save_velocity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vel_file</span><span class="o">=</span><span class="default_value">'../stat/vel'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Sgts.Sgts.save_velocity" title="Permalink to this definition">¶</a></dt>
+<dd><p>save horizontal and up velocities</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyacs.gts.Sgts.Sgts.sel_period">
+<code class="sig-name descname">sel_period</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">period</span></em>, <em class="sig-param"><span class="n">min_data</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Sgts.Sgts.sel_period" title="Permalink to this definition">¶</a></dt>
+<dd><p>selects time series having some data for a given period</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>period</strong> – [start,end], start and end period as decimal years</p></li>
+<li><p><strong>min_data</strong> – minimum number of data for a time series to be kept</p></li>
+</ul>
+</dd>
+<dt class="field-even">Pram verbose</dt>
+<dd class="field-even"><p>verbose mode</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a new Sgts instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyacs.gts.Sgts.Sgts.sel_rectangle">
+<code class="sig-name descname">sel_rectangle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bounds</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Sgts.Sgts.sel_rectangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>selects the time series for sites within a rectangles</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>bounds</strong> – [lon_min,lon_max,lat_min,lat_max]</p>
+</dd>
+<dt class="field-even">Pram verbose</dt>
+<dd class="field-even"><p>verbose mode</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a new Sgts instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyacs.gts.Sgts.Sgts.show_map">
+<code class="sig-name descname">show_map</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bounds</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">highlight</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">geotiff</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">tile</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">grid</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">show</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Sgts.Sgts.show_map" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> – Sgts instance</p></li>
+<li><p><strong>bounds</strong> – map bounds as list [min_lon,max_lon,min_lat,max_lat]</p></li>
+<li><p><strong>highlight</strong> – list of site code to be highlighted</p></li>
+<li><p><strong>geotiff</strong> – a global [-180,180,-90,90] geotiff file</p></li>
+<li><p><strong>tile</strong> – boolean. If True reads tiles from Stamen Design using contextily. Requires internet connection. Default is False.</p></li>
+<li><p><strong>grid</strong> – boolean. plot grid and axis labels (default grid=True)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyacs.gts.Sgts.Sgts.stat_site">
+<code class="sig-name descname">stat_site</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lsite</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">lsite_file</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">save_dir</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Sgts.Sgts.stat_site" title="Permalink to this definition">¶</a></dt>
+<dd><p>basic statistics about individual time series</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lsite</strong> – list of selected sites for statistics</p></li>
+<li><p><strong>lsite_file</strong> – list of selected sites for statistics provided as a file</p></li>
+<li><p><strong>verbose</strong> – verbose mode</p></li>
+<li><p><strong>save_dir</strong> – directory where statistics files will be written</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyacs.gts.Sgts.Sgts.sub">
+<code class="sig-name descname">sub</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lexclude</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">linclude</span><span class="o">=</span><span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Sgts.Sgts.sub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new Sgts instance excluding Gts with code in lexclude and keeping Gts with code in include</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lexclude</strong> – list of sites to be excluded</p></li>
+<li><p><strong>linclude</strong> – list of sites to be included, excluding all other.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyacs.gts.Sgts.Sgts.to_displacement">
+<code class="sig-name descname">to_displacement</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">base_name</span><span class="o">=</span><span class="default_value">'vel'</span></em>, <em class="sig-param"><span class="n">wdir</span><span class="o">=</span><span class="default_value">'.'</span></em>, <em class="sig-param"><span class="n">up</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Sgts.Sgts.to_displacement" title="Permalink to this definition">¶</a></dt>
+<dd><p>print displacements every dates as gmt psvelo files</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pyacs.gts.Sgts.Sgts.write_pck">
+<code class="sig-name descname">write_pck</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">outfile</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Sgts.Sgts.write_pck" title="Permalink to this definition">¶</a></dt>
+<dd><p>writes a Sgts object as a pck (pickle)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outfile</strong> – output file name. If not provided, a pck extension will be added.</p></li>
+<li><p><strong>verbose</strong> – verbose mode</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

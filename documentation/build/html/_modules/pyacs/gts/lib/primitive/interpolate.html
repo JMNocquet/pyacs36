@@ -1,0 +1,286 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.gts.lib.primitive.interpolate &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.gts.lib.primitive.interpolate</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.gts.lib.primitive.interpolate</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="interpolate"><a class="viewcode-back" href="../../../../../pyacs.gts.lib.primitive.html#pyacs.gts.Gts.interpolate">[docs]</a><span></span><span class="k">def</span> <span class="nf">interpolate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="s1">&#39;day&#39;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">gap</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param self: Gts instance</span>
+<span class="sd">    :param date: &#39;day&#39; will perform daily interpolation, alternatively date is a 1D numpy array with either datetime or decimal year</span>
+<span class="sd">    :param method: scipy.interpolate.interp1d kind argument</span>
+<span class="sd">    :param gap: maximum gap for interpolation</span>
+<span class="sd">    :param in_place: boolean.</span>
+<span class="sd">    :param verbose: verbose mode</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># import</span>
+    <span class="kn">import</span> <span class="nn">pyacs.lib.astrotime</span> <span class="k">as</span> <span class="nn">at</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">import</span> <span class="nn">scipy.interpolate</span>
+
+    <span class="c1"># init</span>
+    <span class="n">one_day_in_sec</span> <span class="o">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span><span class="mi">24</span>
+    <span class="n">one_sec_dec_year</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span> <span class="p">(</span><span class="mi">365</span><span class="o">*</span><span class="mi">24</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+    <span class="c1"># working gts</span>
+
+    <span class="n">wts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">wts</span><span class="o">.</span><span class="n">data_xyz</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># split time series according to gap</span>
+    <span class="n">lgts</span> <span class="o">=</span> <span class="n">wts</span><span class="o">.</span><span class="n">split_gap</span><span class="p">(</span><span class="n">gap</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+
+    <span class="n">wts</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span>  <span class="kc">None</span>
+
+    <span class="k">for</span> <span class="n">wwts</span> <span class="ow">in</span> <span class="n">lgts</span><span class="p">:</span>
+
+        <span class="c1"># handle dates</span>
+        <span class="n">np_seconds_data</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2seconds</span><span class="p">(</span><span class="n">wwts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">date</span> <span class="o">==</span><span class="s1">&#39;day&#39;</span><span class="p">:</span>
+            <span class="n">np_seconds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span> <span class="n">np_seconds_data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">np_seconds_data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">one_day_in_sec</span> <span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">lindex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span> <span class="p">(</span><span class="n">date</span><span class="o">&gt;</span><span class="n">wwts</span><span class="o">.</span><span class="n">date</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span> <span class="mi">10</span><span class="o">*</span><span class="n">one_sec_dec_year</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">date</span> <span class="o">&lt;</span> <span class="n">wwts</span><span class="o">.</span><span class="n">date</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">10</span><span class="o">*</span><span class="n">one_sec_dec_year</span><span class="p">)</span> <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">wdate</span> <span class="o">=</span> <span class="n">date</span><span class="p">[</span><span class="n">lindex</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- ERROR: date argument must be day or a numpy array&quot;</span><span class="p">)</span>
+                <span class="kn">import</span> <span class="nn">sys</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">date</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s1">&#39;float&#39;</span><span class="p">:</span>
+                <span class="c1"># decyear case</span>
+                <span class="n">np_seconds</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2seconds</span><span class="p">(</span> <span class="n">wdate</span> <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">):</span>
+                <span class="c1"># decyear case</span>
+                <span class="n">np_seconds</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">datetime2seconds</span><span class="p">(</span> <span class="n">wdate</span> <span class="p">)</span>
+
+        <span class="c1"># performs interpolation</span>
+        <span class="k">if</span> <span class="n">np_seconds_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">new_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">np_seconds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">10</span><span class="p">))</span>
+            <span class="n">new_data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">datetime2decyear</span><span class="p">(</span><span class="n">at</span><span class="o">.</span><span class="n">seconds2datetime</span><span class="p">(</span><span class="n">np_seconds</span><span class="p">))</span>
+            <span class="n">new_data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">wwts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">np_seconds_data</span><span class="p">,</span> <span class="n">wwts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">yi</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">np_seconds</span><span class="p">)</span>
+
+            <span class="n">new_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">np_seconds</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">10</span><span class="p">))</span>
+            <span class="n">new_data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">datetime2decyear</span><span class="p">(</span> <span class="n">at</span><span class="o">.</span><span class="n">seconds2datetime</span><span class="p">(</span> <span class="n">np_seconds</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">new_data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">yi</span>
+
+        <span class="c1"># adds interpolation to the time series</span>
+        <span class="k">if</span> <span class="n">wts</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">wts</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">new_data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">wts</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">wts</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">new_data</span><span class="p">))</span>
+
+
+    <span class="k">return</span> <span class="n">wts</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

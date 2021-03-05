@@ -500,9 +500,13 @@ class Velocity_Field:
         # Inversion
         Q = nplinalg.inv(N)
         X = np.dot(Q, M)
-        
+
+        # Model Prediction
+        MP = np.dot(A, X)
+
+
         # Residuals
-        RVen = (B - np.dot(A, X))
+        RVen = (B - MP )
 
         VCV_POLE_X = Q * 1.E-12
         chi2 = np.dot(np.dot(RVen.T, P), RVen)
@@ -565,8 +569,8 @@ class Velocity_Field:
 
         flog.write("\nRESIDUALS\n")
         flog.write("----------\n")
-        flog.write("site                      R_ve       R_vn       S_ve       S_vn      RN_ve      RN_vn\n")
-        flog.write("-------------------------------------------------------------------------------------\n")
+        flog.write("site                    pred_e     pred_n         Ve         Vn       R_ve       R_vn       S_ve       S_vn      RN_ve      RN_vn\n")
+        flog.write("------------------------------------------------------------------------------------------------------------------------------------\n")
 
         cpt_site = 0
 
@@ -578,20 +582,27 @@ class Velocity_Field:
             M = H_sites[site]
             if not(M.code in lexclude):
                 i = M.get_index()
-        
+
+                mpe = MP[2 * i, 0]
+                mpn = MP[2 * i + 1, 0]
+
+                oe = B[2 * i, 0]
+                on = B[2 * i + 1, 0]
+
                 rve = RVen[2 * i, 0]
                 rvn = RVen[2 * i + 1, 0]
                 sve = M.SVe
                 svn = M.SVn
  
-                flog.write("%-19s %10.2lf %10.2lf %10.2lf %10.2lf %10.2lf %10.2lf\n" % (M.code, rve, rvn, sve, svn, rve / sve, rvn / svn))
+                flog.write("%-19s %10.2lf %10.2lf %10.2lf %10.2lf %10.2lf %10.2lf %10.2lf %10.2lf %10.2lf %10.2lf\n" % \
+                           (M.code, mpe,mpn,oe,on,rve, rvn, sve, svn, rve / sve, rvn / svn))
             
                 cpt_site = cpt_site + 1
  
                 rms = rms + rve ** 2 + rvn ** 2
                 wrms = wrms + (rve / sve) ** 2 + (rvn / svn) ** 2
                 dwrms = dwrms + 1.0 / sve ** 2 + 1.0 / svn ** 2
-        flog.write("-------------------------------------------------------------------------------------\n")
+        flog.write("------------------------------------------------------------------------------------------------------------------------------------\n")
 
         rms = np.sqrt(rms / 2 / cpt_site)
         wrms = np.sqrt(wrms / dwrms)

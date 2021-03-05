@@ -15,7 +15,6 @@ def wrms(self):
 ###############################################################################
     """
     Return the wrms
-    
     :return wrms: return(np.array([wrms_n,wrms_e,wrms_up]))
     """
 
@@ -33,11 +32,11 @@ def realistic_sigma(self,option='tsfit',in_place=False,verbose=False):
     """
     Calculates realistic sigmas on velocity components
     :param option:
-            - tsfit: globk T. Herring realistic sigma
-            - cats_pl: CATS estimates with noise type estimated (i.e. --model=pl:)
-            - cats_seasonal_pl: CATS estimates with seasonal terms and noise type estimated (i.e. --model=pl: --sinusoid=1y1)
-            - cats_flicker: CATS estimates assuming flicker noise (i.e. --model=pl:k-1)
-            - cats_seasonal_flicker: CATS estimates with seasonal terms and assuming flicker noise (i.e. --model=pl:k-1 --sinusoid=1y1)
+        - tsfit: globk T. Herring realistic sigma
+        - cats_pl: CATS estimates with noise type estimated (i.e. --model=pl:)
+        - cats_seasonal_pl: CATS estimates with seasonal terms and noise type estimated (i.e. --model=pl: --sinusoid=1y1)
+        - cats_flicker: CATS estimates assuming flicker noise (i.e. --model=pl:k-1)
+        - cats_seasonal_flicker: CATS estimates with seasonal terms and assuming flicker noise (i.e. --model=pl:k-1 --sinusoid=1y1)
     """
 
     if option=='cats_pl':

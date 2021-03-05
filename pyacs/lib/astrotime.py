@@ -82,13 +82,13 @@ def cal2dayno (day, month, year):
 
     :Example:
     >>> import pyacs
-    >>> pyacs.cal2dayno(01,01,2000)
+    >>> pyacs.cal2dayno(1,1,2000)
     >>> 1
-    >>> pyacs.cal2dayno(29,02,2000)
+    >>> pyacs.cal2dayno(29,2,2000)
     >>> 60
-    >>> pyacs.cal2dayno(29.,02,2000)
+    >>> pyacs.cal2dayno(29.,2,2000)
     >>> 60.
-    >>> pyacs.cal2dayno(29,02,2001)
+    >>> pyacs.cal2dayno(29,2,2001)
     >>> !!!  29  out of range
     >>> !!! bad day
     """
@@ -138,9 +138,9 @@ def cal2mjd(day, month, year, ut=0.5):
 
     :Example:
     >>> import pyacs
-    >>> pyacs.cal2mjd(29,02,2000)
+    >>> pyacs.cal2mjd(29,2,2000)
     >>> 51603.5
-    >>> pyacs.cal2mjd(29,02,2000,ut=0.0)
+    >>> pyacs.cal2mjd(29,2,2000,ut=0.0)
     >>> 51603.0
     """
 
@@ -746,14 +746,14 @@ def decyear2epoch(decyear):
     
     :Example:
     >>> import pyacs
-    >>> pyacs.cal2decyear(01,03,2001)
+    >>> pyacs.cal2decyear(1,3,2001)
     >>> 2001.16301369863
     >>> pyacs.dec
     >>> pyacs.decyear2epoch(2001.16301369863)
     >>> '01:060:43200'
     >>> pyacs.decyear2epoch(2000.16301369863)
     >>> '00:060:57284'
-    >>> pyacs.decyear2epoch(pyacs.cal2decyear(01,03,2000))
+    >>> pyacs.decyear2epoch(pyacs.cal2decyear(1,3,2000))
     >>> '00:061:43200'
     
     """
@@ -1444,6 +1444,37 @@ def decyear2seconds( np_decyear , rounding='day' ):
     # return
     
     return( np_dates_s ) 
+
+##############################################################################
+def datetime2seconds( np_datetime ):
+##############################################################################
+    """
+    converts dattime to seconds since 1980/1/1/0/0/0
+    :param datetime:
+    :return: 1D numpy array of seconds
+    """
+
+
+    # import
+    import numpy as np
+    from datetime import datetime, timedelta
+
+    # reference date is 1980.0
+    ref_date_time = datetime(1980, 1, 1, 0, 0, 0)
+
+
+    if not (isinstance(np_datetime, np.ndarray)):
+        np_datetime = np.array([np_datetime])
+
+
+    # convert to timedelta and then to seconds
+
+    np_dates_s = np.array(list(map(int, [x.total_seconds() for x in (np_datetime - ref_date_time)])), dtype=np.int64)
+
+    # return
+
+    return (np_dates_s)
+
 
 ##############################################################################
 def seconds2datetime( seconds ):

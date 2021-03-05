@@ -2,6 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/py-earth" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/sphinx-to-github" vcs="Git" />
   </component>
 </project>

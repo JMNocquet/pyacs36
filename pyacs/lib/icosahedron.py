@@ -74,9 +74,14 @@ def icosahedron():
 
 def subdivide(verts, faces):
     """Subdivide each triangle into four triangles, pushing verts to the unit sphere"""
+
+    from progress.bar import Bar
+
     triangles = len(faces)
+    bar = Bar('', max=triangles, suffix='%(percent).1f%% - %(elapsed)ds')
     for faceIndex in range(triangles):
-    
+
+
         # Create three new verts at the midpoints of each edge:
         face = faces[faceIndex]
         a,b,c = (Vector3(*verts[vertIndex]) for vertIndex in face)
@@ -91,6 +96,10 @@ def subdivide(verts, faces):
         faces.append((face[0], i, k))
         faces.append((i, face[1], j))
         faces[faceIndex] = (k, j, face[2])
+
+        bar.next()
+
+    bar.finish()
 
     return verts, faces
 
@@ -116,7 +125,7 @@ def mesh_global(num_subdivisions=6):
     
 def mesh_regional(num_subdivisions=6, bounds=None):
     """
-    Makes an equilateral triangles mesh over a sphere of unit radius using a succesive subdivision 
+    Makes an equilateral triangles mesh over a sphere of unit radius using successive subdivisions
     of an initial icosahedron 
     returns verts and faces
     verts: list of vertices ; a vertice is a list of [x,y,z] in geocentric cartesian coordinates over the sphere of unit radius
@@ -126,6 +135,9 @@ def mesh_regional(num_subdivisions=6, bounds=None):
     (lon_min,lon_max,lat_min,lat_max)=list(map(float,bounds.split('/')[1:]))
     (rlon_min,rlon_max,rlat_min,rlat_max)=list(map(math.radians,(lon_min,lon_max,lat_min,lat_max)))
 
+    ###########################################################################
+    # import
+    ###########################################################################
     import Polygon
     from pyacs.lib import coordinates
     rectangle=Polygon.Polygon(((rlon_min,rlat_min), (rlon_max,rlat_min),(rlon_max,rlat_max),(rlon_min,rlat_max)))

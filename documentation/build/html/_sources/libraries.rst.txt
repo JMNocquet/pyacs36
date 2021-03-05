@@ -3,8 +3,8 @@
    :maxdepth: 2
 
 
-List of pyacs core libraries
-============================
+pyacs core libraries
+====================
 
 * :doc:`./pyacs.lib.astrotime`: core functions for dates
 * :doc:`./pyacs.lib.coordinates`: core functions for coordinates

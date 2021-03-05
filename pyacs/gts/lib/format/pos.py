@@ -9,16 +9,15 @@ Reads and write PBO pos files
 def read_pos(self,tsdir='.',tsfile=None, xyz=True, verbose=False):
     """
     Read GAMIT/GLOBK PBO pos file in a directory and actually loads the time series
-    
+
     :param tsdir: directory of pos file
     :param tsfile: pos file to be loaded
     :param xyz: reads xyz sx sy sz corr_xy corr_xz corr_yz columns
     :param verbose: verbose mode
-    :return Nothing:
-    :raises Nothing:
     :note: Since a pos file includes (almost) all the information, data, code, X0,Y0,Z0,t0 will be populated
-    If file=None, then read_pos will look for a file named CODE*.pos
+    :note: If tsfile=None, then read_pos will look for a file named CODE*.pos
     """
+
     # import
     import numpy as np
     import pyacs.lib.astrotime
@@ -138,11 +137,10 @@ def write_pos(self,idir,add_key='' , force=None, verbose=False):
     :param add_key: if not blank then the output pos file will be CODE_add_key.pos, CODE.pos otherwise.
     :param force: set force to 'data' or 'data_xyz' to force pos to be written from .data or .data_xyz
 
-    :note1:
-    default behaviour (force = None)
-    if data and data_xyz are not None, then print them independently
-    if there are data only, then uses X0,Y0,Z0 to write data_xyz
-    if there are data_xyz only, recreate data and write it
+    :note1:default behaviour (force = None)
+        if data and data_xyz are not None, then print them independently
+        if there are data only, then uses X0,Y0,Z0 to write data_xyz
+        if there are data_xyz only, recreate data and write it
     
     """
 

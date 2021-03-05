@@ -6,8 +6,7 @@ def add_obs_xyz(self,date,XYZSXSYSZCXYCXZCYZ,in_place=False,check=True, neu=True
     
     :param date: date in decimal year. float, a list or 1D numpy array
     :param XYZSXSYSZCXYCXZCYZ: value to be added in the Gts, provided as a list, a 1D numpy array or a 2D numpy array.\
-    requires at least X,Y,Z
-    optional: SX, SY, SZ, CXY, CXZ, CYZ: standard deviations and correlation coefficients.\
+    requires at least X,Y,Z. Optional: SX, SY, SZ, CXY, CXZ, CYZ: standard deviations and correlation coefficients.\
     If not provided, SX=SY=SZ=0.001 (1 mm) and CXY=CXZ=CYZ=0
     :param in_place: boolean, if True add_obs to the current Gts, if False, returns a new Gts
     :param check: check time order , duplicate dates and re-generate NEU time series (.data)

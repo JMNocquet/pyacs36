@@ -449,13 +449,9 @@ def test_offset_significance(self,date,conf_level=95,lcomponent='NE',verbose=Tru
 def local_offset_robust(self,date,n,verbose=False,debug=False):
     """
     estimate a local offset (no velocity) with a robust method
-    
-    
     :param date: date in decimal year
     :param n: number of dates before and after the dates used in the estimation
-    
     :return : a 1D numpy array with [date, north, east, up, s_north, s_east, s_up]
-    
     :note: the offsets are estimated using the difference between the median position before and after the earthquake using i days
     for all i <=n. Then the median of the estimates is returned. 
     """

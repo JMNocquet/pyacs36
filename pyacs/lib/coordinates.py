@@ -315,54 +315,48 @@ def azimuth_to_en(azimuth):
 
 ###################################################################
 def geo2flat_earth(longitude,latitude):
-# OPTION FLAT EARTH APPROXIMATION IN GMT project -N -Q -Fqp
 ##################################################################
     """
     Converts geographical coordinates to flat earth approximation
-    using GMT project -N -Q -Fpq command
+    uses pyproj and web Mercator projection.
     
     :param longitude,latitude: geographical (ellipsoid) coordinates in decimal degrees. Also works with 1D numpy arrays
     
     :returns x,y: in km
     """
-    # now reads a numpy array if provided this way
-    import pyacs.lib.syscmd
+    # import
+    from pyproj import Transformer
     import numpy as np
-    
-    longitude=np.array(longitude).reshape(-1)
-    latitude=np.array(latitude).reshape(-1)
-    longitude[np.where(longitude>180.)]-=180.
 
-    Z=np.zeros((longitude.shape[0],2))
-    Z[:,0]=longitude
-    Z[:,1]=latitude
-    
-    
-    #if (longitude > 180.0 ):longitude=longitude-360.0
-    
-    np.savetxt('tmp_lp.dat', Z, fmt="%10.5lf %10.5lf")
+    longitude=np.array(longitude)
+    latitude = np.array(latitude)
 
-    cmd='gmt project -N -Q -Fpq tmp_lp.dat > tmp_xy.dat' 
-    pyacs.lib.syscmd.getstatusoutput(cmd)
+    TRAN_4326_TO_3857 = Transformer.from_crs("EPSG:4326", "EPSG:3857", always_xy=True)
+    (x,y) = TRAN_4326_TO_3857.transform( longitude , latitude )
+    return x * 1.E-3, y * 1.E-3
 
-    Z=np.genfromtxt('tmp_xy.dat').reshape(-1,2)
 
-    # remove tmp files
-    import os
-    try:
-        os.remove("tmp_lp.dat") 
-    except:
-        raise IOError("tmp_lp.dat was not created.")
+###################################################################
+def flat_earth2geo(x, y):
+##################################################################
+    """
+    Converts web Mercator coordinates (units km) to geographical coordinates
+    uses pyproj and web Mercator projection.
 
-    try:
-        os.remove("tmp_xy.dat") 
-    except:
-        raise IOError("tmp_xy.dat was not created by %s" % cmd)
+    :param longitude,latitude: geographical (ellipsoid) coordinates in decimal degrees. Also works with 1D numpy arrays
 
-    if Z.shape[0]==1:
-        return(Z[0,0],Z[0,1])
-    else:
-        return(Z[:,0],Z[:,1]) 
+    :returns x,y: in km
+    """
+    # import
+    import numpy as np
+    from pyproj import Transformer
+
+    x = np.array(x)
+    y = np.array(y)
+
+    TRAN_3857_TO_4326 = Transformer.from_crs("EPSG:3857","EPSG:4326", always_xy=True )
+    return TRAN_3857_TO_4326.transform(x * 1.E3 , y *1.E3,  )
+
 
 ###################################################################
 def spherical_baseline_length_rate(slon, slat, sve, svn, elon, elat, eve, evn, sigma=None, verbose=False):

@@ -8,7 +8,7 @@
 
 plot_size_1_component=(10,3.5)
 plot_size_2_component=(8,8)
-plot_size_3_component=(7,8)
+plot_size_3_component=(7,7)
 
 # SPACE BETWEEN SUBPLOTS
 hspace=0.3

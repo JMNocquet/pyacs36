@@ -1,23 +1,31 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>List of pyacs core libraries &mdash; pyacs 0.64.2 documentation</title>
+  <title>pyacs core libraries &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
 
   
   
-  
+
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -29,13 +37,9 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pyacs_make_time_series.py" href="make_time_series.html" />
+    <link rel="next" title="Time series library" href="gts.html" />
     <link rel="prev" title="How to install pyacs?" href="installation.html" /> 
 </head>
 
@@ -60,7 +64,7 @@
             
             
               <div class="version">
-                0.64.2
+                0.65.3
               </div>
             
           
@@ -77,6 +81,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -87,15 +92,17 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="foreword.html">What is pyacs?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">How to install pyacs?</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">List of pyacs core libraries</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gts.html">Time series library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="make_time_series.html">pyacs_make_time_series.py</a></li>
 <li class="toctree-l1"><a class="reference internal" href="time_series.html">Time series analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Full code documentation</a></li>
 </ul>
 
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -130,18 +137,20 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>List of pyacs core libraries</li>
+      <li>pyacs core libraries</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/libraries.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -157,21 +166,21 @@
             
   <div class="toctree-wrapper compound">
 </div>
-<div class="section" id="list-of-pyacs-core-libraries">
-<h1>List of pyacs core libraries<a class="headerlink" href="#list-of-pyacs-core-libraries" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="pyacs-core-libraries">
+<h1>pyacs core libraries<a class="headerlink" href="#pyacs-core-libraries" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li><p><a class="reference internal" href="pyacs.lib.astrotime.html"><span class="doc">pyacs.lib.astrotime module</span></a>: core functions for dates</p></li>
-<li><p><a class="reference internal" href="pyacs.lib.coordinates.html"><span class="doc">pyacs.lib.coordinates module</span></a>: core functions for coordinates</p></li>
-<li><p><a class="reference internal" href="pyacs.lib.euler.html"><span class="doc">pyacs.lib.euler module</span></a>: core functions for Euler poles</p></li>
-<li><p><a class="reference internal" href="pyacs.lib.faultslip.html"><span class="doc">pyacs.lib.faultslip module</span></a>: simple core functions for fault slip</p></li>
-<li><p><a class="reference internal" href="pyacs.lib.glinalg.html"><span class="doc">pyacs.lib.glinalg module</span></a>: core functions for usual linear algebra operations in geodetic problems</p></li>
-<li><p><a class="reference internal" href="pyacs.lib.gpstime.html"><span class="doc">pyacs.lib.gpstime module</span></a>: functions for gps dates</p></li>
-<li><p><a class="reference internal" href="pyacs.lib.robustestimators.html"><span class="doc">pyacs.lib.robustestimators module</span></a>: a set of linear robust estimators</p></li>
-<li><p><a class="reference internal" href="pyacs.lib.shapefile.html"><span class="doc">pyacs.lib.shapefile module</span></a>: functions for shapefiles conversions. Useful to visualize results with QGis</p></li>
-<li><p><a class="reference internal" href="pyacs.lib.strain.html"><span class="doc">pyacs.lib.strain module</span></a>: strain rate linear estimation</p></li>
-<li><p><a class="reference internal" href="pyacs.lib.units.html"><span class="doc">pyacs.lib.units module</span></a>: a few unit conversions functions</p></li>
-<li><p><a class="reference internal" href="pyacs.lib.utils.html"><span class="doc">pyacs.lib.utils module</span></a>: some useful functions for pyacs developpers</p></li>
-<li><p><a class="reference internal" href="pyacs.lib.vel_field.html"><span class="doc">pyacs.lib.vel_field module</span></a>: horizontal velocity field analysis (Euler pole, profiles, strain rate)</p></li>
+<li><p><span class="xref std std-doc">./pyacs.lib.astrotime</span>: core functions for dates</p></li>
+<li><p><span class="xref std std-doc">./pyacs.lib.coordinates</span>: core functions for coordinates</p></li>
+<li><p><span class="xref std std-doc">./pyacs.lib.euler</span>: core functions for Euler poles</p></li>
+<li><p><a class="reference internal" href="pyacs.lib.faultslip.html"><span class="doc">pyacs.lib.faultslip package</span></a>: simple core functions for fault slip</p></li>
+<li><p><span class="xref std std-doc">./pyacs.lib.glinalg</span>: core functions for usual linear algebra operations in geodetic problems</p></li>
+<li><p><span class="xref std std-doc">./pyacs.lib.gpstime</span>: functions for gps dates</p></li>
+<li><p><span class="xref std std-doc">./pyacs.lib.robustestimators</span>: a set of linear robust estimators</p></li>
+<li><p><span class="xref std std-doc">./pyacs.lib.shapefile</span>: functions for shapefiles conversions. Useful to visualize results with QGis</p></li>
+<li><p><span class="xref std std-doc">./pyacs.lib.strain</span>: strain rate linear estimation</p></li>
+<li><p><span class="xref std std-doc">./pyacs.lib.units</span>: a few unit conversions functions</p></li>
+<li><p><span class="xref std std-doc">./pyacs.lib.utils</span>: some useful functions for pyacs developpers</p></li>
+<li><p><span class="xref std std-doc">./pyacs.lib.vel_field</span>: horizontal velocity field analysis (Euler pole, profiles, strain rate)</p></li>
 </ul>
 </div>
 
@@ -180,29 +189,29 @@
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="make_time_series.html" class="btn btn-neutral float-right" title="pyacs_make_time_series.py" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="installation.html" class="btn btn-neutral float-left" title="How to install pyacs?" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="gts.html" class="btn btn-neutral float-right" title="Time series library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="installation.html" class="btn btn-neutral float-left" title="How to install pyacs?" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2016, Jean-Mathieu Nocquet IRD/Geoazur
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -210,7 +219,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

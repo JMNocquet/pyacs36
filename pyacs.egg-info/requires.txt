@@ -9,5 +9,7 @@ ansicolors
 pyshp>=2.0.1
 contextily
 geopandas
-cartopy
 descartes
+cvxpy
+sphinx_jekyll_builder
+sphinx_rtd_theme

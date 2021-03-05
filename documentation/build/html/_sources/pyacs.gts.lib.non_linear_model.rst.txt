@@ -1,0 +1,21 @@
+pyacs.gts.lib.non\_linear\_model package
+========================================
+
+Submodules
+----------
+
+pyacs.gts.lib.non\_linear\_model.non\_linear\_gts\_model module
+---------------------------------------------------------------
+
+.. automodule:: pyacs.gts.lib.non_linear_model.non_linear_gts_model
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: pyacs.gts.lib.non_linear_model
+   :members:
+   :undoc-members:
+   :show-inheritance:

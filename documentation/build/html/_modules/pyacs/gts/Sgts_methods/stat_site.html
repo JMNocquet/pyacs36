@@ -1,0 +1,362 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.gts.Sgts_methods.stat_site &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.gts.Sgts_methods.stat_site</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.gts.Sgts_methods.stat_site</h1><div class="highlight"><pre>
+<span></span><span class="c1">###################################################################</span>
+<div class="viewcode-block" id="stat_site"><a class="viewcode-back" href="../../../../pyacs.gts.Sgts_methods.html#pyacs.gts.Sgts.stat_site">[docs]</a><span class="k">def</span> <span class="nf">stat_site</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">lsite</span><span class="o">=</span><span class="p">[],</span><span class="n">lsite_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">save_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    basic statistics about individual time series</span>
+<span class="sd">    </span>
+<span class="sd">    :param lsite: list of selected sites for statistics </span>
+<span class="sd">    :param lsite_file: list of selected sites for statistics provided as a file</span>
+<span class="sd">    :param verbose: verbose mode</span>
+<span class="sd">    :param save_dir: directory where statistics files will be written </span>
+<span class="sd">     </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># import</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">import</span> <span class="nn">os</span> <span class="o">,</span> <span class="nn">sys</span>
+     
+    <span class="c1"># Case lsite_file option</span>
+     
+    <span class="k">if</span> <span class="n">lsite_file</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">lsite_file</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">lline</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">!=</span><span class="mi">4</span><span class="p">):</span><span class="k">continue</span>
+            <span class="n">lsite</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+     
+     
+    <span class="c1"># save_dir case</span>
+    
+    <span class="k">if</span> <span class="n">save_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">save_dir</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;!!! &#39;</span><span class="p">,</span><span class="n">save_dir</span><span class="p">,</span><span class="s1">&#39; file already exists&#39;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+         
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">save_dir</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">save_dir</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;!!! ERROR: Could not create &#39;</span> <span class="p">,</span> <span class="n">save_dir</span><span class="p">)</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+    
+        <span class="n">info_file</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">save_dir</span><span class="o">+</span><span class="s1">&#39;/pyacs.info&#39;</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    
+     
+    <span class="c1"># header &amp; print formats</span>
+     
+    <span class="n">header</span>   <span class="o">=</span> <span class="s2">&quot;site     long.      lat.     v_e     v_n     v_u    sv_e    sv_n    sv_u   #obs #camp   s_year   e_year d_year     se     sn     su   wrms_e   wrms_n   wrms_u&quot;</span>
+    <span class="n">sep_line</span> <span class="o">=</span> <span class="s2">&quot;--------------------------------------------------------------------------------------------------------------------------------------------------------------&quot;</span>
+    <span class="n">fmt</span>      <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%4s</span><span class="s2"> </span><span class="si">%9.4lf</span><span class="s2">  </span><span class="si">%8.4lf</span><span class="s2"> </span><span class="si">%7.2lf</span><span class="s2"> </span><span class="si">%7.2lf</span><span class="s2"> </span><span class="si">%7.2lf</span><span class="s2"> </span><span class="si">%7.2lf</span><span class="s2"> </span><span class="si">%7.2lf</span><span class="s2"> </span><span class="si">%7.2lf</span><span class="s2"> </span><span class="si">%6d</span><span class="s2"> </span><span class="si">%5d</span><span class="s2"> </span><span class="si">%8.3lf</span><span class="s2"> </span><span class="si">%8.3lf</span><span class="s2">  </span><span class="si">%5.2lf</span><span class="s2"> </span><span class="si">%6.2lf</span><span class="s2"> </span><span class="si">%6.2lf</span><span class="s2"> </span><span class="si">%6.2lf</span><span class="s2"> </span><span class="si">%8.2lf</span><span class="s2"> </span><span class="si">%8.2lf</span><span class="s2"> </span><span class="si">%8.2lf</span><span class="s2">&quot;</span>
+    <span class="n">fmt_vna</span>  <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%4s</span><span class="s2"> </span><span class="si">%9.4lf</span><span class="s2">  </span><span class="si">%8.4lf</span><span class="s2">     N/A     N/A     N/A     N/A     N/A     N/A </span><span class="si">%6d</span><span class="s2"> </span><span class="si">%5d</span><span class="s2"> </span><span class="si">%8.3lf</span><span class="s2"> </span><span class="si">%8.3lf</span><span class="s2">  </span><span class="si">%5.2lf</span><span class="s2"> </span><span class="si">%6.2lf</span><span class="s2"> </span><span class="si">%6.2lf</span><span class="s2"> </span><span class="si">%6.2lf</span><span class="s2"> </span><span class="si">%8.2lf</span><span class="s2"> </span><span class="si">%8.2lf</span><span class="s2"> </span><span class="si">%8.2lf</span><span class="s2">&quot;</span>
+    <span class="n">fmt_na</span>   <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%4s</span><span class="s2"> </span><span class="si">%9.4lf</span><span class="s2">  </span><span class="si">%8.4lf</span><span class="s2">     N/A     N/A     N/A     N/A     N/A     N/A </span><span class="si">%6d</span><span class="s2"> </span><span class="si">%5d</span><span class="s2"> </span><span class="si">%8.3lf</span><span class="s2"> </span><span class="si">%8.3lf</span><span class="s2">  </span><span class="si">%5.2lf</span><span class="s2">    N/A    N/A    N/A      N/A      N/A      N/A&quot;</span>
+     
+    <span class="k">if</span> <span class="n">save_dir</span><span class="p">:</span>
+        <span class="n">info_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">header</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">info_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sep_line</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+     
+    <span class="nb">print</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">sep_line</span><span class="p">)</span>
+    <span class="c1"># loop on Gts</span>
+     
+    <span class="k">for</span> <span class="n">gts</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lGts</span><span class="p">():</span>
+         
+        <span class="c1"># if no data move to next gts</span>
+        <span class="k">if</span> <span class="n">gts</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">continue</span>
+         
+        <span class="k">if</span> <span class="n">lsite</span> <span class="o">!=</span> <span class="p">[]</span> <span class="ow">and</span> <span class="n">gts</span><span class="o">.</span><span class="n">code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lsite</span><span class="p">:</span><span class="k">continue</span>
+        <span class="n">code</span><span class="o">=</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span>
+        <span class="n">lon</span><span class="o">=</span><span class="n">gts</span><span class="o">.</span><span class="n">lon</span>
+        <span class="n">lat</span><span class="o">=</span><span class="n">gts</span><span class="o">.</span><span class="n">lat</span>
+        <span class="n">n_obs</span><span class="o">=</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">start_year</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">end_year</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">delta_year</span><span class="o">=</span><span class="n">end_year</span><span class="o">-</span><span class="n">start_year</span>
+        <span class="n">n_camp</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span><span class="nb">list</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]))))</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+         
+    <span class="c1">#            if delta_year&gt;2 and n_obs&gt;2 and n_camp&gt;1:</span>
+         
+        <span class="c1"># detrend</span>
+        <span class="n">new_gts</span><span class="o">=</span><span class="n">gts</span><span class="o">.</span><span class="n">detrend_median</span><span class="p">(</span> <span class="n">auto</span><span class="o">=</span><span class="kc">True</span> <span class="p">)</span>
+    
+        <span class="k">if</span> <span class="n">new_gts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+             
+            <span class="p">[</span><span class="n">wrms_n</span><span class="p">,</span><span class="n">wrms_e</span><span class="p">,</span><span class="n">wrms_u</span><span class="p">]</span><span class="o">=</span><span class="n">new_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">*</span><span class="mf">1000.0</span>
+            <span class="p">[</span><span class="n">s_n</span>   <span class="p">,</span>   <span class="n">s_e</span><span class="p">,</span><span class="n">s_u</span>   <span class="p">]</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span> <span class="n">new_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span><span class="o">*</span><span class="mf">1000.0</span> <span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span> <span class="p">)</span> <span class="p">)</span> <span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span> <span class="p">)</span>
+            <span class="p">[</span><span class="n">vn</span><span class="p">,</span><span class="n">ve</span><span class="p">,</span><span class="n">vu</span><span class="p">,</span><span class="n">svn</span><span class="p">,</span><span class="n">sve</span><span class="p">,</span><span class="n">svu</span><span class="p">]</span><span class="o">=</span><span class="n">new_gts</span><span class="o">.</span><span class="n">velocity</span><span class="p">[:</span><span class="mi">6</span><span class="p">]</span><span class="o">*</span><span class="mf">1000.0</span>
+             
+            <span class="n">fmt_str</span> <span class="o">=</span> <span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="p">(</span><span class="n">code</span><span class="p">,</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="p">,</span> <span class="n">ve</span><span class="p">,</span><span class="n">vn</span><span class="p">,</span><span class="n">vu</span><span class="p">,</span> <span class="n">sve</span><span class="p">,</span> <span class="n">svn</span><span class="p">,</span> <span class="n">svu</span><span class="p">,</span> <span class="n">n_obs</span><span class="p">,</span><span class="n">n_camp</span><span class="p">,</span> <span class="n">start_year</span><span class="p">,</span><span class="n">end_year</span><span class="p">,</span><span class="n">delta_year</span><span class="p">,</span><span class="n">s_n</span><span class="p">,</span><span class="n">s_e</span><span class="p">,</span><span class="n">s_u</span><span class="p">,</span><span class="n">wrms_e</span><span class="p">,</span><span class="n">wrms_n</span><span class="p">,</span><span class="n">wrms_u</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">fmt_str</span><span class="p">)</span>
+             
+            <span class="k">if</span> <span class="n">save_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">info_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fmt_str</span><span class="p">))</span>
+                 
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="c1"># we can still get wrms and daily scatter</span>
+                <span class="p">[</span><span class="n">wrms_n</span><span class="p">,</span><span class="n">wrms_e</span><span class="p">,</span><span class="n">wrms_u</span><span class="p">]</span><span class="o">=</span> <span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">*</span><span class="mf">1000.0</span>
+                <span class="p">[</span><span class="n">s_n</span>   <span class="p">,</span>   <span class="n">s_e</span><span class="p">,</span><span class="n">s_u</span>   <span class="p">]</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span> <span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span><span class="o">*</span><span class="mf">1000.0</span> <span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span> <span class="p">)</span> <span class="p">)</span> <span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span> <span class="p">)</span>
+    
+                <span class="n">fmt_str</span> <span class="o">=</span> <span class="p">(</span><span class="n">fmt_vna</span> <span class="o">%</span> <span class="p">(</span><span class="n">code</span><span class="p">,</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="p">,</span> <span class="n">n_obs</span><span class="p">,</span><span class="n">n_camp</span><span class="p">,</span> <span class="n">start_year</span><span class="p">,</span><span class="n">end_year</span><span class="p">,</span><span class="n">delta_year</span><span class="p">,</span><span class="n">s_n</span><span class="p">,</span><span class="n">s_e</span><span class="p">,</span><span class="n">s_u</span><span class="p">,</span><span class="n">wrms_e</span><span class="p">,</span><span class="n">wrms_n</span><span class="p">,</span><span class="n">wrms_u</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">fmt_str</span><span class="p">)</span>
+    
+                <span class="k">if</span> <span class="n">save_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">info_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fmt_str</span><span class="p">))</span>
+             
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">fmt_str</span> <span class="o">=</span> <span class="p">(</span><span class="n">fmt_na</span> <span class="o">%</span> <span class="p">(</span><span class="n">code</span><span class="p">,</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="p">,</span> <span class="n">n_obs</span><span class="p">,</span><span class="n">n_camp</span><span class="p">,</span> <span class="n">start_year</span><span class="p">,</span><span class="n">end_year</span><span class="p">,</span><span class="n">delta_year</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">fmt_str</span><span class="p">)</span>
+    
+                <span class="k">if</span> <span class="n">save_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">info_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">fmt_str</span><span class="p">))</span>
+                 
+    
+    <span class="c1"># write results</span>
+     
+    <span class="k">if</span> <span class="n">save_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    
+        <span class="n">info_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span> <span class="n">save_dir</span><span class="o">+</span><span class="s1">&#39;/pyacs.info&#39;</span> <span class="p">,</span> <span class="n">skip_header</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="nb">str</span> <span class="p">)</span>
+    
+    
+        <span class="n">header_info_ds</span> <span class="o">=</span> <span class="s2">&quot;site    long.       lat.</span><span class="se">\n</span><span class="s2">&quot;</span>\
+                       <span class="o">+</span> <span class="s2">&quot;------------------------&quot;</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">save_dir</span><span class="o">+</span><span class="s1">&#39;/pyacs_lphn.dat&#39;</span><span class="p">,</span><span class="n">info</span><span class="p">[:,:</span><span class="mi">3</span><span class="p">]</span> <span class="p">,</span> <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%4s</span><span class="s2"> </span><span class="si">%10s</span><span class="s2"> </span><span class="si">%10s</span><span class="s2">&quot;</span> <span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">header_info_ds</span> <span class="p">)</span>
+         
+        <span class="n">info_ds</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">info</span><span class="p">[:,</span><span class="mi">14</span><span class="p">]</span><span class="o">!=</span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span> <span class="p">]</span>
+        <span class="n">header_info_ds</span> <span class="o">=</span> <span class="s2">&quot;site daily_scatter_north (mm) daily_scatter_east (mm) daily_scatter_up (mm)</span><span class="se">\n</span><span class="s2">&quot;</span>\
+                       <span class="o">+</span> <span class="s2">&quot;---------------------------------------------------------------------------&quot;</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">save_dir</span><span class="o">+</span><span class="s1">&#39;/pyacs_daily_scatter.dat&#39;</span><span class="p">,</span><span class="n">info_ds</span><span class="p">[:,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">14</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">16</span><span class="p">)</span> <span class="p">]</span> <span class="p">,</span> <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%4s</span><span class="s2"> </span><span class="si">%20s</span><span class="s2"> </span><span class="si">%20s</span><span class="s2"> </span><span class="si">%20s</span><span class="s2">&quot;</span> <span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">header_info_ds</span><span class="p">)</span>
+         
+        <span class="n">info_ds</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">info</span><span class="p">[:,</span><span class="mi">17</span><span class="p">]</span><span class="o">!=</span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span> <span class="p">]</span>
+        <span class="n">header_info_ds</span> <span class="o">=</span> <span class="s2">&quot;site    wrms_north       wrms_east    wrms_up (mm) </span><span class="se">\n</span><span class="s2">&quot;</span>\
+                       <span class="o">+</span> <span class="s2">&quot;---------------------------------------------------&quot;</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">save_dir</span><span class="o">+</span><span class="s1">&#39;/pyacs_wrms.dat&#39;</span><span class="p">,</span><span class="n">info_ds</span><span class="p">[:,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">17</span><span class="p">,</span><span class="mi">18</span><span class="p">,</span><span class="mi">19</span><span class="p">)</span> <span class="p">]</span> <span class="p">,</span> <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%4s</span><span class="s2"> </span><span class="si">%15s</span><span class="s2"> </span><span class="si">%15s</span><span class="s2"> </span><span class="si">%15s</span><span class="s2">&quot;</span> <span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">header_info_ds</span><span class="p">)</span>
+         
+        <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">save_dir</span><span class="o">+</span><span class="s1">&#39;/pyacs_void.dat&#39;</span><span class="p">,</span><span class="n">info</span><span class="p">[:,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="p">]</span> <span class="p">,</span> <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%10s</span><span class="s2"> </span><span class="si">%10s</span><span class="s2">   0.00   0.00   0.00   0.00    0.00   </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+        <span class="n">info_ds</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">info</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]</span><span class="o">!=</span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span> <span class="p">]</span>
+        <span class="n">header_info_ds</span> <span class="o">=</span> <span class="s2">&quot;   long.       lat.         ve         vn        sve        svn    sven    site</span><span class="se">\n</span><span class="s2">&quot;</span>\
+                       <span class="o">+</span> <span class="s2">&quot;------------------------------------------------------------------------------------&quot;</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">save_dir</span><span class="o">+</span><span class="s1">&#39;/pyacs_vel.dat&#39;</span><span class="p">,</span><span class="n">info_ds</span><span class="p">[:,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="p">]</span> <span class="p">,</span> <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%10s</span><span class="s2"> </span><span class="si">%10s</span><span class="s2"> </span><span class="si">%10s</span><span class="s2"> </span><span class="si">%10s</span><span class="s2"> </span><span class="si">%10s</span><span class="s2"> </span><span class="si">%10s</span><span class="s2">    0.00    </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">header_info_ds</span><span class="p">)</span>
+    
+        <span class="n">header_info_ds</span> <span class="o">=</span> <span class="s2">&quot;   long.       lat.        --       v_up       ---   sigma_v_up      ---    site</span><span class="se">\n</span><span class="s2">&quot;</span>\
+                       <span class="o">+</span> <span class="s2">&quot;---------------------------------------------------------------------------------&quot;</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">save_dir</span><span class="o">+</span><span class="s1">&#39;/pyacs_vel_up.dat&#39;</span><span class="p">,</span><span class="n">info_ds</span><span class="p">[:,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="p">]</span> <span class="p">,</span> <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%10s</span><span class="s2"> </span><span class="si">%10s</span><span class="s2">      0.00 </span><span class="si">%10s</span><span class="s2">      0.00 </span><span class="si">%12s</span><span class="s2">     0.00    </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">header_info_ds</span><span class="p">)</span>
+     
+     
+    <span class="n">lcode</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">gts</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lGts</span><span class="p">():</span><span class="n">lcode</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">site</span> <span class="ow">in</span> <span class="n">lsite</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">site</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lcode</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;!!! &quot;</span><span class="p">,</span><span class="n">site</span><span class="p">,</span><span class="s2">&quot; in &quot;</span><span class="p">,</span><span class="n">lsite_file</span><span class="p">,</span><span class="s2">&quot; and not in ts&quot;</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

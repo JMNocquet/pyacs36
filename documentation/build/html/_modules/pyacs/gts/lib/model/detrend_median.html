@@ -1,0 +1,577 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.gts.lib.model.detrend_median &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../model.html">pyacs.gts.lib.model</a> &raquo;</li>
+        
+      <li>pyacs.gts.lib.model.detrend_median</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.gts.lib.model.detrend_median</h1><div class="highlight"><pre>
+<span></span><span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="detrend_median"><a class="viewcode-back" href="../../../../../pyacs.gts.lib.model.html#pyacs.gts.Gts.detrend_median">[docs]</a><span class="k">def</span> <span class="nf">detrend_median</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delta_day</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="p">[],</span> <span class="n">exclude_periods</span><span class="o">=</span><span class="p">[],</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">auto</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates a velocity using the median of pair of displacements exactly separated by one year, inspired from MIDAS</span>
+<span class="sd">    If the time series has less than a year of data, then the time series is kept untouched.</span>
+<span class="sd">    :param delta_day: if None, it is one year, if 0 then it is the relax mode for campaign data,</span>
+<span class="sd">        any integer is the time delta (in days) used to compute velocity.</span>
+<span class="sd">    :param in_place: boolean, if True, in_place, if False, returns a new Gts instance (default)</span>
+<span class="sd">    :param periods: periods (list of lists) to be included for trend calculation</span>
+<span class="sd">    :param exclude_periods: periods (list of lists) to be excluded for trend calculation</span>
+<span class="sd">    :param verbose: verbose mode</span>
+<span class="sd">    :param auto: if True, then start will delta_day=None, if it fails or found less than 100 pairs then use delta_day=0,</span>
+<span class="sd">        if fails then use regular detrend</span>
+<span class="sd">    :note: returns None if time series is shorter than 1 year</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">from</span> <span class="nn">pyacs.gts.Gts</span> <span class="kn">import</span> <span class="n">Gts</span>
+    <span class="kn">import</span> <span class="nn">inspect</span>
+
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># check data is not None</span>
+    <span class="kn">from</span> <span class="nn">pyacs.gts.lib.errors</span> <span class="kn">import</span> <span class="n">GtsInputDataNone</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># raise exception</span>
+            <span class="k">raise</span> <span class="n">GtsInputDataNone</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">GtsInputDataNone</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+        <span class="c1"># print PYACS WARNING</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    <span class="c1">###########################################################################</span>
+
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># 1-yr threshold</span>
+    <span class="c1">###########################################################################</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mf">1.</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;!!! WARNING: time series shorter than 1 year for side: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># run the appropriate estimator using autoreference if auto is True</span>
+    <span class="c1">###########################################################################</span>
+
+    <span class="k">if</span> <span class="n">auto</span><span class="p">:</span>
+
+        <span class="n">tts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detrend_median</span><span class="p">(</span><span class="n">delta_day</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="n">in_place</span><span class="p">,</span> \
+                                  <span class="n">periods</span><span class="o">=</span><span class="n">periods</span><span class="p">,</span> <span class="n">exclude_periods</span><span class="o">=</span><span class="n">exclude_periods</span><span class="p">,</span> \
+                                  <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">auto</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">tts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">tts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detrend_median</span><span class="p">(</span><span class="n">delta_day</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="n">in_place</span><span class="p">,</span> \
+                                      <span class="n">periods</span><span class="o">=</span><span class="n">periods</span><span class="p">,</span> <span class="n">exclude_periods</span><span class="o">=</span><span class="n">exclude_periods</span><span class="p">,</span> \
+                                      <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">auto</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">tts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">tts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detrend</span><span class="p">(</span><span class="n">in_place</span><span class="o">=</span><span class="n">in_place</span><span class="p">,</span> \
+                               <span class="n">periods</span><span class="o">=</span><span class="n">periods</span><span class="p">,</span> <span class="n">exclude_periods</span><span class="o">=</span><span class="n">exclude_periods</span><span class="p">,</span> \
+                               <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">tts</span><span class="p">)</span>
+
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># start main detrend_median</span>
+    <span class="c1">###########################################################################</span>
+
+    <span class="kn">import</span> <span class="nn">pyacs.lib.astrotime</span>
+
+    <span class="n">tmp_ts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">periods</span> <span class="o">!=</span> <span class="p">[]:</span>
+        <span class="n">tmp_ts</span> <span class="o">=</span> <span class="n">tmp_ts</span><span class="o">.</span><span class="n">extract_periods</span><span class="p">(</span><span class="n">periods</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">exclude_periods</span> <span class="o">!=</span> <span class="p">[]:</span>
+        <span class="n">tmp_ts</span> <span class="o">=</span> <span class="n">tmp_ts</span><span class="o">.</span><span class="n">exclude_periods</span><span class="p">(</span><span class="n">periods</span><span class="p">)</span>
+
+    <span class="c1"># minimum number of pair velocity estimates to consider the result</span>
+
+    <span class="n">min_vel_estimate</span> <span class="o">=</span> <span class="mi">100</span>
+
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># MIDAS-like method, using 1-year pair data for velocity estimate</span>
+    <span class="c1">###########################################################################</span>
+
+    <span class="k">if</span> <span class="n">delta_day</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="n">duration_in_year</span> <span class="o">=</span> <span class="n">tmp_ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">tmp_ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">duration_in_year</span> <span class="o">&gt;=</span> <span class="mf">1.</span><span class="p">:</span>
+
+            <span class="n">H_year</span> <span class="o">=</span> <span class="p">{}</span>
+
+            <span class="c1"># creates H_year arrays</span>
+
+            <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">tmp_ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">tmp_ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">H_year</span><span class="p">[</span><span class="n">year</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">365</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+                <span class="n">H_year</span><span class="p">[</span><span class="n">year</span><span class="p">][:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+            <span class="c1"># deal with dates</span>
+
+            <span class="n">np_mjd</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2mjd</span><span class="p">(</span><span class="n">tmp_ts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+            <span class="p">(</span><span class="n">np_doy</span><span class="p">,</span> <span class="n">np_year</span><span class="p">,</span> <span class="n">_np_ut</span><span class="p">)</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">mjd2dayno</span><span class="p">(</span><span class="n">np_mjd</span><span class="p">)</span>
+
+            <span class="n">np_doy</span> <span class="o">=</span> <span class="n">np_doy</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+            <span class="n">np_year</span> <span class="o">=</span> <span class="n">np_year</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+            <span class="c1"># fill H_year arrays</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">np_doy</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="n">np_doy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">366</span><span class="p">:</span>
+                    <span class="n">H_year</span><span class="p">[</span><span class="n">np_year</span><span class="p">[</span><span class="n">i</span><span class="p">]][</span><span class="n">np_doy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">tmp_ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+
+            <span class="c1"># stack the velocities</span>
+
+            <span class="n">np_vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">365</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">H_year</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
+            <span class="n">np_vel</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+            <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">H_year</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">np_vel</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">365</span><span class="p">:(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">365</span><span class="p">]</span> <span class="o">=</span> <span class="n">H_year</span><span class="p">[</span><span class="n">year</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">H_year</span><span class="p">[</span><span class="n">year</span><span class="p">]</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+
+            <span class="c1"># test whether there are at least 3 non-Nan numbers</span>
+
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">np_vel</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">min_vel_estimate</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+
+            <span class="c1"># calculates the median velocity</span>
+
+            <span class="n">med_vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">np_vel</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="p">[</span><span class="n">med_vel_north</span><span class="p">,</span> <span class="n">med_vel_east</span><span class="p">,</span> <span class="n">med_vel_up</span><span class="p">]</span> <span class="o">=</span> <span class="n">med_vel</span>
+
+            <span class="c1"># calculate uncertainty and refined value of vel using step 2 from Blewitt et al. (2016) p. 2057</span>
+            <span class="c1"># remove Nan</span>
+
+            <span class="n">np_vel_north</span> <span class="o">=</span> <span class="n">np_vel</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">np_vel</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]))]</span>
+            <span class="n">np_vel_east</span> <span class="o">=</span> <span class="n">np_vel</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">np_vel</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]))]</span>
+            <span class="n">np_vel_up</span> <span class="o">=</span> <span class="n">np_vel</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">np_vel</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]))]</span>
+
+            <span class="c1"># calculates sigma</span>
+
+            <span class="n">fabs_vn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">np_vel_north</span> <span class="o">-</span> <span class="n">med_vel_north</span><span class="p">)</span>
+            <span class="n">fabs_ve</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">np_vel_east</span> <span class="o">-</span> <span class="n">med_vel_east</span><span class="p">)</span>
+            <span class="n">fabs_vu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">np_vel_up</span> <span class="o">-</span> <span class="n">med_vel_up</span><span class="p">)</span>
+
+            <span class="n">sigma_vn</span> <span class="o">=</span> <span class="mf">1.4826</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">fabs_vn</span><span class="p">)</span>
+            <span class="n">sigma_ve</span> <span class="o">=</span> <span class="mf">1.4826</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">fabs_ve</span><span class="p">)</span>
+            <span class="n">sigma_vu</span> <span class="o">=</span> <span class="mf">1.4826</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">fabs_vu</span><span class="p">)</span>
+
+            <span class="c1"># removes all vel &gt; 1.4826 * med_vel</span>
+
+            <span class="n">np_vel_north_cln</span> <span class="o">=</span> <span class="n">np_vel_north</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">fabs_vn</span> <span class="o">&lt;=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">sigma_vn</span><span class="p">)]</span>
+            <span class="n">np_vel_east_cln</span> <span class="o">=</span> <span class="n">np_vel_east</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">fabs_ve</span> <span class="o">&lt;=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">sigma_ve</span><span class="p">)]</span>
+            <span class="n">np_vel_up_cln</span> <span class="o">=</span> <span class="n">np_vel_up</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">fabs_vu</span> <span class="o">&lt;=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">sigma_vu</span><span class="p">)]</span>
+
+            <span class="c1"># get the new vel estimates</span>
+
+            <span class="n">med_vn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np_vel_north_cln</span><span class="p">)</span>
+            <span class="n">med_ve</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np_vel_east_cln</span><span class="p">)</span>
+            <span class="n">med_vu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np_vel_up_cln</span><span class="p">)</span>
+
+            <span class="c1"># get the new sigma</span>
+
+            <span class="n">med_sigma_vn</span> <span class="o">=</span> <span class="mf">1.4826</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">np_vel_north_cln</span> <span class="o">-</span> <span class="n">med_vn</span><span class="p">))</span>
+            <span class="n">med_sigma_ve</span> <span class="o">=</span> <span class="mf">1.4826</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">np_vel_east_cln</span> <span class="o">-</span> <span class="n">med_ve</span><span class="p">))</span>
+            <span class="n">med_sigma_vu</span> <span class="o">=</span> <span class="mf">1.4826</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">np_vel_up_cln</span> <span class="o">-</span> <span class="n">med_vu</span><span class="p">))</span>
+
+            <span class="c1"># empirical factor for correlated noise</span>
+            <span class="n">ef</span> <span class="o">=</span> <span class="mf">3.</span>
+
+            <span class="n">sigma_vn</span> <span class="o">=</span> <span class="mf">1.2533</span> <span class="o">*</span> <span class="n">med_sigma_vn</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">fabs_vn</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">ef</span>
+            <span class="n">sigma_ve</span> <span class="o">=</span> <span class="mf">1.2533</span> <span class="o">*</span> <span class="n">med_sigma_ve</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">fabs_ve</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">ef</span>
+            <span class="n">sigma_vu</span> <span class="o">=</span> <span class="mf">1.2533</span> <span class="o">*</span> <span class="n">med_sigma_vu</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">fabs_vu</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">ef</span>
+
+            <span class="c1"># final med_vel</span>
+
+            <span class="n">med_vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">med_vn</span><span class="p">,</span> <span class="n">med_ve</span><span class="p">,</span> <span class="n">med_vu</span><span class="p">,</span> <span class="n">sigma_vn</span><span class="p">,</span> <span class="n">sigma_ve</span><span class="p">,</span> <span class="n">sigma_vu</span><span class="p">])</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># time series has less than a year of data</span>
+            <span class="c1"># velocity is set to 0.</span>
+            <span class="n">med_vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">])</span>
+
+    <span class="c1"># end case 1-yr</span>
+
+    <span class="k">elif</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">delta_day</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="n">delta_day</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+
+        <span class="c1">###########################################################################</span>
+        <span class="c1"># case campaign, close to relaxed method in MIDAS</span>
+        <span class="c1">###########################################################################</span>
+
+        <span class="n">H_year</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">lvel</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># creates H_year arrays</span>
+
+        <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">tmp_ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">tmp_ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">lindex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">tmp_ts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">year</span><span class="p">)</span>
+
+            <span class="c1">#            tt = tmp_ts.extract_periods([float(year),float(year)+0.999999])</span>
+            <span class="c1">#            if tt.data is not None:</span>
+            <span class="c1">#            H_year[year] = tt.data[:,:4]</span>
+            <span class="n">H_year</span><span class="p">[</span><span class="n">year</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp_ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">lindex</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+
+        <span class="c1"># removes years with no available data</span>
+        <span class="c1"># H_year = {key:val for key, val in H_year.items() if val is not None}</span>
+        <span class="c1"># calculates velocity values for all data pairs separated by more than one year</span>
+        <span class="c1">#        while H_year != {}:</span>
+
+        <span class="k">for</span> <span class="n">year_start</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">H_year</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+            <span class="c1">#            np_start = H_year[year_start]</span>
+
+            <span class="k">for</span> <span class="n">year_end</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">H_year</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+
+                <span class="n">ok</span> <span class="o">=</span> <span class="kc">False</span>
+
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">H_year</span><span class="p">[</span><span class="n">year_end</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">H_year</span><span class="p">[</span><span class="n">year_start</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+
+                        <span class="c1"># check wether the pair date includes a given offset date</span>
+
+                        <span class="n">include_offset_date</span> <span class="o">=</span> <span class="kc">False</span>
+
+                        <span class="k">for</span> <span class="n">odate</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">offsets_dates</span><span class="p">:</span>
+
+                            <span class="k">if</span> <span class="p">(</span><span class="n">odate</span> <span class="o">&gt;=</span> <span class="n">H_year</span><span class="p">[</span><span class="n">year_start</span><span class="p">][</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="ow">and</span> <span class="p">(</span><span class="n">odate</span> <span class="o">&lt;=</span> <span class="n">H_year</span><span class="p">[</span><span class="n">year_end</span><span class="p">][</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]):</span>
+                                <span class="n">include_offset_date</span> <span class="o">=</span> <span class="kc">True</span>
+
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">include_offset_date</span><span class="p">:</span>
+
+                            <span class="c1"># displacement</span>
+                            <span class="n">v</span> <span class="o">=</span> <span class="p">(</span><span class="n">H_year</span><span class="p">[</span><span class="n">year_end</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">H_year</span><span class="p">[</span><span class="n">year_start</span><span class="p">][</span><span class="n">j</span><span class="p">])[</span><span class="mi">1</span><span class="p">:]</span>
+                            <span class="c1"># delta_year</span>
+                            <span class="n">delta_year</span> <span class="o">=</span> <span class="n">H_year</span><span class="p">[</span><span class="n">year_end</span><span class="p">][</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">H_year</span><span class="p">[</span><span class="n">year_start</span><span class="p">][</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+                            <span class="c1"># append to lvel</span>
+                            <span class="k">if</span> <span class="n">delta_year</span> <span class="o">&gt;</span> <span class="mf">0.90</span><span class="p">:</span>
+                                <span class="n">lvel</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span> <span class="o">/</span> <span class="n">delta_year</span><span class="p">)</span>
+                                <span class="n">ok</span> <span class="o">=</span> <span class="kc">True</span>
+                                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                                    <span class="nb">print</span><span class="p">(</span>
+                                        <span class="s2">&quot;-- adding </span><span class="si">%.5lf</span><span class="s2"> - </span><span class="si">%.5lf</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">H_year</span><span class="p">[</span><span class="n">year_start</span><span class="p">][</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">H_year</span><span class="p">[</span><span class="n">year_end</span><span class="p">][</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+                                    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">v</span> <span class="o">/</span> <span class="n">delta_year</span><span class="p">)</span>
+                                    <span class="nb">print</span><span class="p">(</span><span class="n">H_year</span><span class="p">[</span><span class="n">year_end</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">H_year</span><span class="p">[</span><span class="n">year_start</span><span class="p">][</span><span class="n">j</span><span class="p">])</span>
+                <span class="c1"># if some pairs have already been found, stop here to mitigate the effect of offsets</span>
+                <span class="c1"># if ok:</span>
+                <span class="c1">#    break</span>
+
+            <span class="k">del</span> <span class="n">H_year</span><span class="p">[</span><span class="n">year_start</span><span class="p">]</span>
+
+        <span class="c1"># calculates the median velocity</span>
+
+        <span class="n">np_vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lvel</span><span class="p">)</span>
+
+        <span class="n">np_vel_north</span> <span class="o">=</span> <span class="n">np_vel</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">np_vel_east</span> <span class="o">=</span> <span class="n">np_vel</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">np_vel_up</span> <span class="o">=</span> <span class="n">np_vel</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+
+        <span class="n">med_vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np_vel</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="p">[</span><span class="n">med_vel_north</span><span class="p">,</span> <span class="n">med_vel_east</span><span class="p">,</span> <span class="n">med_vel_up</span><span class="p">]</span> <span class="o">=</span> <span class="n">med_vel</span>
+
+        <span class="c1"># calculates sigma</span>
+
+        <span class="n">fabs_vn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">np_vel_north</span> <span class="o">-</span> <span class="n">med_vel_north</span><span class="p">)</span>
+        <span class="n">fabs_ve</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">np_vel_east</span> <span class="o">-</span> <span class="n">med_vel_east</span><span class="p">)</span>
+        <span class="n">fabs_vu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">np_vel_up</span> <span class="o">-</span> <span class="n">med_vel_up</span><span class="p">)</span>
+
+        <span class="n">sigma_vn</span> <span class="o">=</span> <span class="mf">1.4826</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">fabs_vn</span><span class="p">)</span>
+        <span class="n">sigma_ve</span> <span class="o">=</span> <span class="mf">1.4826</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">fabs_ve</span><span class="p">)</span>
+        <span class="n">sigma_vu</span> <span class="o">=</span> <span class="mf">1.4826</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">fabs_vu</span><span class="p">)</span>
+
+        <span class="c1"># removes all vel &gt; 1.4826 * med_vel</span>
+
+        <span class="n">np_vel_north_cln</span> <span class="o">=</span> <span class="n">np_vel_north</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">fabs_vn</span> <span class="o">&lt;=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">sigma_vn</span><span class="p">)]</span>
+        <span class="n">np_vel_east_cln</span> <span class="o">=</span> <span class="n">np_vel_east</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">fabs_ve</span> <span class="o">&lt;=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">sigma_ve</span><span class="p">)]</span>
+        <span class="n">np_vel_up_cln</span> <span class="o">=</span> <span class="n">np_vel_up</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">fabs_vu</span> <span class="o">&lt;=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">sigma_vu</span><span class="p">)]</span>
+
+        <span class="c1"># get the new vel estimates</span>
+
+        <span class="n">med_vn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np_vel_north_cln</span><span class="p">)</span>
+        <span class="n">med_ve</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np_vel_east_cln</span><span class="p">)</span>
+        <span class="n">med_vu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np_vel_up_cln</span><span class="p">)</span>
+
+        <span class="c1"># get the new sigma</span>
+
+        <span class="n">med_sigma_vn</span> <span class="o">=</span> <span class="mf">1.4826</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">np_vel_north_cln</span> <span class="o">-</span> <span class="n">med_vn</span><span class="p">))</span>
+        <span class="n">med_sigma_ve</span> <span class="o">=</span> <span class="mf">1.4826</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">np_vel_east_cln</span> <span class="o">-</span> <span class="n">med_ve</span><span class="p">))</span>
+        <span class="n">med_sigma_vu</span> <span class="o">=</span> <span class="mf">1.4826</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">np_vel_up_cln</span> <span class="o">-</span> <span class="n">med_vu</span><span class="p">))</span>
+
+        <span class="c1"># empirical factor for correlated noise</span>
+        <span class="n">ef</span> <span class="o">=</span> <span class="mf">3.</span>
+
+        <span class="n">sigma_vn</span> <span class="o">=</span> <span class="mf">1.2533</span> <span class="o">*</span> <span class="n">med_sigma_vn</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">fabs_vn</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">ef</span>
+        <span class="n">sigma_ve</span> <span class="o">=</span> <span class="mf">1.2533</span> <span class="o">*</span> <span class="n">med_sigma_ve</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">fabs_ve</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">ef</span>
+        <span class="n">sigma_vu</span> <span class="o">=</span> <span class="mf">1.2533</span> <span class="o">*</span> <span class="n">med_sigma_vu</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">fabs_vu</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">ef</span>
+
+        <span class="c1"># final med_vel</span>
+
+        <span class="n">med_vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">med_vn</span><span class="p">,</span> <span class="n">med_ve</span><span class="p">,</span> <span class="n">med_vu</span><span class="p">,</span> <span class="n">sigma_vn</span><span class="p">,</span> <span class="n">sigma_ve</span><span class="p">,</span> <span class="n">sigma_vu</span><span class="p">])</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="c1">###########################################################################</span>
+        <span class="c1"># case delta_day with integer value</span>
+        <span class="c1">###########################################################################</span>
+
+        <span class="k">def</span> <span class="nf">delta</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Simple delta function for integer</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># first form the day vector</span>
+
+        <span class="n">np_mjd_data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2mjd</span><span class="p">(</span><span class="n">tmp_ts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])))</span>
+        <span class="c1"># so the index are</span>
+        <span class="n">i_np_mjd_data</span> <span class="o">=</span> <span class="n">np_mjd_data</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">np_mjd_data</span><span class="p">)</span>
+
+        <span class="c1"># the void array filled with np.nan</span>
+
+        <span class="n">void</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np_mjd_data</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">np_mjd_data</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+        <span class="c1"># I fill void with the time series at existing dates</span>
+
+        <span class="n">void</span><span class="p">[</span><span class="n">i_np_mjd_data</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp_ts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+
+        <span class="c1"># now reshape the vector for easy pair differentiation</span>
+
+        <span class="c1"># if TS = void[ : , (0,1,2) ] easy diff would be achieved by working on a array W = TS.reshape(-1,delta_day)</span>
+        <span class="c1"># however, this requires to complete the number of lines of TS with np.nan to be able to reshape it</span>
+
+        <span class="n">CTS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">delta_day</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="n">void</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">delta_day</span><span class="p">))</span> <span class="o">*</span> <span class="n">delta</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="n">void</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">delta_day</span><span class="p">)))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+        <span class="c1"># init med_vel</span>
+
+        <span class="n">med_vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">])</span>
+
+        <span class="n">to_year</span> <span class="o">=</span> <span class="mf">365.25</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">delta_day</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>
+            <span class="n">med_vel</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">void</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">CTS</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">delta_day</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="n">to_year</span>
+
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># return detrended time series</span>
+    <span class="c1">###########################################################################</span>
+
+    <span class="n">new_gts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_velocity</span><span class="p">(</span><span class="n">med_vel</span><span class="p">)</span>
+    <span class="n">new_gts</span><span class="o">.</span><span class="n">outliers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">outliers</span>
+    <span class="n">new_gts</span><span class="o">.</span><span class="n">offsets_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offsets_values</span>
+    <span class="n">new_gts</span><span class="o">.</span><span class="n">velocity</span> <span class="o">=</span> <span class="n">med_vel</span>
+
+    <span class="c1">#    if in_place:</span>
+    <span class="c1">#            self.velocity = new_gts.velocity</span>
+    <span class="c1">#            return( self )</span>
+    <span class="c1">#    else:</span>
+    <span class="c1">#        return( new_gts )</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">remove_velocity</span><span class="p">(</span><span class="n">med_vel</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="n">in_place</span><span class="p">))</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

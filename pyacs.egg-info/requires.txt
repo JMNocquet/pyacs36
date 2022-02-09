@@ -1,0 +1,12 @@
+ipython
+numpy
+scipy
+matplotlib
+argparse
+pyshp
+pyaml
+ansicolors
+contextily
+geopandas
+descartes
+netcdf4

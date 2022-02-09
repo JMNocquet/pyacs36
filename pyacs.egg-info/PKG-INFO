@@ -1,0 +1,15 @@
+Metadata-Version: 1.1
+Name: pyacs
+Version: 0.65.66
+Summary: PYACS: Geodetic analysis and modeling tools for Tectonics
+Home-page: UNKNOWN
+Author: Jean-Mathieu Nocquet (Geoazur, IRD, CNRS, OCA, Cote d Azur University, France)
+Author-email: nocquet@geoazur.unice.fr
+License: NA
+Description: Geodetic analysis and modeling tools for Tectonics.
+Keywords: geodesy GPS earthquake elastic dislocation tectonics time series
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Topic :: Geodesy :: Geophysics

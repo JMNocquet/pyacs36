@@ -1,0 +1,301 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Quick start on GPS time series analysis &mdash; pyacs 0.65.66 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.66
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Quick start on GPS time series analysis</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/tutorial_gts.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="quick-start-on-gps-time-series-analysis">
+<h1>Quick start on GPS time series analysis<a class="headerlink" href="#quick-start-on-gps-time-series-analysis" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="entering-ipyacs-for-interactive-analysis">
+<h2>Entering ipyacs for interactive analysis<a class="headerlink" href="#entering-ipyacs-for-interactive-analysis" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ipyacs</span>
+</pre></div>
+</div>
+<p>should return:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Python</span> <span class="mf">3.7</span><span class="o">.</span><span class="mi">1</span> <span class="p">(</span><span class="n">default</span><span class="p">,</span> <span class="n">Dec</span> <span class="mi">14</span> <span class="mi">2018</span><span class="p">,</span> <span class="mi">13</span><span class="p">:</span><span class="mi">28</span><span class="p">:</span><span class="mi">58</span><span class="p">)</span>
+<span class="n">Type</span> <span class="s1">&#39;copyright&#39;</span><span class="p">,</span> <span class="s1">&#39;credits&#39;</span> <span class="ow">or</span> <span class="s1">&#39;license&#39;</span> <span class="k">for</span> <span class="n">more</span> <span class="n">information</span>
+<span class="n">IPython</span> <span class="mf">7.9</span><span class="o">.</span><span class="mi">0</span> <span class="o">--</span> <span class="n">An</span> <span class="n">enhanced</span> <span class="n">Interactive</span> <span class="n">Python</span><span class="o">.</span> <span class="n">Type</span> <span class="s1">&#39;?&#39;</span> <span class="k">for</span> <span class="n">help</span><span class="o">.</span>
+<span class="o">--</span> <span class="n">Welcome</span> <span class="n">to</span> <span class="n">pyacs</span> <span class="n">interactive</span> <span class="n">environment</span> <span class="o">--</span> <span class="n">version</span>  <span class="mf">0.02</span>
+<span class="o">-</span> <span class="n">Importing</span> <span class="n">pyacs</span> <span class="n">core</span> <span class="n">module</span>
+<span class="o">-</span> <span class="n">Importing</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span> <span class="n">module</span>
+<span class="o">-</span> <span class="n">Importing</span> <span class="k">class</span> <span class="nc">Velocity_Field</span> <span class="kn">from</span> <span class="nn">pyacs.lib.vel_field</span> <span class="n">module</span> <span class="k">as</span> <span class="n">vf</span>
+<span class="o">-</span> <span class="n">Importing</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="o">-</span> <span class="n">Importing</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="o">-</span> <span class="n">Importing</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span> <span class="k">as</span> <span class="n">at</span>
+<span class="o">-</span> <span class="n">Importing</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span> <span class="k">as</span> <span class="n">coo</span>
+<span class="o">-</span> <span class="n">Trying</span> <span class="n">to</span> <span class="n">read</span> <span class="n">time</span> <span class="n">series</span> <span class="n">files</span>
+<span class="o">--</span> <span class="n">Reading</span> <span class="n">directory</span><span class="p">:</span>  <span class="o">.</span>
+<span class="o">--</span> <span class="n">No</span> <span class="n">PYACS</span> <span class="n">pck</span> <span class="n">file</span> <span class="n">found</span>
+<span class="o">--</span> <span class="n">No</span> <span class="n">pride</span> <span class="n">pos</span> <span class="n">files</span> <span class="n">found</span>
+<span class="o">--</span> <span class="n">No</span> <span class="n">pride_files</span> <span class="n">found</span>
+<span class="o">--</span> <span class="n">No</span> <span class="n">mb_files</span> <span class="n">found</span>
+<span class="o">--</span> <span class="n">No</span> <span class="n">tdp_files</span> <span class="n">found</span>
+<span class="o">--</span> <span class="n">No</span> <span class="n">kenv</span> <span class="n">file</span> <span class="n">found</span>
+<span class="o">--</span> <span class="n">No</span> <span class="n">cats</span> <span class="n">file</span> <span class="n">found</span>
+<span class="o">--</span> <span class="n">No</span> <span class="n">Gamit</span><span class="o">/</span><span class="n">Globk</span> <span class="n">pos</span> <span class="n">file</span> <span class="n">found</span>
+<span class="o">--</span> <span class="n">No</span> <span class="n">pyacs</span> <span class="n">t_xyz</span> <span class="n">file</span> <span class="n">found</span>
+<span class="o">--</span> <span class="n">No</span> <span class="n">Gamit</span><span class="o">/</span><span class="n">Globk</span> <span class="n">track</span> <span class="n">NEU</span> <span class="n">file</span> <span class="n">found</span>
+<span class="o">--</span> <span class="n">read</span>  <span class="mi">0</span>  <span class="n">time</span> <span class="n">series</span> <span class="ow">in</span> <span class="n">directory</span>  <span class="o">.</span>
+</pre></div>
+</div>
+<p>pyacs has tried to read everything it could. The resulting loaded time series are stored
+in a Sgts (Super Geodetic Time Series) instance called <em>ts</em>. Here ts is empty (yet).</p>
+</div>
+<div class="section" id="loading-a-time-series-from-unr">
+<h2>Loading a time series from <a class="reference external" href="http://geodesy.unr.edu/NGLStationPages/gpsnetmap/GPSNetMap_MAG.html">UNR</a><a class="headerlink" href="#loading-a-time-series-from-unr" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">ts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Gts</span><span class="p">()</span><span class="o">.</span><span class="n">get_unr</span><span class="p">(</span><span class="s1">&#39;ALBH&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>This command appends a geodetic time series to the ts. Gts() creates an empty time series, which is then fed with the data downloaded from the UNR.</p>
+</div>
+<div class="section" id="visualizing-time-series">
+<h2>Visualizing time series<a class="headerlink" href="#visualizing-time-series" title="Permalink to this headline">¶</a></h2>
+<p>To visualize an individual time series:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="n">ts</span><span class="o">.</span><span class="n">ALBH</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Individual Gts (Geodetic Time Series) are store as attribute of <em>ts</em> and are accessed through ts.XXXX. plot is a method applying to Gts instances.</p>
+<div class="section" id="detrending-time-series">
+<h3>Detrending time series<a class="headerlink" href="#detrending-time-series" title="Permalink to this headline">¶</a></h3>
+<p>Detrending is simply achieved applying the detrend() method to the Gts instance ts.QUEM:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">detrended_ALBH</span><span class="o">=</span><span class="n">ts</span><span class="o">.</span><span class="n">ALBH</span><span class="o">.</span><span class="n">detrend</span><span class="p">()</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">detrended_ALBH</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="using-pyacs-help">
+<h2>Using pyacs’help<a class="headerlink" href="#using-pyacs-help" title="Permalink to this headline">¶</a></h2>
+<p>For any function, help is available from the command line of the interactive environment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">help</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">ALBH</span><span class="o">.</span><span class="n">plot</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Press <em>q</em> to exit from the <em>help</em> environment.
+Selecting a specific period <em>[2008.0, 2010.0]</em> and highlighting two periods [[2008.1,2008.7],[2009.6,2009.8]] can be simply obtained:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">ts</span><span class="o">.</span><span class="n">ALBH</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">date</span><span class="o">=</span><span class="p">[</span><span class="mf">2008.0</span><span class="p">,</span> <span class="mf">2010.0</span><span class="p">],</span><span class="n">lperiod</span><span class="o">=</span><span class="p">[[</span><span class="mf">2008.1</span><span class="p">,</span><span class="mf">2008.7</span><span class="p">],[</span><span class="mf">2009.6</span><span class="p">,</span><span class="mf">2009.8</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="chaining-methods">
+<h2>Chaining methods<a class="headerlink" href="#chaining-methods" title="Permalink to this headline">¶</a></h2>
+<p>In general, a method applied on a Gts instance will return a new Gts so that various methods can be successively applied:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="o">.</span><span class="n">ALBH</span><span class="o">.</span><span class="n">find_outliers_percentage</span><span class="p">(</span><span class="n">percentage</span><span class="o">=</span><span class="mf">0.005</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The line above does:</p>
+<ul class="simple">
+<li><p>select the 0.5% largest residuals of the detrended time series; returns a new Gts</p></li>
+<li><p>plot the returned Gts; returns the Gts</p></li>
+<li><p>remove the flagged outliers; returns a new time series with the outliers removed</p></li>
+<li><p>plot the new time series</p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

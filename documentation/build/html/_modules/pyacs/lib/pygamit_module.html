@@ -1,0 +1,476 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.lib.pygamit_module &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.lib.pygamit_module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.lib.pygamit_module</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    module for Gamit</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="read_qfile"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.pygamit_module.read_qfile">[docs]</a><span class="k">def</span> <span class="nf">read_qfile</span><span class="p">(</span><span class="n">qfile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Reads a qfile and returns the following information:</span>
+<span class="sd">       - number of sites included in the analysis</span>
+<span class="sd">       - list of sites that do not have solution</span>
+<span class="sd">       - list of sites with large adjustment</span>
+<span class="sd">       - total number of ambiguities</span>
+<span class="sd">       - total number of fixed ambiguities</span>
+<span class="sd">       - the pre/postfit values</span>
+<span class="sd">       - Normal end in solve</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># variables intitialization</span>
+    
+    <span class="n">lsite_not_calculated</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">normal_stop</span><span class="o">=</span><span class="kc">False</span>
+    <span class="n">lfit</span><span class="o">=</span><span class="p">[]</span>
+    
+    <span class="n">pattern_total_ambiguity</span><span class="o">=</span><span class="s1">&#39;Phase ambiguities in solution&#39;</span>
+    <span class="n">pattern_NL_ambiguity_fixed</span><span class="o">=</span><span class="s1">&#39;NL ambiguities resolved&#39;</span>
+    <span class="n">pattern_WL_ambiguity_fixed</span><span class="o">=</span><span class="s1">&#39;WL ambiguities resolved by AUTCLN&#39;</span>
+    <span class="c1"># TO BE FIXED</span>
+    <span class="c1">#pattern_not_calculated=&#39;GEOC LAT  dms&#39;</span>
+    <span class="n">pattern_not_calculated</span><span class="o">=</span><span class="s1">&#39;POLOPOPLOPOL&#39;</span>
+    <span class="n">pattern_fit</span><span class="o">=</span><span class="s1">&#39; Prefit nrms:&#39;</span>
+    <span class="n">pattern_normal_stop</span><span class="o">=</span><span class="s1">&#39;Normal stop in SOLVE&#39;</span>
+    
+    <span class="c1"># open file</span>
+    
+    <span class="n">fqfile</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">qfile</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fqfile</span><span class="p">:</span>
+        
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">5</span><span class="p">:</span><span class="k">continue</span>
+        <span class="k">if</span> <span class="n">pattern_total_ambiguity</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span><span class="n">n_total_ambiguity</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">pattern_NL_ambiguity_fixed</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span><span class="n">n_NL_fixed_ambiguity</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">pattern_WL_ambiguity_fixed</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span><span class="n">n_WL_fixed_ambiguity</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">pattern_not_calculated</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">!=</span><span class="s1">&#39;*&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lsite_not_calculated</span><span class="p">:</span><span class="n">lsite_not_calculated</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">pattern_normal_stop</span><span class="p">:</span><span class="n">normal_stop</span><span class="o">=</span><span class="kc">True</span>
+        <span class="k">if</span> <span class="n">pattern_fit</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+            <span class="n">lfit</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">]),</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">5</span><span class="p">])))</span>
+    <span class="n">fqfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">n_total_ambiguity</span><span class="p">,</span><span class="n">n_NL_fixed_ambiguity</span><span class="p">,</span><span class="n">n_WL_fixed_ambiguity</span><span class="p">,</span><span class="n">lsite_not_calculated</span><span class="p">,</span><span class="n">lfit</span><span class="p">,</span><span class="n">normal_stop</span><span class="p">)</span></div>
+        
+
+<div class="viewcode-block" id="get_nearest_from_apr"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.pygamit_module.get_nearest_from_apr">[docs]</a><span class="k">def</span> <span class="nf">get_nearest_from_apr</span><span class="p">(</span><span class="n">aprfile</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">linclude</span><span class="p">,</span><span class="n">lexclude</span><span class="p">,</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">Z</span><span class="p">,</span><span class="n">dec_year</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the n nearest site from X,Y,Z present in linclude and apr</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">math</span>
+    <span class="n">H_distance</span><span class="o">=</span><span class="p">{}</span>
+    <span class="n">H_site</span><span class="o">=</span><span class="p">{}</span>
+    <span class="n">lreturn</span><span class="o">=</span><span class="p">[]</span>
+    
+    
+    <span class="n">fapr</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">aprfile</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fapr</span><span class="p">:</span>
+        
+        <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span><span class="s1">&#39; &#39;</span><span class="p">:</span><span class="k">continue</span>
+        <span class="n">site</span><span class="o">=</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">site</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">linclude</span><span class="p">:</span><span class="k">continue</span>
+        <span class="k">if</span> <span class="n">site</span> <span class="ow">in</span> <span class="n">lexclude</span><span class="p">:</span><span class="k">continue</span>
+        <span class="n">lline</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="p">(</span><span class="n">X1</span><span class="p">,</span><span class="n">Y1</span><span class="p">,</span><span class="n">Z1</span><span class="p">,</span><span class="n">_dec_year_current</span><span class="p">)</span><span class="o">=</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span><span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span><span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">7</span><span class="p">]))</span>
+        <span class="n">distance</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">X</span><span class="o">-</span><span class="n">X1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="p">(</span><span class="n">Y</span><span class="o">-</span><span class="n">Y1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="p">(</span><span class="n">Z</span><span class="o">-</span><span class="n">Z1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">site</span> <span class="ow">in</span> <span class="n">H_site</span><span class="p">:</span><span class="k">continue</span>
+<span class="c1">#            dec_year1=float(H_site[site].split()[7])</span>
+<span class="c1">#            if math.fabs(dec_year1-dec_year)&lt;math.fabs(dec_year_current-dec_year):</span>
+<span class="c1">#                continue</span>
+        <span class="n">H_site</span><span class="p">[</span><span class="n">site</span><span class="p">]</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+        <span class="n">H_distance</span><span class="p">[</span><span class="n">distance</span><span class="p">]</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+    
+    <span class="n">fapr</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">for</span> <span class="n">distance</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">H_distance</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+        <span class="n">lreturn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H_distance</span><span class="p">[</span><span class="n">distance</span><span class="p">])</span>
+        <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="n">i</span><span class="o">&gt;=</span><span class="n">n</span><span class="p">:</span><span class="k">break</span>
+    
+    <span class="k">return</span><span class="p">(</span><span class="n">lreturn</span><span class="p">)</span> </div>
+            
+
+<div class="viewcode-block" id="substitute_site"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.pygamit_module.substitute_site">[docs]</a><span class="k">def</span> <span class="nf">substitute_site</span><span class="p">(</span><span class="n">aprfile</span><span class="p">,</span><span class="n">site</span><span class="p">,</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">Z</span><span class="p">,</span><span class="n">dec_year</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Substitute an entry in apr file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Lline</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">new_line_in_apr</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot; </span><span class="si">%s</span><span class="s2">_GPS </span><span class="si">%14.4lf</span><span class="s2"> </span><span class="si">%14.4lf</span><span class="s2"> </span><span class="si">%14.4lf</span><span class="s2">  0.00000    0.00000    0.00000 </span><span class="si">%8.4lf</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">site</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">Z</span><span class="p">,</span><span class="n">dec_year</span><span class="p">))</span>
+    <span class="n">fapr</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">aprfile</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fapr</span><span class="p">:</span>
+        
+        <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span><span class="s1">&#39; &#39;</span><span class="p">:</span>
+            <span class="n">Lline</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="n">site_apr</span><span class="o">=</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">site_apr</span> <span class="o">!=</span> <span class="n">site</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+            <span class="n">Lline</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+    <span class="n">fapr</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">Lline</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;# This line has been added automatically by pyacs</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">Lline</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_line_in_apr</span><span class="p">)</span>
+    
+    <span class="n">fapr</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">aprfile</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">fapr</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">Lline</span><span class="p">)</span>
+    <span class="n">fapr</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    
+    
+    
+<div class="viewcode-block" id="update_apr"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.pygamit_module.update_apr">[docs]</a><span class="k">def</span> <span class="nf">update_apr</span><span class="p">(</span><span class="n">input_apr</span><span class="p">,</span><span class="n">target_apr</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Update an apr file using another apr</span>
+<span class="sd">        threshold is a minimum value for updating</span>
+<span class="sd">        if action is False only check</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+        
+
+    <span class="c1"># Reading the two apr</span>
+    
+    <span class="n">f</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">input_apr</span><span class="p">)</span>
+    <span class="n">l_input_apr</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="n">f</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">target_apr</span><span class="p">)</span>
+    <span class="n">l_target_apr</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="c1"># create a hash for target_apr</span>
+    <span class="n">H_target_apr</span><span class="o">=</span><span class="p">{}</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">l_target_apr</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span><span class="s1">&#39; &#39;</span><span class="p">:</span><span class="k">continue</span>
+        <span class="n">site</span><span class="o">=</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">site</span> <span class="ow">in</span> <span class="n">H_target_apr</span><span class="p">:</span><span class="n">H_target_apr</span><span class="p">[</span><span class="n">site</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span><span class="n">H_target_apr</span><span class="p">[</span><span class="n">site</span><span class="p">]</span><span class="o">=</span><span class="p">[</span><span class="n">line</span><span class="p">]</span>
+    
+    <span class="c1"># comment to be added at the end of a line</span>
+    
+    <span class="kn">import</span> <span class="nn">time</span>
+    <span class="kn">import</span> <span class="nn">math</span>
+    <span class="p">(</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="n">_hour</span><span class="p">,</span><span class="n">_min</span><span class="p">,</span><span class="n">_sec</span><span class="p">,</span><span class="n">_weekday</span><span class="p">,</span><span class="n">_yearday</span><span class="p">,</span><span class="n">_dlsflag</span><span class="p">)</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">()</span>
+    <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Added_by_pyacs_&quot;</span><span class="o">+</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%04d</span><span class="s2">_</span><span class="si">%02d</span><span class="s2">_</span><span class="si">%02d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">))</span>
+    
+    <span class="c1"># loop on input input apr lines</span>
+    <span class="n">lnew_apr</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">H_update</span><span class="o">=</span><span class="p">{}</span>
+    
+    <span class="k">for</span> <span class="n">line_input</span> <span class="ow">in</span> <span class="n">l_input_apr</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">line_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span><span class="s1">&#39; &#39;</span><span class="p">:</span><span class="k">continue</span>
+        
+        
+        <span class="n">lline_input</span><span class="o">=</span><span class="n">line_input</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">site_input</span><span class="o">=</span><span class="n">line_input</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="p">(</span><span class="n">X1</span><span class="p">,</span><span class="n">Y1</span><span class="p">,</span><span class="n">Z1</span><span class="p">,</span><span class="n">dec_year_1</span><span class="p">)</span><span class="o">=</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">lline_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span><span class="nb">float</span><span class="p">(</span><span class="n">lline_input</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span><span class="nb">float</span><span class="p">(</span><span class="n">lline_input</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="nb">float</span><span class="p">(</span><span class="n">lline_input</span><span class="p">[</span><span class="mi">7</span><span class="p">]))</span>
+        <span class="n">OK</span><span class="o">=</span><span class="kc">True</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">H_target_apr</span><span class="p">[</span><span class="n">site_input</span><span class="p">]:</span>
+            <span class="n">site_apr</span><span class="o">=</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">site_apr</span><span class="o">!=</span><span class="n">site_input</span><span class="p">:</span><span class="k">continue</span>
+            <span class="n">lline</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">VX2</span><span class="o">=</span><span class="mi">0</span>
+            <span class="n">VY2</span><span class="o">=</span><span class="mi">0</span>
+            <span class="n">VZ2</span><span class="o">=</span><span class="mi">0</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lline</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">7</span><span class="p">:</span>
+                <span class="p">(</span><span class="n">X2</span><span class="p">,</span><span class="n">Y2</span><span class="p">,</span><span class="n">Z2</span><span class="p">,</span><span class="n">VX2</span><span class="p">,</span><span class="n">VY2</span><span class="p">,</span><span class="n">VZ2</span><span class="p">,</span><span class="n">dec_year_2</span><span class="p">)</span><span class="o">=</span>\
+                <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span><span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span><span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">4</span><span class="p">]),</span><span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">5</span><span class="p">]),</span><span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">6</span><span class="p">]),</span><span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">7</span><span class="p">]))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="p">(</span><span class="n">X2</span><span class="p">,</span><span class="n">Y2</span><span class="p">,</span><span class="n">Z2</span><span class="p">,</span><span class="n">dec_year_2</span><span class="p">)</span><span class="o">=</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span><span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span><span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span><span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">7</span><span class="p">]))</span>
+
+            <span class="c1"># check whether update is needed</span>
+            <span class="n">X2t</span><span class="o">=</span><span class="n">X2</span><span class="o">+</span><span class="n">VX2</span><span class="o">*</span><span class="p">(</span><span class="n">dec_year_1</span><span class="o">-</span><span class="n">dec_year_2</span><span class="p">)</span>
+            <span class="n">Y2t</span><span class="o">=</span><span class="n">Y2</span><span class="o">+</span><span class="n">VY2</span><span class="o">*</span><span class="p">(</span><span class="n">dec_year_1</span><span class="o">-</span><span class="n">dec_year_2</span><span class="p">)</span>
+            <span class="n">Z2t</span><span class="o">=</span><span class="n">Z2</span><span class="o">+</span><span class="n">VZ2</span><span class="o">*</span><span class="p">(</span><span class="n">dec_year_1</span><span class="o">-</span><span class="n">dec_year_2</span><span class="p">)</span>
+            <span class="n">distance</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">X2t</span><span class="o">-</span><span class="n">X1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="p">(</span><span class="n">Y2t</span><span class="o">-</span><span class="n">Y1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="p">(</span><span class="n">Z2t</span><span class="o">-</span><span class="n">Z1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            
+            <span class="n">OK</span><span class="o">=</span><span class="kc">True</span>
+            <span class="k">if</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="p">:</span><span class="n">OK</span><span class="o">=</span><span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">OK</span><span class="p">:</span>                
+            <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;=&gt; site to be updated </span><span class="si">%s</span><span class="s2"> distance :</span><span class="si">%10.2lf</span><span class="s2"> (m)&quot;</span>  <span class="o">%</span> <span class="p">(</span><span class="n">site_input</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">distance</span><span class="p">)))</span>
+            <span class="n">H_update</span><span class="p">[</span><span class="n">site_input</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span><span class="o">=</span><span class="n">line_input</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="n">message</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> 
+
+    <span class="c1"># now doing the update</span>
+
+    
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">l_target_apr</span><span class="p">):</span>
+        <span class="n">site</span><span class="o">=</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">site</span> <span class="ow">in</span> <span class="n">H_update</span><span class="p">:</span>
+            <span class="n">lnew_apr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">H_update</span><span class="p">[</span><span class="n">site</span><span class="p">])</span>
+            <span class="n">date_target_apr</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">7</span><span class="p">])</span>
+            <span class="n">date_input_apr</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">H_update</span><span class="p">[</span><span class="n">site</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">7</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">date_target_apr</span><span class="o">-</span><span class="n">date_input_apr</span><span class="p">)</span><span class="o">&gt;</span><span class="p">(</span><span class="mf">1.</span><span class="o">/</span><span class="mf">365.25</span><span class="p">):</span><span class="n">lnew_apr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="k">del</span><span class="p">(</span><span class="n">H_update</span><span class="p">[</span><span class="n">site</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">lnew_apr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+    <span class="c1"># reformat entries</span>
+    
+    <span class="n">lformatted</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">lnew_apr</span><span class="p">):</span>
+        <span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+        <span class="n">lline</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lline</span><span class="p">)</span><span class="o">&gt;=</span><span class="mi">8</span> <span class="ow">and</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39; &#39;</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">Z</span><span class="p">,</span><span class="n">VX</span><span class="p">,</span><span class="n">VY</span><span class="p">,</span><span class="n">VZ</span><span class="p">,</span><span class="n">date</span><span class="p">)</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span><span class="n">lline</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">8</span><span class="p">]))</span>
+            <span class="n">fmt_line</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot; </span><span class="si">%s</span><span class="s2"> </span><span class="si">%14.4lf</span><span class="s2"> </span><span class="si">%14.4lf</span><span class="s2"> </span><span class="si">%14.4lf</span><span class="s2">  </span><span class="si">%9.5lf</span><span class="s2"> </span><span class="si">%9.5lf</span><span class="s2"> </span><span class="si">%9.5lf</span><span class="s2"> </span><span class="si">%8.3lf</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">Z</span><span class="p">,</span><span class="n">VX</span><span class="p">,</span><span class="n">VY</span><span class="p">,</span><span class="n">VZ</span><span class="p">,</span><span class="n">date</span><span class="p">))</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lline</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">8</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">lline</span><span class="p">)):</span>
+                    <span class="n">fmt_line</span><span class="o">=</span><span class="n">fmt_line</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="n">lline</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            
+            <span class="n">fmt_line</span><span class="o">=</span><span class="n">fmt_line</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">lformatted</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fmt_line</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">temp</span><span class="o">=</span><span class="n">line</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">temp</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">lformatted</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">action</span><span class="o">==</span><span class="s1">&#39;update&#39;</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">target_apr</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">lformatted</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="make_apr_doy"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.pygamit_module.make_apr_doy">[docs]</a><span class="k">def</span> <span class="nf">make_apr_doy</span><span class="p">(</span><span class="n">input_apr</span><span class="p">,</span><span class="n">output_apr</span><span class="p">,</span> <span class="n">lsite</span><span class="p">,</span> <span class="n">doy</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Creates an apr file for a given list of sites and select the best coordinates according to dates</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">math</span>
+    
+    <span class="n">dec_year</span><span class="o">=</span><span class="n">year</span><span class="o">+</span><span class="n">doy</span><span class="o">/</span><span class="mf">365.25</span>
+
+    <span class="n">LSITE</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">site</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">lsite</span><span class="p">):</span>
+        <span class="n">LSITE</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">site</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+    <span class="n">lsite</span><span class="o">=</span><span class="n">LSITE</span>
+    
+    <span class="c1"># Reading the two apr</span>
+    
+    <span class="n">f</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">input_apr</span><span class="p">)</span>
+    <span class="n">l_input_apr</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="c1"># go through the apr</span>
+    <span class="n">H_kept</span><span class="o">=</span><span class="p">{}</span>
+    <span class="k">for</span> <span class="n">line_input</span> <span class="ow">in</span> <span class="n">l_input_apr</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">line_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span><span class="s1">&#39; &#39;</span><span class="p">:</span><span class="k">continue</span>
+        <span class="n">lline_input</span><span class="o">=</span><span class="n">line_input</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        
+        <span class="n">site</span><span class="o">=</span><span class="n">line_input</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">site</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lsite</span><span class="p">:</span><span class="k">continue</span>
+        <span class="n">dec_year1</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">lline_input</span><span class="p">[</span><span class="mi">7</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">site</span> <span class="ow">in</span> <span class="n">H_kept</span><span class="p">:</span>
+            <span class="n">fields</span><span class="o">=</span><span class="n">H_kept</span><span class="p">[</span><span class="n">site</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">dec_year2</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="mi">7</span><span class="p">])</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">dec_year</span><span class="o">-</span><span class="n">dec_year1</span><span class="p">)</span><span class="o">&lt;</span><span class="n">math</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">dec_year</span><span class="o">-</span><span class="n">dec_year2</span><span class="p">)):</span>
+                <span class="n">H_kept</span><span class="p">[</span><span class="n">site</span><span class="p">]</span><span class="o">=</span><span class="n">line_input</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">H_kept</span><span class="p">[</span><span class="n">site</span><span class="p">]</span><span class="o">=</span><span class="n">line_input</span>
+    
+    <span class="c1"># save results</span>
+    
+    <span class="n">f</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">output_apr</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">H_kept</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+        
+    
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

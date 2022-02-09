@@ -1,0 +1,629 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.gts.lib.format.pos &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.gts.lib.format.pos</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.gts.lib.format.pos</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Reads and write PBO pos files</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="c1">###################################################################</span>
+<span class="c1">## Loads Gts from GAMIT/GLOBK  pos file format for time series</span>
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="read_pos"><a class="viewcode-back" href="../../../../../pyacs.gts.lib.format.html#pyacs.gts.Gts.read_pos">[docs]</a><span class="k">def</span> <span class="nf">read_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">tsdir</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span><span class="n">tsfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read GAMIT/GLOBK PBO pos file in a directory and actually loads the time series</span>
+
+<span class="sd">    :param tsdir: directory of pos file</span>
+<span class="sd">    :param tsfile: pos file to be loaded</span>
+<span class="sd">    :param xyz: reads xyz sx sy sz corr_xy corr_xz corr_yz columns</span>
+<span class="sd">    :param verbose: verbose mode</span>
+<span class="sd">    :note: Since a pos file includes (almost) all the information, data, code, X0,Y0,Z0,t0 will be populated</span>
+<span class="sd">    :note: If tsfile=None, then read_pos will look for a file named CODE*.pos</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># import</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">import</span> <span class="nn">pyacs.lib.astrotime</span>
+    <span class="kn">import</span> <span class="nn">pyacs.lib.coordinates</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+
+
+
+    <span class="c1"># name of the file to be read - if not provided, tries to guess</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">tsfile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="kn">from</span> <span class="nn">glob</span> <span class="kn">import</span> <span class="n">glob</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">pos_file</span><span class="o">=</span><span class="n">glob</span><span class="p">(</span><span class="n">tsdir</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">+</span><span class="s1">&#39;*.pos&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;!!! Error: Could not find any time series file for code &quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+                <span class="k">return</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;!!! Error: no code or file provided.&quot;</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pos_file</span><span class="o">=</span><span class="n">tsfile</span>
+
+    <span class="c1"># file</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">ifile</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">pos_file</span><span class="p">)</span>
+
+    <span class="c1"># actual read</span>
+
+    <span class="c1"># get site code</span>
+    <span class="kn">import</span> <span class="nn">linecache</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">linecache</span><span class="o">.</span><span class="n">getline</span><span class="p">(</span><span class="n">pos_file</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    
+    <span class="k">if</span> <span class="n">xyz</span><span class="p">:</span>
+    <span class="c1"># trust xyz and re-creates dneu</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">pos_file</span><span class="p">,</span><span class="n">skip_header</span><span class="o">=</span><span class="mi">37</span><span class="p">,</span><span class="n">usecols</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">)))</span>
+        <span class="c1"># reshape to ensure a 2D array</span>
+        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+        <span class="c1"># convert dates to dec.year</span>
+        <span class="n">mjd_data</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">dec_year</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">mjd2decyear</span><span class="p">,</span><span class="n">mjd_data</span><span class="p">))</span>
+
+        <span class="c1"># fill data_xyz</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_xyz</span><span class="o">=</span><span class="n">data</span><span class="p">[:,</span><span class="mi">2</span><span class="p">:</span><span class="mi">12</span><span class="p">]</span>
+        
+        <span class="c1"># fill data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dec_year</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xyz2neu</span><span class="p">(</span><span class="n">corr</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">4</span><span class="p">:])</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">4</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span><span class="o">=</span><span class="mf">1.E-3</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">7</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span><span class="o">=</span><span class="mf">0.</span>
+        
+    <span class="k">else</span><span class="p">:</span>
+    <span class="c1"># for some reason, you prefer to trust dneu</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">pos_file</span><span class="p">,</span><span class="n">skip_header</span><span class="o">=</span><span class="mi">37</span><span class="p">,</span><span class="n">usecols</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">24</span><span class="p">)))</span>
+            <span class="c1"># reshape to ensure a 2D array</span>
+            <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">ndim</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="c1"># there is a big problem</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;!!! Error: Could not read dN,dE,dU from file: </span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="n">pos_file</span> <span class="p">)</span>
+        
+        <span class="c1"># convert dates to dec.year</span>
+        <span class="n">mjd_data</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">pos_file</span><span class="p">,</span><span class="n">skip_header</span><span class="o">=</span><span class="mi">37</span><span class="p">,</span><span class="n">usecols</span><span class="o">=</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">dec_year</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">mjd2decyear</span><span class="p">(</span><span class="n">mjd_data</span><span class="p">)</span>
+
+        <span class="c1"># XYZ reference from header</span>
+        <span class="kn">import</span> <span class="nn">linecache</span>
+        <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">X0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Y0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Z0</span><span class="p">]</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span> <span class="p">,</span> <span class="n">linecache</span><span class="o">.</span><span class="n">getline</span><span class="p">(</span><span class="n">pos_file</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[:</span><span class="mi">3</span><span class="p">]</span> <span class="p">))</span>
+
+        <span class="c1"># fill data</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="n">dec_year</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">10</span><span class="p">)</span> <span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:]</span><span class="o">=</span><span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dec_year</span><span class="p">)</span>
+    
+    <span class="c1"># fill t0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># fill lon, lat</span>
+    <span class="n">lon_radian</span><span class="p">,</span><span class="n">lat_radian</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">xyz2geo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Y0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Z0</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">lon_radian</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">lat_radian</span><span class="p">)</span>
+    
+    <span class="c1"># check duplicate or non-ordered entries</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]))</span> <span class="o">&lt;=</span><span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;!!! time series not properly ordered by dates or dates duplicated &quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reorder</span><span class="p">()</span>
+
+    <span class="c1"># force clean</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">offsets_dates</span><span class="o">=</span><span class="p">[]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">offsets_values</span><span class="o">=</span><span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">outliers</span><span class="o">=</span><span class="p">[]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">annual</span><span class="o">=</span><span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">semi_annual</span><span class="o">=</span><span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="o">=</span><span class="kc">None</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="write_pos"><a class="viewcode-back" href="../../../../../pyacs.gts.lib.format.html#pyacs.gts.Gts.write_pos">[docs]</a><span class="k">def</span> <span class="nf">write_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">idir</span><span class="p">,</span><span class="n">add_key</span><span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Write a time series in GAMIT/GLOBK PBO pos format</span>
+
+<span class="sd">    :param idir: output directory</span>
+<span class="sd">    :param add_key: if not blank then the output pos file will be CODE_add_key.pos, CODE.pos otherwise.</span>
+<span class="sd">    :param force: set force to &#39;data&#39; or &#39;data_xyz&#39; to force pos to be written from .data or .data_xyz</span>
+
+<span class="sd">    :note1:default behaviour (force = None)</span>
+<span class="sd">        if data and data_xyz are not None, then print them independently</span>
+<span class="sd">        if there are data only, then uses X0,Y0,Z0 to write data_xyz</span>
+<span class="sd">        if there are data_xyz only, recreate data and write it</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># force option</span>
+    
+    <span class="k">if</span> <span class="n">force</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">force</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">,</span><span class="s1">&#39;data_xyz&#39;</span><span class="p">]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;!!! ERROR: force keyword must be either data or data_xyz&#39;</span><span class="p">)</span>
+            <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    
+        <span class="k">if</span> <span class="n">force</span> <span class="o">==</span> <span class="s1">&#39;data&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_xyz</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">force</span> <span class="o">==</span> <span class="s1">&#39;data_xyz&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># cdata</span>
+    
+    <span class="k">if</span> <span class="n">force</span> <span class="o">!=</span> <span class="s1">&#39;data_xyz&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">cdata</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;! Can not write .pos file. Problem with .data attribute.&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cdata</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+
+    <span class="c1">###############################################</span>
+    <span class="k">def</span> <span class="nf">__print_header_pos_file</span><span class="p">(</span><span class="n">f_pos</span><span class="p">,</span><span class="n">code</span><span class="p">,</span><span class="n">first_epoch</span><span class="p">,</span><span class="n">last_epoch</span><span class="p">,</span><span class="n">release_date</span><span class="p">,</span><span class="n">XYZ_ref</span><span class="p">,</span><span class="n">geo_ref</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;PBO Station Position Time Series. Reference Frame : Unknown</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Format Version: 1.1.0</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;4-character ID: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">code</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Station name  : </span><span class="si">%s</span><span class="s2">        </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">code</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;First Epoch   : </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">first_epoch</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Last Epoch    : </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">last_epoch</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Release Date  : </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">release_date</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;XYZ Reference position :   </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">XYZ_ref</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;NEU Reference position :   </span><span class="si">%s</span><span class="s2"> (Unknown/WGS84)</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">geo_ref</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Start Field Description</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;YYYYMMDD      Year, month, day for the given position epoch</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;HHMMSS        Hour, minute, second for the given position epoch</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;JJJJJ.JJJJJ   Modified Julian day for the given position epoch</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;X             X coordinate, Specified Reference Frame, meters</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Y             Y coordinate, Specified Reference Frame, meters</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Z             Z coordinate, Specified Reference Frame, meters</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Sx            Standard deviation of the X position, meters</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Sy            Standard deviation of the Y position, meters</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Sz            Standard deviation of the Z position, meters</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Rxy           Correlation of the X and Y position</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Rxz           Correlation of the X and Z position</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Ryz           Correlation of the Y and Z position</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Nlat          North latitude, WGS-84 ellipsoid, decimal degrees</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Elong         East longitude, WGS-84 ellipsoid, decimal degrees</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Height (Up)   Height relative to WGS-84 ellipsoid, m</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;dN            Difference in North component from NEU reference position, meters</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;dE            Difference in East component from NEU reference position, meters</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;du            Difference in vertical component from NEU reference position, meters</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Sn            Standard deviation of dN, meters</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Se            Standard deviation of dE, meters</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Su            Standard deviation of dU, meters</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Rne           Correlation of dN and dE</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Rnu           Correlation of dN and dU</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Reu           Correlation of dEand dU</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Soln          corresponding to products  generated with rapid or final orbit products, in supplemental processing, campaign data processing or reprocessing</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;End Field Description</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;*YYYYMMDD HHMMSS JJJJJ.JJJJ         X             Y             Z            Sx        Sy       Sz     Rxy   Rxz    Ryz            NLat         Elong         Height         dN        dE        dU         Sn       Se       Su      Rne    Rnu    Reu  Soln</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1">###############################################</span>
+    <span class="k">def</span> <span class="nf">__dndedu_to_pos_file</span><span class="p">(</span><span class="n">gts</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Assuming that the Gts instance has dn de du coordinates, returns an list ready to be written a Gamit/Globk .pos file</span>
+<span class="sd">        Requires the Gts instance to have high accuracy .lon .lat &amp; .h</span>
+<span class="sd">        Since X Y Z sigmas cannot be properly calculated they are set to 0.0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1">#################################</span>
+        <span class="c1">#def __format_cal_pos(lyear,lcal):</span>
+        <span class="c1">#    lformatted_date1=[]</span>
+        <span class="c1">#    lformatted_date2=[]</span>
+        <span class="c1">#    </span>
+        <span class="c1">#    for i in range(len(lyear)):</span>
+        <span class="c1">#        lformatted_date1.append(int(&quot;%d%02d%02d&quot; % (lyear[i],lcal[i][1],lcal[i][0])))</span>
+        <span class="c1">#        uts=pyacs.lib.astrotime.ut2uts(lcal[i][2])</span>
+        <span class="c1">#        (h,mn,s,microsecond)=pyacs.lib.astrotime.uts2hmsmicros(np.around(uts))</span>
+        <span class="c1">#        lformatted_date2.append(int((&quot;%02d%02d%02d&quot; % (h,mn,s))))</span>
+        <span class="c1">#    return(lformatted_date1,lformatted_date2)</span>
+
+        <span class="c1">#################################</span>
+        <span class="k">def</span> <span class="nf">__format_cal_pos</span><span class="p">(</span><span class="n">np_decyear</span><span class="p">):</span>
+            <span class="n">lformatted_date1</span><span class="o">=</span><span class="p">[]</span>
+            <span class="n">lformatted_date2</span><span class="o">=</span><span class="p">[]</span>
+            
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">np_decyear</span><span class="p">)):</span>
+                
+                <span class="n">mdt</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">datetime_round_second</span><span class="p">(</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">np_decyear</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">)</span>
+                
+                <span class="n">lformatted_date1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d%02d%02d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">mdt</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">mdt</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">mdt</span><span class="o">.</span><span class="n">day</span><span class="p">)))</span>
+                <span class="n">lformatted_date2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">((</span><span class="s2">&quot;</span><span class="si">%02d%02d%02d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">mdt</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span><span class="n">mdt</span><span class="o">.</span><span class="n">minute</span><span class="p">,</span><span class="n">mdt</span><span class="o">.</span><span class="n">second</span><span class="p">))))</span>
+            <span class="k">return</span><span class="p">(</span><span class="n">lformatted_date1</span><span class="p">,</span><span class="n">lformatted_date2</span><span class="p">)</span>
+
+        
+        <span class="c1"># import</span>
+        <span class="kn">import</span> <span class="nn">pyacs.lib.coordinates</span>
+        <span class="kn">import</span> <span class="nn">pyacs.lib.astrotime</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+        
+<span class="c1">#        # data</span>
+<span class="c1">#        data=np.copy(gts.data)</span>
+<span class="c1">#        Hdata = dict(zip(gts.data[:,0],gts.data[:,1:]))</span>
+        
+        <span class="c1"># check for duplicate records</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reorder</span><span class="p">()</span>
+        
+<span class="c1">#        if len(Hdata.keys()) != data.shape[0]:</span>
+<span class="c1">#            print &quot;!!! dates probably duplicated for site &quot;,gts.code</span>
+<span class="c1">#            data=np.zeros((len(Hdata.keys()),data.shape[1]))</span>
+<span class="c1">#        </span>
+<span class="c1">#        # </span>
+<span class="c1">#        data[:,0]=sorted(Hdata.keys())</span>
+<span class="c1">#        data[:,1:]=collections.OrderedDict(sorted(Hdata.items())).values()</span>
+<span class="c1">#        </span>
+<span class="c1">#        gts.data=data</span>
+        
+        
+<span class="c1">#        pos=np.zeros((gts.data.shape[0],25))</span>
+
+        <span class="n">dndedulamphih</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">6</span><span class="p">))</span>
+        <span class="n">dndedulamphih</span><span class="p">[:,:</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+
+        <span class="c1"># case dndedu and XYZ exists</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- write NEU data &amp; XYZ data independently&quot;</span><span class="p">)</span>
+            <span class="c1"># write data &amp; data_xyz independently</span>
+            <span class="n">XYZ</span><span class="o">=</span><span class="n">gts</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span>
+            
+        <span class="c1"># case dndedu exits and XYZ does not exists</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="c1"># creates data_xyz independently</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- create XYZ data from NEU&#39;</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">gts</span><span class="o">.</span><span class="n">X0</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">dndedulamphih</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="n">gts</span><span class="o">.</span><span class="n">X0</span>
+                <span class="n">dndedulamphih</span><span class="p">[:,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="n">gts</span><span class="o">.</span><span class="n">Y0</span>
+                <span class="n">dndedulamphih</span><span class="p">[:,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="n">gts</span><span class="o">.</span><span class="n">Z0</span>
+                <span class="c1"># CHECK ENU or NEU</span>
+                <span class="n">tmp_XYZ</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">denu_at_x0y0z0_to_xyz</span><span class="p">,</span><span class="n">dndedulamphih</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span><span class="n">dndedulamphih</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">dndedulamphih</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span><span class="n">dndedulamphih</span><span class="p">[:,</span><span class="mi">3</span><span class="p">],</span><span class="n">dndedulamphih</span><span class="p">[:,</span><span class="mi">4</span><span class="p">],</span><span class="n">dndedulamphih</span><span class="p">[:,</span><span class="mi">5</span><span class="p">]))</span>
+                <span class="n">tmp_XYZ</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">tmp_XYZ</span><span class="p">)</span>
+                <span class="n">XYZ</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">10</span><span class="p">))</span>
+                <span class="n">XYZ</span><span class="p">[:,:</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="n">tmp_XYZ</span><span class="p">[:,:</span><span class="mi">3</span><span class="p">]</span>
+                
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># put 0 values</span>
+                <span class="n">XYZ</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">10</span><span class="p">))</span>
+
+        <span class="c1"># case dndedu does exist and XYZ exists</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="c1"># write data &amp; data_xyz independently</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- create NEU data from XYZ&#39;</span><span class="p">)</span>
+            <span class="n">gts</span><span class="o">.</span><span class="n">xyz2neu</span><span class="p">(</span><span class="n">corr</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">XYZ</span><span class="o">=</span><span class="n">gts</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span>
+        
+        <span class="c1"># first &amp; second columns - calendar date and time</span>
+        <span class="c1">#lcal=map(list,map(pyacs.lib.astrotime.decyear2cal,gts.data[:,0]))</span>
+        <span class="c1">#lyear=map(int,gts.data[:,0])</span>
+        <span class="c1">#ldate1,ldate2=__format_cal_pos(lyear,lcal)</span>
+        
+        <span class="n">ldate1</span><span class="p">,</span><span class="n">ldate2</span><span class="o">=</span><span class="n">__format_cal_pos</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
+        
+        
+        <span class="c1"># 3rd column - modified julian day</span>
+        <span class="n">lmjd</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2mjd</span><span class="p">,</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]))</span>
+                
+        <span class="c1"># column 13-15 - geographical coordinates</span>
+        <span class="n">l_13_15</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">xyz2geo</span><span class="p">,</span><span class="n">XYZ</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">XYZ</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span><span class="n">XYZ</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]))))</span>
+
+        <span class="c1"># other columns        </span>
+        <span class="n">lpos</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="mi">10</span><span class="p">:</span>
+            <span class="c1"># self.data has date, dn,de,du,sdn,sde,sdu,Rne,Rnu,Reu</span>
+                <span class="n">new_pos</span><span class="o">=</span><span class="p">[</span><span class="n">ldate1</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">ldate2</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">lmjd</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">+</span><span class="p">[</span><span class="n">XYZ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">XYZ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">XYZ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span><span class="n">XYZ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span><span class="n">XYZ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span><span class="n">XYZ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span><span class="n">XYZ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span><span class="n">XYZ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span><span class="n">XYZ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">8</span><span class="p">]]</span><span class="o">+</span><span class="n">l_13_15</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;pyacs&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># self.data has date, dn,de,du,sdn,sde,sdu</span>
+                <span class="n">new_pos</span><span class="o">=</span><span class="p">[</span><span class="n">ldate1</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">ldate2</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">lmjd</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">+</span><span class="p">[</span><span class="n">XYZ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">XYZ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">XYZ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span><span class="n">XYZ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span><span class="n">XYZ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span><span class="n">XYZ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span><span class="n">XYZ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span><span class="n">XYZ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span><span class="n">XYZ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">8</span><span class="p">]]</span><span class="o">+</span><span class="n">l_13_15</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="o">+</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="s1">&#39;pyacs&#39;</span><span class="p">]</span>
+
+            <span class="n">lpos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_pos</span><span class="p">)</span>
+        
+        <span class="k">return</span><span class="p">(</span><span class="n">lpos</span><span class="p">)</span>
+
+    
+    <span class="c1">###############################################</span>
+    <span class="k">def</span> <span class="nf">__print_content_pos_file</span><span class="p">(</span><span class="n">f_pos</span><span class="p">,</span><span class="n">lformatted</span><span class="p">):</span>
+
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lformatted</span><span class="p">)):</span>
+            
+            <span class="p">[</span><span class="n">YYYYMMDD</span><span class="p">,</span><span class="n">HHMMSS</span><span class="p">,</span><span class="n">MJD</span><span class="p">,</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">Z</span><span class="p">,</span><span class="n">Sx</span><span class="p">,</span><span class="n">Sy</span><span class="p">,</span><span class="n">Sz</span><span class="p">,</span><span class="n">Rxy</span><span class="p">,</span><span class="n">Rxz</span><span class="p">,</span><span class="n">Ryz</span><span class="p">,</span><span class="n">Elong</span><span class="p">,</span><span class="n">NLat</span><span class="p">,</span><span class="n">Height</span><span class="p">,</span><span class="n">dN</span><span class="p">,</span><span class="n">dE</span><span class="p">,</span><span class="n">dU</span><span class="p">,</span><span class="n">Sn</span><span class="p">,</span><span class="n">Se</span><span class="p">,</span><span class="n">Su</span><span class="p">,</span><span class="n">Rne</span><span class="p">,</span><span class="n">Rnu</span><span class="p">,</span><span class="n">Reu</span><span class="p">,</span><span class="n">Soln</span><span class="p">]</span><span class="o">=</span><span class="n">lformatted</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">f_pos</span><span class="o">.</span><span class="n">write</span>\
+            <span class="p">(</span><span class="s2">&quot; </span><span class="si">%8d</span><span class="s2"> </span><span class="si">%6d</span><span class="s2"> </span><span class="si">%10.4lf</span><span class="s2"> </span><span class="si">%14.5lf</span><span class="s2"> </span><span class="si">%14.5lf</span><span class="s2"> </span><span class="si">%14.5lf</span><span class="s2"> </span><span class="si">%8.5lf</span><span class="s2"> </span><span class="si">%8.5lf</span><span class="s2"> </span><span class="si">%8.5lf</span><span class="s2"> </span><span class="si">%6.3lf</span><span class="s2"> </span><span class="si">%6.3lf</span><span class="s2"> </span><span class="si">%6.3lf</span><span class="s2">     </span><span class="si">%14.10lf</span><span class="s2">  </span><span class="si">%14.10lf</span><span class="s2"> </span><span class="si">%10.5lf</span><span class="s2">  </span><span class="si">%10.5lf%10.5lf%10.5lf</span><span class="s2">   </span><span class="si">%8.5lf</span><span class="s2"> </span><span class="si">%8.5lf</span><span class="s2"> </span><span class="si">%8.5lf</span><span class="s2"> </span><span class="si">%6.3lf</span><span class="s2"> </span><span class="si">%6.3lf</span><span class="s2"> </span><span class="si">%6.3lf</span><span class="s2"> </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> \
+            <span class="p">(</span><span class="n">YYYYMMDD</span><span class="p">,</span><span class="n">HHMMSS</span><span class="p">,</span><span class="n">MJD</span><span class="p">,</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">Z</span><span class="p">,</span><span class="n">Sx</span><span class="p">,</span><span class="n">Sy</span><span class="p">,</span><span class="n">Sz</span><span class="p">,</span><span class="n">Rxy</span><span class="p">,</span><span class="n">Rxz</span><span class="p">,</span><span class="n">Ryz</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">NLat</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">Elong</span><span class="p">),</span><span class="n">Height</span><span class="p">,</span><span class="n">dN</span><span class="p">,</span><span class="n">dE</span><span class="p">,</span><span class="n">dU</span><span class="p">,</span><span class="n">Sn</span><span class="p">,</span><span class="n">Se</span><span class="p">,</span><span class="n">Su</span><span class="p">,</span><span class="n">Rne</span><span class="p">,</span><span class="n">Rnu</span><span class="p">,</span><span class="n">Reu</span><span class="p">,</span><span class="n">Soln</span><span class="p">))</span>
+
+    <span class="c1">###############################################</span>
+
+    <span class="kn">import</span> <span class="nn">pyacs.lib.coordinates</span>
+    <span class="kn">import</span> <span class="nn">pyacs.lib.astrotime</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+
+    <span class="c1"># output directory</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">idir</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">idir</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Creating directory &quot;</span><span class="p">,</span><span class="n">idir</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;!!! Error : Could not create directory &quot;</span><span class="p">,</span><span class="n">idir</span><span class="p">)</span>
+    
+    <span class="c1"># add_key</span>
+    <span class="k">if</span> <span class="n">add_key</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="n">f_pos_name</span><span class="o">=</span><span class="n">idir</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">add_key</span><span class="o">+</span><span class="s1">&#39;.pos&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">f_pos_name</span><span class="o">=</span><span class="n">idir</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="o">+</span><span class="s1">&#39;.pos&#39;</span>
+        
+    <span class="c1"># open pos file</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- writing </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">f_pos_name</span><span class="p">))</span>
+
+    <span class="n">f_pos</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">f_pos_name</span><span class="p">,</span><span class="s1">&#39;w+&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># X0,Y0,Z0</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">X0</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">X0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Y0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Z0</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">geo2xyz</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">),</span><span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;!!! Cannot produce a proper pos file because a reference position is needed&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;!!! Setting all XYZ values to 0&quot;</span><span class="p">)</span>
+
+    <span class="c1"># populates info for pos file</span>
+    
+    <span class="n">wpos</span><span class="o">=</span><span class="n">__dndedu_to_pos_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+            
+            
+    <span class="n">sdecyear</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+    <span class="p">(</span><span class="n">mday</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">ut</span><span class="p">)</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2cal</span><span class="p">(</span><span class="n">sdecyear</span><span class="p">)</span>
+    <span class="n">uts</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">ut2uts</span><span class="p">(</span><span class="n">ut</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="n">mn</span><span class="p">,</span><span class="n">s</span><span class="p">,</span> <span class="n">_microsecond</span><span class="p">)</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">uts2hmsmicros</span><span class="p">(</span><span class="n">uts</span><span class="p">)</span>
+    <span class="n">first_epoch</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d%02d%02d</span><span class="s2"> </span><span class="si">%02d%02d%02d</span><span class="s2">&quot;</span><span class="o">%</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">sdecyear</span><span class="p">),</span><span class="n">month</span><span class="p">,</span><span class="n">mday</span><span class="p">,</span><span class="n">h</span><span class="p">,</span><span class="n">mn</span><span class="p">,</span><span class="n">s</span><span class="p">))</span>
+
+    <span class="n">edecyear</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+    <span class="p">(</span><span class="n">mday</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">ut</span><span class="p">)</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2cal</span><span class="p">(</span><span class="n">edecyear</span><span class="p">)</span>
+    <span class="n">uts</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">ut2uts</span><span class="p">(</span><span class="n">ut</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="n">mn</span><span class="p">,</span><span class="n">s</span><span class="p">,</span> <span class="n">_microsecond</span><span class="p">)</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">uts2hmsmicros</span><span class="p">(</span><span class="n">uts</span><span class="p">)</span>
+    <span class="n">last_epoch</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d%02d%02d</span><span class="s2"> </span><span class="si">%02d%02d%02d</span><span class="s2">&quot;</span><span class="o">%</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">edecyear</span><span class="p">),</span><span class="n">month</span><span class="p">,</span><span class="n">mday</span><span class="p">,</span><span class="n">h</span><span class="p">,</span><span class="n">mn</span><span class="p">,</span><span class="n">s</span><span class="p">))</span>
+
+    <span class="kn">import</span> <span class="nn">datetime</span>
+    
+    <span class="n">current_date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+    
+    <span class="n">release_date</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d%02d%02d</span><span class="s2"> </span><span class="si">%02d%02d%02d</span><span class="s2">&quot;</span><span class="o">%</span> <span class="p">(</span><span class="n">current_date</span><span class="o">.</span><span class="n">year</span><span class="p">,</span><span class="n">current_date</span><span class="o">.</span><span class="n">month</span><span class="p">,</span><span class="n">current_date</span><span class="o">.</span><span class="n">day</span><span class="p">,</span><span class="n">current_date</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span><span class="n">current_date</span><span class="o">.</span><span class="n">minute</span><span class="p">,</span><span class="n">current_date</span><span class="o">.</span><span class="n">second</span><span class="p">))</span>
+    
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">X0</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">XYZ_ref</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot; </span><span class="si">%14.5lf</span><span class="s2"> </span><span class="si">%14.5lf</span><span class="s2"> </span><span class="si">%14.5lf</span><span class="s2"> (unkwnon)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Y0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Z0</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">XYZ_ref</span><span class="o">=</span><span class="s1">&#39;unknown&#39;</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>        
+        <span class="n">geo_ref</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot; </span><span class="si">%16.10lf</span><span class="s2"> </span><span class="si">%16.10lf</span><span class="s2"> </span><span class="si">%16.10lf</span><span class="s2"> (unkwnon)&quot;</span> <span class="o">%</span> <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">geo_ref</span><span class="o">=</span><span class="s1">&#39;unknown&#39;</span>
+    
+    <span class="n">__print_header_pos_file</span><span class="p">(</span><span class="n">f_pos</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span><span class="n">first_epoch</span><span class="p">,</span><span class="n">last_epoch</span><span class="p">,</span><span class="n">release_date</span><span class="p">,</span><span class="n">XYZ_ref</span><span class="p">,</span><span class="n">geo_ref</span><span class="p">)</span>
+    <span class="n">__print_content_pos_file</span><span class="p">(</span><span class="n">f_pos</span><span class="p">,</span><span class="n">wpos</span><span class="p">)</span>
+    
+    <span class="n">f_pos</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

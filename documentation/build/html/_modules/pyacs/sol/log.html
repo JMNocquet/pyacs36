@@ -1,0 +1,367 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.sol.log &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.sol.log</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.sol.log</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Various routines for pyacs/sol module</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="output_directories"><a class="viewcode-back" href="../../../pyacs.sol.html#pyacs.sol.log.output_directories">[docs]</a><span class="k">def</span> <span class="nf">output_directories</span><span class="p">(</span><span class="n">wdir</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates or reads pyacs output directory</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">os</span>
+
+    <span class="n">path_stat</span><span class="o">=</span><span class="n">wdir</span> <span class="o">+</span> <span class="s1">&#39;/stat&#39;</span>
+    <span class="n">path_res_pos</span><span class="o">=</span><span class="n">wdir</span> <span class="o">+</span> <span class="s1">&#39;/res_pos&#39;</span>
+    <span class="n">path_maps</span><span class="o">=</span><span class="n">wdir</span> <span class="o">+</span> <span class="s1">&#39;/maps&#39;</span>
+    <span class="n">path_pos</span><span class="o">=</span><span class="n">wdir</span> <span class="o">+</span> <span class="s1">&#39;/pos&#39;</span>
+    <span class="n">path_pck</span><span class="o">=</span><span class="n">wdir</span> <span class="o">+</span> <span class="s1">&#39;/pck&#39;</span>
+    <span class="n">path_txyz</span><span class="o">=</span><span class="n">wdir</span> <span class="o">+</span> <span class="s1">&#39;/tsxy&#39;</span>
+    <span class="n">path_tsg</span><span class="o">=</span><span class="n">wdir</span> <span class="o">+</span> <span class="s1">&#39;/tsg&#39;</span>
+    <span class="n">path_prt</span><span class="o">=</span><span class="n">wdir</span> <span class="o">+</span> <span class="s1">&#39;/glred_prt&#39;</span>
+    <span class="n">path_lgred_pos</span><span class="o">=</span><span class="n">wdir</span> <span class="o">+</span> <span class="s1">&#39;/glred_pos&#39;</span>
+    <span class="n">path_log</span><span class="o">=</span><span class="n">wdir</span> <span class="o">+</span> <span class="s1">&#39;/glred_log&#39;</span>
+    <span class="n">path_sinex</span><span class="o">=</span><span class="n">wdir</span> <span class="o">+</span> <span class="s1">&#39;/glred_sinex&#39;</span>
+    <span class="n">path_ssc</span><span class="o">=</span><span class="n">wdir</span> <span class="o">+</span> <span class="s1">&#39;/glred_ssc&#39;</span>
+    
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">wdir</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">path_stat</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">path_res_pos</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">path_maps</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">path_pos</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">path_pck</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">path_txyz</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">path_tsg</span><span class="p">)</span>
+    
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">path_prt</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">path_lgred_pos</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">path_log</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">path_sinex</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">path_ssc</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">path_stat</span><span class="p">,</span><span class="n">path_res_pos</span><span class="p">,</span><span class="n">path_maps</span><span class="p">,</span><span class="n">path_pos</span><span class="p">,</span><span class="n">path_pck</span><span class="p">,</span><span class="n">path_txyz</span><span class="p">,</span><span class="n">path_tsg</span><span class="p">,</span><span class="n">path_prt</span><span class="p">,</span><span class="n">path_lgred_pos</span><span class="p">,</span><span class="n">path_log</span><span class="p">,</span><span class="n">path_sinex</span><span class="p">,</span><span class="n">path_ssc</span><span class="p">)</span></div>
+
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="write_tsg"><a class="viewcode-back" href="../../../pyacs.sol.html#pyacs.sol.log.write_tsg">[docs]</a><span class="k">def</span> <span class="nf">write_tsg</span><span class="p">(</span><span class="n">lsinex</span><span class="p">,</span><span class="n">TSG</span><span class="p">,</span><span class="n">ofile</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Write Helmert parameters</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    
+    <span class="n">f</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">ofile</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+    
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;----------------------------------------------------------------------------------------------------------------</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;SINEX                     Epoch        Tx(cm)     Ty(cm)     Tz(cm)      D(ppb)    Rx(mas)    Ry(mas)    Rz(mas)</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;----------------------------------------------------------------------------------------------------------------</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">TSG</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%12s</span><span class="s2"> </span><span class="si">%11.4lf</span><span class="s2"> </span><span class="si">%11.2f%11.2f%11.2f</span><span class="s2"> </span><span class="si">%11.2f</span><span class="s2"> </span><span class="si">%11.2f%11.2f%11.2f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> \
+                <span class="p">(</span><span class="n">lsinex</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">TSG</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">TSG</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mf">100.</span><span class="p">,</span><span class="n">TSG</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="mf">100.</span><span class="p">,</span><span class="n">TSG</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="mf">100.</span><span class="p">,</span><span class="n">TSG</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">*</span><span class="mf">1000.</span><span class="p">,</span><span class="n">TSG</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="mf">1000.</span><span class="p">,</span><span class="n">TSG</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span><span class="o">*</span><span class="mf">1000.</span><span class="p">,</span><span class="n">TSG</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">7</span><span class="p">]</span><span class="o">*</span><span class="mf">1000.</span><span class="p">)</span> <span class="p">)</span>
+
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="helmert_residuals"><a class="viewcode-back" href="../../../pyacs.sol.html#pyacs.sol.log.helmert_residuals">[docs]</a><span class="k">def</span> <span class="nf">helmert_residuals</span><span class="p">(</span><span class="n">RESIDUALS</span><span class="p">,</span><span class="n">H_STAT</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">ofile</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print residuals of a Helmert transformation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="n">f</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">ofile</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+
+
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;# sinex: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">name</span> <span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;----------------------------------------------------------------------------</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;n_site: </span><span class="si">%5d</span><span class="s2"> n_obs: </span><span class="si">%5d</span><span class="s2"> n_rejected: </span><span class="si">%5d</span><span class="s2"> </span><span class="si">%5.1lf</span><span class="s2"> </span><span class="si">%%</span><span class="s2"> user_rejection_threshold: </span><span class="si">%2.1lf</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> \
+            <span class="p">(</span><span class="n">H_STAT</span><span class="p">[</span><span class="s1">&#39;n_site&#39;</span><span class="p">],</span><span class="n">H_STAT</span><span class="p">[</span><span class="s1">&#39;n_obs_raw&#39;</span><span class="p">],</span><span class="n">H_STAT</span><span class="p">[</span><span class="s1">&#39;n_obs_rejected&#39;</span><span class="p">],</span><span class="n">H_STAT</span><span class="p">[</span><span class="s1">&#39;percent_rejected&#39;</span><span class="p">],</span><span class="n">H_STAT</span><span class="p">[</span><span class="s1">&#39;rejection_threshold&#39;</span><span class="p">]))</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;----------------------------------------------------------------------------</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;POINT SOLN  R_East(mm)  R_North(mm)  R_Up(mm)  Outlier_rejected</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;----------------------------------------------------------------------------</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">SORTED_RESIDUALS</span><span class="o">=</span><span class="n">RESIDUALS</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">RESIDUALS</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])]</span>
+<span class="c1">#    SORTED_RESIDUALS=RESIDUALS</span>
+    
+    <span class="n">min_wrms_2D</span><span class="o">=</span><span class="mf">1.E6</span>
+    <span class="n">min_wrms_2D_site</span><span class="o">=</span><span class="s1">&#39;XXXX&#39;</span>
+
+    <span class="n">min_wrms_3D</span><span class="o">=</span><span class="mf">1.E6</span>
+    <span class="n">min_wrms_3D_site</span><span class="o">=</span><span class="s1">&#39;XXXX&#39;</span>
+
+    <span class="n">max_wrms_2D</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">max_wrms_2D_site</span><span class="o">=</span><span class="s1">&#39;XXXX&#39;</span>
+
+    <span class="n">max_wrms_3D</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">max_wrms_3D_site</span><span class="o">=</span><span class="s1">&#39;XXXX&#39;</span>
+
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">SORTED_RESIDUALS</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">code</span><span class="p">,</span><span class="n">soln</span><span class="o">=</span><span class="n">SORTED_RESIDUALS</span><span class="p">[</span><span class="n">i</span><span class="p">,:</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">Re</span><span class="p">,</span><span class="n">Rn</span><span class="p">,</span><span class="n">Ru</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span><span class="n">SORTED_RESIDUALS</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">2</span><span class="p">:</span><span class="mi">5</span><span class="p">]))</span>
+        <span class="n">Rje</span><span class="p">,</span><span class="n">Rjn</span><span class="p">,</span><span class="n">Rju</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span><span class="n">SORTED_RESIDUALS</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">:]))</span>
+
+        <span class="n">SRje</span><span class="o">=</span><span class="s1">&#39;     &#39;</span>
+        <span class="n">SRjn</span><span class="o">=</span><span class="s1">&#39;     &#39;</span>
+        <span class="n">SRju</span><span class="o">=</span><span class="s1">&#39;     &#39;</span>
+
+        <span class="k">if</span> <span class="n">Rje</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span><span class="n">SRje</span><span class="o">=</span><span class="s1">&#39; East&#39;</span>
+        <span class="k">if</span> <span class="n">Rjn</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span><span class="n">SRjn</span><span class="o">=</span><span class="s1">&#39;North&#39;</span>
+        <span class="k">if</span> <span class="n">Rju</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span><span class="n">SRju</span><span class="o">=</span><span class="s1">&#39;   Up&#39;</span>
+        
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%4s</span><span class="s2"> </span><span class="si">%4s</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2">  </span><span class="si">%10.2lf</span><span class="s2">  </span><span class="si">%10.2lf</span><span class="s2">  </span><span class="si">%5s</span><span class="s2"> </span><span class="si">%5s</span><span class="s2"> </span><span class="si">%5s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> \
+                <span class="p">(</span><span class="n">code</span><span class="p">,</span><span class="n">soln</span><span class="p">,</span><span class="n">Re</span><span class="p">,</span><span class="n">Rn</span><span class="p">,</span><span class="n">Ru</span><span class="p">,</span><span class="n">SRje</span><span class="p">,</span><span class="n">SRjn</span><span class="p">,</span><span class="n">SRju</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">SRje</span><span class="o">==</span><span class="s1">&#39;     &#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">SRjn</span><span class="o">==</span><span class="s1">&#39;     &#39;</span><span class="p">):</span>
+            <span class="n">wrms_2D</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Re</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">Rn</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">wrms_2D</span> <span class="o">&lt;</span> <span class="n">min_wrms_2D</span><span class="p">:</span>
+                <span class="n">min_wrms_2D</span><span class="o">=</span><span class="n">wrms_2D</span>
+                <span class="n">min_wrms_2D_site</span><span class="o">=</span><span class="n">code</span>
+
+            <span class="k">if</span> <span class="n">wrms_2D</span> <span class="o">&gt;</span> <span class="n">max_wrms_2D</span><span class="p">:</span>
+                <span class="n">max_wrms_2D</span><span class="o">=</span><span class="n">wrms_2D</span>
+                <span class="n">max_wrms_2D_site</span><span class="o">=</span><span class="n">code</span>
+
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">SRje</span><span class="o">==</span><span class="s1">&#39;     &#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">SRjn</span><span class="o">==</span><span class="s1">&#39;     &#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">SRju</span><span class="o">==</span><span class="s1">&#39;     &#39;</span><span class="p">):</span>
+            <span class="n">wrms_3D</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Re</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">Rn</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">Ru</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">wrms_3D</span> <span class="o">&lt;</span> <span class="n">min_wrms_3D</span><span class="p">:</span>
+                <span class="n">min_wrms_3D</span><span class="o">=</span><span class="n">wrms_3D</span>
+                <span class="n">min_wrms_3D_site</span><span class="o">=</span><span class="n">code</span>
+
+            <span class="k">if</span> <span class="n">wrms_3D</span> <span class="o">&gt;</span> <span class="n">max_wrms_3D</span><span class="p">:</span>
+                <span class="n">max_wrms_3D</span><span class="o">=</span><span class="n">wrms_3D</span>
+                <span class="n">max_wrms_3D_site</span><span class="o">=</span><span class="n">code</span>
+
+
+
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;----------------------------------------------------------------------------</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Postfit L1 norm median: </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">H_STAT</span><span class="p">[</span><span class="s1">&#39;median_L1&#39;</span><span class="p">]))</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Postfit L2 norm wrms  : </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">H_STAT</span><span class="p">[</span><span class="s1">&#39;wrms&#39;</span><span class="p">]))</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;----------------------------------------------------------------------------</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Best  fit 2D: </span><span class="si">%s</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2">     Best  fit 3D: </span><span class="si">%s</span><span class="s2">  </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">min_wrms_2D_site</span><span class="p">,</span><span class="n">min_wrms_2D</span><span class="p">,</span><span class="n">min_wrms_3D_site</span><span class="p">,</span><span class="n">min_wrms_2D</span><span class="p">))</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Worst fit 2D: </span><span class="si">%s</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2">     Worst fit 3D: </span><span class="si">%s</span><span class="s2">  </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">max_wrms_2D_site</span><span class="p">,</span><span class="n">max_wrms_2D</span><span class="p">,</span><span class="n">max_wrms_3D_site</span><span class="p">,</span><span class="n">max_wrms_3D</span><span class="p">))</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;----------------------------------------------------------------------------</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

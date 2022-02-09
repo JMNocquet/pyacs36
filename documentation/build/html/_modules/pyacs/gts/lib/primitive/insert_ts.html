@@ -1,0 +1,341 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.gts.lib.primitive.insert_ts &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.gts.lib.primitive.insert_ts</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.gts.lib.primitive.insert_ts</h1><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">insert_ts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">rounding</span><span class="o">=</span><span class="s1">&#39;day&#39;</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">,</span><span class="n">overlap</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param ts: Gts to be inserted</span>
+<span class="sd">    :param rounding: data rounding, used to decide whether an entry should be replaced.</span>
+<span class="sd">        Choose among [&#39;second&#39;,&#39;minute&#39;,&#39;hour&#39;,&#39;day]</span>
+<span class="sd">    :param data: Gts attribute to be updated. &#39;xyz&#39; for .data_xyz or None for .data</span>
+<span class="sd">    :param overlap: if True, update occurs only on dates. If False, then ts overwrites the current Gts over the ts period</span>
+<span class="sd">    :return: a new gts</span>
+<span class="sd">    :note: The returned gts will have .data or .data_xyz will be set to None according to data argument</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># import</span>
+    <span class="c1">###########################################################################</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">from</span> <span class="nn">pyacs.lib</span> <span class="kn">import</span> <span class="n">astrotime</span> <span class="k">as</span> <span class="n">at</span>
+    <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="kn">from</span> <span class="nn">pyacs.gts.Gts</span> <span class="kn">import</span> <span class="n">Gts</span>
+
+    <span class="c1">###########################################################################</span>
+    <span class="k">def</span> <span class="nf">round_np_datetime</span><span class="p">(</span><span class="n">np_datetime</span><span class="p">,</span> <span class="n">rounding</span><span class="p">):</span>
+    <span class="c1">###########################################################################</span>
+
+        <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">np_datetime</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="n">rounding</span> <span class="o">==</span> <span class="s1">&#39;day&#39;</span><span class="p">:</span>
+                <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">rounding</span> <span class="o">==</span> <span class="s1">&#39;hour&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">minute</span> <span class="o">&gt;=</span> <span class="mi">30</span><span class="p">:</span>
+                    <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+                <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">rounding</span> <span class="o">==</span> <span class="s1">&#39;minute&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">second</span> <span class="o">&gt;=</span> <span class="mi">30</span><span class="p">:</span>
+                    <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+                <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">rounding</span> <span class="o">==</span> <span class="s1">&#39;second&#39;</span><span class="p">:</span>
+                <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">np_datetime</span>
+
+    <span class="c1">###########################################################################</span>
+
+    <span class="c1"># reference date is 1980.0</span>
+    <span class="n">ref_date_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">1980</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># converts dates to seconds</span>
+    <span class="c1">###########################################################################</span>
+
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">np_datetime_master_ts</span> <span class="o">=</span> <span class="n">round_np_datetime</span><span class="p">(</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span> <span class="p">,</span> <span class="n">rounding</span> <span class="p">)</span>
+        <span class="n">np_datetime_slave_ts</span> <span class="o">=</span> <span class="n">round_np_datetime</span><span class="p">(</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span> <span class="n">ts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span> <span class="p">,</span> <span class="n">rounding</span> <span class="p">)</span>
+    <span class="k">if</span> <span class="n">data</span><span class="o">==</span><span class="s1">&#39;xyz&#39;</span><span class="p">:</span>
+        <span class="n">np_datetime_master_ts</span> <span class="o">=</span> <span class="n">round_np_datetime</span><span class="p">(</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span> <span class="p">,</span> <span class="n">rounding</span> <span class="p">)</span>
+        <span class="n">np_datetime_slave_ts</span> <span class="o">=</span> <span class="n">round_np_datetime</span><span class="p">(</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span> <span class="n">ts</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span> <span class="p">,</span> <span class="n">rounding</span> <span class="p">)</span>
+
+
+    <span class="n">np_sec_master_ts</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">datetime2seconds</span><span class="p">(</span> <span class="n">np_datetime_master_ts</span> <span class="p">)</span>
+    <span class="n">np_sec_slave_ts</span>  <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">datetime2seconds</span><span class="p">(</span> <span class="n">np_datetime_slave_ts</span> <span class="p">)</span>
+
+    <span class="c1"># check that there is no duplicated dates</span>
+    <span class="c1">###########################################################################</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span> <span class="n">np_sec_master_ts</span> <span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;!!!ERROR: </span><span class="si">%s</span><span class="s2"> time series has duplicated dates after rounding&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span> <span class="n">np_sec_slave_ts</span> <span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;!!!ERROR: </span><span class="si">%s</span><span class="s2"> time series has duplicated dates after rounding&quot;</span> <span class="o">%</span> <span class="n">ts</span><span class="o">.</span><span class="n">code</span> <span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+
+    <span class="c1"># check that dates are in increasing order</span>
+    <span class="c1">###########################################################################</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span> <span class="n">np_sec_master_ts</span> <span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span> <span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;!!!ERROR: dates in </span><span class="si">%s</span><span class="s2"> time series are not in ascending order&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span> <span class="n">np_sec_slave_ts</span> <span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span> <span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;!!!ERROR: dates in </span><span class="si">%s</span><span class="s2"> time series are not in ascending order&quot;</span> <span class="o">%</span> <span class="n">ts</span><span class="o">.</span><span class="n">code</span> <span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+
+    <span class="c1"># if overlap is False, then removes all data corresponding to the period of ts</span>
+    <span class="c1">###########################################################################</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">overlap</span><span class="p">:</span>
+        <span class="n">lindex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span> <span class="p">(</span><span class="n">np_sec_master_ts</span> <span class="o">&gt;</span> <span class="n">np_sec_slave_ts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span>  <span class="p">(</span><span class="n">np_sec_master_ts</span> <span class="o">&lt;</span> <span class="n">np_sec_slave_ts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">master_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">lindex</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">data</span><span class="o">==</span><span class="s1">&#39;xyz&#39;</span><span class="p">:</span>
+            <span class="n">master_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">,</span><span class="n">lindex</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">np_sec_master_ts</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">np_sec_master_ts</span><span class="p">,</span><span class="n">lindex</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">master_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">data</span><span class="o">==</span><span class="s1">&#39;xyz&#39;</span><span class="p">:</span>
+            <span class="n">master_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">)</span>
+
+
+    <span class="c1"># removes dates in master that are in the inserted ts</span>
+    <span class="c1">###########################################################################</span>
+
+    <span class="n">values</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">yi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">np_sec_master_ts</span><span class="p">,</span> <span class="n">np_sec_slave_ts</span><span class="p">,</span> <span class="n">assume_unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_indices</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">master_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">master_data</span><span class="p">,</span><span class="n">xi</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># concatenate arrays</span>
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">slave_data</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">data</span>
+    <span class="k">if</span> <span class="n">data</span><span class="o">==</span><span class="s1">&#39;xyz&#39;</span><span class="p">:</span>
+        <span class="n">slave_data</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">data_xyz</span>
+
+    <span class="n">new_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">master_data</span><span class="p">,</span><span class="n">slave_data</span><span class="p">))</span>
+
+    <span class="c1"># sort array</span>
+    <span class="n">new_data</span> <span class="o">=</span> <span class="n">new_data</span><span class="p">[</span><span class="n">new_data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">argsort</span><span class="p">()]</span>
+
+    <span class="c1"># creates the new gts</span>
+    <span class="c1">###########################################################################</span>
+
+    <span class="n">new_gts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">new_gts</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">new_gts</span><span class="o">.</span><span class="n">data_xyz</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">new_gts</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">new_data</span>
+    <span class="k">if</span> <span class="n">data</span><span class="o">==</span><span class="s1">&#39;xyz&#39;</span><span class="p">:</span>
+        <span class="n">new_gts</span><span class="o">.</span><span class="n">data_xyz</span> <span class="o">=</span> <span class="n">new_data</span>
+
+    <span class="k">return</span> <span class="n">new_gts</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

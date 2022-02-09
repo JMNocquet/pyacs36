@@ -1,0 +1,1271 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Gts methods &mdash; pyacs 0.65.66 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.66
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Gts methods</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/gts_methods.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="gts-methods">
+<h1>Gts methods<a class="headerlink" href="#gts-methods" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="#gts-format-methods"><span class="std std-ref">Gts format methods</span></a></p></li>
+<li><p><a class="reference internal" href="#gts-primitive-methods"><span class="std std-ref">Gts primitive methods</span></a></p></li>
+<li><p><a class="reference internal" href="#gts-model-methods"><span class="std std-ref">Gts model methods</span></a></p></li>
+<li><p><a class="reference internal" href="#gts-filter-methods"><span class="std std-ref">Gts filter methods</span></a></p></li>
+<li><p><a class="reference internal" href="#gts-outliers-methods"><span class="std std-ref">Gts outliers methods</span></a></p></li>
+<li><p><a class="reference internal" href="#gts-plot-methods"><span class="std std-ref">Gts plot methods</span></a></p></li>
+</ul>
+<div class="section" id="gts-format-methods">
+<h2>Gts format methods<a class="headerlink" href="#gts-format-methods" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyacs.gts.Gts.</span></span><span class="sig-name descname"><span class="pre">Gts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_corr_neu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_corr_xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets_dates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outliers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annual</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">semi_annual</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ifile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/Gts.html#Gts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.Gts.Gts" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.read_pos">
+<span class="sig-name descname"><span class="pre">read_pos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tsdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.read_pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read GAMIT/GLOBK PBO pos file in a directory and actually loads the time series</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tsdir</strong> – directory of pos file</p></li>
+<li><p><strong>tsfile</strong> – pos file to be loaded</p></li>
+<li><p><strong>xyz</strong> – reads xyz sx sy sz corr_xy corr_xz corr_yz columns</p></li>
+<li><p><strong>verbose</strong> – verbose mode</p></li>
+</ul>
+</dd>
+<dt class="field-even">Note</dt>
+<dd class="field-even"><p>Since a pos file includes (almost) all the information, data, code, X0,Y0,Z0,t0 will be populated</p>
+</dd>
+<dt class="field-odd">Note</dt>
+<dd class="field-odd"><p>If tsfile=None, then read_pos will look for a file named CODE*.pos</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.write_pos">
+<span class="sig-name descname"><span class="pre">write_pos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.write_pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a time series in GAMIT/GLOBK PBO pos format</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>idir</strong> – output directory</p></li>
+<li><p><strong>add_key</strong> – if not blank then the output pos file will be CODE_add_key.pos, CODE.pos otherwise.</p></li>
+<li><p><strong>force</strong> – set force to ‘data’ or ‘data_xyz’ to force pos to be written from .data or .data_xyz</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>:note1:default behaviour (force = None)</dt><dd><p>if data and data_xyz are not None, then print them independently
+if there are data only, then uses X0,Y0,Z0 to write data_xyz
+if there are data_xyz only, recreate data and write it</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.read_cats_file">
+<span class="sig-name descname"><span class="pre">read_cats_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ifile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.read_cats_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read cats files in a directory and actually loads the time series</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.write_cats">
+<span class="sig-name descname"><span class="pre">write_cats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets_dates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.write_cats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a file for a cats analysis
+if offsets_dates is not None then offsets are added at the beginning of the file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.force_daily">
+<span class="sig-name descname"><span class="pre">force_daily</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.force_daily" title="Permalink to this definition">¶</a></dt>
+<dd><p>force a time series to be daily with dates at 12:00:00 of every day</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.get_unr">
+<span class="sig-name descname"><span class="pre">get_unr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">site</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.get_unr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a time series from <a class="reference external" href="http://geodesy.unr.edu/gps_timeseries/txyz/IGS14/">http://geodesy.unr.edu/gps_timeseries/txyz/IGS14/</a> in PYACS</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>site</strong> – 4-letters code</p></li>
+<li><p><strong>verbose</strong> – verbose mode</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.read_kenv">
+<span class="sig-name descname"><span class="pre">read_kenv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ifile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jd'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.read_kenv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read kenv file (magnet) format for time series</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.read_mb_file">
+<span class="sig-name descname"><span class="pre">read_mb_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ifile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.read_mb_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read GAMIT/GLOBK mb_files in a directory and actually loads the time series</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.read_pride">
+<span class="sig-name descname"><span class="pre">read_pride</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tsdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.read_pride" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read PRIDE-PPPAR kinematic result file
+:param tsdir: directory of pride-pppar kinematic files
+:param tsfile: pride-pppar kinematic file to be loaded
+:param verbose: verbose mode
+:return Nothing:
+:note: If file=None, then read_pride will look for a files named kin_*code</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.read_pride_pos">
+<span class="sig-name descname"><span class="pre">read_pride_pos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tsdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.read_pride_pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read PRIDE-PPPAR static result file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tsdir</strong> – directory of pride-pppar pos static files</p></li>
+<li><p><strong>tsfile</strong> – pride-pppar pos static file to be loaded</p></li>
+<li><p><strong>verbose</strong> – verbose mode</p></li>
+</ul>
+</dd>
+</dl>
+<p>:note:If file=None, then read_pride will look for a files named pos_*code</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.read_tdp">
+<span class="sig-name descname"><span class="pre">read_tdp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ifile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.read_tdp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read tdp (Gipsy kinematics provided by Cedric Twardzik 17/04/2018) format for time series</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.to_pandas_df">
+<span class="sig-name descname"><span class="pre">to_pandas_df</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uncertainty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.to_pandas_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a pyacs Gts to a pandas dataframe</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>pandas DataFrame</p>
+</dd>
+<dt class="field-even">Note</dt>
+<dd class="field-even"><p>uncertainties are not imported.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.read_track_NEU">
+<span class="sig-name descname"><span class="pre">read_track_NEU</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tsdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leap_sec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eq_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.read_track_NEU" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a GAMIT/GLOBK Track output file generated with the option out_type NEU
+in this case dates are seconds
+by default the seconds are with respect to the first epoch of measurements
+If option leap_sec is provided with a value &gt; 0.0, then GPS time is corrected for the difference between GPTS time and UTC 
+If eq_time is provided, it is assumed to be UTC. Expected format is YYYY:MM:MD:HH:MM:SS.S</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="gts-primitive-methods">
+<h2>Gts primitive methods<a class="headerlink" href="#gts-primitive-methods" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="id0">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyacs.gts.Gts.</span></span><span class="sig-name descname"><span class="pre">Gts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_corr_neu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_corr_xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets_dates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outliers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annual</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">semi_annual</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ifile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/Gts.html#Gts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.cdata">
+<span class="sig-name descname"><span class="pre">cdata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.cdata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check data/data_xyz attributes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – boolean, if True, data attribute will be checked</p></li>
+<li><p><strong>data_xyz</strong> – boolean, if True, data_xyz attribute will be checked</p></li>
+<li><p><strong>tol</strong> – tolerance in days for two dates to be considered as the same (default 0.001 of day)</p></li>
+<li><p><strong>verbose</strong> – boolean, verbose mode</p></li>
+</ul>
+</dd>
+</dl>
+<p>:return : boolean, True if everything is OK, False otherwise</p>
+<p>:note : in future, this routine should also whether .data and .data_xyz value are consistent</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loutliers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>makes a (deep) copy of the time series.</p>
+<p>By default, all attributes are also copied, including .data, .data_xyz, loutliers etc.</p>
+<p>Default behaviour can be modified for the following attribute:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – can be set to None or a 2D numpy array of shape (n,10)</p></li>
+<li><p><strong>data_xyz</strong> – can be set to None or a 2D numpy array of shape (n,10)</p></li>
+<li><p><strong>loutliers</strong> – False will not copy the loutliers atrribute</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.differentiate">
+<span class="sig-name descname"><span class="pre">differentiate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.differentiate" title="Permalink to this definition">¶</a></dt>
+<dd><p>differentiate the current time series
+:return: the differentiated time series as a new Gts object
+:note : differentiation is made on .data. .data_xyz is set to None.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.extract_periods">
+<span class="sig-name descname"><span class="pre">extract_periods</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lperiod</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_reset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.extract_periods" title="Permalink to this definition">¶</a></dt>
+<dd><p>extract periods of a Gts</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lperiod</strong> – a list [start_date,end_date] or a list of periods e.g. periods=[[2000.1,2003.5],[2009.3,2010.8]]</p></li>
+<li><p><strong>in_place</strong> – if True, will make change in place, if False, return s a new time series</p></li>
+</ul>
+</dd>
+<dt class="field-even">Note 1</dt>
+<dd class="field-even"><p>X0,Y0,Z0 attributes will be changed if necessary</p>
+</dd>
+<dt class="field-odd">Note 2</dt>
+<dd class="field-odd"><p>handles both .data and .data_xyz</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.exclude_periods">
+<span class="sig-name descname"><span class="pre">exclude_periods</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lperiod</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.exclude_periods" title="Permalink to this definition">¶</a></dt>
+<dd><p>exclude periods of a Gts</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lperiod</strong> – a list [start_date,end_date] or a list of periods e.g. periods=[[2000.1,2003.5],[2009.3,2010.8]]</p></li>
+<li><p><strong>in_place</strong> – if True, will make change in place, if False, return s a new time series</p></li>
+</ul>
+</dd>
+<dt class="field-even">Note 1</dt>
+<dd class="field-even"><p>X0,Y0,Z0 attributes will be changed if necessary</p>
+</dd>
+<dt class="field-odd">Note 2</dt>
+<dd class="field-odd"><p>handles both .data and .data_xyz</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.extract_dates">
+<span class="sig-name descname"><span class="pre">extract_dates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.extract_dates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a time series extracted for a given list of dates</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dates</strong> – dates either as a list or  1D numpy array of decimal dates</p></li>
+<li><p><strong>tol</strong> – date tolerance in days to assert that two dates are equal (default 0.05 day)</p></li>
+<li><p><strong>in_place</strong> – if True, will make change in place, if False, return s a new time series</p></li>
+<li><p><strong>verbose</strong> – boolean, verbose mode</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.substract_ts">
+<span class="sig-name descname"><span class="pre">substract_ts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.substract_ts" title="Permalink to this definition">¶</a></dt>
+<dd><p>substract the ts provided as argument to the current time series</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ts</strong> – time series to be substracted as a Gts instance</p></li>
+<li><p><strong>tol</strong> – date tolerance to decide whether two dates are identical in both time series. default = 1/4 day</p></li>
+<li><p><strong>verbose</strong> – verbose mode</p></li>
+</ul>
+</dd>
+</dl>
+<p>:return : new Gts</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.substract_ts_daily">
+<span class="sig-name descname"><span class="pre">substract_ts_daily</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.substract_ts_daily" title="Permalink to this definition">¶</a></dt>
+<dd><p>substract the ts provided as argument to the current time series</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ts</strong> – time series to be substracted as a Gts instance</p></li>
+<li><p><strong>verbose</strong> – verbose mode</p></li>
+</ul>
+</dd>
+</dl>
+<p>:return : new Gts</p>
+<dl class="field-list simple">
+<dt class="field-odd">Note</dt>
+<dd class="field-odd"><p>this method assumes daily time series</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.add_offsets_dates">
+<span class="sig-name descname"><span class="pre">add_offsets_dates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">offsets_dates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.add_offsets_dates" title="Permalink to this definition">¶</a></dt>
+<dd><p>add_offsets_dates to a time series
+if in_place = True then replace the current time series</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.remove_velocity">
+<span class="sig-name descname"><span class="pre">remove_velocity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vel_neu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.remove_velocity" title="Permalink to this definition">¶</a></dt>
+<dd><p>remove velocity from a time series
+vel_neu is a 1D array of any arbitrary length, but with the velocities (NEU) to be removed in the first 3 columns
+if in_place = True then replace the current time series</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.set_zero_at_date">
+<span class="sig-name descname"><span class="pre">set_zero_at_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.set_zero_at_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>make a translation of a time series, setting to 0 at a given date
+if the provided date does not exist, uses the next date available</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date</strong> – date in decimal year</p></li>
+<li><p><strong>offset</strong> – an offset (in mm) to be added. Could be a float, a list or 1D numpy array with 3 elements</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.decimate">
+<span class="sig-name descname"><span class="pre">decimate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'median'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.decimate" title="Permalink to this definition">¶</a></dt>
+<dd><p>decimate a time series</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time_step</strong> – time step in days</p></li>
+<li><p><strong>dates</strong> – list of dates where point are forced to be written regardless time_step</p></li>
+<li><p><strong>method</strong> – method used to be used to calculated the position. choose among [‘median’,’mean’,’exact’]</p></li>
+<li><p><strong>verbose</strong> – verbose mode</p></li>
+</ul>
+</dd>
+</dl>
+<p>:return : new Gts</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.displacement">
+<span class="sig-name descname"><span class="pre">displacement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sdate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'median'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speriod</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eperiod</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rounding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'day'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.displacement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates displacements between two dates or two periods</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sdate</strong> – start date in decimal year</p></li>
+<li><p><strong>edate</strong> – start date in decimal year</p></li>
+<li><p><strong>window</strong> – time window in days for searching available dates</p></li>
+<li><p><strong>method</strong> – method to calculate the position. ‘median’ or ‘mean’. default is ‘median’.</p></li>
+<li><p><strong>speriod</strong> – period for calculating the start position</p></li>
+<li><p><strong>eperiod</strong> – period for calculating the end position</p></li>
+<li><p><strong>rounding</strong> – rounding for dates. Choose among ‘day’,’hour’,’minute’ or ‘second’. default is ‘day’.</p></li>
+<li><p><strong>verbose</strong> – verbose mode</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>displacement as np.array([dn,de,du,sdn,sde,sdu])</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.add_obs">
+<span class="sig-name descname"><span class="pre">add_obs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NEUSNSESUCNECNUCEU</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.add_obs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds observation(s) as DN,DE,DU to a time series</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date</strong> – date in decimal year. float, a list or 1D numpy array</p></li>
+<li><p><strong>NEUSNSESUCNECNUCEU</strong> – value to be added in the Gts, provided as a list, a 1D numpy array or a 2D numpy array.
+requires at least NEU: North, East, UP values
+optional: SN, SE, SU, CNE, CNU, CEU: standard deviations and correlation coefficient between North, East and Up components.
+If not provided, SN=SE=SU=0.001 (1 mm) and CNE=CNU=CEU=0</p></li>
+<li><p><strong>in_place</strong> – boolean, if True add_obs to the current Gts, if False, returns a new Gts</p></li>
+<li><p><strong>check</strong> – check time order and duplicate dates</p></li>
+<li><p><strong>verbose</strong> – verbose mode</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new Gts or the modified Gts if in_place</p>
+</dd>
+<dt class="field-odd">Note</dt>
+<dd class="field-odd"><p>if it exists, .data_xyz will be set to None for consistency.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.add_obs_xyz">
+<span class="sig-name descname"><span class="pre">add_obs_xyz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XYZSXSYSZCXYCXZCYZ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.add_obs_xyz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds observation(s) as XYZ to a time series</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date</strong> – date in decimal year. float, a list or 1D numpy array</p></li>
+<li><p><strong>XYZSXSYSZCXYCXZCYZ</strong> – value to be added in the Gts, provided as a list, a 1D numpy array or a 2D numpy array.    requires at least X,Y,Z. Optional: SX, SY, SZ, CXY, CXZ, CYZ: standard deviations and correlation coefficients.    If not provided, SX=SY=SZ=0.001 (1 mm) and CXY=CXZ=CYZ=0</p></li>
+<li><p><strong>in_place</strong> – boolean, if True add_obs to the current Gts, if False, returns a new Gts</p></li>
+<li><p><strong>check</strong> – check time order , duplicate dates and re-generate NEU time series (.data)</p></li>
+<li><p><strong>neu</strong> – regenerate .data from the updated .data_xyz</p></li>
+<li><p><strong>verbose</strong> – verbose mode</p></li>
+</ul>
+</dd>
+</dl>
+<p>:return : new Gts or the modified Gts if in_place
+:note 1: by default .data will be updated from .data_xyz, and X0,Y0,Z0 will be updated.
+:note 2:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.xyz2neu">
+<span class="sig-name descname"><span class="pre">xyz2neu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.xyz2neu" title="Permalink to this definition">¶</a></dt>
+<dd><p>populates neu (data) using xyz (data_xyz)
+lon, lat and h will also be set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>corr</strong> – if True, then standard deviation and correlations will also be calculated</p></li>
+<li><p><strong>ref_xyz</strong> – [X,Y,Z] corresponding to the 0 of the local NEU frame. If not provided, the first position is used as a reference</p></li>
+<li><p><strong>verbose</strong> – verbose mode</p></li>
+</ul>
+</dd>
+<dt class="field-even">Note</dt>
+<dd class="field-even"><p>this method is always in place</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.neu2xyz">
+<span class="sig-name descname"><span class="pre">neu2xyz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.neu2xyz" title="Permalink to this definition">¶</a></dt>
+<dd><p>populates .data_xyz from .data
+requires X0,Y0,Z0 attributes to be set</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>corr</strong> – if True, then standard deviation and correlations will also be calculated</p></li>
+<li><p><strong>verbose</strong> – verbose mode</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.reorder">
+<span class="sig-name descname"><span class="pre">reorder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.reorder" title="Permalink to this definition">¶</a></dt>
+<dd><p>reorder data and/or data_xyz by increasing dates
+always in place</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>verbose</strong> – verbose mode</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.extract_ndates_before_date">
+<span class="sig-name descname"><span class="pre">extract_ndates_before_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.extract_ndates_before_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract n values before a given date
+If n values are not available, returns all available values before date
+.data is set to None if no value at all is available</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date</strong> – date in decimal year</p></li>
+<li><p><strong>n</strong> – number of observations to be extracted</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a new Gts</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.extract_ndates_after_date">
+<span class="sig-name descname"><span class="pre">extract_ndates_after_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.extract_ndates_after_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract n values after a given date
+If n values are not available, returns all available values after date
+.data is set to None if no value at all is available</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date</strong> – date in decimal year</p></li>
+<li><p><strong>n</strong> – number of observations to be extracted</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a new Gts</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.extract_ndates_around_date">
+<span class="sig-name descname"><span class="pre">extract_ndates_around_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.extract_ndates_around_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract n values before and n values after a given date
+If n values are not available, returns all available values
+.data is set to None if no value at all is available</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date</strong> – date in decimal year</p></li>
+<li><p><strong>n</strong> – number of observations to be extracted</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a new Gts</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.get_coseismic">
+<span class="sig-name descname"><span class="pre">get_coseismic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eq_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_days</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_after</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'median'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.get_coseismic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get coseismic displacement at a given date.
+Coseismic displacement is estimated as the position difference between the median of window_days before 
+the earthquake date and the median of sample_after samples after the earthquake date.</p>
+<p>note: only median method implemented</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.correct_duplicated_dates">
+<span class="sig-name descname"><span class="pre">correct_duplicated_dates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'correct'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.correct_duplicated_dates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check or remove duplicated dates in a time series</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>action</strong> – ‘correct’ (default) or ‘check’</p></li>
+<li><p><strong>tol</strong> – tolerance for two dates to be considered as the same (default = 0.1 day)</p></li>
+<li><p><strong>in_place</strong> – boolean, if True,</p></li>
+<li><p><strong>verbose</strong> – verbose mode</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.rotate">
+<span class="sig-name descname"><span class="pre">rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.rotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>rotates the axis by an angle</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>angle</strong> – angle in decimal degrees clockwise</p>
+</dd>
+</dl>
+<p>if in_place = True then replace the current time series</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.insert_gts_data">
+<span class="sig-name descname"><span class="pre">insert_gts_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.insert_gts_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>insert data (and/or) .data_xyz of a gts into the current gts</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gts</strong> – time series to be inserted</p></li>
+<li><p><strong>in_place</strong> – boolean, if True add_obs to the current Gts, if False, returns a new Gts</p></li>
+<li><p><strong>verbose</strong> – verbose mode</p></li>
+</ul>
+</dd>
+</dl>
+<p>:return : new Gts or the modified Gts if in_place</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.insert_ts">
+<span class="sig-name descname"><span class="pre">insert_ts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rounding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'day'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xyz'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.insert_ts" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ts</strong> – Gts to be inserted</p></li>
+<li><p><strong>rounding</strong> – data rounding, used to decide whether an entry should be replaced.
+Choose among [‘second’,’minute’,’hour’,’day]</p></li>
+<li><p><strong>data</strong> – Gts attribute to be updated. ‘xyz’ for .data_xyz or None for .data</p></li>
+<li><p><strong>overlap</strong> – if True, update occurs only on dates. If False, then ts overwrites the current Gts over the ts period</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a new gts</p>
+</dd>
+<dt class="field-odd">Note</dt>
+<dd class="field-odd"><p>The returned gts will have .data or .data_xyz will be set to None according to data argument</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.find_large_uncertainty">
+<span class="sig-name descname"><span class="pre">find_large_uncertainty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigma_thresold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lcomponent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NE'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.find_large_uncertainty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find dates with large uncertainty and flag them as outliers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sigma_threshold</strong> – value (mm) for a date to be flagged.</p></li>
+<li><p><strong>verbose</strong> – verbose mode</p></li>
+<li><p><strong>lcomponent</strong> – list of components to be checked. default = ‘NE’</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.split_gap">
+<span class="sig-name descname"><span class="pre">split_gap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.split_gap" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gap</strong> – gap in number of days to split the time series</p></li>
+<li><p><strong>verbose</strong> – verbose mode</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list a gts split from the original</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.interpolate">
+<span class="sig-name descname"><span class="pre">interpolate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'day'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.interpolate" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> – Gts instance</p></li>
+<li><p><strong>date</strong> – ‘day’ will perform daily interpolation, alternatively date is a 1D numpy array with either datetime or decimal year</p></li>
+<li><p><strong>method</strong> – scipy.interpolate.interp1d kind argument</p></li>
+<li><p><strong>gap</strong> – maximum gap for interpolation</p></li>
+<li><p><strong>in_place</strong> – boolean.</p></li>
+<li><p><strong>verbose</strong> – verbose mode</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="gts-model-methods">
+<h2>Gts model methods<a class="headerlink" href="#gts-model-methods" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="id1">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyacs.gts.Gts.</span></span><span class="sig-name descname"><span class="pre">Gts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_corr_neu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_corr_xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets_dates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outliers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annual</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">semi_annual</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ifile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/Gts.html#Gts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id1" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.detrend">
+<span class="sig-name descname"><span class="pre">detrend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'L2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_periods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.detrend" title="Permalink to this definition">¶</a></dt>
+<dd><p>detrends a time series and save velocity estimates in velocity attribute</p>
+<p>:param periods         : periods used to estimate the velocity
+:param exclude_periods : periods to be excluded for the velocity estimate
+:param in_place        : if True then replace the current time series
+:return                : the detrended time series
+:note                  : outliers from Gts.outliers are omitted in the estimation and
+offsets given Gts.offsets_dates are estimated simultaneously</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.detrend_seasonal">
+<span class="sig-name descname"><span class="pre">detrend_seasonal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'L2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_periods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.detrend_seasonal" title="Permalink to this definition">¶</a></dt>
+<dd><p>estimates a trend + annual + semi-annual terms in a time series and removes them
+velocity, annual and semi-annual attributes are saved in Gts.velocity, Gts.annual, Gts.semi_annual</p>
+<p>:param periods         : periods used for estimation
+:param exclude_periods : periods to be excluded from estimation
+:param in_place        : if True then replace the current time series
+:return                : the detrended time series
+:note                  : outliers from Gts.outliers are ommitted in the estimation and
+offsets given Gts.offsets_dates are estimated simultaneously</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.detrend_annual">
+<span class="sig-name descname"><span class="pre">detrend_annual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'L2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_periods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.detrend_annual" title="Permalink to this definition">¶</a></dt>
+<dd><p>estimates a trend + annual terms in a time series and removes them
+velocity and annual attribute are saved in Gts.velocity &amp; Gts.annual</p>
+<p>:param periods         : periods used for estimation
+:param exclude_periods : periods to be excluded from estimation
+:param in_place        : if True then replace the current time series
+:return                : the detrended time series
+:note                  : outliers from Gts.outliers are ommitted in the estimation and
+offsets given Gts.offsets_dates are estimated simultaneously</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.detrend_median">
+<span class="sig-name descname"><span class="pre">detrend_median</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delta_day</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_periods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.detrend_median" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates a velocity using the median of pair of displacements exactly separated by one year, inspired from MIDAS
+If the time series has less than a year of data, then the time series is kept untouched.
+:param delta_day: if None, it is one year, if 0 then it is the relax mode for campaign data,</p>
+<blockquote>
+<div><p>any integer is the time delta (in days) used to compute velocity.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>in_place</strong> – boolean, if True, in_place, if False, returns a new Gts instance (default)</p></li>
+<li><p><strong>periods</strong> – periods (list of lists) to be included for trend calculation</p></li>
+<li><p><strong>exclude_periods</strong> – periods (list of lists) to be excluded for trend calculation</p></li>
+<li><p><strong>verbose</strong> – verbose mode</p></li>
+<li><p><strong>auto</strong> – if True, then start will delta_day=None, if it fails or found less than 100 pairs then use delta_day=0,
+if fails then use regular detrend</p></li>
+</ul>
+</dd>
+<dt class="field-even">Note</dt>
+<dd class="field-even"><p>returns None if time series is shorter than 1 year</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.detrend_seasonal_median">
+<span class="sig-name descname"><span class="pre">detrend_seasonal_median</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">11</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.detrend_seasonal_median" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates a velocity using the median of pair of displacements exactly separated by one year, inspired from MIDAS and then removes repeating yearly signal
+If the time series has less than three years of data, then the time series is kept untouched.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.frame">
+<span class="sig-name descname"><span class="pre">frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotates a time series according to an Euler pole
+Returns a new Gts instance</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.make_model">
+<span class="sig-name descname"><span class="pre">make_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'detrend'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'L2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loutlier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.make_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate linear model parameters using least squares
+input: data: Gts format
+option are: ‘detrend’/’detrend_annual’/’detrend_seasonal’
+output: new Gts object: time series is now the residuals wrt to the model and its associated values (vel, annual, semi-annual etc)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.mmodel">
+<span class="sig-name descname"><span class="pre">mmodel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.mmodel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a modeled time series from the parameters read in self</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.remove_pole">
+<span class="sig-name descname"><span class="pre">remove_pole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pole</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pole_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'euler'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.remove_pole" title="Permalink to this definition">¶</a></dt>
+<dd><p>remove velocity predicted by an Euler pole or a rotation rate vector from a time series
+pole is a 1D array with 3 values
+requires self.lon &amp; self.lat attributes to have been filled before
+if in_place = True then replace the current time series</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.add_vel_sigma">
+<span class="sig-name descname"><span class="pre">add_vel_sigma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b_fn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.add_vel_sigma" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculates realistic sigma on velocity components assuming white &amp;
+flicker using eq (19) &amp; (23) from Williams (J. of Geodesy, 2003)
+b_fn is the value for flicker noise, taken as 4 mm/yr^1/4
+model can be detrend, detrend_annual, detrend_seasonal
+if in_place = True then replace the current time series</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.trajectory">
+<span class="sig-name descname"><span class="pre">trajectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset_dates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eq_dates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">H_fix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">H_constraints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">H_bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NEU'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.trajectory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the parameters of a (non-linear) trajectory model for a Geodetic Time Series.
+The trajectory model is:</p>
+<p>y(t) =</p>
+<p>trend : trend_cst + trend * ( t - t0 ) +</p>
+<p>annual: a_annual * cos( 2*pi + phi_annual ) +</p>
+<p>semi-annual: a_semi_annual * cos( 2*pi + phi_semi_annual ) +</p>
+<p>offset : Heaviside( t - t_offset_i ) * offset_i +</p>
+<p>post-seismic_deformation as decaying log (psd_log):   psd_eq_i * np.log( 1 + Heaviside( t - eq_i )/tau_i )</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>model_type</strong> – string made of the key-word the parameters to be estimated.</p>
+</dd>
+</dl>
+<p>Key-word parameters are</p>
+<p>‘trend’,’annual’,’semi-annual’,’seasonal’,’offset’,’psd_log’.</p>
+<p>‘trend-seasonal-offset-psd_log’ will do the full trajectory model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>offset_dates</strong> – a list of offset_dates in decimal year</p></li>
+<li><p><strong>eq_dates</strong> – a list of earthquake dates for which post-seismic deformation (psd_log) will be estimated</p></li>
+<li><p><strong>H_fix</strong> – a dictionary including the name of the parameter to be hold fixed and the value.</p></li>
+</ul>
+</dd>
+</dl>
+<p>For instance to impose the co-seismic offset (North-East-Up) and relaxation time of 100 days for the
+first earthquake use:</p>
+<p>H_fix = { ‘psd_log_offset_00’:[10., 15., 0.] , ‘psd_log_tau_00’:[100., 100., 100.]}</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>H_constraints</strong> – a dictionary including the name of the parameter to be constrained.</p>
+</dd>
+</dl>
+<p>For instance to impose a 50 days constraints around 500 days
+on the relaxation time of the second earthquake for all NEU components use: H_fix = { ‘psd_log_tau_01’:[[500.,50],
+[500.,50] , [500.,50]]}</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>H_bounds</strong> – a dictionary including the bounds.</p>
+</dd>
+</dl>
+<p>For instance to impose a relaxation time for the third earthquake to be in the range
+of 2 to 3 years, for all NEU components use: H_bounds = { ‘psd_log_tau_02’:[[2*365.,3*365.], [[2*365.,3*365.] ,
+[[2*365.,3*365.]]}</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>component</strong> – string , component for which the trajectory model will be estimated.</p></li>
+<li><p><strong>verbose</strong> – verbose mode</p></li>
+</ul>
+</dd>
+<dt class="field-even">Note</dt>
+<dd class="field-even"><p>Unlike most pyacs.gts functions, trajectory returns 4 elements: the results as a dictionary, the model Gts,</p>
+</dd>
+</dl>
+<p>the residual Gts and a Gts with model predictions at every day.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="gts-filter-methods">
+<h2>Gts filter methods<a class="headerlink" href="#gts-filter-methods" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="id2">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyacs.gts.Gts.</span></span><span class="sig-name descname"><span class="pre">Gts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_corr_neu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_corr_xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets_dates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outliers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annual</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">semi_annual</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ifile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/Gts.html#Gts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.l1_trend">
+<span class="sig-name descname"><span class="pre">l1_trend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vlambda</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NEU'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.l1_trend" title="Permalink to this definition">¶</a></dt>
+<dd><p>return a piecewise linear filtered Gts</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vlambda</strong> – weight of regularization</p></li>
+<li><p><strong>gap</strong> – gap in days to split the time series before applying the filter.default is 10.</p></li>
+<li><p><strong>in_place</strong> – if True then replace the current time series</p></li>
+<li><p><strong>verbose</strong> – boolean, verbose mode</p></li>
+<li><p><strong>component</strong> – string. Default ‘NEU’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the filtered time series</p>
+</dd>
+<dt class="field-odd">Note</dt>
+<dd class="field-odd"><p>if there are less than 4 points in a segment, return an L1 estimated trend</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.minimum_component">
+<span class="sig-name descname"><span class="pre">minimum_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask_period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fcut</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.minimum_component" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minimum component filtering for Gts.
+Minimum component filtering is useful for determining the background
+component of a signal in the presence of spikes
+:param mask_periods: periods (list or list of lists) which should be ignored for smoothing
+:param p: integer (optional). polynomial degree to be used for the fit (default = 1)
+:param fcut: float (optional). the cutoff frequency for the low-pass filter.  Default value is f_nyq / sqrt(N)
+:param Q: float (optional). the strength of the low-pass filter.  Larger Q means a steeper cutoff. default value is 0.1 * fcut
+:param in_place: if True then replace the current time series
+:param verbose: boolean, verbose mode
+:return: the filtered time series
+:note:
+This code follows the procedure explained in the book
+“Practical Statistics for Astronomers” by Wall &amp; Jenkins book, as
+well as in Wall, J, A&amp;A 122:371, 1997</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.savitzky_golay">
+<span class="sig-name descname"><span class="pre">savitzky_golay</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polyorder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'interp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.savitzky_golay" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a filtered time series using scipy.signal.savgol_filter</p>
+<p>See documentation for the filter parameters.
+<a class="reference external" href="http://https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.savgol_filter.html#scipy.signal.savgol_filter">http://https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.savgol_filter.html#scipy.signal.savgol_filter</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>in_place</strong> – if True then replace the current time series</p></li>
+<li><p><strong>verbose</strong> – boolean, verbose mode</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the filtered time series</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.smooth">
+<span class="sig-name descname"><span class="pre">smooth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">11</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hanning'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NEU'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.smooth" title="Permalink to this definition">¶</a></dt>
+<dd><p>smooth a time series</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.spline">
+<span class="sig-name descname"><span class="pre">spline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smoothing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.spline" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>smoothing</strong> – Positive smoothing factor used to choose the number of knots. Number of knots will be increased</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>until the smoothing condition is satisfied:</dt><dd><p>sum((w[i] * (y[i]-spl(x[i])))**2, axis=0) &lt;= s</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>degree</strong> – Degree of the smoothing spline. Must be &lt;= 5. Default is k=3, a cubic spline.</p></li>
+<li><p><strong>date</strong> – 1D array of interpolation dates in decimal year, or ‘day’ for every day. defualt None will interpolate</p></li>
+</ul>
+</dd>
+</dl>
+<p>at data date only.
+:return: new gts instance</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.vondrak">
+<span class="sig-name descname"><span class="pre">vondrak</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NEU'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.vondrak" title="Permalink to this definition">¶</a></dt>
+<dd><p>returned a filtered Gts using a Vondrak filter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fc</strong> – cutoff frequence in cycle per year</p></li>
+<li><p><strong>in_place</strong> – if True then replace the current time series</p></li>
+<li><p><strong>verbose</strong> – boolean, verbose mode</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the filtered time series</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.wiener">
+<span class="sig-name descname"><span class="pre">wiener</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">my_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.wiener" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a filtered time series using scipy.signal.wiener</p>
+<p>See documentation for the filter parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>in_place</strong> – if True then replace the current time series</p></li>
+<li><p><strong>verbose</strong> – boolean, verbose mode</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the filtered time series</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="gts-outliers-methods">
+<h2>Gts outliers methods<a class="headerlink" href="#gts-outliers-methods" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="id3">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyacs.gts.Gts.</span></span><span class="sig-name descname"><span class="pre">Gts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_corr_neu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_corr_xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets_dates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outliers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annual</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">semi_annual</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ifile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/Gts.html#Gts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id3" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.remove_outliers">
+<span class="sig-name descname"><span class="pre">remove_outliers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">periods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.remove_outliers" title="Permalink to this definition">¶</a></dt>
+<dd><p>removes outliers provided in self.outliers
+return a new Gts without the outliers
+if in_place = True then self has the outliers removed as well (in _place)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.find_outliers_sliding_window">
+<span class="sig-name descname"><span class="pre">find_outliers_sliding_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[[]]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excluded_periods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[[]]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NE'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">automatic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.find_outliers_sliding_window" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find outliers using sliding windows</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.find_outliers_vondrak">
+<span class="sig-name descname"><span class="pre">find_outliers_vondrak</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[[]]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excluded_periods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[[]]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NE'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.find_outliers_vondrak" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find outliers using a Vondrak filter</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="gts-plot-methods">
+<h2>Gts plot methods<a class="headerlink" href="#gts-plot-methods" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="id4">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyacs.gts.Gts.</span></span><span class="sig-name descname"><span class="pre">Gts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_corr_neu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_corr_xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets_dates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outliers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annual</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">semi_annual</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ifile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/Gts.html#Gts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="pyacs.gts.Gts.Gts.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loffset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loutliers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaxis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_yaxis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yupaxis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xticks_minor_locator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lcomponent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['N',</span> <span class="pre">'E',</span> <span class="pre">'U']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lperiod</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[[]]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lvline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_dir_plots</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cal'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_ref</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">superimposed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lcolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['r',</span> <span class="pre">'g',</span> <span class="pre">'c',</span> <span class="pre">'m',</span> <span class="pre">'y',</span> <span class="pre">'k',</span> <span class="pre">'b']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_zero_at_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel_fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.Gts.Gts.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a plot of a North-East-Up time series and related info (offsets, outliers) using Matplotlib</p>
+<p>Coordinates of the time series are assumed to be in meters
+default plots units will be mm; Use unit=’m’ to get meters instead</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> – string to be added to the site name as a plot title</p></li>
+<li><p><strong>loffset</strong> – boolean
+print a dash vertical line at offset dates</p></li>
+<li><p><strong>loutliers</strong> – boolean
+print outliers</p></li>
+<li><p><strong>verbose</strong> – boolean
+verbose mode</p></li>
+<li><p><strong>date</strong> – [sdate,edate]
+start and end date for plots
+sdate and edate in decimal years if date_unit is either ‘decyear’ or ‘cal’, or in days if date_unit is ‘days’</p></li>
+<li><p><strong>yaxis</strong> – [min_y,max_y]
+min and max value for the yaxis
+if not provided automatically adjusted</p></li>
+<li><p><strong>yupaxis</strong> – same as yaxis but applies to the up component only</p></li>
+<li><p><strong>xticks_minor_locator</strong> – where xticks_minor_locator will be placed. Float when date_unit is ‘decyear’ or ‘days’, a string ‘%Y’,’%m’,’%d’ is date_unit is ‘cal’.</p></li>
+<li><p><strong>lcomponent</strong> – list of components to be plotted (default =[‘N’,’E’,’U’])</p></li>
+<li><p><strong>error_scale</strong> – scaling factor for error bars (default = 1.0, 0 means no error bar)</p></li>
+<li><p><strong>lperiod</strong> – list of periods to be drawn in background (color=light salmon)</p></li>
+<li><p><strong>lvline</strong> – list of dates where vertical lines will be drawn in background (color=green)</p></li>
+<li><p><strong>save_dir_plots</strong> – directory used for saving the plots</p></li>
+<li><p><strong>save</strong> – name, save the plot into name, if simply True an automatic name is given</p></li>
+<li><p><strong>show</strong> – boolean, is True show the plot</p></li>
+<li><p><strong>unit</strong> – ‘m’,’cm’,’mm’, default=’mm’</p></li>
+<li><p><strong>date_unit</strong> – ‘decyear’ or ‘cal’ or ‘days’, default=’decyear’</p></li>
+<li><p><strong>date_ref</strong> – reference date, default=0.0</p></li>
+<li><p><strong>center</strong> – boolean, if True the y_axis is centered around the mean value for the plotted period</p></li>
+<li><p><strong>superimposed</strong> – if a gts is provided, it is superimposed to the master, default=None</p></li>
+<li><p><strong>lcolor</strong> – color list used for the superimposed time series, default=[‘r’,’g’,’c’,’m’,’y’,’k’,’b’]</p></li>
+<li><p><strong>label</strong> – label for superimposed time series to be displayed in legend, default=None</p></li>
+<li><p><strong>legend</strong> – boolean. Set true to display label for superimposed time series, default=False</p></li>
+<li><p><strong>set_zero_at_date</strong> – date at which the master and superimposed gts will be equal (default=None). date can also be a list with [date,offset_north,offset_east,offset_up]</p></li>
+<li><p><strong>plot_size</strong> – plot size as a tuple. Default, best guess.</p></li>
+<li><p><strong>grid</strong> – boolean</p></li>
+<li><p><strong>info</strong> – title to appear in time series subplots</p></li>
+<li><p><strong>**kwargs</strong> – <p>any argument to be passed to  matplotlib.pyplot.errorbar</p>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Note</dt>
+<dd class="field-even"><p>The list of kwargs are:</p>
+</dd>
+</dl>
+<p>{  ‘linewidth’ : 0,       ‘marker’ : marker_main_symbol ,       ‘markersize’ : marker_main_size,        ‘markerfacecolor’ : marker_main_color,       ‘markeredgecolor’ : marker_main_color,       ‘markeredgewidth’ : marker_main_colorlw,       ‘ecolor’ : error_bar_color,       ‘elinewidth’ : error_bar_linewidth,       ‘capsize’ : error_bar_capsize }</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

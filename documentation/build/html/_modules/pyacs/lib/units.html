@@ -1,0 +1,330 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.lib.units &mdash; pyacs 0.65.66 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.66
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.lib.units</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.lib.units</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Various routines dealing with units conversion.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="mas2rad"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.units.mas2rad">[docs]</a><span class="k">def</span> <span class="nf">mas2rad</span><span class="p">(</span><span class="n">mas</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+    <span class="sd">&quot;&quot;&quot;Converts milliarcseconds to radians</span>
+
+<span class="sd">    :param mas: angle in millarcseconds</span>
+<span class="sd">    </span>
+<span class="sd">    :returns: rad: in radians</span>
+<span class="sd">    </span>
+<span class="sd">    :Example:</span>
+<span class="sd">    &gt;&gt;&gt; import pyacs</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.mas2rad(1.)</span>
+<span class="sd">    &gt;&gt;&gt; 4.84813681109536e-09</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.mas2rad(np.array([1.0,2.0]))</span>
+<span class="sd">    &gt;&gt;&gt; array([  4.84813681e-09,   9.69627362e-09])</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mas</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">np_mas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">mas</span> <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">np_mas</span> <span class="o">=</span> <span class="n">mas</span>
+    
+    <span class="k">return</span><span class="p">(</span> <span class="n">np_mas</span><span class="o">*</span><span class="mf">2.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">360.</span><span class="o">/</span><span class="mf">60.</span><span class="o">/</span><span class="mf">60.</span><span class="o">/</span><span class="mf">1000.</span><span class="p">)</span></div>
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="rad2mas"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.units.rad2mas">[docs]</a><span class="k">def</span> <span class="nf">rad2mas</span><span class="p">(</span><span class="n">rad</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts radians to milliarcseconds</span>
+<span class="sd">    </span>
+<span class="sd">    :param rad: angle in radians</span>
+<span class="sd">    </span>
+<span class="sd">    :returns mas: angle in millarcseconds: </span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">rad</span><span class="o">/</span><span class="mf">2.</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="mf">360.</span><span class="o">*</span><span class="mf">60.</span><span class="o">*</span><span class="mf">60.</span><span class="o">*</span><span class="mf">1000.</span><span class="p">)</span></div>
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="radians2deg_mn_sec"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.units.radians2deg_mn_sec">[docs]</a><span class="k">def</span> <span class="nf">radians2deg_mn_sec</span><span class="p">(</span><span class="n">rad</span><span class="p">,</span><span class="n">angle_range</span><span class="o">=</span><span class="s1">&#39;-180-180&#39;</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts an angle from radians to deg, minutes, seconds </span>
+
+<span class="sd">    :param rad: angle in radians </span>
+<span class="sd">    :param angle_range: either &#39;-180-180&#39; or &#39;0-360&#39;</span>
+
+<span class="sd">    :returns: deg, minutes, seconds </span>
+<span class="sd">    :rtype: int,int,float</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    
+    <span class="c1"># to degrees</span>
+    <span class="n">decimal_degrees</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">rad</span><span class="p">)</span>
+    <span class="c1"># within 0-360</span>
+    <span class="n">decimal_degrees</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">remainder</span><span class="p">(</span><span class="n">decimal_degrees</span><span class="p">,</span><span class="mf">360.</span><span class="p">)</span>
+    <span class="c1"># -180 - 180 if asked</span>
+    <span class="k">if</span> <span class="n">angle_range</span><span class="o">==</span><span class="s1">&#39;-180-180&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">decimal_degrees</span><span class="o">&gt;</span><span class="mf">180.</span><span class="p">:</span>
+            <span class="n">decimal_degrees</span> <span class="o">=</span> <span class="n">decimal_degrees</span> <span class="o">-</span> <span class="mf">360.</span>
+    
+    <span class="n">angle_sign</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">decimal_degrees</span><span class="p">)</span>
+
+    <span class="c1"># we work only with positive angles</span>
+    <span class="n">decimal_degrees</span><span class="o">=</span><span class="n">decimal_degrees</span> <span class="o">*</span> <span class="n">angle_sign</span>
+    
+            
+    <span class="n">deg</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">decimal_degrees</span><span class="p">)</span>
+    
+    <span class="n">deg_frac</span><span class="o">=</span><span class="n">decimal_degrees</span><span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="n">deg</span><span class="p">)</span>
+    
+    <span class="n">minutes</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">deg_frac</span><span class="o">*</span><span class="mf">60.</span><span class="p">)</span>
+    
+    <span class="n">minutes_frac</span><span class="o">=</span><span class="n">deg_frac</span><span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="n">minutes</span><span class="p">)</span><span class="o">/</span><span class="mf">60.</span>
+    
+    <span class="n">seconds</span><span class="o">=</span><span class="n">minutes_frac</span><span class="o">*</span><span class="mf">3600.</span>
+    
+    <span class="k">return</span><span class="p">(</span><span class="n">angle_sign</span><span class="o">*</span><span class="n">deg</span><span class="p">,</span><span class="n">minutes</span><span class="p">,</span><span class="n">seconds</span><span class="p">)</span></div>
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="moment_to_magnitude"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.units.moment_to_magnitude">[docs]</a><span class="k">def</span> <span class="nf">moment_to_magnitude</span><span class="p">(</span><span class="n">moment</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a moment in N.m to Mw</span>
+<span class="sd">    </span>
+<span class="sd">    :param moment: in N.m</span>
+<span class="sd">    :return magnitude: 2./3.*(math.log10(M0)-9.05)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="n">magnitude</span><span class="o">=</span><span class="mf">2.</span><span class="o">/</span><span class="mf">3.</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">moment</span><span class="p">)</span><span class="o">-</span><span class="mf">9.05</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span> <span class="n">magnitude</span> <span class="p">)</span></div>
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="magnitude_to_moment"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.units.magnitude_to_moment">[docs]</a><span class="k">def</span> <span class="nf">magnitude_to_moment</span><span class="p">(</span><span class="n">magnitude</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a Mw magnitude to moment in N.m</span>
+<span class="sd">    </span>
+<span class="sd">    :param magnitude: Mw</span>
+<span class="sd">    :return moment: in N.m, 10^(1.5*magnitude+9.5)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="n">moment</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="mi">10</span><span class="p">,(</span><span class="mf">1.5</span><span class="o">*</span><span class="n">magnitude</span><span class="o">+</span><span class="mf">9.05</span><span class="p">))</span>
+    <span class="k">return</span><span class="p">(</span> <span class="n">moment</span> <span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

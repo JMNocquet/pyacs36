@@ -1,0 +1,438 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.lib.faultslip &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.lib.faultslip</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.lib.faultslip</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Various routines relating fault parameters, slip and motion across faults</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="v_to_rake"><a class="viewcode-back" href="../../../pyacs.lib.faultslip.html#pyacs.lib.faultslip.v_to_rake">[docs]</a><span class="k">def</span> <span class="nf">v_to_rake</span><span class="p">(</span><span class="n">ve</span><span class="p">,</span><span class="n">vn</span><span class="p">,</span><span class="n">strike</span><span class="p">,</span><span class="n">dip</span><span class="p">,</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;inverse&#39;</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    for a given relative horizontal velocity (ve,vn) between two blocks separated by a fault of a given strike &amp; dip</span>
+<span class="sd">    , returns the expected rake for the eq.</span>
+<span class="sd">    </span>
+<span class="sd">    :param ve,vn: east and north components of motion (any unit)</span>
+<span class="sd">    :param strike,dip: in decimal degrees</span>
+<span class="sd">    :param style: string among {&#39;inverse&#39;, &#39;normal&#39;, &#39;leftlateral&#39;,&#39;rightlateral&#39;}</span>
+<span class="sd">    :returns rake: in decimal degrees </span>
+<span class="sd">        </span>
+<span class="sd">    :note: Because only providing ve,vn is ambiguous (we don&#39;t know whether if ve,vn is hanging wall motion wrt the footwall or the opposite) \</span>
+<span class="sd">    an additional information (style) in the form of one of {&#39;inverse&#39;, &#39;normal&#39;, &#39;leftlateral&#39;,&#39;rightlateral&#39;} must be provided.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="n">dip</span> <span class="o">==</span> <span class="mf">90.</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">sys</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;!!! ERROR: dip is 90 degrees. Cannot calculate rake&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+        
+        
+
+    <span class="n">r_dip</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">dip</span><span class="p">)</span>
+    <span class="n">ralpha</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mf">90.</span><span class="o">-</span><span class="n">strike</span><span class="p">)</span>
+    <span class="n">v</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">ve</span><span class="p">,</span><span class="n">vn</span><span class="p">])</span>
+    <span class="n">v_norm</span><span class="o">=</span><span class="n">v</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    
+    <span class="n">R</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">ralpha</span><span class="p">),</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">ralpha</span><span class="p">)],[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">ralpha</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">ralpha</span><span class="p">)]])</span>
+    
+    <span class="n">VRAKE</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">v_norm</span><span class="p">)</span>
+    <span class="n">VRAKE</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="n">VRAKE</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">r_dip</span><span class="p">)</span>
+    
+    <span class="n">rake_1</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">VRAKE</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">VRAKE</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    
+    <span class="n">rake_2</span><span class="o">=</span><span class="n">rake_1</span><span class="o">+</span><span class="mf">180.0</span>
+    <span class="k">if</span> <span class="n">rake_2</span><span class="o">&gt;</span><span class="mi">180</span><span class="p">:</span><span class="n">rake_2</span><span class="o">=</span><span class="n">rake_2</span><span class="o">-</span><span class="mf">360.</span>
+    
+    <span class="n">rakes</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">rake_1</span><span class="p">,</span><span class="n">rake_2</span><span class="p">])</span>
+    
+    <span class="k">if</span> <span class="n">style</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        
+        <span class="p">(</span><span class="n">rake_negative</span><span class="p">,</span><span class="n">rake_positive</span><span class="p">)</span><span class="o">=</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">rakes</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">rakes</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">rake_1</span><span class="p">)</span><span class="o">&lt;=</span><span class="mi">90</span><span class="p">:</span>
+            <span class="n">rake_leftlateral</span><span class="o">=</span><span class="n">rake_1</span><span class="p">;</span><span class="n">rake_rightlateral</span><span class="o">=</span><span class="n">rake_2</span> 
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rake_leftlateral</span><span class="o">=</span><span class="n">rake_2</span><span class="p">;</span><span class="n">rake_rightlateral</span><span class="o">=</span><span class="n">rake_1</span> 
+        
+        <span class="k">if</span> <span class="n">style</span><span class="o">==</span><span class="s1">&#39;inverse&#39;</span><span class="p">:</span><span class="n">rake</span><span class="o">=</span><span class="n">rake_positive</span>
+        <span class="k">if</span> <span class="n">style</span><span class="o">==</span><span class="s1">&#39;normal&#39;</span><span class="p">:</span><span class="n">rake</span><span class="o">=</span><span class="n">rake_negative</span>
+        <span class="k">if</span> <span class="n">style</span><span class="o">==</span><span class="s1">&#39;leftlateral&#39;</span><span class="p">:</span><span class="n">rake</span><span class="o">=</span><span class="n">rake_leftlateral</span>
+        <span class="k">if</span> <span class="n">style</span><span class="o">==</span><span class="s1">&#39;rightlateral&#39;</span><span class="p">:</span><span class="n">rake</span><span class="o">=</span><span class="n">rake_rightlateral</span>
+    
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">rake</span> <span class="o">=</span> <span class="n">rake_1</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">rake</span><span class="p">)</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="v_to_n_ss"><a class="viewcode-back" href="../../../pyacs.lib.faultslip.html#pyacs.lib.faultslip.v_to_n_ss">[docs]</a><span class="k">def</span> <span class="nf">v_to_n_ss</span><span class="p">(</span><span class="n">ve</span><span class="p">,</span><span class="n">vn</span><span class="p">,</span><span class="n">strike</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    </span>
+<span class="sd">    for a given relative horizontal velocity (ve,vn) between two blocks separated by a fault of a given strike</span>
+<span class="sd">    , returns normal and strike-slip component of motion.</span>
+<span class="sd">    The convention is that the point is in the left-domain with respect to the fault.</span>
+<span class="sd">    Shortening &amp; right-lateral are positive, extension and left-lateral negative</span>
+<span class="sd">    </span>
+<span class="sd">    :param ve,vn: east and north components of motion (any unit)</span>
+<span class="sd">    :param strike: in decimal degrees</span>
+<span class="sd">    :returns normal,strike-slip: same units as ve,vn </span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    
+    <span class="n">azimuth_radian</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">ve</span><span class="p">,</span><span class="n">vn</span><span class="p">)</span>
+    <span class="n">radian_strike</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">strike</span><span class="p">)</span>
+    
+    <span class="n">angle</span><span class="o">=</span><span class="n">azimuth_radian</span><span class="o">-</span><span class="n">radian_strike</span>
+    
+    <span class="n">v_i</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ve</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">vn</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">ss</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span><span class="o">*</span><span class="n">v_i</span>
+    <span class="n">normal</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span><span class="o">*</span><span class="n">v_i</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">normal</span><span class="p">,</span><span class="n">ss</span><span class="p">)</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="strike_dip_rake_to_dir"><a class="viewcode-back" href="../../../pyacs.lib.faultslip.html#pyacs.lib.faultslip.strike_dip_rake_to_dir">[docs]</a><span class="k">def</span> <span class="nf">strike_dip_rake_to_dir</span><span class="p">(</span><span class="n">strike</span><span class="p">,</span><span class="n">dip</span><span class="p">,</span><span class="n">rake</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    for a given (strike,dip,rake)  returns the azimuth of the horizontal motion</span>
+<span class="sd">    :param strike,dip,rake: in decimal degrees</span>
+<span class="sd">    :returns: direction: slip direction (modulo 180 degrees)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="n">r_rake</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">rake</span><span class="p">)</span>
+    <span class="n">r_dip</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">dip</span><span class="p">)</span>
+    <span class="n">dir_slip</span><span class="o">=</span><span class="n">strike</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">r_rake</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">r_dip</span><span class="p">)))</span>
+
+    <span class="k">if</span> <span class="n">dir_slip</span> <span class="o">&gt;</span> <span class="mf">180.</span><span class="p">:</span><span class="n">dir_slip</span><span class="o">=</span><span class="n">dir_slip</span><span class="o">-</span><span class="mf">180.0</span>
+    <span class="k">if</span> <span class="n">dir_slip</span> <span class="o">&gt;</span> <span class="mf">180.</span><span class="p">:</span><span class="n">dir_slip</span><span class="o">=</span><span class="n">dir_slip</span><span class="o">-</span><span class="mf">180.0</span>
+    <span class="k">if</span> <span class="n">dir_slip</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span><span class="n">dir_slip</span><span class="o">=</span><span class="n">dir_slip</span><span class="o">+</span><span class="mf">180.0</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">dir_slip</span><span class="p">)</span></div>
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="rake_from_euler"><a class="viewcode-back" href="../../../pyacs.lib.faultslip.html#pyacs.lib.faultslip.rake_from_euler">[docs]</a><span class="k">def</span> <span class="nf">rake_from_euler</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span><span class="n">latitude</span><span class="p">,</span><span class="n">strike</span><span class="p">,</span> <span class="n">dip</span><span class="p">,</span> <span class="n">euler</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    predicts rake for a given fault according to an Euler pole, position and strike of the fault</span>
+
+<span class="sd">    :param longitude,latitude: in decimal degrees</span>
+<span class="sd">    :param strike: fault strike from north in decimal degrees</span>
+<span class="sd">    :param dip: fault dip from north in decimal degrees</span>
+<span class="sd">    :param euler: Euler pole as a string &#39;/long/lat/w/style&#39; (style among &#39;inverse&#39;, &#39;normal&#39;, &#39;leftlateral&#39;,&#39;rightlateral&#39;) </span>
+<span class="sd">    </span>
+<span class="sd">    :return rake: in decimal degrees</span>
+<span class="sd">    :note: style needs to be provided to ensure the correct sense of slip.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">pyacs.lib.gmtpoint</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">import</span> <span class="nn">pyacs.lib.faultslip</span>
+
+    <span class="n">M</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">gmtpoint</span><span class="o">.</span><span class="n">GMT_Point</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s1">&#39;XXXX&#39;</span><span class="p">,</span><span class="n">lon</span><span class="o">=</span><span class="n">longitude</span><span class="p">,</span><span class="n">lat</span><span class="o">=</span><span class="n">latitude</span><span class="p">,</span><span class="n">he</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">Ve</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span><span class="n">Vn</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span><span class="n">Vu</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span>\
+                  <span class="n">SVe</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">SVn</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">SVu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">SVen</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>\
+                  <span class="n">Cv_xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Cv_enu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">_tmp</span><span class="p">,</span><span class="n">elon</span><span class="p">,</span><span class="n">elat</span><span class="p">,</span><span class="n">ew</span><span class="p">,</span><span class="n">motion_type</span><span class="o">=</span><span class="n">euler</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+
+    <span class="n">W</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="p">[</span><span class="n">elon</span><span class="p">,</span><span class="n">elat</span><span class="p">,</span><span class="n">ew</span><span class="p">])))</span>
+
+    <span class="n">N</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">pole</span><span class="p">(</span><span class="n">W</span><span class="o">=</span><span class="n">W</span><span class="p">,</span><span class="n">type_euler</span><span class="o">=</span><span class="s1">&#39;euler&#39;</span><span class="p">,</span><span class="n">option</span><span class="o">=</span><span class="s1">&#39;predict&#39;</span><span class="p">)</span>
+    
+    <span class="p">(</span><span class="n">ve</span><span class="p">,</span><span class="n">vn</span><span class="p">)</span><span class="o">=</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">Ve</span><span class="p">,</span><span class="n">N</span><span class="o">.</span><span class="n">Vn</span><span class="p">)</span>
+    
+    <span class="n">rake</span> <span class="o">=</span> <span class="n">v_to_rake</span><span class="p">(</span><span class="n">ve</span><span class="p">,</span><span class="n">vn</span><span class="p">,</span><span class="n">strike</span><span class="p">,</span><span class="n">dip</span><span class="p">,</span><span class="n">motion_type</span><span class="p">)</span>
+    
+    <span class="k">return</span><span class="p">(</span><span class="n">rake</span><span class="p">)</span></div>
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="slip_rake_2_ds_ss"><a class="viewcode-back" href="../../../pyacs.lib.faultslip.html#pyacs.lib.faultslip.slip_rake_2_ds_ss">[docs]</a><span class="k">def</span> <span class="nf">slip_rake_2_ds_ss</span><span class="p">(</span><span class="n">slip</span><span class="p">,</span><span class="n">rake</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a slip vector provided as slip and rake to dip slip and strike-slip components</span>
+
+<span class="sd">    :param slip: slip</span>
+<span class="sd">    :param rake: rake in degrees</span>
+
+<span class="sd">    :return ( slip*np.sin( np.radians(rake) ) ,  slip*np.cos( np.radians(rake) ))</span>
+
+<span class="sd">    :note:</span>
+<span class="sd">    ds will be positive for rake in [0,180] that is reverse motion</span>
+<span class="sd">    ss will be positive for left-lateral motion</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">return</span> <span class="p">(</span> <span class="n">slip</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">rake</span><span class="p">)</span> <span class="p">)</span> <span class="p">,</span>  <span class="n">slip</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">rake</span><span class="p">)</span> <span class="p">))</span></div>
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="ss_ns_2_ve_vn"><a class="viewcode-back" href="../../../pyacs.lib.faultslip.html#pyacs.lib.faultslip.ss_ns_2_ve_vn">[docs]</a><span class="k">def</span> <span class="nf">ss_ns_2_ve_vn</span><span class="p">(</span><span class="n">ss</span><span class="p">,</span><span class="n">ns</span><span class="p">,</span><span class="n">strike</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts strike-slip and normal slip components of a fault to ve, vn</span>
+
+<span class="sd">    :param ss: vector of strike-slip</span>
+<span class="sd">    :param ns: vector of normal-slip</span>
+<span class="sd">    :param strike: vector of fault strike, counter-clockwise from north in degrees</span>
+
+<span class="sd">    :return: ve, vn, same unit as ss and ds</span>
+
+<span class="sd">    :note:</span>
+<span class="sd">    ss is assume to be positive for left-lateral motion</span>
+<span class="sd">    ds will be positive for reverse motion</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="c1"># strike in radians</span>
+    <span class="n">rstrike</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="n">strike</span> <span class="p">)</span>
+    <span class="c1"># rcos and rsin</span>
+    <span class="n">rcos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">rstrike</span> <span class="p">)</span>
+    <span class="n">rsin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">rstrike</span> <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ss</span><span class="o">*</span><span class="n">rsin</span> <span class="o">-</span> <span class="n">ns</span><span class="o">*</span><span class="n">rcos</span> <span class="p">,</span> <span class="n">ss</span><span class="o">*</span><span class="n">rcos</span> <span class="o">+</span> <span class="n">ns</span><span class="o">*</span><span class="n">rsin</span> </div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="geo_to_strike"><a class="viewcode-back" href="../../../pyacs.lib.faultslip.html#pyacs.lib.faultslip.geo_to_strike">[docs]</a><span class="k">def</span> <span class="nf">geo_to_strike</span><span class="p">(</span><span class="n">ilon</span><span class="p">,</span><span class="n">ilat</span><span class="p">,</span><span class="n">elon</span><span class="p">,</span><span class="n">elat</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    for a given fault segment starting at ilon,lat and ending at elon, elat</span>
+<span class="sd">    , returns the strike.</span>
+<span class="sd">    </span>
+<span class="sd">    :param ilon,ilat: geographical coordinates of fault segment start point in decimal degrees</span>
+<span class="sd">    :param elon,elat: geographical coordinates of fault segment end point in decimal degrees</span>
+<span class="sd">    :returns strike: in decimal degrees clockwise from north</span>
+<span class="sd">    </span>
+<span class="sd">    :note: strike here is taken as the initial bearing. Be cautious with long segments</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    
+    <span class="c1"># radian conversion</span>
+    <span class="p">[</span><span class="n">lon1</span><span class="p">,</span><span class="n">lat1</span><span class="p">,</span><span class="n">lon2</span><span class="p">,</span><span class="n">lat2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="p">[</span> <span class="n">ilon</span><span class="p">,</span><span class="n">ilat</span><span class="p">,</span><span class="n">elon</span><span class="p">,</span><span class="n">elat</span> <span class="p">]</span> <span class="p">)</span> 
+    
+    
+    <span class="n">strike_rad_from_east_ccwise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lat1</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lat2</span><span class="p">)</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lat1</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lat2</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lon2</span><span class="o">-</span><span class="n">lon1</span><span class="p">)</span> <span class="p">,</span> \
+                        <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lon2</span><span class="o">-</span><span class="n">lon1</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lat2</span><span class="p">))</span> 
+
+    <span class="n">strike_deg_from_north_cwise</span> <span class="o">=</span> <span class="mf">90.</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span> <span class="n">strike_rad_from_east_ccwise</span> <span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">strike_deg_from_north_cwise</span> <span class="o">&gt;</span> <span class="mf">180.</span><span class="p">:</span>
+        <span class="n">strike_deg_from_north_cwise</span> <span class="o">=</span> <span class="n">strike_deg_from_north_cwise</span> <span class="o">-</span> <span class="mf">360.</span>
+
+    <span class="k">return</span><span class="p">(</span> <span class="n">strike_deg_from_north_cwise</span> <span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

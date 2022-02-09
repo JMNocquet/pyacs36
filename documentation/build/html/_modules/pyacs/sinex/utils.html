@@ -1,0 +1,576 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.sinex.utils &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.sinex.utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.sinex.utils</h1><div class="highlight"><pre>
+<span></span><span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Module   : utils</span>
+<span class="c1"># Purpose  : Miscellaneous low-level routines</span>
+<span class="c1"># Author   : P. Rebischung</span>
+<span class="c1"># Created  : 22-Aug-2014</span>
+<span class="c1">#</span>
+<span class="c1"># Changes  :</span>
+<span class="c1">#</span>
+<span class="c1"># Routines : - leap_sec      : Get number of leap seconds at requested dates</span>
+<span class="c1">#            - temp_file     : Generate a random (UUID4) file name</span>
+<span class="c1">#            - ps2png        : Convert PS file to PNG file</span>
+<span class="c1">#            - sed_keywords  : Substitute keywords by their values in a string</span>
+<span class="c1">#            - dict2rec      : Convert dictionary into record object</span>
+<span class="c1">#            - rec2dict      : Convert record object into dictionary</span>
+<span class="c1">#            - read_yaml     : Read YAML configuration file</span>
+<span class="c1">#            - write_yaml    : Write YAML configuration file</span>
+<span class="c1">#            - parallel_sh   : Execute multiple commands in parallel</span>
+<span class="c1">#            - print_message : Print a message both to screen and to log file</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+
+<span class="c1"># LIBRARIES</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">from</span> <span class="nn">.constants</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.date</span> <span class="kn">import</span> <span class="n">date</span>
+
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : leapsec</span>
+<span class="c1"># Purpose : Get number of leap seconds at requested dates</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 16-Dec-2011</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : - d         : Requested dates (MJD)</span>
+<span class="c1">#           - timescale : &#39;GPS&#39; or &#39;UTC&#39; depending on time scale of d. Default is &#39;UTC&#39;.</span>
+<span class="c1"># Output  : - l         : GPS-UTC leap seconds at requested dates</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="leapsec"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.utils.leapsec">[docs]</a><span class="k">def</span> <span class="nf">leapsec</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">timescale</span><span class="o">=</span><span class="s1">&#39;UTC&#39;</span><span class="p">):</span>
+
+  <span class="c1"># Initialization</span>
+  <span class="n">l</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
+
+  <span class="c1"># 1st case : MJDs given in GPS time</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">timescale</span> <span class="o">==</span> <span class="s1">&#39;GPS&#39;</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)):</span>
+      <span class="n">ind</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">mjd_leap</span> <span class="o">&lt;=</span> <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+      <span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">gps_utc</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+
+  <span class="c1"># 2nd case : MJDs given in UTC</span>
+  <span class="k">elif</span> <span class="p">(</span><span class="n">timescale</span> <span class="o">==</span> <span class="s1">&#39;UTC&#39;</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)):</span>
+      <span class="n">ind</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">mjd_leap</span> <span class="o">-</span> <span class="n">gps_utc</span> <span class="o">/</span> <span class="mi">86400</span> <span class="o">&lt;=</span> <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+      <span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">gps_utc</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+
+  <span class="k">return</span> <span class="n">l</span></div>
+
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : temp_file</span>
+<span class="c1"># Purpose : Generate a random (UUID4) file name</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 27-Aug-2014</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : </span>
+<span class="c1"># Output  : </span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="temp_file"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.utils.temp_file">[docs]</a><span class="k">def</span> <span class="nf">temp_file</span><span class="p">():</span>
+  
+  <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span></div>
+
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : ps2png</span>
+<span class="c1"># Purpose : Convert PS file to PNG file</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 28-Feb-2012</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : - ps     : PS file</span>
+<span class="c1">#           - png    : PNG file</span>
+<span class="c1">#           - rotate : Rotation angle. Default is 0.</span>
+<span class="c1">#           - margin : Margin. Default is 20.</span>
+<span class="c1"># Output  : </span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="ps2png"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.utils.ps2png">[docs]</a><span class="k">def</span> <span class="nf">ps2png</span><span class="p">(</span><span class="n">ps</span><span class="p">,</span> <span class="n">png</span><span class="p">,</span> <span class="n">rotate</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">margin</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+
+  <span class="c1"># Temporary file</span>
+  <span class="n">tmp</span> <span class="o">=</span> <span class="n">temp_file</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span>
+
+  <span class="c1"># Let&#39;s go!</span>
+  <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;gs -dQUIET -dSAFER -dBATCH -dNOPAUSE -sDEVICE=png16m -r250 -dGraphicsAlphaBits=4 -sOutputFile=</span><span class="si">{0}</span><span class="s1"> </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">ps</span><span class="p">))</span>
+  <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;convert </span><span class="si">{0}</span><span class="s1"> -rotate </span><span class="si">{1}</span><span class="s1"> -quality 100 -trim -mattecolor white -frame </span><span class="si">{2}</span><span class="s1">x</span><span class="si">{2}</span><span class="s1"> </span><span class="si">{3}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">rotate</span><span class="p">,</span> <span class="n">margin</span><span class="p">,</span> <span class="n">png</span><span class="p">))</span>
+  <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;rm </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tmp</span><span class="p">))</span></div>
+
+  
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : sed_keywords</span>
+<span class="c1"># Purpose : Substitute keywords by their values in a string</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 22-Aug-2014</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : - s : String</span>
+<span class="c1">#           - t : date object</span>
+<span class="c1"># Output  : - s : Updated string</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="sed_keywords"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.utils.sed_keywords">[docs]</a><span class="k">def</span> <span class="nf">sed_keywords</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+  
+  <span class="c1"># Date elements</span>
+  <span class="n">s</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">subn</span><span class="p">(</span><span class="s1">&#39;\$yyyy&#39;</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">yyyy</span><span class="p">,</span> <span class="n">s</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="n">s</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">subn</span><span class="p">(</span><span class="s1">&#39;\$doy&#39;</span> <span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">doy</span><span class="p">,</span> <span class="n">s</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="n">s</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">subn</span><span class="p">(</span><span class="s1">&#39;\$yy&#39;</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">yy</span><span class="p">,</span> <span class="n">s</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="n">s</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">subn</span><span class="p">(</span><span class="s1">&#39;\$mm&#39;</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">s</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="n">s</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">subn</span><span class="p">(</span><span class="s1">&#39;\$dd&#39;</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">dd</span><span class="p">,</span> <span class="n">s</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="n">s</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">subn</span><span class="p">(</span><span class="s1">&#39;\$hour&#39;</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span> <span class="n">s</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="n">s</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">subn</span><span class="p">(</span><span class="s1">&#39;\$min&#39;</span> <span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">min</span><span class="p">,</span> <span class="n">s</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="n">s</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">subn</span><span class="p">(</span><span class="s1">&#39;\$sec&#39;</span> <span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">sec</span><span class="p">,</span> <span class="n">s</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="n">s</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">subn</span><span class="p">(</span><span class="s1">&#39;\$week&#39;</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">week</span><span class="p">,</span> <span class="n">s</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="n">s</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">subn</span><span class="p">(</span><span class="s1">&#39;\$dow&#39;</span> <span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">dow</span><span class="p">,</span> <span class="n">s</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="n">s</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">subn</span><span class="p">(</span><span class="s1">&#39;\$wk&#39;</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">wk</span><span class="p">,</span> <span class="n">s</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+  
+  <span class="c1"># Operating system</span>
+  <span class="n">s</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">subn</span><span class="p">(</span><span class="s1">&#39;\$os&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">uname</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">s</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+  
+  <span class="k">return</span> <span class="n">s</span></div>
+
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : dict2rec</span>
+<span class="c1"># Purpose : Convert dictionary into record object</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 03-Mar-2015</span>
+<span class="c1">#</span>
+<span class="c1"># Changes : </span>
+<span class="c1">#</span>
+<span class="c1"># Input   : - y   : Dictionary</span>
+<span class="c1">#           - sed : If True, make use of sed_keywords for each key. Default is False.</span>
+<span class="c1">#           - t   : date object required if sed=True. Default is None.</span>
+<span class="c1"># Output  : - r   : record object</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="dict2rec"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.utils.dict2rec">[docs]</a><span class="k">def</span> <span class="nf">dict2rec</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">sed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+  
+  <span class="c1"># Initialization</span>
+  <span class="n">r</span> <span class="o">=</span> <span class="n">record</span><span class="p">()</span>
+  
+  <span class="c1"># Loop over dictionary keys</span>
+  <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">y</span><span class="p">:</span>
+    
+    <span class="c1"># If y[key] is a dictionary,</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">key</span><span class="p">])</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;dict&#39;</span><span class="p">):</span>
+      <span class="nb">setattr</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">dict2rec</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">sed</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
+      
+    <span class="c1"># If y[key] is an empty list,</span>
+    <span class="k">elif</span> <span class="p">((</span><span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">key</span><span class="p">])</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;list&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)):</span>
+      <span class="nb">setattr</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">y</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+      
+    <span class="c1"># If y[key] is a list of dictionaries,</span>
+    <span class="k">elif</span> <span class="p">((</span><span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">key</span><span class="p">])</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;list&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;dict&#39;</span><span class="p">)):</span>
+      <span class="nb">setattr</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="p">[</span><span class="n">dict2rec</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">sed</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">y</span><span class="p">[</span><span class="n">key</span><span class="p">]])</span>
+      
+    <span class="c1"># If y[key] is a list of strings and sed is needed,</span>
+    <span class="k">elif</span> <span class="p">((</span><span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">key</span><span class="p">])</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;list&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;str&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">sed</span><span class="p">)):</span>
+      <span class="nb">setattr</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="p">[</span><span class="n">sed_keywords</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">y</span><span class="p">[</span><span class="n">key</span><span class="p">]])</span>
+      
+    <span class="c1"># If y[key] is a string and sed is needed,</span>
+    <span class="k">elif</span> <span class="p">((</span><span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">key</span><span class="p">])</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;str&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">sed</span><span class="p">)):</span>
+      <span class="nb">setattr</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">sed_keywords</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">t</span><span class="p">))</span>
+    
+    <span class="c1"># Other cases</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="nb">setattr</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">y</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+      
+  <span class="k">return</span> <span class="n">r</span></div>
+
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : rec2dict</span>
+<span class="c1"># Purpose : Convert record object into dictionary</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 03-Mar-2015</span>
+<span class="c1">#</span>
+<span class="c1"># Changes : </span>
+<span class="c1">#</span>
+<span class="c1"># Input   : - r : record object</span>
+<span class="c1"># Output  : - d : dictionary</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="rec2dict"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.utils.rec2dict">[docs]</a><span class="k">def</span> <span class="nf">rec2dict</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
+  
+  <span class="c1"># Initialization</span>
+  <span class="n">d</span> <span class="o">=</span> <span class="nb">vars</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+  
+  <span class="c1"># Loop over dictionary keys</span>
+  <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+    
+    <span class="c1"># If d[key] is a record,</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">])</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;instance&#39;</span><span class="p">):</span>
+      <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">rec2dict</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+      
+    <span class="c1"># If d[key] is a non-empty list of records,</span>
+    <span class="k">elif</span> <span class="p">((</span><span class="nb">type</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">])</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;list&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)):</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;instance&#39;</span><span class="p">):</span>
+        <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">rec2dict</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span>
+        
+  <span class="k">return</span> <span class="n">d</span></div>
+
+  
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : read_yaml</span>
+<span class="c1"># Purpose : Read YAML configuration file</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 10-Oct-2013</span>
+<span class="c1">#</span>
+<span class="c1"># Changes : PR, 03-Mar-2015 : Make recursive use of subroutine dict2rec</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : - inp   : YAML configuration file</span>
+<span class="c1">#           - sed   : If True, make use of sed_keywords for each key. Default is False.</span>
+<span class="c1">#           - t     : date object required if sed=True. Default is None.</span>
+<span class="c1"># Output  : Record or list</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="read_yaml"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.utils.read_yaml">[docs]</a><span class="k">def</span> <span class="nf">read_yaml</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">sed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+  
+    <span class="n">y</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">))</span>
+    
+    <span class="c1"># If y is a dictionary,</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;dict&#39;</span><span class="p">):</span>
+      <span class="k">return</span> <span class="n">dict2rec</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">sed</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+    
+    <span class="c1"># If y is an empty list,</span>
+    <span class="k">elif</span> <span class="p">((</span><span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;list&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)):</span>
+      <span class="k">return</span> <span class="n">y</span>
+    
+    <span class="c1"># If y is a list of dictionaries,</span>
+    <span class="k">elif</span> <span class="p">((</span><span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;list&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;dict&#39;</span><span class="p">)):</span>
+      <span class="k">return</span> <span class="p">[</span><span class="n">dict2rec</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">sed</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">y</span><span class="p">]</span>
+        
+    <span class="c1"># If y is a list of strings and sed is needed,</span>
+    <span class="k">elif</span> <span class="p">((</span><span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;list&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;str&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">sed</span><span class="p">)):</span>
+      <span class="k">return</span> <span class="p">[</span><span class="n">sed_keywords</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">y</span><span class="p">]</span>
+    
+    <span class="c1"># Other cases</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="k">return</span> <span class="n">y</span></div>
+
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : write_yaml</span>
+<span class="c1"># Purpose : Write YAML configuration file</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 30-Sep-2014</span>
+<span class="c1">#</span>
+<span class="c1"># Changes : PR, 03-Mar-2015 : Make recursive use of subroutine rec2dict</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : - r   : Record or list</span>
+<span class="c1">#           - out : File to write</span>
+<span class="c1"># Output  : </span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="write_yaml"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.utils.write_yaml">[docs]</a><span class="k">def</span> <span class="nf">write_yaml</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">out</span><span class="p">):</span>
+  
+  <span class="c1"># If r is a record,</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;instance&#39;</span><span class="p">):</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="n">rec2dict</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    
+  <span class="c1"># If r is an empty list,</span>
+  <span class="k">elif</span> <span class="p">((</span><span class="nb">type</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;list&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)):</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="n">r</span>
+  
+  <span class="c1"># If r is a list of records,</span>
+  <span class="k">elif</span> <span class="p">((</span><span class="nb">type</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;list&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;instance&#39;</span><span class="p">)):</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="n">rec2dict</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span> <span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">r</span><span class="p">]</span>
+      
+  <span class="c1"># Other cases</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="n">r</span>
+      
+  <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">))</span></div>
+
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : parallel_sh</span>
+<span class="c1"># Purpose : Execute multiple commands in parallel</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 25-Aug-2014</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : - file  : File containing the list of commands to execute</span>
+<span class="c1">#           - nproc : Number of processors to use</span>
+<span class="c1"># Output  : </span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="parallel_sh"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.utils.parallel_sh">[docs]</a><span class="k">def</span> <span class="nf">parallel_sh</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">nproc</span><span class="p">):</span>
+  
+  <span class="c1"># Read list of commands</span>
+  <span class="n">commands</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+  
+  <span class="c1"># Write make file</span>
+  <span class="n">makefile</span> <span class="o">=</span> <span class="n">temp_file</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;.make&#39;</span>
+  <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">makefile</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+  <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;all :&#39;</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">commands</span><span class="p">)):</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; job</span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+  <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">commands</span><span class="p">)):</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;job</span><span class="si">{0}</span><span class="s1"> :</span><span class="se">\n\t</span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">commands</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+  <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+  
+  <span class="c1"># Execute make file</span>
+  <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;make -j</span><span class="si">{0}</span><span class="s1"> -f </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nproc</span><span class="p">,</span> <span class="n">makefile</span><span class="p">))</span>
+  
+  <span class="c1"># Remove make file</span>
+  <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;rm </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">makefile</span><span class="p">))</span></div>
+
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : print_message</span>
+<span class="c1"># Purpose : Print a message both to screen and to log file</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 12-May-2012</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : - message   : Message</span>
+<span class="c1">#           - mainlog   : Log file handle</span>
+<span class="c1">#           - timestamp : True if a time stamp should be added at the beginning of message</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="print_message"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.utils.print_message">[docs]</a><span class="k">def</span> <span class="nf">print_message</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">mainlog</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+  <span class="c1"># Add time stamp if requested</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">timestamp</span><span class="p">):</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">date</span><span class="p">())</span> <span class="o">+</span> <span class="s1">&#39; : &#39;</span> <span class="o">+</span> <span class="n">message</span>
+
+  <span class="c1"># Print message to screen</span>
+  <span class="nb">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+  <span class="c1"># Print message to main log file</span>
+  <span class="n">mainlog</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">message</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+  
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : isfloat</span>
+<span class="c1"># Purpose : Test if a string can be converted into float</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 02-Feb-2017</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : s : String</span>
+<span class="c1"># Output  : True or False</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="isfloat"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.utils.isfloat">[docs]</a><span class="k">def</span> <span class="nf">isfloat</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+  
+  <span class="k">try</span><span class="p">:</span>
+    <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span>
+  
+  <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

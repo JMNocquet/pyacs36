@@ -1,0 +1,591 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.gts.lib.filters package &mdash; pyacs 0.65.66 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pyacs.gts.lib.format package" href="pyacs.gts.lib.format.html" />
+    <link rel="prev" title="pyacs.gts.lib package" href="pyacs.gts.lib.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.66
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time_series.html">Time series analysis</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Full code documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pyacs.html">pyacs package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="pyacs.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pyacs.glinalg.html">pyacs.glinalg package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="pyacs.gts.html">pyacs.gts package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html">pyacs.lib package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.message.html">pyacs.message package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html">pyacs.sinex package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html">pyacs.sol package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.html#module-pyacs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">Full code documentation</a> &raquo;</li>
+        
+          <li><a href="pyacs.html">pyacs package</a> &raquo;</li>
+        
+          <li><a href="pyacs.gts.html">pyacs.gts package</a> &raquo;</li>
+        
+          <li><a href="pyacs.gts.lib.html">pyacs.gts.lib package</a> &raquo;</li>
+        
+      <li>pyacs.gts.lib.filters package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/pyacs.gts.lib.filters.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pyacs-gts-lib-filters-package">
+<h1>pyacs.gts.lib.filters package<a class="headerlink" href="#pyacs-gts-lib-filters-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pyacs.gts.lib.filters.el1_trend">
+<span id="pyacs-gts-lib-filters-el1-trend-module"></span><h2>pyacs.gts.lib.filters.el1_trend module<a class="headerlink" href="#module-pyacs.gts.lib.filters.el1_trend" title="Permalink to this headline">¶</a></h2>
+<p>Taken from <a class="reference external" href="https://github.com/wudingcheng/TSAnalyzer/blob/master/TSAnalyzer/algorithms/l1extensive.py">https://github.com/wudingcheng/TSAnalyzer/blob/master/TSAnalyzer/algorithms/l1extensive.py</a></p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.filters.el1_trend.el1_trend">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.filters.el1_trend.</span></span><span class="sig-name descname"><span class="pre">el1_trend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_periodic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NEU'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/filters/el1_trend.html#el1_trend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.filters.el1_trend.el1_trend" title="Permalink to this definition">¶</a></dt>
+<dd><p>extensive l1 trend filtering</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lam</strong> – weight of regularization of filtered data</p></li>
+<li><p><strong>rho</strong> – weight of regularization of offsets</p></li>
+<li><p><strong>period</strong> – tuple, periods to be estimated (1.,0.5) will estimate annual and semi-annual terms</p></li>
+<li><p><strong>in_place</strong> – if True then replace the current time series</p></li>
+<li><p><strong>return_offset</strong> – if True also return offset time serie</p></li>
+<li><p><strong>return_periodic</strong> – if True also return periodic time serie</p></li>
+<li><p><strong>verbose</strong> – boolean, verbose mode</p></li>
+<li><p><strong>component</strong> – string. Default ‘NEU’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the filtered time series</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.filters.el1_trend.gen_d2">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.filters.el1_trend.</span></span><span class="sig-name descname"><span class="pre">gen_d2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/filters/el1_trend.html#gen_d2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.filters.el1_trend.gen_d2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the 2nd difference matrix.
+:param n: int, length of time series
+:return: csr_matrix, sparse matrix</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.filters.el1_trend.gen_d1">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.filters.el1_trend.</span></span><span class="sig-name descname"><span class="pre">gen_d1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/filters/el1_trend.html#gen_d1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.filters.el1_trend.gen_d1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the 1st difference matrix
+:param n: int, length of time series
+:return: csr_matrix, sparse matrix</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.filters.el1_trend.get_max_lam">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.filters.el1_trend.</span></span><span class="sig-name descname"><span class="pre">get_max_lam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/filters/el1_trend.html#get_max_lam"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.filters.el1_trend.get_max_lam" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the max lambda value for given time series y
+:param y: np.array, time series given
+:return: float, max lambda value</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.filters.el1_trend.get_max_rho">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.filters.el1_trend.</span></span><span class="sig-name descname"><span class="pre">get_max_rho</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/filters/el1_trend.html#get_max_rho"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.filters.el1_trend.get_max_rho" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the max rho value for given time series y,
+:param y: np.array, time series given
+:return: float, max rho value</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.filters.el1_trend.l1filter">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.filters.el1_trend.</span></span><span class="sig-name descname"><span class="pre">l1filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lam</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">80</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(365.25,</span> <span class="pre">182.625)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MOSEK'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/filters/el1_trend.html#l1filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.filters.el1_trend.l1filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do l1 regularize for given time series.
+:param t: np.array, time
+:param y: np.array, time series value
+:param lam: lambda value
+:param rho: rho value
+:param periods: list, periods, same unit as t
+:param solver: cvx.solver
+:param verbose: bool, show verbose or not
+:return: x, w, s, if periods is not None, else return x, w</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.gts.lib.filters.l1_trend">
+<span id="pyacs-gts-lib-filters-l1-trend-module"></span><h2>pyacs.gts.lib.filters.l1_trend module<a class="headerlink" href="#module-pyacs.gts.lib.filters.l1_trend" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>L1 trend filter</dt><dd><p>The L1 trend filtering method produces trend estimates that are piecewise linear from the time series 𝑦.
+:credit: <a class="reference external" href="https://www.cvxpy.org/examples/applications/l1_trend_filter.html">https://www.cvxpy.org/examples/applications/l1_trend_filter.html</a>
+:reference: <a class="reference external" href="http://stanford.edu/~boyd/papers/l1_trend_filter.html">http://stanford.edu/~boyd/papers/l1_trend_filter.html</a></p>
+</dd>
+</dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.filters.l1_trend.l1_trend">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.filters.l1_trend.</span></span><span class="sig-name descname"><span class="pre">l1_trend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vlambda</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NEU'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/filters/l1_trend.html#l1_trend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.filters.l1_trend.l1_trend" title="Permalink to this definition">¶</a></dt>
+<dd><p>return a piecewise linear filtered Gts</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vlambda</strong> – weight of regularization</p></li>
+<li><p><strong>gap</strong> – gap in days to split the time series before applying the filter.default is 10.</p></li>
+<li><p><strong>in_place</strong> – if True then replace the current time series</p></li>
+<li><p><strong>verbose</strong> – boolean, verbose mode</p></li>
+<li><p><strong>component</strong> – string. Default ‘NEU’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the filtered time series</p>
+</dd>
+<dt class="field-odd">Note</dt>
+<dd class="field-odd"><p>if there are less than 4 points in a segment, return an L1 estimated trend</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.gts.lib.filters.median">
+<span id="pyacs-gts-lib-filters-median-module"></span><h2>pyacs.gts.lib.filters.median module<a class="headerlink" href="#module-pyacs.gts.lib.filters.median" title="Permalink to this headline">¶</a></h2>
+<p>Median filter for Gts based on scipy.signal.medfilt.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.filters.median.median_filter">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.filters.median.</span></span><span class="sig-name descname"><span class="pre">median_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/filters/median.html#median_filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.filters.median.median_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a filtered time series using scipy.signal.medfilt</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – size of the median filter window (must be odd)</p></li>
+<li><p><strong>in_place</strong> – if True then replace the current time series</p></li>
+<li><p><strong>verbose</strong> – boolean, verbose mode</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the filtered time series</p>
+</dd>
+<dt class="field-odd">Note</dt>
+<dd class="field-odd"><p>the filter is applied to .data and .data_xyz is set to None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.gts.lib.filters.minimum_component">
+<span id="pyacs-gts-lib-filters-minimum-component-module"></span><h2>pyacs.gts.lib.filters.minimum_component module<a class="headerlink" href="#module-pyacs.gts.lib.filters.minimum_component" title="Permalink to this headline">¶</a></h2>
+<p>Minimum component filter for Gts.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.filters.minimum_component.minimum_component">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.filters.minimum_component.</span></span><span class="sig-name descname"><span class="pre">minimum_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fcut</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/filters/minimum_component.html#minimum_component"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.filters.minimum_component.minimum_component" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minimum component filtering for Gts.
+Minimum component filtering is useful for determining the background
+component of a signal in the presence of spikes
+:param mask_periods: periods (list or list of lists) which should be ignored for smoothing
+:param p: integer (optional). polynomial degree to be used for the fit (default = 1)
+:param fcut: float (optional). the cutoff frequency for the low-pass filter.  Default value is f_nyq / sqrt(N)
+:param Q: float (optional). the strength of the low-pass filter.  Larger Q means a steeper cutoff. default value is 0.1 * fcut
+:param in_place: if True then replace the current time series
+:param verbose: boolean, verbose mode
+:return: the filtered time series
+:note:
+This code follows the procedure explained in the book
+“Practical Statistics for Astronomers” by Wall &amp; Jenkins book, as
+well as in Wall, J, A&amp;A 122:371, 1997</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.gts.lib.filters.piecewise_linear">
+<span id="pyacs-gts-lib-filters-piecewise-linear-module"></span><h2>pyacs.gts.lib.filters.piecewise_linear module<a class="headerlink" href="#module-pyacs.gts.lib.filters.piecewise_linear" title="Permalink to this headline">¶</a></h2>
+<p>Piecewise linear approximation of time series. 
+Based on <a class="reference external" href="https://pypi.org/project/pwlf">https://pypi.org/project/pwlf</a>.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.filters.piecewise_linear.pwlf">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.filters.piecewise_linear.</span></span><span class="sig-name descname"><span class="pre">pwlf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/filters/piecewise_linear.html#pwlf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.filters.piecewise_linear.pwlf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a piecewise approximation of a time series. Since it the routine is 1D, the component E,N, or U needs to be specified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>component</strong> – component used for the decomposition. Must be ‘E’,’N’ or ‘U’</p></li>
+<li><p><strong>n</strong> – number of segments</p></li>
+<li><p><strong>in_place</strong> – if True then replace the current time series</p></li>
+<li><p><strong>verbose</strong> – boolean, verbose mode</p></li>
+</ul>
+</dd>
+<dt class="field-even">Output</dt>
+<dd class="field-even"><p>if False, the predicted time series is returned. If True, then a list of dates is returned.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.gts.lib.filters.savitzky_golay">
+<span id="pyacs-gts-lib-filters-savitzky-golay-module"></span><h2>pyacs.gts.lib.filters.savitzky_golay module<a class="headerlink" href="#module-pyacs.gts.lib.filters.savitzky_golay" title="Permalink to this headline">¶</a></h2>
+<p>Savitzky-Golay filter for Gts based on scipy.signal.medfilt.
+<a class="reference external" href="http://https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.savgol_filter.html#scipy.signal.savgol_filter">http://https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.savgol_filter.html#scipy.signal.savgol_filter</a>
+Additional information on Savitzky-Golay filter from <a class="reference external" href="https://scipy-cookbook.readthedocs.io/items/SavitzkyGolay.html">https://scipy-cookbook.readthedocs.io/items/SavitzkyGolay.html</a></p>
+<p>The Savitzky Golay filter is a particular type of low-pass filter, well adapted for data smoothing. For further information see: <a class="reference external" href="http://www.wire.tu-bs.de/OLDWEB/mameyer/cmr/savgol.pdf">http://www.wire.tu-bs.de/OLDWEB/mameyer/cmr/savgol.pdf</a> (or <a class="reference external" href="http://www.dalkescientific.com/writings/NBN/data/savitzky_golay.py">http://www.dalkescientific.com/writings/NBN/data/savitzky_golay.py</a> for a pre-numpy implementation).</p>
+<p>It has the advantage of preserving the original shape and
+features of the signal better than other types of filtering
+approaches, such as moving averages techniques.</p>
+<p>The Savitzky-Golay is a type of low-pass filter, particularly
+suited for smoothing noisy data. The main idea behind this
+approach is to make for each point a least-square fit with a
+polynomial of high order over a odd-sized window centered at
+the point.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.filters.savitzky_golay.savitzky_golay">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.filters.savitzky_golay.</span></span><span class="sig-name descname"><span class="pre">savitzky_golay</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polyorder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deriv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'interp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/filters/savitzky_golay.html#savitzky_golay"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.filters.savitzky_golay.savitzky_golay" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a filtered time series using scipy.signal.savgol_filter</p>
+<p>See documentation for the filter parameters.
+<a class="reference external" href="http://https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.savgol_filter.html#scipy.signal.savgol_filter">http://https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.savgol_filter.html#scipy.signal.savgol_filter</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>in_place</strong> – if True then replace the current time series</p></li>
+<li><p><strong>verbose</strong> – boolean, verbose mode</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the filtered time series</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.gts.lib.filters.smooth">
+<span id="pyacs-gts-lib-filters-smooth-module"></span><h2>pyacs.gts.lib.filters.smooth module<a class="headerlink" href="#module-pyacs.gts.lib.filters.smooth" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.filters.smooth.smooth">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.filters.smooth.</span></span><span class="sig-name descname"><span class="pre">smooth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">11</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hanning'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NEU'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/filters/smooth.html#smooth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.filters.smooth.smooth" title="Permalink to this definition">¶</a></dt>
+<dd><p>smooth a time series</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.gts.lib.filters.spline">
+<span id="pyacs-gts-lib-filters-spline-module"></span><h2>pyacs.gts.lib.filters.spline module<a class="headerlink" href="#module-pyacs.gts.lib.filters.spline" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.filters.spline.spline">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.filters.spline.</span></span><span class="sig-name descname"><span class="pre">spline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smoothing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/filters/spline.html#spline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.filters.spline.spline" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>smoothing</strong> – Positive smoothing factor used to choose the number of knots. Number of knots will be increased</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>until the smoothing condition is satisfied:</dt><dd><p>sum((w[i] * (y[i]-spl(x[i])))**2, axis=0) &lt;= s</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>degree</strong> – Degree of the smoothing spline. Must be &lt;= 5. Default is k=3, a cubic spline.</p></li>
+<li><p><strong>date</strong> – 1D array of interpolation dates in decimal year, or ‘day’ for every day. defualt None will interpolate</p></li>
+</ul>
+</dd>
+</dl>
+<p>at data date only.
+:return: new gts instance</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.gts.lib.filters.total_variation">
+<span id="pyacs-gts-lib-filters-total-variation-module"></span><h2>pyacs.gts.lib.filters.total_variation module<a class="headerlink" href="#module-pyacs.gts.lib.filters.total_variation" title="Permalink to this headline">¶</a></h2>
+<p>Total variation filters from <a class="reference external" href="https://github.com/albarji/proxTV">https://github.com/albarji/proxTV</a>
+Total variation filters are useful to preserve edges in a signal (edge filter).</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.filters.total_variation.edge">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.filters.total_variation.</span></span><span class="sig-name descname"><span class="pre">edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lbda</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/filters/total_variation.html#edge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.filters.total_variation.edge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Edge Gts filter using a L1 total variation filter.
+The signal is assumed to be piecewise constant.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lbda</strong> – lambda parameter</p></li>
+<li><p><strong>in_place</strong> – if True then replace the current time series</p></li>
+<li><p><strong>verbose</strong> – boolean, verbose mode</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the filtered time series</p>
+</dd>
+<dt class="field-odd">Reference</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://github.com/albarji/proxTV">https://github.com/albarji/proxTV</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.filters.total_variation.edge_l2">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.filters.total_variation.</span></span><span class="sig-name descname"><span class="pre">edge_l2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lbda</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/filters/total_variation.html#edge_l2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.filters.total_variation.edge_l2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gts filter using a L2 total variation filter.
+The signal is assumed to be detrended.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lbda</strong> – lambda parameter</p></li>
+<li><p><strong>in_place</strong> – if True then replace the current time series</p></li>
+<li><p><strong>verbose</strong> – boolean, verbose mode</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the filtered time series</p>
+</dd>
+<dt class="field-odd">Reference</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://github.com/albarji/proxTV">https://github.com/albarji/proxTV</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.gts.lib.filters.vondrak">
+<span id="pyacs-gts-lib-filters-vondrak-module"></span><h2>pyacs.gts.lib.filters.vondrak module<a class="headerlink" href="#module-pyacs.gts.lib.filters.vondrak" title="Permalink to this headline">¶</a></h2>
+<p>Vondrak filter</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.filters.vondrak.vondrak">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.filters.vondrak.</span></span><span class="sig-name descname"><span class="pre">vondrak</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NEU'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/filters/vondrak.html#vondrak"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.filters.vondrak.vondrak" title="Permalink to this definition">¶</a></dt>
+<dd><p>returned a filtered Gts using a Vondrak filter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fc</strong> – cutoff frequence in cycle per year</p></li>
+<li><p><strong>in_place</strong> – if True then replace the current time series</p></li>
+<li><p><strong>verbose</strong> – boolean, verbose mode</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the filtered time series</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.gts.lib.filters.wiener">
+<span id="pyacs-gts-lib-filters-wiener-module"></span><h2>pyacs.gts.lib.filters.wiener module<a class="headerlink" href="#module-pyacs.gts.lib.filters.wiener" title="Permalink to this headline">¶</a></h2>
+<p>Wiener filter for Gts based on scipy.signal.wiener.</p>
+<p><a class="reference external" href="https://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.signal.wiener.html">https://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.signal.wiener.html</a></p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.filters.wiener.wiener">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.filters.wiener.</span></span><span class="sig-name descname"><span class="pre">wiener</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">my_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/filters/wiener.html#wiener"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.filters.wiener.wiener" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns a filtered time series using scipy.signal.wiener</p>
+<p>See documentation for the filter parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>in_place</strong> – if True then replace the current time series</p></li>
+<li><p><strong>verbose</strong> – boolean, verbose mode</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the filtered time series</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.gts.lib.filters">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyacs.gts.lib.filters" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="pyacs.gts.lib.format.html" class="btn btn-neutral float-right" title="pyacs.gts.lib.format package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="pyacs.gts.lib.html" class="btn btn-neutral float-left" title="pyacs.gts.lib package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,287 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.gts.lib.plot.gts_to_ts &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.gts.lib.plot.gts_to_ts</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.gts.lib.plot.gts_to_ts</h1><div class="highlight"><pre>
+<span></span>
+<span class="c1">########################################################################################################</span>
+<div class="viewcode-block" id="gts_to_ts"><a class="viewcode-back" href="../../../../../pyacs.gts.lib.plot.html#pyacs.gts.lib.plot.gts_to_ts.gts_to_ts">[docs]</a><span class="k">def</span> <span class="nf">gts_to_ts</span><span class="p">(</span> <span class="n">gts</span> <span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;mm&#39;</span> <span class="p">,</span> <span class="n">date_unit</span><span class="o">=</span><span class="s1">&#39;decyear&#39;</span> <span class="p">,</span> <span class="n">date_ref</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">set_zero_at_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span> <span class="kc">True</span> <span class="p">):</span>
+<span class="c1">########################################################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    prepare a gts for plot.</span>
+<span class="sd">    </span>
+<span class="sd">    :param gts: Gts instance</span>
+<span class="sd">    :param date: a list of dates [start_date , end_date] in decimal degrees. Default is None for all dates.</span>
+<span class="sd">    :param unit: unit for output</span>
+<span class="sd">    :param date_unit: date unit for the x-axis</span>
+<span class="sd">    :param date_ref: reference date in decimal year.</span>
+<span class="sd">    </span>
+<span class="sd">    :return np_date, y, yerr</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># import</span>
+    <span class="c1">###########################################################################</span>
+
+    <span class="kn">import</span> <span class="nn">pyacs.lib.astrotime</span>
+    <span class="kn">import</span> <span class="nn">pyacs.lib.utils</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># handle dates</span>
+    <span class="c1">###########################################################################</span>
+    <span class="n">tmp_gts</span> <span class="o">=</span> <span class="n">gts</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span> <span class="p">)</span>
+    
+    <span class="c1"># case date extraction</span>
+    <span class="k">if</span> <span class="n">date</span> <span class="o">!=</span> <span class="p">[]:</span>
+        <span class="c1">#tmp_gts = tmp_gts.extract_periods( pyacs.lib.utils.__ensure_list_of_list( date ) )</span>
+        <span class="n">tmp_gts</span> <span class="o">=</span> <span class="n">tmp_gts</span><span class="o">.</span><span class="n">extract_periods</span><span class="p">(</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">__ensure_list_of_list</span><span class="p">(</span> <span class="n">date</span> <span class="p">),</span> <span class="n">no_reset</span><span class="o">=</span><span class="kc">True</span> <span class="p">)</span>
+
+    <span class="c1"># case set_zero_at_date</span>
+    <span class="k">if</span> <span class="n">set_zero_at_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">tmp_gts</span> <span class="o">=</span> <span class="n">tmp_gts</span><span class="o">.</span><span class="n">set_zero_at_date</span><span class="p">(</span> <span class="n">set_zero_at_date</span> <span class="p">)</span>
+    
+    <span class="c1"># case &#39;days&#39;</span>
+    <span class="k">if</span> <span class="n">date_unit</span> <span class="o">==</span> <span class="s1">&#39;days&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">date_ref</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">date_ref</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">np_date</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2mjd</span><span class="p">(</span><span class="n">tmp_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2mjd</span><span class="p">(</span><span class="n">tmp_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">np_date</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2mjd</span><span class="p">(</span><span class="n">tmp_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2mjd</span><span class="p">(</span> <span class="n">date_ref</span> <span class="p">)</span>
+    
+    <span class="c1"># case &#39;decyear&#39;</span>
+    <span class="k">if</span> <span class="n">date_unit</span> <span class="o">==</span> <span class="s1">&#39;decyear&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">date_ref</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">date_ref</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">np_date</span> <span class="o">=</span> <span class="n">tmp_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">np_date</span> <span class="o">=</span> <span class="n">tmp_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">date_ref</span>
+    
+    <span class="c1"># case &#39;cal&#39;</span>
+    <span class="k">if</span> <span class="n">date_unit</span> <span class="o">==</span> <span class="s1">&#39;cal&#39;</span><span class="p">:</span>
+        <span class="n">np_date</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span> <span class="n">tmp_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+    
+    
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># handle unit</span>
+    <span class="c1">###########################################################################</span>
+
+    <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s1">&#39;cm&#39;</span><span class="p">:</span>
+        <span class="n">tmp_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">tmp_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:]</span> <span class="o">*</span> <span class="mf">100.</span>
+
+    <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s1">&#39;mm&#39;</span><span class="p">:</span>
+        <span class="n">tmp_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">tmp_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:]</span> <span class="o">*</span> <span class="mf">1000.</span>
+
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># center</span>
+    <span class="c1">###########################################################################</span>
+    
+    <span class="k">if</span> <span class="n">center</span><span class="p">:</span>
+        <span class="n">tmp_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span> <span class="n">tmp_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span> <span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">np_date</span> <span class="p">,</span> <span class="n">tmp_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:]</span></div>
+
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,438 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.gts.lib.format package &mdash; pyacs 0.65.66 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pyacs.gts.lib.model package" href="pyacs.gts.lib.model.html" />
+    <link rel="prev" title="pyacs.gts.lib.filters package" href="pyacs.gts.lib.filters.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.66
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time_series.html">Time series analysis</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Full code documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pyacs.html">pyacs package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="pyacs.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pyacs.glinalg.html">pyacs.glinalg package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="pyacs.gts.html">pyacs.gts package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html">pyacs.lib package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.message.html">pyacs.message package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html">pyacs.sinex package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html">pyacs.sol package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.html#module-pyacs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">Full code documentation</a> &raquo;</li>
+        
+          <li><a href="pyacs.html">pyacs package</a> &raquo;</li>
+        
+          <li><a href="pyacs.gts.html">pyacs.gts package</a> &raquo;</li>
+        
+          <li><a href="pyacs.gts.lib.html">pyacs.gts.lib package</a> &raquo;</li>
+        
+      <li>pyacs.gts.lib.format package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/pyacs.gts.lib.format.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pyacs-gts-lib-format-package">
+<h1>pyacs.gts.lib.format package<a class="headerlink" href="#pyacs-gts-lib-format-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pyacs.gts.lib.format.cats">
+<span id="pyacs-gts-lib-format-cats-module"></span><h2>pyacs.gts.lib.format.cats module<a class="headerlink" href="#module-pyacs.gts.lib.format.cats" title="Permalink to this headline">¶</a></h2>
+<p>Reads and writes time series files in the CATS format</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.format.cats.read_cats_file">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.format.cats.</span></span><span class="sig-name descname"><span class="pre">read_cats_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ifile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/format/cats.html#read_cats_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.format.cats.read_cats_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read cats files in a directory and actually loads the time series</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.format.cats.write_cats">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.format.cats.</span></span><span class="sig-name descname"><span class="pre">write_cats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets_dates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/format/cats.html#write_cats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.format.cats.write_cats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a file for a cats analysis
+if offsets_dates is not None then offsets are added at the beginning of the file</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.gts.lib.format.force_daily">
+<span id="pyacs-gts-lib-format-force-daily-module"></span><h2>pyacs.gts.lib.format.force_daily module<a class="headerlink" href="#module-pyacs.gts.lib.format.force_daily" title="Permalink to this headline">¶</a></h2>
+<p>Routine to force daily solution at 12:00:00</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.format.force_daily.force_daily">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.format.force_daily.</span></span><span class="sig-name descname"><span class="pre">force_daily</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/format/force_daily.html#force_daily"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.format.force_daily.force_daily" title="Permalink to this definition">¶</a></dt>
+<dd><p>force a time series to be daily with dates at 12:00:00 of every day</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.gts.lib.format.get_unr">
+<span id="pyacs-gts-lib-format-get-unr-module"></span><h2>pyacs.gts.lib.format.get_unr module<a class="headerlink" href="#module-pyacs.gts.lib.format.get_unr" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.format.get_unr.get_unr">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.format.get_unr.</span></span><span class="sig-name descname"><span class="pre">get_unr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">site</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/format/get_unr.html#get_unr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.format.get_unr.get_unr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a time series from <a class="reference external" href="http://geodesy.unr.edu/gps_timeseries/txyz/IGS14/">http://geodesy.unr.edu/gps_timeseries/txyz/IGS14/</a> in PYACS</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>site</strong> – 4-letters code</p></li>
+<li><p><strong>verbose</strong> – verbose mode</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.gts.lib.format.kenv">
+<span id="pyacs-gts-lib-format-kenv-module"></span><h2>pyacs.gts.lib.format.kenv module<a class="headerlink" href="#module-pyacs.gts.lib.format.kenv" title="Permalink to this headline">¶</a></h2>
+<p>Reads time series files in the kenv format</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.format.kenv.read_kenv">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.format.kenv.</span></span><span class="sig-name descname"><span class="pre">read_kenv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ifile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jd'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/format/kenv.html#read_kenv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.format.kenv.read_kenv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read kenv file (magnet) format for time series</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.gts.lib.format.mb_file">
+<span id="pyacs-gts-lib-format-mb-file-module"></span><h2>pyacs.gts.lib.format.mb_file module<a class="headerlink" href="#module-pyacs.gts.lib.format.mb_file" title="Permalink to this headline">¶</a></h2>
+<p>Reads old GAMIT/GLOBK time series mb_files</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.format.mb_file.read_mb_file">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.format.mb_file.</span></span><span class="sig-name descname"><span class="pre">read_mb_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ifile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/format/mb_file.html#read_mb_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.format.mb_file.read_mb_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read GAMIT/GLOBK mb_files in a directory and actually loads the time series</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.format.mb_file.write_mb_file">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.format.mb_file.</span></span><span class="sig-name descname"><span class="pre">write_mb_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/format/mb_file.html#write_mb_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.format.mb_file.write_mb_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.gts.lib.format.pos">
+<span id="pyacs-gts-lib-format-pos-module"></span><h2>pyacs.gts.lib.format.pos module<a class="headerlink" href="#module-pyacs.gts.lib.format.pos" title="Permalink to this headline">¶</a></h2>
+<p>Reads and write PBO pos files</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.format.pos.read_pos">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.format.pos.</span></span><span class="sig-name descname"><span class="pre">read_pos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/format/pos.html#read_pos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.format.pos.read_pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read GAMIT/GLOBK PBO pos file in a directory and actually loads the time series</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tsdir</strong> – directory of pos file</p></li>
+<li><p><strong>tsfile</strong> – pos file to be loaded</p></li>
+<li><p><strong>xyz</strong> – reads xyz sx sy sz corr_xy corr_xz corr_yz columns</p></li>
+<li><p><strong>verbose</strong> – verbose mode</p></li>
+</ul>
+</dd>
+<dt class="field-even">Note</dt>
+<dd class="field-even"><p>Since a pos file includes (almost) all the information, data, code, X0,Y0,Z0,t0 will be populated</p>
+</dd>
+<dt class="field-odd">Note</dt>
+<dd class="field-odd"><p>If tsfile=None, then read_pos will look for a file named CODE*.pos</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.format.pos.write_pos">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.format.pos.</span></span><span class="sig-name descname"><span class="pre">write_pos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/format/pos.html#write_pos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.format.pos.write_pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a time series in GAMIT/GLOBK PBO pos format</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>idir</strong> – output directory</p></li>
+<li><p><strong>add_key</strong> – if not blank then the output pos file will be CODE_add_key.pos, CODE.pos otherwise.</p></li>
+<li><p><strong>force</strong> – set force to ‘data’ or ‘data_xyz’ to force pos to be written from .data or .data_xyz</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>:note1:default behaviour (force = None)</dt><dd><p>if data and data_xyz are not None, then print them independently
+if there are data only, then uses X0,Y0,Z0 to write data_xyz
+if there are data_xyz only, recreate data and write it</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.gts.lib.format.pride">
+<span id="pyacs-gts-lib-format-pride-module"></span><h2>pyacs.gts.lib.format.pride module<a class="headerlink" href="#module-pyacs.gts.lib.format.pride" title="Permalink to this headline">¶</a></h2>
+<p>Reads PRIDE kinematic files</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.format.pride.read_pride">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.format.pride.</span></span><span class="sig-name descname"><span class="pre">read_pride</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/format/pride.html#read_pride"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.format.pride.read_pride" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read PRIDE-PPPAR kinematic result file
+:param tsdir: directory of pride-pppar kinematic files
+:param tsfile: pride-pppar kinematic file to be loaded
+:param verbose: verbose mode
+:return Nothing:
+:note: If file=None, then read_pride will look for a files named kin_*code</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.format.pride.read_pride_pos">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.format.pride.</span></span><span class="sig-name descname"><span class="pre">read_pride_pos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/format/pride.html#read_pride_pos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.format.pride.read_pride_pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read PRIDE-PPPAR static result file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tsdir</strong> – directory of pride-pppar pos static files</p></li>
+<li><p><strong>tsfile</strong> – pride-pppar pos static file to be loaded</p></li>
+<li><p><strong>verbose</strong> – verbose mode</p></li>
+</ul>
+</dd>
+</dl>
+<p>:note:If file=None, then read_pride will look for a files named pos_*code</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.gts.lib.format.tdp">
+<span id="pyacs-gts-lib-format-tdp-module"></span><h2>pyacs.gts.lib.format.tdp module<a class="headerlink" href="#module-pyacs.gts.lib.format.tdp" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.format.tdp.read_tdp">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.format.tdp.</span></span><span class="sig-name descname"><span class="pre">read_tdp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ifile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/format/tdp.html#read_tdp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.format.tdp.read_tdp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read tdp (Gipsy kinematics provided by Cedric Twardzik 17/04/2018) format for time series</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.gts.lib.format.to_pandas_df">
+<span id="pyacs-gts-lib-format-to-pandas-df-module"></span><h2>pyacs.gts.lib.format.to_pandas_df module<a class="headerlink" href="#module-pyacs.gts.lib.format.to_pandas_df" title="Permalink to this headline">¶</a></h2>
+<p>Converts a pyacs gts instance to a pandas DataFrame</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.format.to_pandas_df.to_pandas_df">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.format.to_pandas_df.</span></span><span class="sig-name descname"><span class="pre">to_pandas_df</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uncertainty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/format/to_pandas_df.html#to_pandas_df"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.format.to_pandas_df.to_pandas_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a pyacs Gts to a pandas dataframe</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>pandas DataFrame</p>
+</dd>
+<dt class="field-even">Note</dt>
+<dd class="field-even"><p>uncertainties are not imported.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.gts.lib.format.track">
+<span id="pyacs-gts-lib-format-track-module"></span><h2>pyacs.gts.lib.format.track module<a class="headerlink" href="#module-pyacs.gts.lib.format.track" title="Permalink to this headline">¶</a></h2>
+<p>Reads GAMIT/GLOBK TRACK kinematics time series</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.format.track.read_track_NEU">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.format.track.</span></span><span class="sig-name descname"><span class="pre">read_track_NEU</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tsfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leap_sec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eq_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/gts/lib/format/track.html#read_track_NEU"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.format.track.read_track_NEU" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a GAMIT/GLOBK Track output file generated with the option out_type NEU
+in this case dates are seconds
+by default the seconds are with respect to the first epoch of measurements
+If option leap_sec is provided with a value &gt; 0.0, then GPS time is corrected for the difference between GPTS time and UTC 
+If eq_time is provided, it is assumed to be UTC. Expected format is YYYY:MM:MD:HH:MM:SS.S</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.gts.lib.format">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyacs.gts.lib.format" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="pyacs.gts.lib.model.html" class="btn btn-neutral float-right" title="pyacs.gts.lib.model package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="pyacs.gts.lib.filters.html" class="btn btn-neutral float-left" title="pyacs.gts.lib.filters package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

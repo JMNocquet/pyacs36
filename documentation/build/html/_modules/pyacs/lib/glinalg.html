@@ -1,0 +1,873 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.lib.glinalg &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.lib.glinalg</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.lib.glinalg</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Linear algebra for Geodesy problems</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1">###############################################################################</span>
+<span class="c1"># LEAST-SQUARES</span>
+<span class="c1">###############################################################################</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Routines to solve linear systems using least-squares </span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="ls"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.glinalg.ls">[docs]</a><span class="k">def</span> <span class="nf">ls</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">d</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Solve the least-squares (LS) problem m so that  |Gx-d|**2 is minimum.</span>
+<span class="sd">    </span>
+<span class="sd">    :param G: m x n model matrix as 2D numpy array</span>
+<span class="sd">    :param d: m 1D numpy observation vector</span>
+<span class="sd">    :param verbose: verbose mode</span>
+<span class="sd">    </span>
+<span class="sd">    :return: x,chi2: m (1D numpy array of dim m), chi2 (chi-square)</span>
+<span class="sd">    </span>
+<span class="sd">    :note: solved through numpy.linalg.lstsq</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># numpy linalg lstsq</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy.linalg</span>
+
+    <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">chi2</span><span class="p">,</span><span class="n">rank</span><span class="p">,</span><span class="n">s</span><span class="p">)</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">rcond</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- ls info:&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- chi2: &#39;</span><span class="p">,</span> <span class="n">chi2</span> <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- rank: &#39;</span><span class="p">,</span> <span class="n">rank</span> <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- s   : &#39;</span><span class="p">,</span> <span class="n">s</span> <span class="p">)</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">m</span><span class="p">)</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="lsw"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.glinalg.lsw">[docs]</a><span class="k">def</span> <span class="nf">lsw</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">std</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Solve the least-squares (LS) with data uncertainties provided as a vector</span>
+<span class="sd">    </span>
+<span class="sd">    :param G: m x n model matrix as 2D numpy array</span>
+<span class="sd">    :param d: m 1D numpy observation vector</span>
+<span class="sd">    :param std: standard deviation vector for d</span>
+
+<span class="sd">    :note: the system is modified to be solved by ordinary LS by the change G&lt;- (G.T/std).T and d&lt;- d/std</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># full solution</span>
+    
+    <span class="n">GG</span><span class="o">=</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">T</span><span class="o">/</span><span class="n">std</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">dd</span><span class="o">=</span><span class="n">d</span><span class="o">/</span><span class="n">std</span>
+
+    <span class="k">return</span> <span class="n">ls</span><span class="p">(</span><span class="n">GG</span><span class="p">,</span><span class="n">dd</span><span class="p">)</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="lscov"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.glinalg.lscov">[docs]</a><span class="k">def</span> <span class="nf">lscov</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">cov</span><span class="p">,</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;chol&#39;</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Solve the least-squares (LS) problem with data covariance</span>
+
+<span class="sd">    :param G: m x n model matrix as 2D numpy array</span>
+<span class="sd">    :param d: m 1D numpy observation vector</span>
+<span class="sd">    :param cov: covariance matrix for d</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="n">method</span><span class="o">==</span><span class="s1">&#39;chol&#39;</span><span class="p">:</span>
+    
+        <span class="c1"># cholesky decomposition of cov</span>
+    
+        <span class="n">L</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">cov</span><span class="p">)</span>
+        <span class="n">SQRT_Wd</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+      
+        <span class="c1"># linear system</span>
+        
+        <span class="n">GG</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">SQRT_Wd</span><span class="p">,</span><span class="n">G</span><span class="p">)</span>
+        <span class="n">dd</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">SQRT_Wd</span><span class="p">,</span><span class="n">d</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">ls</span><span class="p">(</span><span class="n">GG</span><span class="p">,</span><span class="n">dd</span><span class="p">)</span></div>
+    
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="lsw_full"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.glinalg.lsw_full">[docs]</a><span class="k">def</span> <span class="nf">lsw_full</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">std</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Solve the least-squares (LS) with data uncertainties provided as a vector and returns the posterior covariance</span>
+<span class="sd">    </span>
+<span class="sd">    :param G: m x n model matrix as 2D numpy array</span>
+<span class="sd">    :param d: m 1D numpy observation vector</span>
+<span class="sd">    :param std: standard deviation vector for d</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">import</span> <span class="nn">scipy.linalg.lapack</span>
+
+    <span class="c1"># normalize system</span>
+
+    <span class="n">GG</span><span class="o">=</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">T</span><span class="o">/</span><span class="n">std</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">dd</span><span class="o">=</span><span class="n">d</span><span class="o">/</span><span class="n">std</span>
+
+    <span class="n">N</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">GG</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">GG</span><span class="p">)</span>
+    
+    <span class="c1"># solve</span>
+
+    <span class="n">L</span> <span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lapack</span><span class="o">.</span><span class="n">dpotrf</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- info from scipy.linalg.lapack.dpotrf in lsw_full&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- info: </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="p">,</span> <span class="n">info</span><span class="p">)</span>
+    
+    <span class="n">L_inv</span> <span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lapack</span><span class="o">.</span><span class="n">dpotri</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- info from scipy.linalg.lapack.dpotri in lsw_full&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- info: </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="p">,</span> <span class="n">info</span><span class="p">)</span>
+    
+    
+    <span class="n">COV</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span><span class="n">L_inv</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span><span class="n">L_inv</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    
+    <span class="n">X</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span> <span class="n">COV</span> <span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span> <span class="n">GG</span><span class="o">.</span><span class="n">T</span> <span class="p">,</span> <span class="n">dd</span> <span class="p">)</span> <span class="p">)</span>
+
+    <span class="c1"># residuals</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="n">d</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">X</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span><span class="n">COV</span><span class="p">,</span><span class="n">V</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="lscov_full"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.glinalg.lscov_full">[docs]</a><span class="k">def</span> <span class="nf">lscov_full</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">cov</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Solve the least-squares (LS) with data covariance and returns the posterior covariance</span>
+<span class="sd">    </span>
+<span class="sd">    :param G: m x n model matrix as 2D numpy array</span>
+<span class="sd">    :param d: m 1D numpy observation vector</span>
+<span class="sd">    :param cov: covariance matrix for d</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">import</span> <span class="nn">scipy.linalg.lapack</span>
+
+    <span class="c1"># normalize system</span>
+
+    <span class="c1"># cholesky decomposition of cov</span>
+
+    <span class="n">L</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">cov</span><span class="p">)</span>
+    <span class="n">SQRT_Wd</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+  
+    <span class="c1"># linear system</span>
+    
+    <span class="n">GG</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">SQRT_Wd</span><span class="p">,</span><span class="n">G</span><span class="p">)</span>
+    <span class="n">dd</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">SQRT_Wd</span><span class="p">,</span><span class="n">d</span><span class="p">)</span>
+
+    <span class="n">N</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">GG</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">GG</span><span class="p">)</span>
+    
+
+    <span class="c1"># solve</span>
+
+    <span class="n">L</span> <span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lapack</span><span class="o">.</span><span class="n">dpotrf</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">info</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- the i-th argument had an illegal value. i=</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">info</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">info</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- the the leading minor of order i is not positive definite&#39;</span><span class="o">+</span>\
+              <span class="s1">&#39; and the factorization could not be completed. i=</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">info</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">info</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- dpotrf ok&#39;</span><span class="p">)</span>
+
+    
+    <span class="n">L_inv</span> <span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lapack</span><span class="o">.</span><span class="n">dpotri</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">info</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- the i-th argument had an illegal value. i=</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">info</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">info</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- if INFO = i, the (i,i) element of the factor U or L  is zero, and the inverse could not be computed. i=</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">info</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">info</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- dpotri ok&#39;</span><span class="p">)</span>
+
+    
+    <span class="n">COV</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span><span class="n">L_inv</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span><span class="n">L_inv</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    
+    <span class="n">X</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span> <span class="n">COV</span> <span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span> <span class="n">GG</span><span class="o">.</span><span class="n">T</span> <span class="p">,</span> <span class="n">dd</span> <span class="p">)</span> <span class="p">)</span>
+
+    <span class="c1"># residuals</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="n">d</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">X</span><span class="p">)</span>
+
+    <span class="c1"># chi2</span>
+    
+    <span class="n">vv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">SQRT_Wd</span><span class="p">,</span><span class="n">V</span><span class="p">)</span>
+    
+    <span class="n">chi2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">vv</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">vv</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span><span class="n">COV</span><span class="p">,</span><span class="n">V</span><span class="p">,</span> <span class="n">chi2</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<span class="c1"># COVARIANCE</span>
+<span class="c1">###############################################################################</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Routines to manipulate covariance and correlations matrices </span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="cov_to_invcov"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.glinalg.cov_to_invcov">[docs]</a><span class="k">def</span> <span class="nf">cov_to_invcov</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Inverse a covariance matrix</span>
+<span class="sd">    </span>
+<span class="sd">    :param cov: 2D numpy array covariance matrix</span>
+<span class="sd">    </span>
+<span class="sd">    :return: 2D numpy array inverse covariance matrix</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">linalg</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">lapack</span><span class="o">.</span><span class="n">dpotri</span><span class="p">(</span><span class="n">linalg</span><span class="o">.</span><span class="n">lapack</span><span class="o">.</span><span class="n">dpotrf</span><span class="p">(</span><span class="n">M</span><span class="p">)[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">Q</span> <span class="o">+</span> <span class="n">Q</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span>
+    <span class="n">Q</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span> <span class="o">=</span> <span class="n">Q</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span> <span class="o">/</span> <span class="mi">2</span>
+    
+    <span class="k">return</span> <span class="n">Q</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="corr_to_cov"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.glinalg.corr_to_cov">[docs]</a><span class="k">def</span> <span class="nf">corr_to_cov</span><span class="p">(</span><span class="n">corr</span><span class="p">,</span><span class="n">sigma_m</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Correlation to covariance matrix</span>
+
+<span class="sd">    :param corr: correlation matrix</span>
+<span class="sd">    :param sigma_m: vector of standard deviation = sqrt(diag(Cov))</span>
+<span class="sd">    </span>
+<span class="sd">    :return covariance matrix</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="n">outer_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">sigma_m</span><span class="p">,</span> <span class="n">sigma_m</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">corr</span> <span class="o">*</span> <span class="n">outer_v</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="cov_to_corr"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.glinalg.cov_to_corr">[docs]</a><span class="k">def</span> <span class="nf">cov_to_corr</span><span class="p">(</span><span class="n">Cov</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Covariance to correlation transformation</span>
+<span class="sd">    </span>
+<span class="sd">    :param cov: covariance matrix</span>
+<span class="sd">    </span>
+<span class="sd">    :return corr,sigma_m: correlation matrix and standard deviation matrix</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">Cov</span><span class="p">))</span>
+    <span class="n">outer_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+    <span class="n">correlation</span> <span class="o">=</span> <span class="n">Cov</span> <span class="o">/</span> <span class="n">outer_v</span>
+    <span class="n">correlation</span><span class="p">[</span> <span class="n">Cov</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">correlation</span> <span class="p">,</span> <span class="n">v</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="symmetrize"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.glinalg.symmetrize">[docs]</a><span class="k">def</span> <span class="nf">symmetrize</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">type_matrix</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extract the upper or lower triangle and make a symmetric matrix</span>
+<span class="sd">    </span>
+<span class="sd">    :parameter a: numpy 2D array, must be a square matrix</span>
+<span class="sd">    :parameter type: &#39;triu&#39; or &#39;tril&#39;, triangle used to form the matrix</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    
+    <span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">c</span><span class="p">)</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">if</span> <span class="n">r</span> <span class="o">!=</span> <span class="n">c</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;!!! ERROR: matrix must be square. a has ghape: </span><span class="si">%d</span><span class="s1"> &#39;</span> <span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="p">)</span>
+        
+    <span class="k">if</span> <span class="n">type_matrix</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;triu&#39;</span><span class="p">,</span><span class="s1">&#39;tril&#39;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;!!! ERROR: type_matrix must be triu or tril. type_matrix=</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="p">,</span> <span class="n">type_matrix</span> <span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">type_matrix</span> <span class="o">==</span> <span class="s1">&#39;triu&#39;</span><span class="p">:</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        
+    <span class="k">if</span> <span class="n">type_matrix</span> <span class="o">==</span> <span class="s1">&#39;tril&#39;</span><span class="p">:</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tril</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">T</span> <span class="o">+</span> <span class="n">T</span><span class="o">.</span><span class="n">T</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">diagonal</span><span class="p">())</span></div>
+
+
+
+<span class="c1">###############################################################################</span>
+<span class="c1"># VARIOUS</span>
+<span class="c1">###############################################################################</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Various usefull routines to build linear systems </span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="dot_and_sum"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.glinalg.dot_and_sum">[docs]</a><span class="k">def</span> <span class="nf">dot_and_sum</span><span class="p">(</span><span class="n">LX</span><span class="p">,</span><span class="n">a</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    does a matrix by scalar product and sum it</span>
+<span class="sd">    :param LX : list of arrays with the same dimension</span>
+<span class="sd">    :param a  : list of scalars</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    
+    <span class="n">np_LX</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">LX</span><span class="p">)</span>
+    <span class="n">np_a</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    
+    <span class="k">return</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np_LX</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">np_a</span><span class="p">)</span><span class="o">.</span><span class="n">T</span> <span class="p">)</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="repeat_matrix_in_col"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.glinalg.repeat_matrix_in_col">[docs]</a><span class="k">def</span> <span class="nf">repeat_matrix_in_col</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    </span>
+<span class="sd">    Repeat a matrix along a column</span>
+<span class="sd">    </span>
+<span class="sd">    R = np.empty( ( n,G.shape[0], G.shape[1] ) )</span>
+<span class="sd">    R[:] = G</span>
+<span class="sd">    return( R.reshape( n*G.shape[0], G.shape[1])  )    </span>
+<span class="sd">           </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    
+    <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span> <span class="p">(</span> <span class="n">n</span><span class="p">,</span><span class="n">G</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">G</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="n">R</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">G</span>
+    
+    <span class="k">return</span><span class="p">(</span> <span class="n">R</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span> <span class="n">n</span><span class="o">*</span><span class="n">G</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">G</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>  <span class="p">)</span>    </div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="odot"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.glinalg.odot">[docs]</a><span class="k">def</span> <span class="nf">odot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">G</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    </span>
+<span class="sd">    Customize vector by matrix product.</span>
+<span class="sd">    </span>
+<span class="sd">    Let&#39;s assume we have a matrix made of equal dimension sub-matrices $G_1,\cdots, G_n$</span>
+<span class="sd">    \begin{equation}</span>
+<span class="sd">    \left[</span>
+<span class="sd">    \begin{array}{c}</span>
+<span class="sd">    G_1\\</span>
+<span class="sd">    G_2\\</span>
+<span class="sd">    \vdots \\</span>
+<span class="sd">    G_n</span>
+<span class="sd">    \end{array}</span>
+<span class="sd">    \right]</span>
+<span class="sd">    \end{equation}</span>
+<span class="sd">    and a vector of scalars</span>
+<span class="sd">    \begin{equation}</span>
+<span class="sd">    \left[</span>
+<span class="sd">    \begin{array}{c}</span>
+<span class="sd">    a_1\\</span>
+<span class="sd">    a_2\\</span>
+<span class="sd">    \vdots \\</span>
+<span class="sd">    a_n</span>
+<span class="sd">    \end{array}</span>
+<span class="sd">    \right]</span>
+<span class="sd">    \end{equation}</span>
+<span class="sd">    and we want</span>
+<span class="sd">    \begin{equation}</span>
+<span class="sd">    \left[</span>
+<span class="sd">    \begin{array}{c}</span>
+<span class="sd">    a_1 G_1\\</span>
+<span class="sd">    a_2 G_2\\</span>
+<span class="sd">    \vdots \\</span>
+<span class="sd">    a_n G_n</span>
+<span class="sd">    \end{array}</span>
+<span class="sd">    \right]</span>
+<span class="sd">    \end{equation}</span>
+<span class="sd">    We do this with numpy broadcasting</span>
+
+<span class="sd">    :param a: 1D numpy array of multipliers (scalars)</span>
+<span class="sd">    :param G: 2-D numpy arrays of submatrix G_i.</span>
+<span class="sd">    </span>
+<span class="sd">    :return: result of the multiplication</span>
+<span class="sd">    :note: if G.shape = (n,m), and a.shape=(l), then the shape of the G_i is (n/l,m) </span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># import</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="c1"># check dimension</span>
+    
+    <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">%</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;!!! ERROR: Input parameters are not compatible&quot;</span><span class="p">)</span>
+
+    <span class="c1"># number of row for the individual matrices to be multiplied</span>
+
+    <span class="n">nr</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># adding a dimension to G</span>
+    
+    <span class="n">GG</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="n">nr</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span>
+    
+    <span class="c1"># adding a dimension to a</span>
+    
+    <span class="n">aa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="n">R</span> <span class="o">=</span> <span class="n">GG</span> <span class="o">*</span> <span class="n">aa</span>
+    
+    <span class="c1"># reshape</span>
+    
+    <span class="k">return</span><span class="p">(</span> <span class="n">R</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span> <span class="n">G</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">G</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span></div>
+
+<span class="c1"># ###############################################################################</span>
+<span class="c1"># def dot_array_scalar_in_array(X,A):</span>
+<span class="c1"># ###############################################################################</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Assuming X.shape = (m,k,k) and A.shape = (m,n,n)</span>
+<span class="c1">#     </span>
+<span class="c1">#     Returns a 2D numpy array of the form:</span>
+<span class="c1"># </span>
+<span class="c1">#     [[ (sum X[i]*A[i,0,0]), (sum X[i]*A[i,1,0]), ...., (sum X[i]*A[i,n,0])],</span>
+<span class="c1">#      [ (sum X[i]*A[i,1,0]), (sum X[i]*A[i,1,1]), ...., (sum X[i]*A[i,n,1]),</span>
+<span class="c1">#      ..</span>
+<span class="c1">#      [ (sum X[i]*A[i,n,0]), (sum X[i]*A[i,n,1]), ...., (sum X[i]*A[i,n,n])]</span>
+<span class="c1">#      </span>
+<span class="c1">#     :param X : 2D numpy array</span>
+<span class="c1">#     :param a  : 2D numpy array</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     </span>
+<span class="c1">#     import numpy as np</span>
+<span class="c1">#     </span>
+<span class="c1">#     # TEST</span>
+<span class="c1">#     </span>
+<span class="c1">#     X = np.array([[[1,2],[2,1]],[[3,4],[4,3]]]) </span>
+<span class="c1">#     A = np.arange(18).reshape(2,3,3)</span>
+<span class="c1">#     </span>
+<span class="c1">#     </span>
+<span class="c1">#     SOL = np.zeros((A.shape[1]*X.shape[1],A.shape[1]*X.shape[1]))</span>
+<span class="c1"># </span>
+<span class="c1">#     for i in np.arange( A.shape[0]+1 ):</span>
+<span class="c1">#         for j in np.arange( A.shape[0]+1 ):</span>
+<span class="c1"># </span>
+<span class="c1">#             XX = np.zeros((X.shape[0],X.shape[0]))</span>
+<span class="c1">#             for k in np.arange(X.shape[0]):</span>
+<span class="c1">#                 for l in np.arange(A.shape[0]):</span>
+<span class="c1">#                     XX += X[k] * A[l,i,j]</span>
+<span class="c1"># </span>
+<span class="c1">#             SOL[i*X.shape[0]:(i+1)*X.shape[0],j*X.shape[0]:(j+1)*X.shape[0] ] = XX</span>
+<span class="c1">#     </span>
+<span class="c1">#     print np.sum( X.reshape(1,2,X.shape[0],X.shape[0]) * A.reshape(A.shape[1]*A.shape[2],A.shape[0],1,1),axis=1)</span>
+<span class="c1">#    </span>
+<span class="c1">#    return( None )</span>
+
+<span class="c1">###############################################################################</span>
+<span class="c1"># PAUL REBISCHUNG ROUTINES</span>
+<span class="c1">###############################################################################</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Various usefull routines provided by Paul Rebischung (IGN/LAREG Paul.Rebischung@ign.fr) </span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="dot"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.glinalg.dot">[docs]</a><span class="k">def</span> <span class="nf">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Matrix/matrix, matrix/vector and vector/vector multiplication</span>
+<span class="sd">    :author  : P. Rebischung</span>
+<span class="sd">    :date:Created : 02-Aug-2013</span>
+<span class="sd">    :changes :</span>
+<span class="sd">    :param A: Matrix or vector</span>
+<span class="sd">    :param B : Matrix or vector</span>
+<span class="sd">    :return:  A*B</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">linalg</span>
+    
+    <span class="c1"># Matrix/matrix multiplication</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">A</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="s1">&#39;C_CONTIGUOUS&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">B</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="s1">&#39;C_CONTIGUOUS&#39;</span><span class="p">]):</span>
+            <span class="n">C</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">blas</span><span class="o">.</span><span class="n">dgemm</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="s1">&#39;C_CONTIGUOUS&#39;</span><span class="p">]):</span>
+                <span class="n">C</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">blas</span><span class="o">.</span><span class="n">dgemm</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">trans_b</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="s1">&#39;C_CONTIGUOUS&#39;</span><span class="p">]):</span>
+                <span class="n">C</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">blas</span><span class="o">.</span><span class="n">dgemm</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">trans_a</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">C</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">blas</span><span class="o">.</span><span class="n">dgemm</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">B</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">trans_a</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">trans_b</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="c1"># Matrix/vector multiplication</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="s1">&#39;C_CONTIGUOUS&#39;</span><span class="p">]):</span>
+            <span class="n">C</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">blas</span><span class="o">.</span><span class="n">dgemv</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">C</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">blas</span><span class="o">.</span><span class="n">dgemv</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="c1"># Vector/vector multiplication</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">blas</span><span class="o">.</span><span class="n">ddot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">C</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="syminv"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.glinalg.syminv">[docs]</a><span class="k">def</span> <span class="nf">syminv</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Invert a symmetric matrix</span>
+<span class="sd">    :author  : P. Rebischung</span>
+<span class="sd">    :created : 02-Aug-2013</span>
+<span class="sd">    :param M : Matrix</span>
+<span class="sd">    :return:Inverse matrix</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">linalg</span>
+
+    
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">lapack</span><span class="o">.</span><span class="n">dpotri</span><span class="p">(</span><span class="n">linalg</span><span class="o">.</span><span class="n">lapack</span><span class="o">.</span><span class="n">dpotrf</span><span class="p">(</span><span class="n">M</span><span class="p">)[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">Q</span> <span class="o">+</span> <span class="n">Q</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span>
+    <span class="n">Q</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span> <span class="o">=</span> <span class="n">Q</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span> <span class="o">/</span> <span class="mi">2</span>
+    
+    <span class="k">return</span> <span class="n">Q</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="sympinv"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.glinalg.sympinv">[docs]</a><span class="k">def</span> <span class="nf">sympinv</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pseudo-invert a positive semi-definite symmetric matrix</span>
+<span class="sd">    :author: P. Rebischung</span>
+<span class="sd">    :created : 02-Aug-2013</span>
+<span class="sd">    :param M : Matrix</span>
+<span class="sd">    :return: Pseudo-inverse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="o">,</span> <span class="nn">sys</span> 
+    <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">linalg</span>
+    
+    
+    <span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">lapack</span><span class="o">.</span><span class="n">dsyev</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- info from linalg.lapack.dsyev in sympinv&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- info: </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="p">,</span> <span class="n">info</span><span class="p">)</span>
+
+    <span class="n">t</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">float_info</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+    <span class="n">l</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">l</span> <span class="o">&lt;=</span> <span class="n">t</span><span class="p">)[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">inf</span>
+    
+    <span class="k">return</span> <span class="n">dot</span><span class="p">(</span><span class="n">v</span><span class="o">/</span><span class="n">l</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">T</span><span class="p">)</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="make_normal_system"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.glinalg.make_normal_system">[docs]</a><span class="k">def</span> <span class="nf">make_normal_system</span><span class="p">(</span> <span class="n">A</span> <span class="p">,</span> <span class="n">d</span> <span class="p">,</span> <span class="n">inv_Cd</span> <span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given the linear system A x = d with Cd the covariance matrix of d</span>
+<span class="sd">    the associated normal system is A.T Cd-1 A x = A.T Cd-1 d.</span>
+<span class="sd">    returns N= A.T Cd-1 A, Nd=A.T Cd-1 d</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># import</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    
+    <span class="n">TMP</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="p">,</span> <span class="n">inv_Cd</span> <span class="p">)</span>
+    
+    <span class="k">return</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span> <span class="n">TMP</span> <span class="p">,</span> <span class="n">A</span> <span class="p">)</span> <span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span> <span class="n">TMP</span> <span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="make_normal_system_tarantola"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.glinalg.make_normal_system_tarantola">[docs]</a><span class="k">def</span> <span class="nf">make_normal_system_tarantola</span><span class="p">(</span> <span class="n">G</span> <span class="p">,</span> <span class="n">d</span> <span class="p">,</span> <span class="n">m0</span><span class="p">,</span> <span class="n">inv_Cd</span><span class="p">,</span> <span class="n">inv_Cm</span> <span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    returns Gt inv_Cd G + inv_Cm , Gt inv_Cd d + inv_Cm m0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># import</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    
+    <span class="n">TMP</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span> <span class="n">G</span><span class="o">.</span><span class="n">T</span> <span class="p">,</span> <span class="n">inv_Cd</span> <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">m0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span> <span class="n">TMP</span> <span class="p">,</span> <span class="n">G</span> <span class="p">)</span> <span class="o">+</span> <span class="n">inv_Cm</span>  <span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span> <span class="n">TMP</span> <span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span> <span class="o">+</span> <span class="n">inv_Cm</span> <span class="o">*</span> <span class="n">m0</span>  <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span> <span class="n">TMP</span> <span class="p">,</span> <span class="n">G</span> <span class="p">)</span> <span class="o">+</span> <span class="n">inv_Cm</span>  <span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span> <span class="n">TMP</span> <span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">inv_Cm</span> <span class="p">,</span> <span class="n">m0</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>  <span class="p">)</span> <span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="matrix_from_pattern"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.glinalg.matrix_from_pattern">[docs]</a><span class="k">def</span> <span class="nf">matrix_from_pattern</span><span class="p">(</span> <span class="n">pattern</span> <span class="p">,</span> <span class="n">structure</span> <span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    creates a matrix made of a pattern according to a structure</span>
+<span class="sd">    </span>
+<span class="sd">    :param pattern : pattern 2D numpy array to be duplicated</span>
+<span class="sd">    :param structure: 2D numpy array giving the structure as multiplicating factors</span>
+<span class="sd">    :return: the block matrix as a 2D numpy array</span>
+<span class="sd">    </span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; pattern = np.arange(6).reshape(2,3)</span>
+<span class="sd">    &gt;&gt;&gt; structure = np.arange(6).reshape(3,2)</span>
+
+<span class="sd">    &gt;&gt;&gt; print(pattern)</span>
+<span class="sd">    &gt;&gt;&gt; print(&#39;--&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; print(structure)</span>
+<span class="sd">    &gt;&gt;&gt; print(&#39;--&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; print( matrix_from_pattern( pattern , structure ) )</span>
+
+<span class="sd">        [[0 1 2]</span>
+<span class="sd">        [3 4 5]]</span>
+<span class="sd">        --</span>
+<span class="sd">        [[0 1]</span>
+<span class="sd">         [2 3]</span>
+<span class="sd">         [4 5]]</span>
+<span class="sd">        --</span>
+<span class="sd">        [[ 0  0  0  0  1  2]</span>
+<span class="sd">         [ 0  0  0  3  4  5]</span>
+<span class="sd">         [ 0  2  4  0  3  6]</span>
+<span class="sd">         [ 6  8 10  9 12 15]</span>
+<span class="sd">         [ 0  4  8  0  5 10]</span>
+<span class="sd">         [12 16 20 15 20 25]]</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="n">npr</span> <span class="p">,</span> <span class="n">npc</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">nsr</span> <span class="p">,</span> <span class="n">nsc</span> <span class="o">=</span> <span class="n">structure</span><span class="o">.</span><span class="n">shape</span>
+    
+    <span class="n">pattern_3D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span> <span class="n">pattern</span> <span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span> <span class="p">)</span> <span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">structure_3D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span> <span class="n">structure</span> <span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span> <span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">)</span>
+
+    <span class="n">R_4D</span> <span class="o">=</span>  <span class="n">structure_3D</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">pattern_3D</span>
+    
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">R_4D</span> <span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span> <span class="n">npr</span><span class="o">*</span><span class="n">nsr</span> <span class="p">,</span> <span class="n">npc</span><span class="o">*</span><span class="n">nsc</span> <span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="extract_block_diag"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.glinalg.extract_block_diag">[docs]</a><span class="k">def</span> <span class="nf">extract_block_diag</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Only 2-D arrays handled&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Must have n &gt;= 0&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="p">[:,</span><span class="n">n</span><span class="o">*</span><span class="n">k</span><span class="p">:]</span> 
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="o">-</span><span class="n">n</span><span class="o">*</span><span class="n">k</span><span class="p">:]</span>
+
+    <span class="n">n_blocks</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">//</span><span class="n">n</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">//</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="n">new_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_blocks</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">new_strides</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="n">a</span><span class="o">.</span><span class="n">strides</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">n</span><span class="o">*</span><span class="n">a</span><span class="o">.</span><span class="n">strides</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                   <span class="n">a</span><span class="o">.</span><span class="n">strides</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">a</span><span class="o">.</span><span class="n">strides</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">stride_tricks</span><span class="o">.</span><span class="n">as_strided</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">,</span> <span class="n">new_strides</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

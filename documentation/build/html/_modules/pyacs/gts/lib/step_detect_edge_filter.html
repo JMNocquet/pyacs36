@@ -1,0 +1,417 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.gts.lib.step_detect_edge_filter &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.gts.lib.step_detect_edge_filter</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.gts.lib.step_detect_edge_filter</h1><div class="highlight"><pre>
+<span></span><span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="find_offsets_edge_filter"><a class="viewcode-back" href="../../../../pyacs.gts.lib.html#pyacs.gts.Gts.find_offsets_edge_filter">[docs]</a><span class="k">def</span> <span class="nf">find_offsets_edge_filter</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">search_lbda</span><span class="o">=</span><span class="p">[</span> <span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">300</span><span class="p">]</span> <span class="p">,</span> <span class="n">delta_day</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> \
+                              <span class="n">in_place</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">lcomponent</span><span class="o">=</span><span class="s1">&#39;NE&#39;</span> <span class="p">,</span> \
+                              <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eq_file</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    
+    <span class="c1"># import</span>
+    
+    <span class="kn">from</span> <span class="nn">pyacs.gts.lib.filters.total_variation</span> <span class="kn">import</span> <span class="n">edge</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">import</span> <span class="nn">pyacs.lib.astrotime</span> <span class="k">as</span> <span class="nn">at</span>
+    <span class="kn">import</span> <span class="nn">pyacs.lib.units</span>
+    <span class="kn">import</span> <span class="nn">datetime</span>
+    
+    <span class="c1"># handle delta_day</span>
+    
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">delta_day</span><span class="p">,</span><span class="nb">int</span><span class="p">):</span>
+        <span class="n">ldelta_day</span> <span class="o">=</span> <span class="p">[</span><span class="n">delta_day</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">delta_day</span><span class="p">,</span><span class="nb">list</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;!!! ERROR: delta_day should be a list of integer or an integer&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ldelta_day</span> <span class="o">=</span> <span class="n">delta_day</span>
+    
+    <span class="c1"># eq list a gcmt file</span>
+    <span class="k">if</span> <span class="n">eq_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">EQ</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">eq_file</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">np_eq_lon</span><span class="o">=</span><span class="n">EQ</span><span class="p">[</span><span class="s1">&#39;f0&#39;</span><span class="p">]</span>
+        <span class="n">np_eq_lat</span><span class="o">=</span><span class="n">EQ</span><span class="p">[</span><span class="s1">&#39;f1&#39;</span><span class="p">]</span>
+        <span class="n">np_moment_scalar</span><span class="o">=</span><span class="n">EQ</span><span class="p">[</span><span class="s1">&#39;f8&#39;</span><span class="p">]</span>
+        <span class="n">np_moment_exponent</span><span class="o">=</span><span class="n">EQ</span><span class="p">[</span><span class="s1">&#39;f9&#39;</span><span class="p">]</span>
+        <span class="n">np_str_date</span><span class="o">=</span><span class="n">EQ</span><span class="p">[</span><span class="s1">&#39;f10&#39;</span><span class="p">]</span>
+        
+        <span class="c1"># handle magnitude</span>
+        <span class="n">np_eq_magnitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span> <span class="n">np_moment_scalar</span> <span class="p">)</span> <span class="o">*</span><span class="mf">0.0</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">scalar</span><span class="p">,</span><span class="n">exponent</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span> <span class="n">np_moment_scalar</span> <span class="p">,</span> <span class="n">np_moment_exponent</span> <span class="p">):</span>
+            <span class="n">moment</span> <span class="o">=</span> <span class="n">scalar</span> <span class="o">*</span> <span class="mf">10.</span><span class="o">**</span><span class="p">(</span><span class="n">exponent</span> <span class="o">-</span> <span class="mi">7</span><span class="p">)</span>
+            <span class="n">np_eq_magnitude</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">moment_to_magnitude</span><span class="p">(</span><span class="n">moment</span><span class="p">)</span>
+            <span class="n">i</span><span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="c1"># handle dates</span>
+        <span class="n">np_eq_mjd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span> <span class="n">np_moment_scalar</span> <span class="p">)</span> <span class="o">*</span> <span class="mf">0.</span>
+        <span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+        <span class="k">for</span> <span class="n">str_date</span> <span class="ow">in</span> <span class="n">np_str_date</span><span class="p">:</span>
+            <span class="n">dyear</span>  <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="n">str_date</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span> <span class="p">)</span>
+            <span class="n">dmonth</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="n">str_date</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span> <span class="p">)</span>
+            <span class="n">dmday</span>  <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="n">str_date</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span> <span class="p">)</span>
+            <span class="n">dhour</span>  <span class="o">=</span>  <span class="nb">int</span><span class="p">(</span> <span class="n">str_date</span><span class="p">[</span><span class="mi">8</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span> <span class="p">)</span>
+            <span class="n">dminute</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="n">str_date</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">]</span> <span class="p">)</span>
+            <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">dyear</span><span class="p">,</span><span class="n">dmonth</span><span class="p">,</span><span class="n">dmday</span><span class="p">,</span><span class="n">dhour</span><span class="p">,</span><span class="n">dminute</span><span class="p">)</span>
+            <span class="n">np_eq_mjd</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">datetime2mjd</span><span class="p">(</span> <span class="n">date</span> <span class="p">)</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="c1"># initialize the components</span>
+    <span class="n">l_idx_component</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="s1">&#39;N&#39;</span> <span class="ow">in</span> <span class="n">lcomponent</span><span class="p">:</span>
+        <span class="n">l_idx_component</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s1">&#39;E&#39;</span> <span class="ow">in</span> <span class="n">lcomponent</span><span class="p">:</span>
+        <span class="n">l_idx_component</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s1">&#39;U&#39;</span> <span class="ow">in</span> <span class="n">lcomponent</span><span class="p">:</span>
+        <span class="n">l_idx_component</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    
+    <span class="n">H_idx_component</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="s1">&#39;N&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">:</span><span class="s1">&#39;E&#39;</span><span class="p">,</span><span class="mi">3</span><span class="p">:</span><span class="s1">&#39;U&#39;</span><span class="p">}</span>
+    
+    <span class="c1"># working Gts</span>
+    <span class="n">new_gts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    
+    <span class="c1">##############</span>
+    <span class="k">def</span> <span class="nf">__get_offset_date_and_value</span><span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="p">,</span> <span class="n">threshold</span> <span class="p">):</span>
+    
+        <span class="c1"># for dates</span>
+        <span class="n">data_mjd</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2mjd</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+        <span class="n">new_data_mjd</span> <span class="o">=</span> <span class="p">(</span> <span class="n">data_mjd</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">data_mjd</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span> 
+        
+        <span class="n">x_diff</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">mjd2decyear</span><span class="p">(</span> <span class="n">new_data_mjd</span> <span class="p">)</span>
+        
+        <span class="c1"># for y</span>
+        
+        <span class="n">diff_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span> <span class="n">y</span> <span class="p">)</span>
+        <span class="n">abs_diff_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span> <span class="n">diff_y</span> <span class="p">)</span>
+        
+        <span class="n">np_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span> <span class="n">abs_diff_y</span> <span class="o">&gt;</span> <span class="n">threshold</span> <span class="p">)</span>
+        
+        <span class="c1"># get dates</span>
+        <span class="n">np_dates</span> <span class="o">=</span> <span class="n">x_diff</span><span class="p">[</span> <span class="n">np_idx</span> <span class="p">]</span>
+        <span class="c1"># get values</span>
+        <span class="n">np_values</span> <span class="o">=</span> <span class="n">diff_y</span><span class="p">[</span> <span class="n">np_idx</span> <span class="p">]</span>
+        
+        <span class="k">return</span> <span class="n">np_dates</span><span class="p">,</span><span class="n">np_values</span>
+    <span class="c1">##############</span>
+    
+    <span class="c1">##############</span>
+    <span class="k">def</span> <span class="nf">__handle_round_date</span><span class="p">(</span> <span class="n">decyear</span> <span class="p">):</span>
+        <span class="n">mjd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2mjd</span><span class="p">(</span> <span class="n">decyear</span> <span class="p">)</span> <span class="p">,</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">2</span> <span class="p">)</span>
+        <span class="p">(</span><span class="n">mday</span><span class="p">,</span><span class="n">month</span><span class="p">,</span> <span class="n">iyear</span><span class="p">,</span><span class="n">_ut</span><span class="p">)</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">mjd2cal</span><span class="p">(</span><span class="n">mjd</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">(</span> <span class="n">mday</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">iyear</span><span class="p">)</span>
+    <span class="c1">##############</span>
+        
+    
+    <span class="c1"># detrend</span>
+
+    <span class="n">H_offset</span><span class="o">=</span><span class="p">{}</span>
+    
+    <span class="k">for</span> <span class="n">delta_day</span> <span class="ow">in</span> <span class="n">ldelta_day</span><span class="p">:</span>
+        
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- detrend_median with delta_day=</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">delta_day</span><span class="p">)</span>
+    
+        <span class="n">gts_dtm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detrend_median</span><span class="p">(</span> <span class="n">delta_day</span><span class="o">=</span><span class="n">delta_day</span> <span class="p">)</span>
+    
+        <span class="k">if</span> <span class="n">gts_dtm</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">gts_dtm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detrend</span><span class="p">(</span> <span class="p">)</span>
+        
+            
+        <span class="n">median_neu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span> <span class="n">gts_dtm</span><span class="o">.</span><span class="n">differentiate</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="p">)</span> <span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span> <span class="p">)</span>
+    
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- median daily scattering NEU (mm): &quot;</span> <span class="p">,</span> <span class="n">median_neu</span> <span class="o">*</span> <span class="mf">1.E3</span> <span class="p">)</span>
+    
+            
+        <span class="k">for</span> <span class="n">lbda</span> <span class="ow">in</span> <span class="n">search_lbda</span><span class="p">:</span>
+            
+            <span class="n">edge_ts</span> <span class="o">=</span> <span class="n">gts_dtm</span><span class="o">.</span><span class="n">edge_filter</span><span class="p">(</span><span class="n">lbda</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+                
+            <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">l_idx_component</span><span class="p">:</span>
+                
+                <span class="n">np_dates</span><span class="p">,</span><span class="n">np_values</span> <span class="o">=</span> <span class="n">__get_offset_date_and_value</span><span class="p">(</span><span class="n">edge_ts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">edge_ts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="n">idx</span><span class="p">],</span> <span class="n">median_neu</span><span class="p">[</span><span class="n">idx</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">threshold</span><span class="p">)</span>
+        
+                <span class="n">new_gts</span><span class="o">.</span><span class="n">offsets_dates</span> <span class="o">=</span> <span class="n">np_dates</span>
+                
+                <span class="k">if</span> <span class="n">verbose</span> <span class="ow">or</span> <span class="n">log</span><span class="p">:</span>
+                    
+                    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>                
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- suspected offsets for component </span><span class="si">%s</span><span class="s2"> and lbda = </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">H_idx_component</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="p">,</span> <span class="n">lbda</span> <span class="p">))</span>
+    
+                    <span class="k">for</span> <span class="n">date</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">np_dates</span><span class="p">,</span><span class="n">np_values</span><span class="p">):</span>
+                        <span class="p">(</span> <span class="n">mday</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">iyear</span><span class="p">)</span> <span class="o">=</span> <span class="n">__handle_round_date</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+                        <span class="n">mjd</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2mjd</span><span class="p">(</span> <span class="n">date</span> <span class="p">)</span>
+                        <span class="n">sstr_date</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%4d</span><span class="s2">_</span><span class="si">%02d</span><span class="s2">_</span><span class="si">%02d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">iyear</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">mday</span><span class="p">))</span>
+                        
+                        <span class="n">no_EQ</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="k">if</span> <span class="n">eq_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+                            <span class="k">for</span> <span class="n">mjd_eq</span> <span class="ow">in</span> <span class="n">np_eq_mjd</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span> <span class="n">mjd_eq</span><span class="o">-</span><span class="n">mjd</span> <span class="p">)</span> <span class="o">&lt;=</span><span class="mf">1.</span><span class="p">:</span>
+                                    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.6lf</span><span class="s2"> </span><span class="si">%10.3lf</span><span class="s2"> (</span><span class="si">%4d</span><span class="s2">-</span><span class="si">%02d</span><span class="s2">-</span><span class="si">%02d</span><span class="s2">) EQ Mw </span><span class="si">%.1lf</span><span class="s2"> </span><span class="si">%6.2lf</span><span class="s2"> </span><span class="si">%6.2lf</span><span class="s2"> &quot;</span> <span class="o">%</span> \
+                                              <span class="p">(</span><span class="n">date</span><span class="p">,</span><span class="n">value</span><span class="o">*</span><span class="mf">1.E3</span><span class="p">,</span><span class="n">iyear</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">mday</span><span class="p">,</span> <span class="n">np_eq_magnitude</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">np_eq_lon</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">np_eq_lat</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+                                    
+                                    <span class="k">if</span> <span class="n">sstr_date</span> <span class="ow">in</span> <span class="n">H_offset</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                                        <span class="n">H_offset</span><span class="p">[</span><span class="n">sstr_date</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">idx</span><span class="p">,</span><span class="n">value</span><span class="p">,</span><span class="n">lbda</span><span class="p">,</span><span class="n">np_eq_magnitude</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">delta_day</span><span class="p">])</span>
+                                    <span class="k">else</span><span class="p">:</span>
+                                        <span class="n">H_offset</span><span class="p">[</span><span class="n">sstr_date</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="n">idx</span><span class="p">,</span><span class="n">value</span><span class="p">,</span><span class="n">lbda</span><span class="p">,</span><span class="n">np_eq_magnitude</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">delta_day</span><span class="p">]]</span> 
+    
+                                    <span class="n">no_EQ</span><span class="o">=</span><span class="kc">False</span>
+                                <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+                        <span class="k">if</span> <span class="n">no_EQ</span> <span class="ow">and</span> <span class="n">verbose</span><span class="p">:</span>            
+                            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.6lf</span><span class="s2"> </span><span class="si">%10.3lf</span><span class="s2"> (</span><span class="si">%4d</span><span class="s2">-</span><span class="si">%02d</span><span class="s2">-</span><span class="si">%02d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">date</span><span class="p">,</span><span class="n">value</span><span class="o">*</span><span class="mf">1.E3</span><span class="p">,</span><span class="n">iyear</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">mday</span><span class="p">))</span>
+    
+                        <span class="k">if</span> <span class="n">no_EQ</span><span class="p">:</span>            
+                            <span class="k">if</span> <span class="n">sstr_date</span> <span class="ow">in</span> <span class="n">H_offset</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                                <span class="n">H_offset</span><span class="p">[</span><span class="n">sstr_date</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">idx</span><span class="p">,</span><span class="n">value</span><span class="p">,</span><span class="n">lbda</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">delta_day</span><span class="p">])</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">H_offset</span><span class="p">[</span><span class="n">sstr_date</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="n">idx</span><span class="p">,</span><span class="n">value</span><span class="p">,</span><span class="n">lbda</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">delta_day</span><span class="p">]]</span> 
+
+    <span class="k">if</span> <span class="n">log</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">sstr_date</span> <span class="ow">in</span> <span class="n">H_offset</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="c1"># open log file</span>
+            
+            <span class="n">log_filename</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_Mw</span><span class="si">%02d</span><span class="s2">.dat&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sstr_date</span><span class="p">,</span><span class="n">H_offset</span><span class="p">[</span><span class="n">sstr_date</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span><span class="p">))</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">flog</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">log_filename</span><span class="p">,</span><span class="s1">&#39;a+&#39;</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="kn">from</span> <span class="nn">colors</span> <span class="kn">import</span> <span class="n">red</span>
+                <span class="n">return_str</span> <span class="o">=</span> <span class="n">red</span><span class="p">(</span> <span class="s2">&quot;[PYACS WARNING] Could not create file: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span> <span class="n">log</span> <span class="p">)</span> <span class="p">)</span> 
+                <span class="nb">print</span><span class="p">(</span> <span class="n">return_str</span> <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">H_offset</span><span class="p">[</span><span class="n">sstr_date</span><span class="p">])</span>
+            <span class="n">np_offset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">H_offset</span><span class="p">[</span><span class="n">sstr_date</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+            <span class="c1"># list lbda</span>
+            <span class="n">l_lbda</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">np_offset</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()))</span>
+            <span class="c1"># list dalta_day</span>
+            <span class="n">l_delta_day</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">np_offset</span><span class="p">[:,</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()))</span>
+            <span class="c1"># loop lbda</span>
+            <span class="k">for</span> <span class="n">lbda</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">l_lbda</span><span class="p">):</span>
+                <span class="c1"># loop delta_day</span>
+                <span class="k">for</span> <span class="n">delta_day</span> <span class="ow">in</span> <span class="n">l_delta_day</span><span class="p">:</span>
+                    <span class="c1"># empty line to write as a list</span>
+                    <span class="n">lw</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_</span><span class="si">%03d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span><span class="n">lbda</span><span class="p">)),</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="c1"># get results given ldba</span>
+                    <span class="n">lindex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">np_offset</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">lbda</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1.E-3</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">np_offset</span><span class="p">[:,</span><span class="mi">4</span><span class="p">]</span> <span class="o">-</span> <span class="n">delta_day</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1.E-3</span> <span class="p">)</span> <span class="p">)</span>
+                    <span class="n">offset</span> <span class="o">=</span> <span class="n">np_offset</span><span class="p">[</span><span class="n">lindex</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span> <span class="n">offset</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">):</span>
+                        <span class="k">if</span> <span class="n">offset</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="mf">1.</span><span class="p">:</span>
+                            <span class="n">lw</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mf">1.E3</span>
+                        <span class="k">if</span> <span class="n">offset</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="mf">2.</span><span class="p">:</span>
+                            <span class="n">lw</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mf">1.E3</span>
+                        <span class="k">if</span> <span class="n">offset</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="mf">3.</span><span class="p">:</span>
+                            <span class="n">lw</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%6.2lf</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">lw</span><span class="p">[</span><span class="mi">7</span><span class="p">]),</span><span class="n">offset</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mf">1.E3</span> <span class="p">)</span>
+                    
+                        <span class="n">lw</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+                
+                <span class="n">flog</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%10.4lf</span><span class="s2"> </span><span class="si">%10.4lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> </span><span class="si">%03d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">lw</span><span class="p">)</span> <span class="p">)</span>
+            
+            <span class="n">flog</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">new_gts</span></div>
+                
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

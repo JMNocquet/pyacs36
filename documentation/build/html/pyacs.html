@@ -1,0 +1,392 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs package &mdash; pyacs 0.65.66 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pyacs.glinalg package" href="pyacs.glinalg.html" />
+    <link rel="prev" title="Full code documentation" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.66
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time_series.html">Time series analysis</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Full code documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pyacs package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.glinalg.html">pyacs.glinalg package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html">pyacs.gts package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html">pyacs.lib package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.message.html">pyacs.message package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html">pyacs.sinex package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html">pyacs.sol package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pyacs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">Full code documentation</a> &raquo;</li>
+        
+      <li>pyacs package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/pyacs.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pyacs-package">
+<h1>pyacs package<a class="headerlink" href="#pyacs-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.glinalg.html">pyacs.glinalg package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.glinalg.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.glinalg.solve.html">pyacs.glinalg.solve package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.glinalg.solve.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.glinalg.solve.html#module-pyacs.glinalg.solve.ls">pyacs.glinalg.solve.ls module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.glinalg.solve.html#module-pyacs.glinalg.solve.lscov">pyacs.glinalg.solve.lscov module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.glinalg.solve.html#module-pyacs.glinalg.solve.lsw">pyacs.glinalg.solve.lsw module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.glinalg.solve.html#module-pyacs.glinalg.solve">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.glinalg.html#module-pyacs.glinalg">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.gts.html">pyacs.gts package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.Sgts_methods.html">pyacs.gts.Sgts_methods package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.add_offsets_dates">pyacs.gts.Sgts_methods.add_offsets_dates module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.append">pyacs.gts.Sgts_methods.append module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.common_mode">pyacs.gts.Sgts_methods.common_mode module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.copy">pyacs.gts.Sgts_methods.copy module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.delts">pyacs.gts.Sgts_methods.delts module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.frame">pyacs.gts.Sgts_methods.frame module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.gts">pyacs.gts.Sgts_methods.gts module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.has_ts">pyacs.gts.Sgts_methods.has_ts module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.lGts">pyacs.gts.Sgts_methods.lGts module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.lcode">pyacs.gts.Sgts_methods.lcode module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.medvel">pyacs.gts.Sgts_methods.medvel module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.n">pyacs.gts.Sgts_methods.n module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.read_gmt">pyacs.gts.Sgts_methods.read_gmt module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.read_gts_conf">pyacs.gts.Sgts_methods.read_gts_conf module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.read_soln">pyacs.gts.Sgts_methods.read_soln module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.read_ts">pyacs.gts.Sgts_methods.read_ts module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.same_site">pyacs.gts.Sgts_methods.same_site module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.save_velocity">pyacs.gts.Sgts_methods.save_velocity module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.sel_period">pyacs.gts.Sgts_methods.sel_period module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.sel_rectangle">pyacs.gts.Sgts_methods.sel_rectangle module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.show_map">pyacs.gts.Sgts_methods.show_map module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.stat_site">pyacs.gts.Sgts_methods.stat_site module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.sub">pyacs.gts.Sgts_methods.sub module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.to_displacement">pyacs.gts.Sgts_methods.to_displacement module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.write_pck">pyacs.gts.Sgts_methods.write_pck module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.html">pyacs.gts.lib package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#module-pyacs.gts.lib.errors">pyacs.gts.lib.errors module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#module-pyacs.gts.lib.gts_dates">pyacs.gts.lib.gts_dates module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#module-pyacs.gts.lib.gts_estimators">pyacs.gts.lib.gts_estimators module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#module-pyacs.gts.lib.message">pyacs.gts.lib.message module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#module-pyacs.gts.lib.metadata">pyacs.gts.lib.metadata module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#module-pyacs.gts.lib.noise">pyacs.gts.lib.noise module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#module-pyacs.gts.lib.offset">pyacs.gts.lib.offset module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#module-pyacs.gts.lib.outliers_old">pyacs.gts.lib.outliers_old module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#module-pyacs.gts.lib.step_detect">pyacs.gts.lib.step_detect module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#module-pyacs.gts.lib.step_detect_edge_filter">pyacs.gts.lib.step_detect_edge_filter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#module-pyacs.gts.lib">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.html#module-pyacs.gts.Gts">pyacs.gts.Gts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.html#module-pyacs.gts.Sgts">pyacs.gts.Sgts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.html#module-pyacs.gts.tsr">pyacs.gts.tsr module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.html#module-pyacs.gts">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.lib.html">pyacs.lib package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.faultslip.html">pyacs.lib.faultslip package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.faultslip.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.faultslip.html#module-pyacs.lib.faultslip.fault_to_corners">pyacs.lib.faultslip.fault_to_corners module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.faultslip.html#module-pyacs.lib.faultslip.geo_to_strike">pyacs.lib.faultslip.geo_to_strike module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.faultslip.html#module-pyacs.lib.faultslip.rake_from_euler">pyacs.lib.faultslip.rake_from_euler module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.faultslip.html#module-pyacs.lib.faultslip.slip_rake_2_ds_ss">pyacs.lib.faultslip.slip_rake_2_ds_ss module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.faultslip.html#module-pyacs.lib.faultslip.ss_ns_2_ve_vn">pyacs.lib.faultslip.ss_ns_2_ve_vn module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.faultslip.html#module-pyacs.lib.faultslip.strike_dip_rake_to_dir">pyacs.lib.faultslip.strike_dip_rake_to_dir module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.faultslip.html#module-pyacs.lib.faultslip.v_to_n_ss">pyacs.lib.faultslip.v_to_n_ss module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.faultslip.html#module-pyacs.lib.faultslip.v_to_rake">pyacs.lib.faultslip.v_to_rake module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.faultslip.html#module-pyacs.lib.faultslip">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.astrotime">pyacs.lib.astrotime module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.coordinates">pyacs.lib.coordinates module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.errors">pyacs.lib.errors module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.euclid">pyacs.lib.euclid module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.euler">pyacs.lib.euler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.glinalg">pyacs.lib.glinalg module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.gmtpoint">pyacs.lib.gmtpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.gpstime">pyacs.lib.gpstime module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.icosahedron">pyacs.lib.icosahedron module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.pygamit_module">pyacs.lib.pygamit_module module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.robustestimators">pyacs.lib.robustestimators module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.shapefile">pyacs.lib.shapefile module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.strain">pyacs.lib.strain module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.syscmd">pyacs.lib.syscmd module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.timeperiod">pyacs.lib.timeperiod module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.units">pyacs.lib.units module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.utils">pyacs.lib.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.vectors">pyacs.lib.vectors module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.vel_field">pyacs.lib.vel_field module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.message.html">pyacs.message package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.message.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.message.html#module-pyacs.message.error">pyacs.message.error module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.message.html#module-pyacs.message.message">pyacs.message.message module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.message.html#module-pyacs.message.warning">pyacs.message.warning module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.message.html#module-pyacs.message">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.sinex.html">pyacs.sinex package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sinex.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sinex.html#module-pyacs.sinex.constants">pyacs.sinex.constants module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sinex.html#module-pyacs.sinex.date">pyacs.sinex.date module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sinex.html#module-pyacs.sinex.mathutils">pyacs.sinex.mathutils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sinex.html#module-pyacs.sinex.sinex">pyacs.sinex.sinex module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sinex.html#module-pyacs.sinex.snxutils">pyacs.sinex.snxutils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sinex.html#module-pyacs.sinex.utils">pyacs.sinex.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sinex.html#module-pyacs.sinex">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.sol.html">pyacs.sol package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sol.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sol.html#module-pyacs.sol.discontinuity">pyacs.sol.discontinuity module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sol.html#module-pyacs.sol.errors">pyacs.sol.errors module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sol.html#module-pyacs.sol.gpoint">pyacs.sol.gpoint module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sol.html#module-pyacs.sol.helmert">pyacs.sol.helmert module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sol.html#module-pyacs.sol.log">pyacs.sol.log module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sol.html#module-pyacs.sol.read_conf">pyacs.sol.read_conf module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sol.html#module-pyacs.sol.sinex">pyacs.sol.sinex module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sol.html#module-pyacs.sol.soln">pyacs.sol.soln module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sol.html#module-pyacs.sol">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="module-pyacs">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyacs" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="pyacs.glinalg.html" class="btn btn-neutral float-right" title="pyacs.glinalg package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="modules.html" class="btn btn-neutral float-left" title="Full code documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,288 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.sinex.constants &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.sinex.constants</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.sinex.constants</h1><div class="highlight"><pre>
+<span></span><span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Module   : constants</span>
+<span class="c1"># Purpose  : Define general constants</span>
+<span class="c1"># Author   : P. Rebischung</span>
+<span class="c1"># Created  : 04-Oct-2013</span>
+<span class="c1">#</span>
+<span class="c1"># Changes  :</span>
+<span class="c1">#</span>
+<span class="c1"># Routines : </span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+
+
+
+<span class="c1"># LIBRARIES</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+
+
+<span class="c1"># CONSTANTS</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+
+<span class="c1"># Agency</span>
+<span class="n">agency</span> <span class="o">=</span> <span class="s1">&#39;IGN&#39;</span>
+
+<span class="c1"># Conversion factor from as, mas and uas to rad</span>
+<span class="n">as2rad</span>  <span class="o">=</span> <span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span> <span class="o">/</span> <span class="mi">3600</span>
+<span class="n">mas2rad</span> <span class="o">=</span> <span class="n">as2rad</span> <span class="o">/</span> <span class="mi">1000</span>
+<span class="n">uas2rad</span> <span class="o">=</span> <span class="n">mas2rad</span> <span class="o">/</span> <span class="mi">1000</span>
+
+<span class="c1"># Conversion factor from s, ms and us to rad</span>
+<span class="n">s2rad</span>  <span class="o">=</span> <span class="n">pi</span> <span class="o">/</span> <span class="mi">12</span> <span class="o">/</span> <span class="mi">3600</span>
+<span class="n">ms2rad</span> <span class="o">=</span> <span class="n">s2rad</span> <span class="o">/</span> <span class="mi">1000</span>
+<span class="n">us2rad</span> <span class="o">=</span> <span class="n">ms2rad</span> <span class="o">/</span> <span class="mi">1000</span>
+
+<span class="c1"># MJD at epoch J2000</span>
+<span class="n">mjd2000</span> <span class="o">=</span> <span class="mf">51544.5</span>
+
+<span class="c1"># Offset between GPS time and TT</span>
+<span class="n">tt_gps</span> <span class="o">=</span> <span class="p">(</span><span class="mf">19.</span> <span class="o">+</span> <span class="mf">32.184</span><span class="p">)</span> <span class="o">/</span> <span class="mf">86400.</span>
+
+<span class="c1"># GPS-UTC leap seconds</span>
+<span class="n">gps_utc</span>  <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">9.</span><span class="p">,</span> <span class="mf">19.</span><span class="p">)</span>
+<span class="n">mjd_leap</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">41317.</span><span class="p">,</span> <span class="mf">41499.</span><span class="p">,</span> <span class="mf">41683.</span><span class="p">,</span> <span class="mf">42048.</span><span class="p">,</span> <span class="mf">42413.</span><span class="p">,</span> <span class="mf">42778.</span><span class="p">,</span> <span class="mf">43144.</span><span class="p">,</span>
+                        <span class="mf">43509.</span><span class="p">,</span> <span class="mf">43874.</span><span class="p">,</span> <span class="mf">44239.</span><span class="p">,</span> <span class="mf">44786.</span><span class="p">,</span> <span class="mf">45151.</span><span class="p">,</span> <span class="mf">45516.</span><span class="p">,</span> <span class="mf">46247.</span><span class="p">,</span>
+                        <span class="mf">47161.</span><span class="p">,</span> <span class="mf">47892.</span><span class="p">,</span> <span class="mf">48257.</span><span class="p">,</span> <span class="mf">48804.</span><span class="p">,</span> <span class="mf">49169.</span><span class="p">,</span> <span class="mf">49534.</span><span class="p">,</span> <span class="mf">50083.</span><span class="p">,</span>
+                        <span class="mf">50630.</span><span class="p">,</span> <span class="mf">51179.</span><span class="p">,</span> <span class="mf">53736.</span><span class="p">,</span> <span class="mf">54832.</span><span class="p">,</span> <span class="mf">56109.</span><span class="p">,</span> <span class="mf">57204.</span><span class="p">,</span> <span class="mf">57754.</span><span class="p">])</span>
+
+<span class="c1"># GRS80 parameters</span>
+<span class="n">ae</span> <span class="o">=</span> <span class="mf">6378137.</span>
+<span class="n">fe</span> <span class="o">=</span> <span class="mf">0.00335281068118</span>
+<span class="n">ee</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">fe</span> <span class="o">-</span> <span class="n">fe</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">be</span> <span class="o">=</span> <span class="n">ae</span> <span class="o">*</span> <span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">ee</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Gravitational constant</span>
+<span class="n">G</span> <span class="o">=</span> <span class="mf">6.67428e-11</span>
+
+<span class="c1"># Earth gravitational constant</span>
+<span class="n">GM</span> <span class="o">=</span> <span class="mf">3.986004418e14</span>
+
+<span class="c1"># Mean equatorial gravity</span>
+<span class="n">ge</span> <span class="o">=</span> <span class="mf">9.7803278</span>
+
+<span class="c1"># Mean Earth angular velocity</span>
+<span class="n">Oe</span> <span class="o">=</span> <span class="mf">7.292115e-5</span>
+
+<span class="c1"># Astronomical unit (m)</span>
+<span class="n">AU</span> <span class="o">=</span> <span class="mf">149597870691.0</span>
+
+<span class="c1"># Rate of advance of ERA</span>
+<span class="n">dera_dt</span> <span class="o">=</span> <span class="mf">1.00273781191135448</span>
+
+
+
+<span class="c1"># DUMMY CLASS</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="record"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.constants.record">[docs]</a><span class="k">class</span> <span class="nc">record</span><span class="p">:</span>
+    <span class="k">pass</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

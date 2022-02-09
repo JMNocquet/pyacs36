@@ -1,0 +1,593 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.gts.Sgts_methods.read_ts &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.gts.Sgts_methods.read_ts</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.gts.Sgts_methods.read_ts</h1><div class="highlight"><pre>
+<span></span><span class="c1">###################################################################</span>
+<div class="viewcode-block" id="read_ts"><a class="viewcode-back" href="../../../../pyacs.gts.Sgts_methods.html#pyacs.gts.Sgts.read_ts">[docs]</a><span class="k">def</span> <span class="nf">read_ts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">ts_dir</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name_filter</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">add_key</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">sites</span><span class="o">=</span><span class="p">[],</span><span class="n">lexclude</span><span class="o">=</span><span class="p">[],</span> <span class="nb">type</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reads time series, trying to guess the format. Current time series format supported are: pos, kenv, mb_file, cats, txyz (pyacs), track (NEU format for high rate)</span>
+<span class="sd">     </span>
+<span class="sd">    :param ts_dir: directory of time series files</span>
+<span class="sd">    :param name_filter: string used to filter time series name &#39;*name_filter*&#39;</span>
+<span class="sd">    :param add_key: adds a string before site code</span>
+<span class="sd">    :param sites: list of site codes to be read. Any other will be discarded.</span>
+<span class="sd">    :param lexclude: list of sites to be excluded from reading</span>
+<span class="sd">    :param type: specifies the format of the time series files. Choose among [&#39;pos&#39;, &#39;kenv&#39;, &#39;mb_file&#39;, &#39;cats&#39;, &#39;txyz&#39;, &#39;track&#39; , &#39;pride&#39;,&#39;pck&#39;]</span>
+<span class="sd">    :param xyz: for pos files, reads the XYZ coordinates rather than dNEU. This is the default.</span>
+<span class="sd">     </span>
+<span class="sd">    :return: an Sgts instance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># import</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="kn">from</span> <span class="nn">pyacs.gts.Gts</span> <span class="kn">import</span> <span class="n">Gts</span>
+    
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- Reading directory: &#39;</span><span class="p">,</span><span class="n">ts_dir</span><span class="p">)</span>
+    
+    <span class="c1">#######################################################################</span>
+    <span class="k">def</span> <span class="nf">__pride_pos</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">=</span><span class="n">ts_dir</span><span class="p">,</span> <span class="n">name_filter</span><span class="o">=</span><span class="n">name_filter</span><span class="p">,</span> <span class="n">add_key</span><span class="o">=</span><span class="n">add_key</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">):</span>
+         
+        <span class="kn">import</span> <span class="nn">glob</span>
+        <span class="kn">import</span> <span class="nn">os</span>
+         
+        <span class="n">lGts</span><span class="o">=</span><span class="p">{}</span>
+        <span class="n">lfile</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="s1">&#39;pos_*&#39;</span><span class="o">+</span><span class="n">name_filter</span><span class="p">)</span>
+        <span class="n">lcode</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">ifile</span> <span class="ow">in</span> <span class="n">lfile</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span> <span class="n">ifile</span> <span class="p">):</span> <span class="k">continue</span>
+            <span class="n">code</span> <span class="o">=</span> <span class="n">ifile</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lcode</span><span class="p">:</span>
+                <span class="n">lcode</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">code</span> <span class="p">)</span>
+             
+        <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">lcode</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Reading pride pos files for: </span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="n">code</span> <span class="p">)</span>
+            <span class="n">lGts</span><span class="p">[</span><span class="n">code</span><span class="o">+</span><span class="n">add_key</span><span class="p">]</span><span class="o">=</span><span class="n">Gts</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">code</span><span class="p">)</span>
+            <span class="n">lGts</span><span class="p">[</span><span class="n">code</span><span class="o">+</span><span class="n">add_key</span><span class="p">]</span><span class="o">.</span><span class="n">read_pride_pos</span><span class="p">(</span><span class="n">tsdir</span><span class="o">=</span><span class="n">ts_dir</span> <span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span> <span class="p">)</span>
+    
+        <span class="k">return</span><span class="p">(</span><span class="n">lGts</span><span class="p">)</span>
+    
+    <span class="c1">#######################################################################</span>
+    <span class="k">def</span> <span class="nf">__pride</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">=</span><span class="n">ts_dir</span><span class="p">,</span> <span class="n">name_filter</span><span class="o">=</span><span class="n">name_filter</span><span class="p">,</span> <span class="n">add_key</span><span class="o">=</span><span class="n">add_key</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">glob</span>
+        <span class="kn">import</span> <span class="nn">os</span>
+         
+        <span class="n">lGts</span><span class="o">=</span><span class="p">{}</span>
+        <span class="n">lfile</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="s1">&#39;kin_*&#39;</span><span class="o">+</span><span class="n">name_filter</span><span class="p">)</span>
+        <span class="n">lcode</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">ifile</span> <span class="ow">in</span> <span class="n">lfile</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span> <span class="n">ifile</span> <span class="p">):</span> <span class="k">continue</span>
+            <span class="n">code</span> <span class="o">=</span> <span class="n">ifile</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lcode</span><span class="p">:</span>
+                <span class="n">lcode</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">code</span> <span class="p">)</span>
+             
+        <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">lcode</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Reading pride files for: </span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="n">code</span> <span class="p">)</span>
+            <span class="n">lGts</span><span class="p">[</span><span class="n">code</span><span class="o">+</span><span class="n">add_key</span><span class="p">]</span><span class="o">=</span><span class="n">Gts</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">code</span><span class="p">)</span>
+            <span class="n">lGts</span><span class="p">[</span><span class="n">code</span><span class="o">+</span><span class="n">add_key</span><span class="p">]</span><span class="o">.</span><span class="n">read_pride</span><span class="p">(</span><span class="n">tsdir</span><span class="o">=</span><span class="n">ts_dir</span> <span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span> <span class="p">)</span>
+    
+        <span class="k">return</span><span class="p">(</span><span class="n">lGts</span><span class="p">)</span>
+    
+    <span class="c1">#######################################################################</span>
+    <span class="k">def</span> <span class="nf">__tdp</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">=</span><span class="n">ts_dir</span><span class="p">,</span> <span class="n">name_filter</span><span class="o">=</span><span class="n">name_filter</span><span class="p">,</span> <span class="n">add_key</span><span class="o">=</span><span class="n">add_key</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">glob</span>
+        <span class="kn">import</span> <span class="nn">os</span>
+         
+        <span class="n">lGts</span><span class="o">=</span><span class="p">{}</span>
+        <span class="n">ldat</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="s1">&#39;*&#39;</span><span class="o">+</span><span class="n">name_filter</span><span class="o">+</span><span class="s1">&#39;*.tdp&#39;</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">fdat</span> <span class="ow">in</span> <span class="n">ldat</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span> <span class="n">fdat</span> <span class="p">):</span> <span class="k">continue</span>
+            <span class="n">mb_file</span><span class="o">=</span><span class="n">fdat</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+            <span class="n">code</span><span class="o">=</span><span class="n">mb_file</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sites</span> <span class="ow">and</span> <span class="n">sites</span> <span class="o">!=</span><span class="p">[]:</span><span class="k">continue</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Reading &quot;</span><span class="p">,</span> <span class="n">mb_file</span><span class="p">)</span>
+            <span class="n">lGts</span><span class="p">[</span><span class="n">code</span><span class="o">+</span><span class="n">add_key</span><span class="p">]</span><span class="o">=</span><span class="n">Gts</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">code</span><span class="p">)</span>
+            <span class="n">lGts</span><span class="p">[</span><span class="n">code</span><span class="o">+</span><span class="n">add_key</span><span class="p">]</span><span class="o">.</span><span class="n">read_tdp</span><span class="p">(</span><span class="n">ifile</span><span class="o">=</span><span class="n">fdat</span><span class="p">,</span><span class="n">gmt</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    
+        <span class="k">return</span><span class="p">(</span><span class="n">lGts</span><span class="p">)</span>
+    
+     
+    <span class="c1">#######################################################################</span>
+    <span class="k">def</span> <span class="nf">__mb_files</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">=</span><span class="n">ts_dir</span><span class="p">,</span> <span class="n">name_filter</span><span class="o">=</span><span class="n">name_filter</span><span class="p">,</span> <span class="n">add_key</span><span class="o">=</span><span class="n">add_key</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">glob</span>
+        <span class="kn">import</span> <span class="nn">os</span>
+        <span class="n">lGts</span><span class="o">=</span><span class="p">{}</span>
+        <span class="n">ldat</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="s1">&#39;*&#39;</span><span class="o">+</span><span class="n">name_filter</span><span class="o">+</span><span class="s1">&#39;*.dat1&#39;</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">fdat</span> <span class="ow">in</span> <span class="n">ldat</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span> <span class="n">fdat</span> <span class="p">):</span> <span class="k">continue</span>
+            <span class="n">mb_file</span><span class="o">=</span><span class="n">fdat</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">code</span><span class="o">=</span><span class="n">mb_file</span><span class="p">[</span><span class="o">-</span><span class="mi">12</span><span class="p">:</span><span class="o">-</span><span class="mi">8</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sites</span> <span class="ow">and</span> <span class="n">sites</span> <span class="o">!=</span><span class="p">[]:</span><span class="k">continue</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Reading &quot;</span><span class="p">,</span> <span class="n">mb_file</span><span class="p">)</span>
+            <span class="n">lGts</span><span class="p">[</span><span class="n">code</span><span class="o">+</span><span class="n">add_key</span><span class="p">]</span><span class="o">=</span><span class="n">Gts</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">code</span><span class="p">)</span>
+            <span class="n">lGts</span><span class="p">[</span><span class="n">code</span><span class="o">+</span><span class="n">add_key</span><span class="p">]</span><span class="o">.</span><span class="n">read_mb_file</span><span class="p">(</span><span class="n">ifile</span><span class="o">=</span><span class="n">mb_file</span><span class="p">,</span><span class="n">gmt</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    
+        <span class="k">return</span><span class="p">(</span><span class="n">lGts</span><span class="p">)</span>
+     
+    
+    <span class="c1">#######################################################################</span>
+    <span class="k">def</span> <span class="nf">__kenv</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">=</span><span class="n">ts_dir</span><span class="p">,</span> <span class="n">name_filter</span><span class="o">=</span><span class="n">name_filter</span><span class="p">,</span> <span class="n">add_key</span><span class="o">=</span><span class="n">add_key</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">glob</span>
+        <span class="kn">import</span> <span class="nn">os</span>
+         
+        <span class="n">lGts</span><span class="o">=</span><span class="p">{}</span>
+        <span class="n">lkenv</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">+</span><span class="s1">&#39;/*.kenv&#39;</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">fkenv</span> <span class="ow">in</span> <span class="n">lkenv</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span> <span class="n">fkenv</span> <span class="p">):</span> <span class="k">continue</span>
+            <span class="n">code</span><span class="o">=</span><span class="n">fkenv</span><span class="p">[</span><span class="o">-</span><span class="mi">20</span><span class="p">:</span><span class="o">-</span><span class="mi">9</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Reading &quot;</span><span class="p">,</span> <span class="n">fkenv</span><span class="p">)</span>
+            <span class="n">lGts</span><span class="p">[</span><span class="n">code</span><span class="o">+</span><span class="n">add_key</span><span class="p">]</span><span class="o">=</span><span class="n">Gts</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">code</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">lGts</span><span class="p">[</span><span class="n">code</span><span class="o">+</span><span class="n">add_key</span><span class="p">]</span><span class="o">.</span><span class="n">read_kenv</span><span class="p">(</span><span class="n">fkenv</span><span class="p">,</span><span class="n">date_type</span><span class="o">=</span><span class="s1">&#39;jd&#39;</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;!!! Error. Could not read &quot;</span><span class="p">,</span><span class="n">fkenv</span><span class="p">)</span>
+                <span class="k">del</span> <span class="n">lGts</span><span class="p">[</span><span class="n">code</span><span class="o">+</span><span class="n">add_key</span><span class="p">]</span>
+                <span class="k">continue</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">lGts</span><span class="p">)</span>
+    
+    <span class="c1">#######################################################################</span>
+    <span class="k">def</span> <span class="nf">__cats</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">=</span><span class="n">ts_dir</span><span class="p">,</span> <span class="n">name_filter</span><span class="o">=</span><span class="n">name_filter</span><span class="p">,</span> <span class="n">add_key</span><span class="o">=</span><span class="n">add_key</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">glob</span>
+        <span class="kn">import</span> <span class="nn">os</span>
+        <span class="n">lGts</span><span class="o">=</span><span class="p">{}</span>
+        <span class="n">lcats</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">+</span><span class="s1">&#39;/cats*.dat&#39;</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">cats</span> <span class="ow">in</span> <span class="n">lcats</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span> <span class="n">cats</span> <span class="p">):</span> <span class="k">continue</span>
+            <span class="n">code</span><span class="o">=</span><span class="n">cats</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;cats_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Reading &quot;</span><span class="p">,</span> <span class="n">cats</span><span class="p">)</span>
+            <span class="n">lGts</span><span class="p">[</span><span class="n">code</span><span class="o">+</span><span class="n">add_key</span><span class="p">]</span><span class="o">=</span><span class="n">Gts</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">code</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">lGts</span><span class="p">[</span><span class="n">code</span><span class="o">+</span><span class="n">add_key</span><span class="p">]</span><span class="o">.</span><span class="n">read_cats_file</span><span class="p">(</span><span class="n">ifile</span><span class="o">=</span><span class="n">cats</span><span class="p">,</span><span class="n">gmt</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;!!! Error. Could not read &quot;</span><span class="p">,</span><span class="n">cats</span><span class="p">)</span>
+                <span class="k">del</span> <span class="n">lGts</span><span class="p">[</span><span class="n">code</span><span class="o">+</span><span class="n">add_key</span><span class="p">]</span>
+                <span class="k">continue</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">lGts</span><span class="p">)</span>
+    
+    <span class="c1">#######################################################################</span>
+    <span class="k">def</span> <span class="nf">__pos</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">=</span><span class="n">ts_dir</span><span class="p">,</span> <span class="n">name_filter</span><span class="o">=</span><span class="n">name_filter</span><span class="p">,</span> <span class="n">add_key</span><span class="o">=</span><span class="n">add_key</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span><span class="n">xyz</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">glob</span>
+        <span class="n">lGts</span><span class="o">=</span><span class="p">{}</span>
+        <span class="n">lpos</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">+</span><span class="s1">&#39;/????*.pos&#39;</span><span class="p">))</span>
+        <span class="kn">import</span> <span class="nn">os</span>
+        <span class="k">for</span> <span class="n">pos_w_path</span> <span class="ow">in</span> <span class="n">lpos</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span> <span class="n">pos_w_path</span><span class="p">):</span> <span class="k">continue</span>
+            <span class="n">_drive</span><span class="p">,</span> <span class="n">path_and_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitdrive</span><span class="p">(</span><span class="n">pos_w_path</span><span class="p">)</span>
+            <span class="n">_path</span><span class="p">,</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">path_and_file</span><span class="p">)</span>
+            <span class="n">code</span><span class="o">=</span><span class="n">pos</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sites</span> <span class="ow">and</span> <span class="n">sites</span> <span class="o">!=</span><span class="p">[]:</span><span class="k">continue</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Reading &quot;</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+            <span class="n">lGts</span><span class="p">[</span><span class="n">code</span><span class="o">+</span><span class="n">add_key</span><span class="p">]</span><span class="o">=</span><span class="n">Gts</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">code</span><span class="p">)</span>
+            <span class="n">lGts</span><span class="p">[</span><span class="n">code</span><span class="o">+</span><span class="n">add_key</span><span class="p">]</span><span class="o">.</span><span class="n">read_pos</span><span class="p">(</span><span class="n">tsfile</span><span class="o">=</span><span class="n">pos_w_path</span><span class="p">,</span><span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">lGts</span><span class="p">)</span>
+    
+    <span class="c1">#######################################################################</span>
+    <span class="k">def</span> <span class="nf">__ts_xyz</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span><span class="n">name_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+         
+        <span class="kn">import</span> <span class="nn">glob</span>
+        <span class="kn">import</span> <span class="nn">os</span>
+         
+        <span class="n">lGts</span><span class="o">=</span><span class="p">{}</span>
+        <span class="n">l_txyz</span><span class="o">=</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">+</span><span class="s1">&#39;/*txyz.dat&#39;</span><span class="p">)</span>
+         
+             
+        <span class="c1">##############################################</span>
+        <span class="k">def</span> <span class="nf">__read_txyz</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span><span class="n">lGts</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Reads a single txyz.dat</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+             
+            <span class="n">NP_STR_TXYZ</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+            <span class="n">NP_CODE</span><span class="o">=</span><span class="n">NP_STR_TXYZ</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">NP_DATE</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">NP_STR_TXYZ</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+            <span class="n">NP_XYZ</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">NP_STR_TXYZ</span><span class="p">[:,</span><span class="mi">4</span><span class="p">:],</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+         
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">NP_CODE</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="n">code</span> <span class="o">=</span> <span class="n">NP_CODE</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                 
+                <span class="k">if</span> <span class="n">code</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">lGts</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                    <span class="n">lGts</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">add_obs_xyz</span><span class="p">(</span><span class="n">NP_DATE</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">NP_XYZ</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">in_place</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">new_gts</span><span class="o">=</span><span class="n">Gts</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">code</span><span class="p">)</span>
+                    <span class="n">new_gts</span><span class="o">.</span><span class="n">add_obs_xyz</span><span class="p">(</span><span class="n">NP_DATE</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">NP_XYZ</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">in_place</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                    <span class="n">lGts</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">=</span><span class="n">new_gts</span>
+         
+            <span class="k">return</span><span class="p">(</span><span class="n">lGts</span><span class="p">)</span>
+         
+        <span class="n">i</span><span class="o">=</span><span class="mi">1</span>
+        <span class="k">for</span> <span class="n">txyz</span> <span class="ow">in</span> <span class="n">l_txyz</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span> <span class="n">txyz</span> <span class="p">):</span> <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- Reading &#39;</span><span class="p">,</span><span class="n">txyz</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;/&#39;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">l_txyz</span><span class="p">))</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+                 
+            <span class="n">lGts</span><span class="o">=</span><span class="n">__read_txyz</span><span class="p">(</span><span class="n">txyz</span><span class="p">,</span> <span class="n">lGts</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+         
+        <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span> <span class="n">lGts</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="p">):</span>
+             
+            <span class="n">gts</span> <span class="o">=</span> <span class="n">lGts</span><span class="p">[</span><span class="n">code</span><span class="p">]</span>
+             
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- Generating NEU from XYZ for &#39;</span><span class="p">,</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+            <span class="n">gts</span><span class="o">.</span><span class="n">xyz2neu</span><span class="p">(</span><span class="n">corr</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+             
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">gts</span><span class="o">.</span><span class="n">cdata</span><span class="p">():</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+             
+        <span class="k">return</span><span class="p">(</span><span class="n">lGts</span><span class="p">)</span>
+         
+    
+    <span class="c1">#######################################################################</span>
+    <span class="k">def</span> <span class="nf">__track_NEU</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">name_filter</span><span class="o">=</span><span class="n">name_filter</span><span class="p">,</span> <span class="n">add_key</span><span class="o">=</span><span class="n">add_key</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">glob</span>
+        <span class="n">lGts</span><span class="o">=</span><span class="p">{}</span>
+        <span class="n">ltrack</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">+</span><span class="s1">&#39;/*.NEU.*&#39;</span><span class="p">))</span>
+        <span class="kn">import</span> <span class="nn">os</span>
+        <span class="k">for</span> <span class="n">track_w_path</span> <span class="ow">in</span> <span class="n">ltrack</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span> <span class="n">track_w_path</span> <span class="p">):</span> <span class="k">continue</span>
+            <span class="n">_drive</span><span class="p">,</span> <span class="n">path_and_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitdrive</span><span class="p">(</span><span class="n">track_w_path</span><span class="p">)</span>
+            <span class="n">_path</span><span class="p">,</span> <span class="n">track</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">path_and_file</span><span class="p">)</span>
+            <span class="n">code</span><span class="o">=</span> <span class="n">track</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sites</span> <span class="ow">and</span> <span class="n">sites</span> <span class="o">!=</span><span class="p">[]:</span><span class="k">continue</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Reading &quot;</span><span class="p">,</span> <span class="n">track</span><span class="p">)</span>
+            <span class="n">lGts</span><span class="p">[</span><span class="n">code</span><span class="o">+</span><span class="n">add_key</span><span class="p">]</span><span class="o">=</span><span class="n">Gts</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">code</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">lGts</span><span class="p">[</span><span class="n">code</span><span class="o">+</span><span class="n">add_key</span><span class="p">]</span><span class="o">.</span><span class="n">read_track_NEU</span><span class="p">(</span><span class="n">tsfile</span><span class="o">=</span><span class="n">track_w_path</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;!!! Error. Could not read &quot;</span><span class="p">,</span><span class="n">track</span><span class="p">)</span>
+                <span class="k">del</span> <span class="n">lGts</span><span class="p">[</span><span class="n">code</span><span class="o">+</span><span class="n">add_key</span><span class="p">]</span>
+                <span class="k">continue</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">lGts</span><span class="p">)</span>
+    
+    
+    <span class="c1"># START</span>
+    
+    <span class="n">lGts</span><span class="o">=</span><span class="p">{}</span>
+    <span class="c1">#######################################################################</span>
+    <span class="c1"># PCK FORMAT</span>
+    <span class="c1">#######################################################################</span>
+    <span class="c1"># Added JMN 22/08/2019</span>
+    <span class="c1"># Sgts saved as a pickle dump</span>
+    <span class="k">if</span> <span class="nb">type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">type</span><span class="o">==</span><span class="s1">&#39;pck&#39;</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">glob</span>
+        <span class="n">lpck</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="o">+</span><span class="s1">&#39;/*.pck&#39;</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="n">lpck</span> <span class="o">!=</span> <span class="p">[]:</span>
+            <span class="n">pck</span> <span class="o">=</span> <span class="n">lpck</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="c1"># read Sgts from pickle</span>
+            <span class="kn">import</span> <span class="nn">pickle</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span> <span class="n">pck</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">ts</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+             
+            <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">ts</span><span class="o">.</span><span class="n">lcode</span><span class="p">():</span>
+                <span class="n">lGts</span><span class="p">[</span><span class="n">code</span><span class="p">]</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Sgts read from PYACS pck file: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pck</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># no pck file    </span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- No PYACS pck file found&quot;</span><span class="p">)</span>
+    
+    
+    <span class="c1">#######################################################################</span>
+    <span class="c1"># PRIDE POS</span>
+    <span class="c1">#######################################################################</span>
+    <span class="k">if</span> <span class="nb">type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">type</span><span class="o">==</span><span class="s1">&#39;pride_pos&#39;</span><span class="p">:</span>
+        <span class="n">lGts_pride_pos</span> <span class="o">=</span> <span class="n">__pride_pos</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lGts_pride_pos</span><span class="o">==</span><span class="p">{}:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- No pride pos files found&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">lGts</span><span class="o">=</span><span class="n">lGts_pride_pos</span>
+    
+    <span class="c1">#######################################################################</span>
+    <span class="c1"># PRIDE</span>
+    <span class="c1">#######################################################################</span>
+    <span class="k">if</span> <span class="nb">type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">type</span><span class="o">==</span><span class="s1">&#39;pride&#39;</span><span class="p">:</span>
+        <span class="n">lGts_pride</span> <span class="o">=</span> <span class="n">__pride</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lGts_pride</span><span class="o">==</span><span class="p">{}:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- No pride_files found&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">lGts</span><span class="o">=</span><span class="n">lGts_pride</span>
+    
+    <span class="c1">#######################################################################</span>
+    <span class="c1"># MB_FILE</span>
+    <span class="c1">#######################################################################</span>
+    <span class="k">if</span> <span class="nb">type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">type</span><span class="o">==</span><span class="s1">&#39;mb_file&#39;</span><span class="p">:</span>
+        <span class="n">lGts_mb_files</span><span class="o">=</span><span class="n">__mb_files</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lGts_mb_files</span><span class="o">==</span><span class="p">{}:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- No mb_files found&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">lGts</span><span class="o">=</span><span class="n">lGts_mb_files</span>
+             
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">read_gmt</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">gmt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="o">+</span><span class="s1">&#39;/../stat/pyacs_void.gmt&#39;</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;! Warning: Could not read a gmt file to populate Gts attributes lon,lat,h &amp; X0,Y0,Z0 for mb_files&quot;</span><span class="p">)</span>
+     
+    <span class="c1">#######################################################################</span>
+    <span class="c1"># TDP</span>
+    <span class="c1">#######################################################################</span>
+    <span class="k">if</span> <span class="nb">type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">type</span><span class="o">==</span><span class="s1">&#39;tdp&#39;</span><span class="p">:</span>
+        <span class="n">lGts_mb_files</span><span class="o">=</span><span class="n">__tdp</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lGts_mb_files</span><span class="o">==</span><span class="p">{}:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- No tdp_files found&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">lGts</span><span class="o">=</span><span class="n">lGts_mb_files</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">read_gmt</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">gmt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="o">+</span><span class="s1">&#39;/../stat/pyacs_void.gmt&#39;</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;! Warning: Could not read a gmt file to populate Gts attributes lon,lat,h &amp; X0,Y0,Z0 for mb_files&quot;</span><span class="p">)</span>
+     
+    <span class="c1">#######################################################################</span>
+    <span class="c1"># KENV</span>
+    <span class="c1">#######################################################################</span>
+    <span class="k">if</span> <span class="nb">type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">type</span><span class="o">==</span><span class="s1">&#39;kenv&#39;</span><span class="p">:</span>
+        <span class="n">lGts_kenv</span><span class="o">=</span><span class="n">__kenv</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lGts_kenv</span><span class="o">==</span><span class="p">{}:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- No kenv file found&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span><span class="n">lGts</span><span class="o">=</span><span class="n">lGts_kenv</span>
+     
+    <span class="c1">#######################################################################</span>
+    <span class="c1"># CATS</span>
+    <span class="c1">#######################################################################</span>
+    <span class="k">if</span> <span class="nb">type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">type</span><span class="o">==</span><span class="s1">&#39;cats&#39;</span><span class="p">:</span>
+        <span class="n">lGts_cats</span><span class="o">=</span><span class="n">__cats</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lGts_cats</span><span class="o">==</span><span class="p">{}:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- No cats file found&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">lGts</span><span class="o">=</span><span class="n">lGts_cats</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">read_gmt</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">gmt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="o">+</span><span class="s1">&#39;/../stat/pyacs_void.gmt&#39;</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;! Warning: Could not read a gmt file to populate Gts attributes lon,lat,h &amp; X0,Y0,Z0 for mb_files&quot;</span><span class="p">)</span>
+     
+     
+    <span class="c1">#######################################################################</span>
+    <span class="c1"># POS FORMAT</span>
+    <span class="c1">#######################################################################</span>
+    <span class="k">if</span> <span class="nb">type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">type</span><span class="o">==</span><span class="s1">&#39;pos&#39;</span><span class="p">:</span>
+        <span class="n">lGts_pos</span><span class="o">=</span><span class="n">__pos</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span><span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lGts_pos</span><span class="o">==</span><span class="p">{}:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- No Gamit/Globk pos file found&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span><span class="n">lGts</span><span class="o">=</span><span class="n">lGts_pos</span>
+    
+    <span class="c1">#######################################################################</span>
+    <span class="c1"># TXYZ FORMAT</span>
+    <span class="c1">#######################################################################</span>
+    <span class="k">if</span> <span class="nb">type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">type</span><span class="o">==</span><span class="s1">&#39;txyz&#39;</span><span class="p">:</span>
+        <span class="n">lGts_txyz</span><span class="o">=</span><span class="n">__ts_xyz</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lGts_txyz</span><span class="o">==</span><span class="p">{}:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- No pyacs t_xyz file found&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span><span class="n">lGts</span><span class="o">=</span><span class="n">lGts_txyz</span>
+    
+    <span class="c1">#######################################################################</span>
+    <span class="c1"># TRACK FORMAT</span>
+    <span class="c1">#######################################################################</span>
+    <span class="k">if</span> <span class="nb">type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">type</span><span class="o">==</span><span class="s1">&#39;track&#39;</span><span class="p">:</span>
+        <span class="n">lGts_track</span><span class="o">=</span><span class="n">__track_NEU</span><span class="p">(</span><span class="n">ts_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lGts_track</span><span class="o">==</span><span class="p">{}:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- No Gamit/Globk track NEU file found&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span><span class="n">lGts</span><span class="o">=</span><span class="n">lGts_track</span>
+    
+    
+    <span class="k">for</span> <span class="n">gts</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">lGts</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+        <span class="k">if</span> <span class="n">gts</span><span class="o">.</span><span class="n">code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lexclude</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- adding &#39;</span><span class="p">,</span> <span class="n">gts</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gts</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- read &#39;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lcode</span><span class="p">()</span> <span class="p">),</span><span class="s1">&#39; time series in directory &#39;</span><span class="p">,</span><span class="n">ts_dir</span><span class="p">)</span></div>
+    
+    
+    
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

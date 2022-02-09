@@ -1,0 +1,15 @@
+Metadata-Version: 1.1
+Name: pygeca
+Version: 0.1.0
+Summary: PYGECA: PYACS GAMIT CLUSTER PROCESSING
+Home-page: UNKNOWN
+Author: Jean-Mathieu Nocquet (Geoazur, IRD, CNRS, OCA, Cote d Azur University, France)
+Author-email: nocquet@geoazur.unice.fr
+License: NA
+Description: PYGECA: PYACS GAMIT CLUSTER PROCESSING.
+Keywords: geodesy GPS GNSS GAMIT GLOBK HPC
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Topic :: Geodesy :: Geophysics

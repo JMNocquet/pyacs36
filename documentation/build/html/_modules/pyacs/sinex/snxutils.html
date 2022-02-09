@@ -1,0 +1,1229 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.sinex.snxutils &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.sinex.snxutils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.sinex.snxutils</h1><div class="highlight"><pre>
+<span></span><span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Module   : snxutils</span>
+<span class="c1"># Purpose  : Low-level routines for SINEX manipulation</span>
+<span class="c1"># Author   : P. Rebischung</span>
+<span class="c1"># Created  : 22-Aug-2014</span>
+<span class="c1">#</span>
+<span class="c1"># Changes  :</span>
+<span class="c1">#</span>
+<span class="c1"># Routines : - earlier            : Compare two dates in SINEX format</span>
+<span class="c1">#            - read_domes         : Read DOMES number catalogue (codomes.snx)</span>
+<span class="c1">#            - read_solns         : Read discontinuity list (soln.snx)</span>
+<span class="c1">#            - extract_solns      : Extract a set of stations from a discontinuity list</span>
+<span class="c1">#            - helmert_outliers   : Find outliers in the residuals of a 7-parameter Helmert comparison</span>
+<span class="c1">#            - helmert14_outliers : Find outliers in the residuals of a 14-parameter Helmert comparison</span>
+<span class="c1">#            - helmert_hist       : Draw histograms of Helmert residuals</span>
+<span class="c1">#            - helmert_map        : Draw map of Helmert residuals</span>
+<span class="c1">#            - station_map        : Draw map of stations</span>
+<span class="c1">#            - meanpole           : Compute long term mean pole</span>
+<span class="c1">#            - read_opoleload     : Read grid of ocean pole tide loading coefficients</span>
+<span class="c1">#            - compute_opoleload  : Read grid of ocean pole tide loading coefficients</span>
+<span class="c1">#            - compute_psd        : Compute post-seismic deformations and associated uncertainties</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+
+
+
+<span class="c1"># LIBRARIES</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">pp</span>
+<span class="kn">import</span> <span class="nn">matplotlib.ticker</span> <span class="k">as</span> <span class="nn">ticker</span>
+<span class="c1">#from mpl_toolkits.basemap import Basemap</span>
+
+<span class="kn">from</span> <span class="nn">.constants</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.mathutils</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.date</span> <span class="kn">import</span> <span class="n">date</span>
+
+
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : earlier</span>
+<span class="c1"># Purpose : Compare two dates in SINEX format</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 12-Aug-2011</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : - t1 : Date in sinex format</span>
+<span class="c1">#           - t2 : Date in sinex format</span>
+<span class="c1"># Output  : - b  : True if t1 &lt;= t2. False otherwise.</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="earlier"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.snxutils.earlier">[docs]</a><span class="k">def</span> <span class="nf">earlier</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">):</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">t1</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="mi">50</span><span class="p">):</span>
+    <span class="n">t1</span> <span class="o">=</span> <span class="s1">&#39;19&#39;</span> <span class="o">+</span> <span class="n">t1</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">t1</span> <span class="o">=</span> <span class="s1">&#39;20&#39;</span> <span class="o">+</span> <span class="n">t1</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">t2</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="mi">50</span><span class="p">):</span>
+    <span class="n">t2</span> <span class="o">=</span> <span class="s1">&#39;19&#39;</span> <span class="o">+</span> <span class="n">t2</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">t2</span> <span class="o">=</span> <span class="s1">&#39;20&#39;</span> <span class="o">+</span> <span class="n">t2</span>
+
+  <span class="k">return</span> <span class="p">(</span><span class="n">t1</span> <span class="o">&lt;=</span> <span class="n">t2</span><span class="p">)</span></div>
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : read_domes</span>
+<span class="c1"># Purpose : Read DOMES number catalogue (codomes.snx)</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 11-Aug-2011</span>
+<span class="c1">#</span>
+<span class="c1"># Changes : PR, 27-Jan-2017 : Add possibility to read station coordinates</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : - file  : DOMES number catalogue</span>
+<span class="c1">#           - coord : True if station coordinates should be read. Default is True.</span>
+<span class="c1"># Output  : - domes : List of records</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="read_domes"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.snxutils.read_domes">[docs]</a><span class="k">def</span> <span class="nf">read_domes</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">coord</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+  <span class="c1"># Initialization</span>
+  <span class="n">domes</span> <span class="o">=</span> <span class="p">[]</span>
+
+  <span class="c1"># Open input file</span>
+  <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+
+  <span class="c1"># Read file</span>
+  <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+  <span class="k">while</span> <span class="p">(</span><span class="n">line</span><span class="p">):</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">record</span><span class="p">()</span>
+    <span class="n">r</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+    <span class="n">r</span><span class="o">.</span><span class="n">pt</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span>
+    <span class="n">r</span><span class="o">.</span><span class="n">domes</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">8</span><span class="p">:</span><span class="mi">17</span><span class="p">]</span>
+    <span class="n">r</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">19</span><span class="p">:</span><span class="mi">41</span><span class="p">]</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">coord</span><span class="p">):</span>
+      <span class="n">tab</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+      <span class="n">r</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tab</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+      <span class="n">r</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">tab</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    
+    <span class="n">domes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+
+  <span class="c1"># Some manual changes to handle duplicate DOMES numbers</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">domes</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">domes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="s1">&#39;GOLD&#39;</span><span class="p">):</span>
+      <span class="n">domes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">domes</span> <span class="o">=</span> <span class="s1">&#39;40405S031&#39;</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">domes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="s1">&#39;IISC&#39;</span><span class="p">):</span>
+      <span class="n">domes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">domes</span> <span class="o">=</span> <span class="s1">&#39;22306M002&#39;</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">domes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="s1">&#39;KELY&#39;</span><span class="p">):</span>
+      <span class="n">domes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">domes</span> <span class="o">=</span> <span class="s1">&#39;43005M002&#39;</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">domes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="s1">&#39;MDVO&#39;</span><span class="p">):</span>
+      <span class="n">domes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">domes</span> <span class="o">=</span> <span class="s1">&#39;12309M002&#39;</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">domes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="s1">&#39;MTKA&#39;</span><span class="p">):</span>
+      <span class="n">domes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">domes</span> <span class="o">=</span> <span class="s1">&#39;21741S002&#39;</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">domes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="s1">&#39;UPAD&#39;</span><span class="p">):</span>
+      <span class="n">domes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">domes</span> <span class="o">=</span> <span class="s1">&#39;12750M002&#39;</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">domes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="s1">&#39;WEL2&#39;</span><span class="p">):</span>
+      <span class="n">domes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">domes</span> <span class="o">=</span> <span class="s1">&#39;50208S003&#39;</span>
+
+  <span class="c1"># Close file</span>
+  <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+  <span class="k">return</span> <span class="n">domes</span></div>
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : read_solns</span>
+<span class="c1"># Purpose : Read discontinuity list (soln.snx)</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 11-Aug-2011</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : - file  : Discontinuity list</span>
+<span class="c1"># Output  : - solns : List of records</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="read_solns"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.snxutils.read_solns">[docs]</a><span class="k">def</span> <span class="nf">read_solns</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+
+  <span class="c1"># Initialization</span>
+  <span class="n">solns</span> <span class="o">=</span> <span class="p">[]</span>
+
+  <span class="n">code</span>  <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+  <span class="n">pt</span>    <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+  <span class="n">ista</span>  <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>    
+
+  <span class="c1"># Open input file</span>
+  <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+
+  <span class="c1"># Skip header</span>
+  <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+  <span class="k">while</span> <span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">23</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;+SOLUTION/DISCONTINUITY&#39;</span><span class="p">):</span>
+    <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+
+  <span class="c1"># Read SOLUTION/DISCONTINUITY block</span>
+  <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+  <span class="k">while</span> <span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;-&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;*&#39;</span><span class="p">):</span>
+
+      <span class="c1"># New station?</span>
+      <span class="k">if</span> <span class="p">((</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span> <span class="o">!=</span> <span class="n">code</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span> <span class="o">!=</span> <span class="n">pt</span><span class="p">)):</span>
+        <span class="n">ista</span> <span class="o">=</span> <span class="n">ista</span><span class="o">+</span><span class="mi">1</span>
+        <span class="n">code</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+        <span class="n">pt</span>   <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span>
+
+        <span class="n">r</span> <span class="o">=</span> <span class="n">record</span><span class="p">()</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">code</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">pt</span>   <span class="o">=</span> <span class="n">pt</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">P</span>    <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">V</span>    <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">solns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+
+      <span class="c1"># Position soln?</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">42</span><span class="p">:</span><span class="mi">43</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;P&#39;</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">record</span><span class="p">()</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">soln</span>   <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">9</span><span class="p">:</span><span class="mi">13</span><span class="p">]</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">start</span>  <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">16</span><span class="p">:</span><span class="mi">28</span><span class="p">]</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">end</span>    <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">29</span><span class="p">:</span><span class="mi">41</span><span class="p">]</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">reason</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">46</span><span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">solns</span><span class="p">[</span><span class="n">ista</span><span class="p">]</span><span class="o">.</span><span class="n">P</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+
+      <span class="c1"># Velocity soln?</span>
+      <span class="k">elif</span> <span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">42</span><span class="p">:</span><span class="mi">43</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;V&#39;</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">record</span><span class="p">()</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">soln</span>   <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">9</span><span class="p">:</span><span class="mi">13</span><span class="p">]</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">start</span>  <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">16</span><span class="p">:</span><span class="mi">28</span><span class="p">]</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">end</span>    <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">29</span><span class="p">:</span><span class="mi">41</span><span class="p">]</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">reason</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">46</span><span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">solns</span><span class="p">[</span><span class="n">ista</span><span class="p">]</span><span class="o">.</span><span class="n">V</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+
+    <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+
+  <span class="c1"># Close file</span>
+  <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+  <span class="k">return</span> <span class="n">solns</span></div>
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : extract_solns</span>
+<span class="c1"># Purpose : Extract a set of stations from a discontinuity list</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 25-Jun-2012</span>
+<span class="c1">#</span>
+<span class="c1"># Changes : 04-Oct-2012, PR : Small bugs corrected</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : - solns   : Discontinuity list</span>
+<span class="c1">#           - snx     : sinex object defining the list of stations to extract</span>
+<span class="c1">#           - file    : Output discontinuity file</span>
+<span class="c1">#           - comment : File containing FILE/COMMENT block for the output file. Default if None.</span>
+<span class="c1"># Output  : </span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="extract_solns"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.snxutils.extract_solns">[docs]</a><span class="k">def</span> <span class="nf">extract_solns</span><span class="p">(</span><span class="n">solns</span><span class="p">,</span> <span class="n">snx</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+  <span class="c1"># List of stations to be extracted</span>
+  <span class="n">codept</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">code</span><span class="o">+</span><span class="n">s</span><span class="o">.</span><span class="n">pt</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">snx</span><span class="o">.</span><span class="n">sta</span><span class="p">]</span>
+
+  <span class="c1"># New solns table</span>
+  <span class="n">solns2</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">solns</span><span class="p">:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">code</span><span class="o">+</span><span class="n">s</span><span class="o">.</span><span class="n">pt</span> <span class="ow">in</span> <span class="n">codept</span><span class="p">):</span>
+      <span class="n">solns2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+  <span class="c1"># Write 1st line of output file</span>
+  <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+  <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;%=SNX 2.01 </span><span class="si">{0}</span><span class="s1"> </span><span class="si">{1}</span><span class="s1"> </span><span class="si">{0}</span><span class="s1"> 00:000:00000 00:000:00000 P     0 1 X V</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">agency</span><span class="p">,</span> <span class="n">date</span><span class="p">()</span><span class="o">.</span><span class="n">snxepoch</span><span class="p">()))</span>
+  <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+  <span class="c1"># Cat FILE/COMMENT block if any</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">comment</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;cat </span><span class="si">{0}</span><span class="s1"> &gt;&gt; </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">comment</span><span class="p">,</span> <span class="n">file</span><span class="p">))</span>
+
+  <span class="c1"># Write SOLUTION/DISCONTINUITY block</span>
+  <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
+  <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;+SOLUTION/DISCONTINUITY</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+  
+  <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">solns2</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">P</span><span class="p">:</span>
+      <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="si">{0.code}</span><span class="s1"> </span><span class="si">{0.pt}</span><span class="s1"> </span><span class="si">{1.soln}</span><span class="s1"> P </span><span class="si">{1.start}</span><span class="s1"> </span><span class="si">{1.end}</span><span class="s1"> P - </span><span class="si">{1.reason}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">V</span><span class="p">:</span>
+      <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="si">{0.code}</span><span class="s1"> </span><span class="si">{0.pt}</span><span class="s1"> </span><span class="si">{1.soln}</span><span class="s1"> P </span><span class="si">{1.start}</span><span class="s1"> </span><span class="si">{1.end}</span><span class="s1"> V - </span><span class="si">{1.reason}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+      
+  <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;-SOLUTION/DISCONTINUITY</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+  <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;*----------------------------------------------------------------</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+  <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%E</span><span class="s1">NDSNX</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+  <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : helmert_outliers</span>
+<span class="c1"># Purpose : Find outliers in the residuals of a 7-parameter Helmert comparison</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 07-Jul-2011</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : - code      : 4-char codes</span>
+<span class="c1">#           - pt        : PT codes</span>
+<span class="c1">#           - soln      : Solns</span>
+<span class="c1">#           - v         : Raw residuals (mm)</span>
+<span class="c1">#           - vn        : Normalized residuals</span>
+<span class="c1">#           - thr_raw   : Table of [E, N, H] thresholds in mm for raw residuals. Default is None.</span>
+<span class="c1">#           - thr_norm  : Table of [E, N, H] thresholds for normalized residuals. Default is None.</span>
+<span class="c1">#           - thr_auto  : If neither thr_raw nor thr_norm are specified, the &quot;automatic&quot; thresholds will be</span>
+<span class="c1">#                         thr_auto*[RMS_E, RMS_N, RMS_H] for both raw and normalized residuals. Default is 4.</span>
+<span class="c1">#           - log       : Log file. Default is None.</span>
+<span class="c1">#           - append    : If true, text will be appended to log file. Default if False.</span>
+<span class="c1"># Output  : - codedel   : 4-char codes of outliers</span>
+<span class="c1">#           - ptdel     : PT codes of outliers</span>
+<span class="c1">#           - solndel   : Solns of outliers</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="helmert_outliers"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.snxutils.helmert_outliers">[docs]</a><span class="k">def</span> <span class="nf">helmert_outliers</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">pt</span><span class="p">,</span> <span class="n">soln</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">vn</span><span class="p">,</span> <span class="n">thr_raw</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">thr_norm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">thr_auto</span><span class="o">=</span><span class="mf">4.</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+  <span class="c1"># Define thresholds in case of an automatic detection</span>
+  <span class="k">if</span> <span class="p">((</span><span class="n">thr_raw</span> <span class="o">==</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">thr_norm</span> <span class="o">==</span> <span class="kc">None</span><span class="p">)):</span>
+    <span class="n">thr_raw</span>  <span class="o">=</span> <span class="p">[</span><span class="n">thr_auto</span><span class="o">*</span><span class="n">rms</span><span class="p">(</span><span class="n">v</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]),</span>  <span class="n">thr_auto</span><span class="o">*</span><span class="n">rms</span><span class="p">(</span><span class="n">v</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]),</span> <span class="n">thr_auto</span><span class="o">*</span><span class="n">rms</span><span class="p">(</span><span class="n">v</span><span class="p">[:,</span><span class="mi">2</span><span class="p">])]</span>
+    <span class="n">thr_norm</span> <span class="o">=</span> <span class="p">[</span><span class="n">thr_auto</span><span class="o">*</span><span class="n">rms</span><span class="p">(</span><span class="n">vn</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]),</span> <span class="n">thr_auto</span><span class="o">*</span><span class="n">rms</span><span class="p">(</span><span class="n">vn</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]),</span> <span class="n">thr_auto</span><span class="o">*</span><span class="n">rms</span><span class="p">(</span><span class="n">vn</span><span class="p">[:,</span><span class="mi">2</span><span class="p">])]</span>
+    
+  <span class="c1"># Get indices of outliers</span>
+  <span class="n">ind_raw</span>  <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;i8&#39;</span><span class="p">)</span>
+  <span class="n">ind_norm</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;i8&#39;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">thr_raw</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="n">ind_raw</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">thr_raw</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">thr_norm</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="n">ind_norm</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">vn</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">thr_norm</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="n">ind</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">union1d</span><span class="p">(</span><span class="n">ind_raw</span><span class="p">,</span> <span class="n">ind_norm</span><span class="p">)</span>
+
+  <span class="c1"># Get outlier identifiers</span>
+  <span class="n">codedel</span> <span class="o">=</span> <span class="p">[</span><span class="n">code</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ind</span><span class="p">]</span>
+  <span class="n">ptdel</span>   <span class="o">=</span> <span class="p">[</span><span class="n">pt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>   <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ind</span><span class="p">]</span>
+  <span class="n">solndel</span> <span class="o">=</span> <span class="p">[</span><span class="n">soln</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ind</span><span class="p">]</span>
+
+  <span class="c1"># Write log file if necessary</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">log</span><span class="p">):</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">append</span><span class="p">):</span>
+      <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Write header</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;================================================================================</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;snxutils::helmert_outliers : Find outliers in 7-parameter Helmert residuals</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;================================================================================</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Print used thresholds</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Used thresholds :</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;-----------------</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;  Raw thresholds (mm) | Normalized threholds |</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;----------------------|----------------------|</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;    E      N      H   |    E      N      H   |</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;----------------------|----------------------|</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">thr_raw</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+      <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="si">{0[0]:6.1f}</span><span class="s1"> </span><span class="si">{0[1]:6.1f}</span><span class="s1"> </span><span class="si">{0[2]:6.1f}</span><span class="s1"> |&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">thr_raw</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;                      |&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">thr_norm</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+      <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="si">{0[0]:6.1f}</span><span class="s1"> </span><span class="si">{0[1]:6.1f}</span><span class="s1"> </span><span class="si">{0[2]:6.1f}</span><span class="s1"> |</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">thr_norm</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;                      |</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;----------------------|----------------------|</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Print detected outliers</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Detected outliers :</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;-------------------</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;             |  Raw residuals (mm)  | Normalized residuals |</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;-------------|----------------------|----------------------|</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;code pt soln |    E      N      H   |    E      N      H   |</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;-------------|----------------------|----------------------|</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ind</span><span class="p">)):</span>
+      <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> </span><span class="si">{1}</span><span class="s1"> </span><span class="si">{2}</span><span class="s1"> |&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">codedel</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ptdel</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">solndel</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+      <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="si">{0[0]:6.1f}</span><span class="s1"> </span><span class="si">{0[1]:6.1f}</span><span class="s1"> </span><span class="si">{0[2]:6.1f}</span><span class="s1"> |&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]]))</span>
+      <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="si">{0[0]:6.1f}</span><span class="s1"> </span><span class="si">{0[1]:6.1f}</span><span class="s1"> </span><span class="si">{0[2]:6.1f}</span><span class="s1"> |</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vn</span><span class="p">[</span><span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]]))</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;-------------|----------------------|----------------------|</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+  <span class="k">return</span> <span class="p">(</span><span class="n">codedel</span><span class="p">,</span> <span class="n">ptdel</span><span class="p">,</span> <span class="n">solndel</span><span class="p">)</span></div>
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : helmert14_outliers</span>
+<span class="c1"># Purpose : Find outliers in the residuals of a 14-parameter Helmert comparison</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 07-Jul-2011</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : - code      : 4-char codes</span>
+<span class="c1">#           - pt        : PT codes</span>
+<span class="c1">#           - soln      : Solns</span>
+<span class="c1">#           - v         : Raw residuals (mm, mm/y)</span>
+<span class="c1">#           - vn        : Normalized residuals</span>
+<span class="c1">#           - thr_raw   : Table of [E, N, H, VE, VN, VH] thresholds in mm[/y] for raw residuals. Default is None.</span>
+<span class="c1">#           - thr_norm  : Table of [E, N, H, VE, VN, VH] thresholds for normalized residuals. Default is None.</span>
+<span class="c1">#           - thr_auto  : If neither thr_raw nor thr_norm are specified, the &quot;automatic&quot; thresholds will be</span>
+<span class="c1">#                         thr_auto*[RMS_E, RMS_N, RMS_H, RMS_VE, RMS_VN, RMS_VH] for both raw and normalized</span>
+<span class="c1">#                         residuals. Default is 5.</span>
+<span class="c1">#           - log       : Log file. Default is None.</span>
+<span class="c1">#           - append    : If true, text will be appended to log file. Default if False.</span>
+<span class="c1"># Output  : - codedel   : 4-char codes of outliers</span>
+<span class="c1">#           - ptdel     : PT codes of outliers</span>
+<span class="c1">#           - solndel   : Solns of outliers</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="helmert14_outliers"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.snxutils.helmert14_outliers">[docs]</a><span class="k">def</span> <span class="nf">helmert14_outliers</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">pt</span><span class="p">,</span> <span class="n">soln</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">vn</span><span class="p">,</span> <span class="n">thr_raw</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">thr_norm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">thr_auto</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+  <span class="c1"># Define thresholds in case of an automatic detection</span>
+  <span class="k">if</span> <span class="p">((</span><span class="ow">not</span><span class="p">(</span><span class="n">thr_raw</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span><span class="p">(</span><span class="n">thr_norm</span><span class="p">))):</span>
+    <span class="n">thr_raw</span>  <span class="o">=</span> <span class="p">[</span><span class="n">thr_auto</span><span class="o">*</span><span class="n">rms</span><span class="p">(</span><span class="n">v</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]),</span>  <span class="n">thr_auto</span><span class="o">*</span><span class="n">rms</span><span class="p">(</span><span class="n">v</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]),</span> <span class="n">thr_auto</span><span class="o">*</span><span class="n">rms</span><span class="p">(</span><span class="n">v</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]),</span> <span class="n">thr_auto</span><span class="o">*</span><span class="n">rms</span><span class="p">(</span><span class="n">v</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]),</span>  <span class="n">thr_auto</span><span class="o">*</span><span class="n">rms</span><span class="p">(</span><span class="n">v</span><span class="p">[:,</span><span class="mi">4</span><span class="p">]),</span> <span class="n">thr_auto</span><span class="o">*</span><span class="n">rms</span><span class="p">(</span><span class="n">v</span><span class="p">[:,</span><span class="mi">5</span><span class="p">])]</span>
+    <span class="n">thr_norm</span> <span class="o">=</span> <span class="p">[</span><span class="n">thr_auto</span><span class="o">*</span><span class="n">rms</span><span class="p">(</span><span class="n">vn</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]),</span> <span class="n">thr_auto</span><span class="o">*</span><span class="n">rms</span><span class="p">(</span><span class="n">vn</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]),</span> <span class="n">thr_auto</span><span class="o">*</span><span class="n">rms</span><span class="p">(</span><span class="n">vn</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]),</span> <span class="n">thr_auto</span><span class="o">*</span><span class="n">rms</span><span class="p">(</span><span class="n">vn</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]),</span> <span class="n">thr_auto</span><span class="o">*</span><span class="n">rms</span><span class="p">(</span><span class="n">vn</span><span class="p">[:,</span><span class="mi">4</span><span class="p">]),</span> <span class="n">thr_auto</span><span class="o">*</span><span class="n">rms</span><span class="p">(</span><span class="n">vn</span><span class="p">[:,</span><span class="mi">5</span><span class="p">])]</span>
+    
+  <span class="c1"># Get indices of outliers</span>
+  <span class="n">ind_raw</span>  <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;i8&#39;</span><span class="p">)</span>
+  <span class="n">ind_norm</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;i8&#39;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">thr_raw</span><span class="p">):</span>
+    <span class="n">ind_raw</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">thr_raw</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">thr_norm</span><span class="p">):</span>
+    <span class="n">ind_norm</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">vn</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">thr_norm</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="n">ind</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">union1d</span><span class="p">(</span><span class="n">ind_raw</span><span class="p">,</span> <span class="n">ind_norm</span><span class="p">)</span>
+
+  <span class="c1"># Get outlier identifiers</span>
+  <span class="n">codedel</span> <span class="o">=</span> <span class="p">[</span><span class="n">code</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ind</span><span class="p">]</span>
+  <span class="n">ptdel</span>   <span class="o">=</span> <span class="p">[</span><span class="n">pt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>   <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ind</span><span class="p">]</span>
+  <span class="n">solndel</span> <span class="o">=</span> <span class="p">[</span><span class="n">soln</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ind</span><span class="p">]</span>
+
+  <span class="c1"># Write log file if necessary</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">log</span><span class="p">):</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">append</span><span class="p">):</span>
+      <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Write header</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;================================================================================</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;snxutils::helmert14_outliers : Find outliers in 14-parameter Helmert residuals</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;================================================================================</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Print used thresholds</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Used thresholds :</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;-----------------</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>              
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;         Raw thresholds (mm, mm/y)         |            Normalized threholds           |</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;-------------------------------------------|-------------------------------------------|</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;    E      N      H     VE     VN     VH   |    E      N      H     VE     VN     VH   |</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;-------------------------------------------|-------------------------------------------|</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">thr_raw</span><span class="p">):</span>
+      <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="si">{0[0]:6.1f}</span><span class="s1"> </span><span class="si">{0[1]:6.1f}</span><span class="s1"> </span><span class="si">{0[2]:6.1f}</span><span class="s1"> </span><span class="si">{0[3]:6.1f}</span><span class="s1"> </span><span class="si">{0[4]:6.1f}</span><span class="s1"> </span><span class="si">{0[5]:6.1f}</span><span class="s1"> |&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">thr_raw</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;                                           |&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">thr_norm</span><span class="p">):</span>
+      <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="si">{0[0]:6.1f}</span><span class="s1"> </span><span class="si">{0[1]:6.1f}</span><span class="s1"> </span><span class="si">{0[2]:6.1f}</span><span class="s1"> </span><span class="si">{0[3]:6.1f}</span><span class="s1"> </span><span class="si">{0[4]:6.1f}</span><span class="s1"> </span><span class="si">{0[5]:6.1f}</span><span class="s1"> |</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">thr_norm</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;                                           |</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;-------------------------------------------|-------------------------------------------|</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Print detected outliers</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Detected outliers :</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;-------------------</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;             |         Raw residuals (mm, mm/y)          |           Normalized residuals            |</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;-------------|-------------------------------------------|-------------------------------------------|</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;code pt soln |    E      N      H     VE     VN     VH   |    E      N      H     VE     VN     VH   |</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;-------------|-------------------------------------------|-------------------------------------------|</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ind</span><span class="p">)):</span>
+      <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> </span><span class="si">{1}</span><span class="s1"> </span><span class="si">{2}</span><span class="s1"> |&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">codedel</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ptdel</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">solndel</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+      <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="si">{0[0]:6.1f}</span><span class="s1"> </span><span class="si">{0[1]:6.1f}</span><span class="s1"> </span><span class="si">{0[2]:6.1f}</span><span class="s1"> </span><span class="si">{0[3]:6.1f}</span><span class="s1"> </span><span class="si">{0[4]:6.1f}</span><span class="s1"> </span><span class="si">{0[5]:6.1f}</span><span class="s1"> |&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]]))</span>
+      <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="si">{0[0]:6.1f}</span><span class="s1"> </span><span class="si">{0[1]:6.1f}</span><span class="s1"> </span><span class="si">{0[2]:6.1f}</span><span class="s1"> </span><span class="si">{0[3]:6.1f}</span><span class="s1"> </span><span class="si">{0[4]:6.1f}</span><span class="s1"> </span><span class="si">{0[5]:6.1f}</span><span class="s1"> |</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vn</span><span class="p">[</span><span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]]))</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;-------------|-------------------------------------------|-------------------------------------------|</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+  <span class="k">return</span><span class="p">(</span><span class="n">codedel</span><span class="p">,</span> <span class="n">ptdel</span><span class="p">,</span> <span class="n">solndel</span><span class="p">)</span></div>
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : helmert_hist</span>
+<span class="c1"># Purpose : Draw histograms of Helmert residuals</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 08-Aug-2011</span>
+<span class="c1">#</span>
+<span class="c1"># Changes : PR, 13-Jun-2016: Add option &#39;no_up&#39;</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : - v      : Residuals</span>
+<span class="c1">#           - unit   : Residuals unit. Default is &#39;mm&#39;.</span>
+<span class="c1">#           - nbins  : Number of bins for each histogram. Default is 100.</span>
+<span class="c1">#           - output : Output file. Default is None.</span>
+<span class="c1">#           - no_up  : True if only horizontal residuals. Default is False.</span>
+<span class="c1"># Output  : </span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="helmert_hist"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.snxutils.helmert_hist">[docs]</a><span class="k">def</span> <span class="nf">helmert_hist</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;mm&#39;</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">no_up</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+  <span class="c1"># Set X-axis limit</span>
+  <span class="n">xmax</span> <span class="o">=</span> <span class="n">ceil</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">v</span><span class="p">)))</span>
+
+  <span class="c1"># Bins</span>
+  <span class="n">width</span> <span class="o">=</span> <span class="mf">2.</span><span class="o">*</span><span class="n">xmax</span><span class="o">/</span><span class="n">nbins</span>
+  <span class="n">bins</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">xmax</span><span class="p">,</span> <span class="n">xmax</span><span class="o">+</span><span class="n">width</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+  
+  <span class="c1"># Set Y-axis limit</span>
+  <span class="p">(</span><span class="n">he</span><span class="p">,</span> <span class="n">bins</span><span class="p">)</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">v</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">bins</span><span class="p">)</span>
+  <span class="p">(</span><span class="n">hn</span><span class="p">,</span> <span class="n">bins</span><span class="p">)</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">v</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">bins</span><span class="p">)</span>
+  <span class="k">if</span> <span class="p">(</span><span class="ow">not</span><span class="p">(</span><span class="n">no_up</span><span class="p">)):</span>
+    <span class="p">(</span><span class="n">hu</span><span class="p">,</span> <span class="n">bins</span><span class="p">)</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">v</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">bins</span><span class="p">)</span>
+    <span class="n">ymax</span> <span class="o">=</span> <span class="mf">1.1</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="n">he</span><span class="p">,</span> <span class="n">hn</span><span class="p">,</span> <span class="n">hu</span><span class="p">])</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">ymax</span> <span class="o">=</span> <span class="mf">1.1</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="n">he</span><span class="p">,</span> <span class="n">hn</span><span class="p">])</span>
+
+  <span class="c1"># Set X-axis annotation spacing</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">xmax</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="mf">0.5</span>
+  <span class="k">elif</span> <span class="p">(</span><span class="n">xmax</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="mi">1</span>
+  <span class="k">elif</span> <span class="p">(</span><span class="n">xmax</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="mf">2.5</span>
+  <span class="k">elif</span> <span class="p">(</span><span class="n">xmax</span> <span class="o">&lt;=</span> <span class="mi">20</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="mi">5</span>
+  <span class="k">elif</span> <span class="p">(</span><span class="n">xmax</span> <span class="o">&lt;=</span> <span class="mi">50</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="mi">10</span>
+  <span class="k">elif</span> <span class="p">(</span><span class="n">xmax</span> <span class="o">&lt;=</span> <span class="mi">100</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="mi">25</span>
+  <span class="k">elif</span> <span class="p">(</span><span class="n">xmax</span> <span class="o">&lt;=</span> <span class="mi">200</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="mi">50</span>
+  <span class="k">elif</span> <span class="p">(</span><span class="n">xmax</span> <span class="o">&lt;=</span> <span class="mi">500</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="mi">100</span>
+  <span class="k">elif</span> <span class="p">(</span><span class="n">xmax</span> <span class="o">&lt;=</span> <span class="mi">1000</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="mi">250</span>
+  <span class="k">elif</span> <span class="p">(</span><span class="n">xmax</span> <span class="o">&lt;=</span> <span class="mi">2000</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="mi">500</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="mi">1000</span>
+
+  <span class="c1"># Set Y-axis annotation spacing</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">ymax</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">):</span>
+    <span class="n">ay</span> <span class="o">=</span> <span class="mi">1</span>
+  <span class="k">elif</span> <span class="p">(</span><span class="n">ymax</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">):</span>
+    <span class="n">ay</span> <span class="o">=</span> <span class="mi">2</span>
+  <span class="k">elif</span> <span class="p">(</span><span class="n">ymax</span> <span class="o">&lt;=</span> <span class="mi">25</span><span class="p">):</span>
+    <span class="n">ay</span> <span class="o">=</span> <span class="mi">5</span>
+  <span class="k">elif</span> <span class="p">(</span><span class="n">ymax</span> <span class="o">&lt;=</span> <span class="mi">50</span><span class="p">):</span>
+    <span class="n">ay</span> <span class="o">=</span> <span class="mi">10</span>
+  <span class="k">elif</span> <span class="p">(</span><span class="n">ymax</span> <span class="o">&lt;=</span> <span class="mi">100</span><span class="p">):</span>
+    <span class="n">ay</span> <span class="o">=</span> <span class="mi">20</span>
+  <span class="k">elif</span> <span class="p">(</span><span class="n">ymax</span> <span class="o">&lt;=</span> <span class="mi">250</span><span class="p">):</span>
+    <span class="n">ay</span> <span class="o">=</span> <span class="mi">50</span>
+  <span class="k">elif</span> <span class="p">(</span><span class="n">ymax</span> <span class="o">&lt;=</span> <span class="mi">500</span><span class="p">):</span>
+    <span class="n">ay</span> <span class="o">=</span> <span class="mi">100</span>
+  <span class="k">elif</span> <span class="p">(</span><span class="n">ymax</span> <span class="o">&lt;=</span> <span class="mi">1000</span><span class="p">):</span>
+    <span class="n">ay</span> <span class="o">=</span> <span class="mi">200</span>
+  <span class="k">elif</span> <span class="p">(</span><span class="n">ymax</span> <span class="o">&lt;=</span> <span class="mi">2500</span><span class="p">):</span>
+    <span class="n">ay</span> <span class="o">=</span> <span class="mi">500</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">ay</span> <span class="o">=</span> <span class="mi">1000</span>
+
+  <span class="c1"># Create new figure and define tick options</span>
+  <span class="n">fig</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+  <span class="n">formatter</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">FormatStrFormatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%.0f</span><span class="s1"> </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unit</span><span class="p">))</span>
+  <span class="n">xlocator</span>  <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">MultipleLocator</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+  <span class="n">ylocator</span>  <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">MultipleLocator</span><span class="p">(</span><span class="n">ay</span><span class="p">)</span>
+
+  <span class="c1"># Draw histogram of East residuals</span>
+  <span class="n">sub1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">311</span><span class="p">)</span>
+  <span class="n">sub1</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">v</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">bins</span><span class="p">)</span>
+  <span class="n">sub1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;# stations&#39;</span><span class="p">)</span>
+  <span class="n">sub1</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="n">xmax</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ymax</span><span class="p">])</span>
+  <span class="n">sub1</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">xlocator</span><span class="p">)</span>
+  <span class="n">sub1</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">ylocator</span><span class="p">)</span>
+  <span class="n">sub1</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+  <span class="n">sub1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;East residuals&#39;</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.06</span><span class="p">))</span>
+
+  <span class="c1"># Draw histogram of North residuals</span>
+  <span class="n">sub2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">312</span><span class="p">)</span>
+  <span class="n">sub2</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">v</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">bins</span><span class="p">)</span>
+  <span class="n">sub2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;# stations&#39;</span><span class="p">)</span>
+  <span class="n">sub2</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="n">xmax</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ymax</span><span class="p">])</span>
+  <span class="n">sub2</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">xlocator</span><span class="p">)</span>
+  <span class="n">sub2</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">ylocator</span><span class="p">)</span>
+  <span class="n">sub2</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+  <span class="n">sub2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;North residuals&#39;</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.06</span><span class="p">))</span>
+
+  <span class="c1"># Draw histogram of Up residuals</span>
+  <span class="k">if</span> <span class="p">(</span><span class="ow">not</span><span class="p">(</span><span class="n">no_up</span><span class="p">)):</span>
+    <span class="n">sub3</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">313</span><span class="p">)</span>
+    <span class="n">sub3</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">v</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">bins</span><span class="p">)</span>
+    <span class="n">sub3</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;# stations&#39;</span><span class="p">)</span>
+    <span class="n">sub3</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="n">xmax</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ymax</span><span class="p">])</span>
+    <span class="n">sub3</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">xlocator</span><span class="p">)</span>
+    <span class="n">sub3</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">ylocator</span><span class="p">)</span>
+    <span class="n">sub3</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+    <span class="n">sub3</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Up residuals&#39;</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.06</span><span class="p">))</span>
+  
+  <span class="c1"># Compute ENH RMSs</span>
+  <span class="n">rmse</span> <span class="o">=</span> <span class="n">rms</span><span class="p">(</span><span class="n">v</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
+  <span class="n">rmsn</span> <span class="o">=</span> <span class="n">rms</span><span class="p">(</span><span class="n">v</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+  <span class="k">if</span> <span class="p">(</span><span class="ow">not</span><span class="p">(</span><span class="n">no_up</span><span class="p">)):</span>
+    <span class="n">rmsu</span> <span class="o">=</span> <span class="n">rms</span><span class="p">(</span><span class="n">v</span><span class="p">[:,</span><span class="mi">2</span><span class="p">])</span>
+
+  <span class="c1"># Print RMSs</span>
+  <span class="n">sub1</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">,</span> <span class="s1">&#39;RMS = </span><span class="si">{0:.1f}</span><span class="s1"> </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rmse</span><span class="p">,</span> <span class="n">unit</span><span class="p">),</span> <span class="n">transform</span><span class="o">=</span><span class="n">sub1</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+  <span class="n">sub2</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">,</span> <span class="s1">&#39;RMS = </span><span class="si">{0:.1f}</span><span class="s1"> </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rmsn</span><span class="p">,</span> <span class="n">unit</span><span class="p">),</span> <span class="n">transform</span><span class="o">=</span><span class="n">sub2</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="p">(</span><span class="ow">not</span><span class="p">(</span><span class="n">no_up</span><span class="p">)):</span>
+    <span class="n">sub3</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">,</span> <span class="s1">&#39;RMS = </span><span class="si">{0:.1f}</span><span class="s1"> </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rmsu</span><span class="p">,</span> <span class="n">unit</span><span class="p">),</span> <span class="n">transform</span><span class="o">=</span><span class="n">sub3</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+
+  <span class="c1"># Fit and draw gaussians</span>
+  <span class="n">ae</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">*</span> <span class="n">width</span> <span class="o">/</span> <span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">rmse</span><span class="p">)</span>
+  <span class="n">an</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">*</span> <span class="n">width</span> <span class="o">/</span> <span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">rmsn</span><span class="p">)</span>
+  <span class="k">if</span> <span class="p">(</span><span class="ow">not</span><span class="p">(</span><span class="n">no_up</span><span class="p">)):</span>
+    <span class="n">au</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">*</span> <span class="n">width</span> <span class="o">/</span> <span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">rmsu</span><span class="p">)</span>
+
+  <span class="n">x</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">xmax</span><span class="p">,</span> <span class="mf">1.002</span><span class="o">*</span><span class="n">xmax</span><span class="p">,</span> <span class="mf">0.002</span><span class="o">*</span><span class="n">xmax</span><span class="p">)</span>
+  <span class="n">ye</span> <span class="o">=</span> <span class="n">ae</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">rmse</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+  <span class="n">yn</span> <span class="o">=</span> <span class="n">an</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">rmsn</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+  <span class="k">if</span> <span class="p">(</span><span class="ow">not</span><span class="p">(</span><span class="n">no_up</span><span class="p">)):</span>
+    <span class="n">yu</span> <span class="o">=</span> <span class="n">au</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">rmsu</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+
+  <span class="n">sub1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ye</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+  <span class="n">sub2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">yn</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+  <span class="k">if</span> <span class="p">(</span><span class="ow">not</span><span class="p">(</span><span class="n">no_up</span><span class="p">)):</span>
+    <span class="n">sub3</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">yu</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+  <span class="c1"># Save figure into output file...</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">output</span><span class="p">):</span>
+    <span class="n">pp</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+    <span class="n">pp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+  <span class="c1"># ...or show it.</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">pp</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : helmert_map</span>
+<span class="c1"># Purpose : Draw residuals of a 7-parameter Helmert comparison on a map</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 09-Aug-2011</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : - lon     : Longitudes</span>
+<span class="c1">#           - lat     : Latitudes</span>
+<span class="c1">#           - v       : Residuals</span>
+<span class="c1">#           - unit    : Residuals unit. Default is &#39;mm&#39;.</span>
+<span class="c1">#           - h_scale : Scale factor for horizontal residuals (wrt default scale).</span>
+<span class="c1">#           - v_scale : Scale factor for vertical residuals (wrt default scale).</span>
+<span class="c1">#           - legend  : Length of legend vectors in mm. Default is 5.</span>
+<span class="c1">#           - title   : Map title. Default is None.</span>
+<span class="c1">#           - output  : Output file. Default is None.</span>
+<span class="c1">#           - no_up   : True if only horizontal residuals. Default is False.</span>
+<span class="c1"># Output  : </span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="helmert_map"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.snxutils.helmert_map">[docs]</a><span class="k">def</span> <span class="nf">helmert_map</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;mm&#39;</span><span class="p">,</span> <span class="n">h_scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">v_scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">no_up</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+  <span class="c1"># Append legend points to lon, lat and v lists</span>
+  <span class="k">if</span> <span class="p">(</span><span class="ow">not</span><span class="p">(</span><span class="n">no_up</span><span class="p">)):</span>
+    <span class="n">lon</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">lon</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">140</span><span class="p">,</span> <span class="o">-</span><span class="mi">141</span><span class="p">,</span> <span class="o">-</span><span class="mi">141</span><span class="p">]))</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">lat</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">42</span><span class="p">,</span> <span class="o">-</span><span class="mi">52</span><span class="p">,</span> <span class="o">-</span><span class="mi">52</span><span class="p">]))</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">v</span><span class="p">,</span> <span class="p">[[</span><span class="n">legend</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">legend</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">legend</span><span class="p">]]))</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">lon</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">lon</span><span class="p">,</span> <span class="o">-</span><span class="mi">140</span><span class="p">))</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">lat</span><span class="p">,</span> <span class="o">-</span><span class="mi">42</span><span class="p">))</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">v</span><span class="p">,</span> <span class="p">[</span><span class="n">legend</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+
+  <span class="c1"># Draw basemap</span>
+  <span class="n">pp</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+  <span class="nb">map</span> <span class="o">=</span> <span class="n">Basemap</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;robin&#39;</span><span class="p">,</span> <span class="n">lon_0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">area_thresh</span><span class="o">=</span><span class="mf">50000.</span><span class="p">)</span>
+  <span class="nb">map</span><span class="o">.</span><span class="n">drawmapboundary</span><span class="p">(</span><span class="n">fill_color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.82</span><span class="p">,</span> <span class="mf">0.86</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> 
+  <span class="nb">map</span><span class="o">.</span><span class="n">fillcontinents</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">lake_color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.82</span><span class="p">,</span> <span class="mf">0.86</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+  <span class="nb">map</span><span class="o">.</span><span class="n">drawcoastlines</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+  <span class="c1"># Add title if necessary</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">title</span><span class="p">):</span>
+    <span class="n">pp</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.06</span><span class="p">))</span>
+
+  <span class="c1"># Plot points</span>
+  <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">))</span>
+  <span class="nb">map</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+
+  <span class="c1"># Rotate horizontal residuals into map projection</span>
+  <span class="n">lon2</span> <span class="o">=</span> <span class="n">lon</span> <span class="o">+</span> <span class="mi">180</span><span class="o">*</span><span class="n">v</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">pi</span><span class="o">*</span><span class="n">ae</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span><span class="o">*</span><span class="n">lat</span><span class="p">))</span>
+  <span class="n">lat2</span> <span class="o">=</span> <span class="n">lat</span> <span class="o">+</span> <span class="mi">180</span><span class="o">*</span><span class="n">v</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">pi</span><span class="o">*</span><span class="n">ae</span><span class="p">)</span>
+  <span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">)</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">lon2</span><span class="p">,</span> <span class="n">lat2</span><span class="p">))</span>
+  <span class="n">vx</span> <span class="o">=</span> <span class="n">x2</span> <span class="o">-</span> <span class="n">x</span>
+  <span class="n">vy</span> <span class="o">=</span> <span class="n">y2</span> <span class="o">-</span> <span class="n">y</span>
+
+  <span class="c1"># Plot horizontal residuals</span>
+  <span class="nb">map</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">vx</span><span class="p">,</span> <span class="n">vy</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s1">&#39;dots&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.1</span><span class="o">/</span><span class="n">h_scale</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+  <span class="c1"># Plot vertical residuals</span>
+  <span class="k">if</span> <span class="p">(</span><span class="ow">not</span><span class="p">(</span><span class="n">no_up</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lon</span><span class="p">)):</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="nb">map</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mf">1.5e5</span><span class="o">*</span><span class="n">v_scale</span><span class="o">*</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">2</span><span class="p">]],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="nb">map</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mf">1.5e5</span><span class="o">*</span><span class="n">v_scale</span><span class="o">*</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">2</span><span class="p">]],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+
+  <span class="c1"># Legend text for horizontal residuals</span>
+  <span class="p">(</span><span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">)</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="o">-</span><span class="mi">101</span><span class="p">,</span> <span class="o">-</span><span class="mi">42</span><span class="p">))</span>
+  <span class="n">pp</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">legend</span><span class="p">,</span> <span class="n">unit</span><span class="p">),</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+
+  <span class="c1"># Legend text for vertical residuals</span>
+  <span class="k">if</span> <span class="p">(</span><span class="ow">not</span><span class="p">(</span><span class="n">no_up</span><span class="p">)):</span>
+    <span class="p">(</span><span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">)</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="o">-</span><span class="mi">107</span><span class="p">,</span> <span class="o">-</span><span class="mi">52</span><span class="p">))</span>
+    <span class="n">pp</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;$\pm$ </span><span class="si">{0}</span><span class="s1"> </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">legend</span><span class="p">,</span> <span class="n">unit</span><span class="p">),</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+
+  <span class="c1"># Legend box</span>
+  <span class="k">if</span> <span class="p">(</span><span class="ow">not</span><span class="p">(</span><span class="n">no_up</span><span class="p">)):</span>
+    <span class="p">(</span><span class="n">xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">)</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">([</span><span class="o">-</span><span class="mi">142</span><span class="p">,</span> <span class="o">-</span><span class="mi">95</span><span class="p">,</span> <span class="o">-</span><span class="mi">113</span><span class="p">,</span> <span class="o">-</span><span class="mi">169</span><span class="p">,</span> <span class="o">-</span><span class="mi">142</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">38</span><span class="p">,</span> <span class="o">-</span><span class="mi">38</span><span class="p">,</span> <span class="o">-</span><span class="mi">62</span><span class="p">,</span> <span class="o">-</span><span class="mi">62</span><span class="p">,</span> <span class="o">-</span><span class="mi">38</span><span class="p">]))</span>
+    <span class="nb">map</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">)</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="p">(</span><span class="n">xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">)</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">([</span><span class="o">-</span><span class="mi">142</span><span class="p">,</span> <span class="o">-</span><span class="mi">95</span><span class="p">,</span> <span class="o">-</span><span class="mf">99.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">148.4</span><span class="p">,</span> <span class="o">-</span><span class="mi">142</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">38</span><span class="p">,</span> <span class="o">-</span><span class="mi">38</span><span class="p">,</span> <span class="o">-</span><span class="mi">46</span><span class="p">,</span> <span class="o">-</span><span class="mi">46</span><span class="p">,</span> <span class="o">-</span><span class="mi">38</span><span class="p">]))</span>
+    <span class="nb">map</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">)</span>
+
+  <span class="c1"># Save figure into output file...</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">output</span><span class="p">):</span>
+    <span class="n">pp</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+
+  <span class="c1"># ...or show it</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">pp</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+    
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : station_map</span>
+<span class="c1"># Purpose : Draw map of stations</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 08-Feb-2012</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : - lon         : Longitudes</span>
+<span class="c1">#           - lat         : Latitudes</span>
+<span class="c1">#           - code        : 4-char codes</span>
+<span class="c1">#           - write_codes : Write 4-char codes names on map? Default is True.</span>
+<span class="c1">#           - title       : Map title. Default is None.</span>
+<span class="c1">#           - output      : Output file. Default is None.</span>
+<span class="c1"># Output  : </span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="station_map"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.snxutils.station_map">[docs]</a><span class="k">def</span> <span class="nf">station_map</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">write_codes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+  <span class="c1"># Draw basemap</span>
+  <span class="n">pp</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+  <span class="nb">map</span> <span class="o">=</span> <span class="n">Basemap</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;robin&#39;</span><span class="p">,</span> <span class="n">lon_0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">area_thresh</span><span class="o">=</span><span class="mf">50000.</span><span class="p">)</span>
+  <span class="nb">map</span><span class="o">.</span><span class="n">drawmapboundary</span><span class="p">(</span><span class="n">fill_color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.82</span><span class="p">,</span> <span class="mf">0.86</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> 
+  <span class="nb">map</span><span class="o">.</span><span class="n">fillcontinents</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">lake_color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.82</span><span class="p">,</span> <span class="mf">0.86</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+  <span class="nb">map</span><span class="o">.</span><span class="n">drawcoastlines</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+  <span class="c1"># Add title if necessary</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">title</span><span class="p">):</span>
+    <span class="n">pp</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.06</span><span class="p">))</span>
+
+  <span class="c1"># Plot points</span>
+  <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">))</span>
+  <span class="nb">map</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+
+  <span class="c1"># Write 4-char codes if requested</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">write_codes</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">code</span><span class="p">)):</span>
+      <span class="n">pp</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">code</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+  <span class="c1"># Save figure into output file...</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">output</span><span class="p">):</span>
+    <span class="n">pp</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+
+  <span class="c1"># ...or show it</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">pp</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+    
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : meanpole</span>
+<span class="c1"># Purpose : Compute long term mean pole</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 20-Dec-2013</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : - d      : MJDs</span>
+<span class="c1">#           - meanpm : Keyword indicating which mean pole model should be used</span>
+<span class="c1">#                      (&#39;IERS2003&#39; or &#39;IERS2010&#39;). Default is &#39;IERS2010&#39;.</span>
+<span class="c1"># Output  : - xm     : Mean XPO (mas)</span>
+<span class="c1">#           - ym     : Mean YPO (mas)</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="meanpole"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.snxutils.meanpole">[docs]</a><span class="k">def</span> <span class="nf">meanpole</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">meanpm</span><span class="o">=</span><span class="s1">&#39;IERS2010&#39;</span><span class="p">):</span>
+  
+  <span class="c1"># Years / Years since 2000.0</span>
+  <span class="n">dy</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span> <span class="o">-</span> <span class="mf">51544.</span><span class="p">)</span> <span class="o">/</span> <span class="mf">365.25</span>
+  <span class="n">y</span>  <span class="o">=</span> <span class="n">dy</span> <span class="o">+</span> <span class="mf">2000.</span>
+  
+  <span class="c1"># IERS 2010 mean pole model</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">meanpm</span> <span class="o">==</span> <span class="s1">&#39;IERS2010&#39;</span><span class="p">):</span>
+    
+    <span class="c1"># Initialize outputs</span>
+    <span class="n">xm</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
+    <span class="n">ym</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
+  
+    <span class="c1"># Mean pole before 2010.0</span>
+    <span class="n">ind</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">y</span> <span class="o">&lt;=</span> <span class="mf">2010.</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">xm</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span>  <span class="mf">55.974</span> <span class="o">+</span> <span class="mf">1.8243</span><span class="o">*</span><span class="n">dy</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.18413</span><span class="o">*</span><span class="n">dy</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mf">0.007024</span><span class="o">*</span><span class="n">dy</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span><span class="o">**</span><span class="mi">3</span>
+    <span class="n">ym</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="mf">346.346</span> <span class="o">+</span> <span class="mf">1.7896</span><span class="o">*</span><span class="n">dy</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.10729</span><span class="o">*</span><span class="n">dy</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mf">0.000908</span><span class="o">*</span><span class="n">dy</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span><span class="o">**</span><span class="mi">3</span>
+    
+    <span class="c1"># Mean pole after 2010.0</span>
+    <span class="n">ind</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">y</span> <span class="o">&gt;</span> <span class="mf">2010.</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">xm</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span>  <span class="mf">23.513</span> <span class="o">+</span> <span class="mf">7.6141</span><span class="o">*</span><span class="n">dy</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+    <span class="n">ym</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="mf">358.891</span> <span class="o">-</span> <span class="mf">0.6287</span><span class="o">*</span><span class="n">dy</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+    
+  <span class="c1"># IERS 2003 mean pole model</span>
+  <span class="k">elif</span> <span class="p">(</span><span class="n">meanpm</span> <span class="o">==</span> <span class="s1">&#39;IERS2003&#39;</span><span class="p">):</span>
+    <span class="n">xm</span> <span class="o">=</span>  <span class="mf">54.</span> <span class="o">+</span> <span class="mf">0.83</span><span class="o">*</span><span class="n">dy</span>
+    <span class="n">ym</span> <span class="o">=</span> <span class="mf">357.</span> <span class="o">+</span> <span class="mf">3.95</span><span class="o">*</span><span class="n">dy</span>
+  
+  <span class="k">return</span> <span class="p">(</span><span class="n">xm</span><span class="p">,</span> <span class="n">ym</span><span class="p">)</span></div>
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : read_opoleload</span>
+<span class="c1"># Purpose : Read grid of ocean pole tide loading coefficients</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 20-Dec-2013</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : - inp   : Grid file</span>
+<span class="c1"># Output  : - opole : Object containing interpolating splines for the 6 coefficients</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="read_opoleload"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.snxutils.read_opoleload">[docs]</a><span class="k">def</span> <span class="nf">read_opoleload</span><span class="p">(</span><span class="n">inp</span><span class="p">):</span>
+  
+  <span class="n">lon</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+  <span class="n">lat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">89.75</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+  <span class="p">(</span><span class="n">uhr</span><span class="p">,</span> <span class="n">uhi</span><span class="p">,</span> <span class="n">unr</span><span class="p">,</span> <span class="n">uni</span><span class="p">,</span> <span class="n">uer</span><span class="p">,</span> <span class="n">uei</span><span class="p">)</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">inp</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">)))</span>
+
+  <span class="n">opole</span> <span class="o">=</span> <span class="n">record</span><span class="p">()</span>
+
+  <span class="n">opole</span><span class="o">.</span><span class="n">uhr</span> <span class="o">=</span> <span class="n">interp</span><span class="o">.</span><span class="n">RectBivariateSpline</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">uhr</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">360</span><span class="p">,</span> <span class="mi">720</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+  <span class="n">opole</span><span class="o">.</span><span class="n">uhi</span> <span class="o">=</span> <span class="n">interp</span><span class="o">.</span><span class="n">RectBivariateSpline</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">uhi</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">360</span><span class="p">,</span> <span class="mi">720</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+  <span class="n">opole</span><span class="o">.</span><span class="n">unr</span> <span class="o">=</span> <span class="n">interp</span><span class="o">.</span><span class="n">RectBivariateSpline</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">unr</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">360</span><span class="p">,</span> <span class="mi">720</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+  <span class="n">opole</span><span class="o">.</span><span class="n">uni</span> <span class="o">=</span> <span class="n">interp</span><span class="o">.</span><span class="n">RectBivariateSpline</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">uni</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">360</span><span class="p">,</span> <span class="mi">720</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+  <span class="n">opole</span><span class="o">.</span><span class="n">uer</span> <span class="o">=</span> <span class="n">interp</span><span class="o">.</span><span class="n">RectBivariateSpline</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">uer</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">360</span><span class="p">,</span> <span class="mi">720</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+  <span class="n">opole</span><span class="o">.</span><span class="n">uei</span> <span class="o">=</span> <span class="n">interp</span><span class="o">.</span><span class="n">RectBivariateSpline</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">uei</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">360</span><span class="p">,</span> <span class="mi">720</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+  
+  <span class="k">return</span> <span class="n">opole</span></div>
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : compute_opoleload</span>
+<span class="c1"># Purpose : Compute ocean pole tide loading displacements</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 20-Dec-2013</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : - opole  : Object containing interpolating splines for the 6 coefficients</span>
+<span class="c1">#           - lon    : Station longitudes (size n)</span>
+<span class="c1">#           - lat    : Station latitudes  (size n)</span>
+<span class="c1">#           - mjd    : MJDs (size t)</span>
+<span class="c1">#           - xpo    : X pole coordinates</span>
+<span class="c1">#           - ypo    : Y pole coordinates</span>
+<span class="c1">#           - meanpm : Keyword indicating which mean pole model should be used</span>
+<span class="c1">#                      (&#39;IERS2003&#39; or &#39;IERS2010&#39;). Default is &#39;IERS2010&#39;.</span>
+<span class="c1"># Output  : - denh   : Station displacements (size [n] x [t] x 3)</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="compute_opoleload"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.snxutils.compute_opoleload">[docs]</a><span class="k">def</span> <span class="nf">compute_opoleload</span><span class="p">(</span><span class="n">opole</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">mjd</span><span class="p">,</span> <span class="n">xpo</span><span class="p">,</span> <span class="n">ypo</span><span class="p">,</span> <span class="n">meanpm</span><span class="o">=</span><span class="s1">&#39;IERS2010&#39;</span><span class="p">):</span>
+  
+  <span class="c1"># If only one station,</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">lon</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;float&#39;</span><span class="p">):</span>
+    <span class="n">lon</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">lon</span><span class="p">])</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">lat</span><span class="p">])</span>
+    
+  <span class="c1"># If only one date,</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">mjd</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;float&#39;</span><span class="p">):</span>
+    <span class="n">mjd</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">mjd</span><span class="p">])</span>
+
+  <span class="c1"># Get number of stations - Add 360 degrees to negative longitudes</span>
+  <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lon</span><span class="p">)</span>
+  <span class="n">ind</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">lon</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="n">lon</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">lon</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">+</span> <span class="mi">360</span>
+
+  <span class="c1"># Get number of epochs</span>
+  <span class="n">t</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mjd</span><span class="p">)</span>
+  
+  <span class="c1"># Scaling constants</span>
+  <span class="n">Hp</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="mi">8</span><span class="o">*</span><span class="n">pi</span><span class="o">/</span><span class="mi">15</span><span class="p">)</span> <span class="o">*</span> <span class="n">Oe</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">ae</span><span class="o">**</span><span class="mi">4</span> <span class="o">/</span> <span class="n">GM</span>
+  <span class="n">K</span>  <span class="o">=</span> <span class="mi">4</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="n">G</span><span class="o">*</span><span class="n">ae</span><span class="o">*</span><span class="mi">1025</span><span class="o">*</span><span class="n">Hp</span> <span class="o">/</span> <span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">ge</span><span class="p">)</span>
+  
+  <span class="c1"># Evaluate ocean pole tide loading coefficients at requested stations</span>
+  <span class="n">uhr</span> <span class="o">=</span> <span class="n">opole</span><span class="o">.</span><span class="n">uhr</span><span class="o">.</span><span class="n">ev</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
+  <span class="n">uhi</span> <span class="o">=</span> <span class="n">opole</span><span class="o">.</span><span class="n">uhi</span><span class="o">.</span><span class="n">ev</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
+  <span class="n">unr</span> <span class="o">=</span> <span class="n">opole</span><span class="o">.</span><span class="n">unr</span><span class="o">.</span><span class="n">ev</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
+  <span class="n">uni</span> <span class="o">=</span> <span class="n">opole</span><span class="o">.</span><span class="n">uni</span><span class="o">.</span><span class="n">ev</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
+  <span class="n">uer</span> <span class="o">=</span> <span class="n">opole</span><span class="o">.</span><span class="n">uer</span><span class="o">.</span><span class="n">ev</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
+  <span class="n">uei</span> <span class="o">=</span> <span class="n">opole</span><span class="o">.</span><span class="n">uei</span><span class="o">.</span><span class="n">ev</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
+
+  <span class="c1"># Compute mean pole</span>
+  <span class="p">(</span><span class="n">xpm</span><span class="p">,</span> <span class="n">ypm</span><span class="p">)</span> <span class="o">=</span> <span class="n">meanpole</span><span class="p">(</span><span class="n">mjd</span><span class="p">,</span> <span class="n">meanpm</span><span class="p">)</span>
+  
+  <span class="c1"># Compute wobble parameters</span>
+  <span class="n">m1</span> <span class="o">=</span>  <span class="p">(</span><span class="n">xpo</span> <span class="o">-</span> <span class="n">xpm</span><span class="p">)</span> <span class="o">*</span> <span class="n">mas2rad</span>
+  <span class="n">m2</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">ypo</span> <span class="o">-</span> <span class="n">ypm</span><span class="p">)</span> <span class="o">*</span> <span class="n">mas2rad</span>
+ 
+  <span class="c1"># Compute displacement amplitudes</span>
+  <span class="n">ar</span> <span class="o">=</span> <span class="n">K</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.6870</span><span class="o">*</span><span class="n">m1</span> <span class="o">+</span> <span class="mf">0.0036</span><span class="o">*</span><span class="n">m2</span><span class="p">)</span>
+  <span class="n">ai</span> <span class="o">=</span> <span class="n">K</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.6870</span><span class="o">*</span><span class="n">m2</span> <span class="o">-</span> <span class="mf">0.0036</span><span class="o">*</span><span class="n">m1</span><span class="p">)</span>
+    
+  <span class="c1"># Compute displacements</span>
+  <span class="n">denh</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">denh</span><span class="p">[</span><span class="n">i</span><span class="p">,:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">ar</span><span class="o">*</span><span class="n">uer</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">ai</span><span class="o">*</span><span class="n">uei</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">denh</span><span class="p">[</span><span class="n">i</span><span class="p">,:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">ar</span><span class="o">*</span><span class="n">unr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">ai</span><span class="o">*</span><span class="n">uni</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">denh</span><span class="p">[</span><span class="n">i</span><span class="p">,:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">ar</span><span class="o">*</span><span class="n">uhr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">ai</span><span class="o">*</span><span class="n">uhi</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+      
+  <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">denh</span><span class="p">)</span></div>
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : compute_psd</span>
+<span class="c1"># Purpose : Compute post-seismic deformations and associated uncertainties</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 21-Aug-2015</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : - snx : sinex object containing post-seismic deformation models</span>
+<span class="c1">#           - sta : 4-char station ID</span>
+<span class="c1">#           - t   : date in SINEX format</span>
+<span class="c1"># Output  : - dx  : E,N,H post-seismic deformations at time t [m]</span>
+<span class="c1">#           - sx  : associated formal errors [m]</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="compute_psd"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.snxutils.compute_psd">[docs]</a><span class="k">def</span> <span class="nf">compute_psd</span><span class="p">(</span><span class="n">snx</span><span class="p">,</span> <span class="n">sta</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+  
+  <span class="c1"># Initializations</span>
+  <span class="n">dx</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+  <span class="n">sx</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+  <span class="n">mjd</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">from_snxepoch</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">mjd</span>
+   
+  <span class="c1"># Get indices of parameters describing the East component of the post-seismic deformations</span>
+  <span class="n">ind</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">snx</span><span class="o">.</span><span class="n">npar</span><span class="p">):</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">snx</span><span class="o">.</span><span class="n">param</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">p</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="n">sta</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">type</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;E&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">earlier</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">tref</span><span class="p">,</span> <span class="n">t</span><span class="p">))):</span>
+      <span class="n">ind</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+      
+  <span class="c1"># Loop over model functions</span>
+  <span class="n">A</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ind</span><span class="p">))</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ind</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+    
+    <span class="c1"># Useful things</span>
+    <span class="n">mjd0</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">from_snxepoch</span><span class="p">(</span><span class="n">snx</span><span class="o">.</span><span class="n">param</span><span class="p">[</span><span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">tref</span><span class="p">)</span><span class="o">.</span><span class="n">mjd</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="p">(</span><span class="n">mjd</span> <span class="o">-</span> <span class="n">mjd0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">365.25</span>
+    <span class="n">amp</span> <span class="o">=</span> <span class="n">snx</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+    <span class="n">tau</span> <span class="o">=</span> <span class="n">snx</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]]</span>
+    
+    <span class="c1"># Case of an exponential</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">snx</span><span class="o">.</span><span class="n">param</span><span class="p">[</span><span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">type</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;EXP&#39;</span><span class="p">):</span>
+      
+      <span class="c1"># Compute associated deformation</span>
+      <span class="n">da</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">-</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">dt</span> <span class="o">/</span> <span class="n">tau</span><span class="p">)</span>
+      <span class="n">dx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">dx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">amp</span> <span class="o">*</span> <span class="n">da</span>
+      
+      <span class="c1"># Compute partial derivatives of the model parameters</span>
+      <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">da</span>
+      <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">amp</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">da</span><span class="p">)</span> <span class="o">/</span> <span class="n">tau</span><span class="o">**</span><span class="mi">2</span>
+      
+    <span class="c1"># Case of a logarithm</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">snx</span><span class="o">.</span><span class="n">param</span><span class="p">[</span><span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">type</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;LOG&#39;</span><span class="p">):</span>
+      
+      <span class="c1"># Compute associated deformation</span>
+      <span class="n">da</span> <span class="o">=</span> <span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">/</span> <span class="n">tau</span><span class="p">)</span>
+      <span class="n">dx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">dx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">amp</span> <span class="o">*</span> <span class="n">da</span>
+      
+      <span class="c1"># Compute partial derivatives of the model parameters</span>
+      <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">da</span>
+      <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">amp</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">/</span> <span class="n">tau</span><span class="p">)</span> <span class="o">/</span> <span class="n">tau</span><span class="o">**</span><span class="mi">2</span>
+      
+  <span class="c1"># Compute formal error of the East component of the post-seismic deformations</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">snx</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span><span class="n">ind</span><span class="p">)]</span>
+    <span class="n">sx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">dot</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span><span class="p">)))</span>
+
+  <span class="c1"># Get indices of parameters describing the North component of the post-seismic deformations</span>
+  <span class="n">ind</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">snx</span><span class="o">.</span><span class="n">npar</span><span class="p">):</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">snx</span><span class="o">.</span><span class="n">param</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">p</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="n">sta</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">type</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;N&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">earlier</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">tref</span><span class="p">,</span> <span class="n">t</span><span class="p">))):</span>
+      <span class="n">ind</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+      
+  <span class="c1"># Loop over model functions</span>
+  <span class="n">A</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ind</span><span class="p">))</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ind</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+    
+    <span class="c1"># Useful things</span>
+    <span class="n">mjd0</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">from_snxepoch</span><span class="p">(</span><span class="n">snx</span><span class="o">.</span><span class="n">param</span><span class="p">[</span><span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">tref</span><span class="p">)</span><span class="o">.</span><span class="n">mjd</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="p">(</span><span class="n">mjd</span> <span class="o">-</span> <span class="n">mjd0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">365.25</span>
+    <span class="n">amp</span> <span class="o">=</span> <span class="n">snx</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+    <span class="n">tau</span> <span class="o">=</span> <span class="n">snx</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]]</span>
+    
+    <span class="c1"># Case of an exponential</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">snx</span><span class="o">.</span><span class="n">param</span><span class="p">[</span><span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">type</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;EXP&#39;</span><span class="p">):</span>
+      
+      <span class="c1"># Compute associated deformation</span>
+      <span class="n">da</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">-</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">dt</span> <span class="o">/</span> <span class="n">tau</span><span class="p">)</span>
+      <span class="n">dx</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">dx</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">amp</span> <span class="o">*</span> <span class="n">da</span>
+      
+      <span class="c1"># Compute partial derivatives of the model parameters</span>
+      <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">da</span>
+      <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">amp</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">da</span><span class="p">)</span> <span class="o">/</span> <span class="n">tau</span><span class="o">**</span><span class="mi">2</span>
+      
+    <span class="c1"># Case of a logarithm</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">snx</span><span class="o">.</span><span class="n">param</span><span class="p">[</span><span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">type</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;LOG&#39;</span><span class="p">):</span>
+      
+      <span class="c1"># Compute associated deformation</span>
+      <span class="n">da</span> <span class="o">=</span> <span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">/</span> <span class="n">tau</span><span class="p">)</span>
+      <span class="n">dx</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">dx</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">amp</span> <span class="o">*</span> <span class="n">da</span>
+      
+      <span class="c1"># Compute partial derivatives of the model parameters</span>
+      <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">da</span>
+      <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">amp</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">/</span> <span class="n">tau</span><span class="p">)</span> <span class="o">/</span> <span class="n">tau</span><span class="o">**</span><span class="mi">2</span>
+      
+  <span class="c1"># Compute formal error of the North component of the post-seismic deformations</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">snx</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span><span class="n">ind</span><span class="p">)]</span>
+    <span class="n">sx</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">dot</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span><span class="p">)))</span>
+
+  <span class="c1"># Get indices of parameters describing the Up component of the post-seismic deformations</span>
+  <span class="n">ind</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">snx</span><span class="o">.</span><span class="n">npar</span><span class="p">):</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">snx</span><span class="o">.</span><span class="n">param</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">p</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="n">sta</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">type</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;H&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">earlier</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">tref</span><span class="p">,</span> <span class="n">t</span><span class="p">))):</span>
+      <span class="n">ind</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+      
+  <span class="c1"># Loop over model functions</span>
+  <span class="n">A</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ind</span><span class="p">))</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ind</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+    
+    <span class="c1"># Useful things</span>
+    <span class="n">mjd0</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">from_snxepoch</span><span class="p">(</span><span class="n">snx</span><span class="o">.</span><span class="n">param</span><span class="p">[</span><span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">tref</span><span class="p">)</span><span class="o">.</span><span class="n">mjd</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="p">(</span><span class="n">mjd</span> <span class="o">-</span> <span class="n">mjd0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">365.25</span>
+    <span class="n">amp</span> <span class="o">=</span> <span class="n">snx</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+    <span class="n">tau</span> <span class="o">=</span> <span class="n">snx</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]]</span>
+    
+    <span class="c1"># Case of an exponential</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">snx</span><span class="o">.</span><span class="n">param</span><span class="p">[</span><span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">type</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;EXP&#39;</span><span class="p">):</span>
+      
+      <span class="c1"># Compute associated deformation</span>
+      <span class="n">da</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">-</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">dt</span> <span class="o">/</span> <span class="n">tau</span><span class="p">)</span>
+      <span class="n">dx</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">dx</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">amp</span> <span class="o">*</span> <span class="n">da</span>
+      
+      <span class="c1"># Compute partial derivatives of the model parameters</span>
+      <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">da</span>
+      <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">amp</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">da</span><span class="p">)</span> <span class="o">/</span> <span class="n">tau</span><span class="o">**</span><span class="mi">2</span>
+      
+    <span class="c1"># Case of a logarithm</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">snx</span><span class="o">.</span><span class="n">param</span><span class="p">[</span><span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">type</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;LOG&#39;</span><span class="p">):</span>
+      
+      <span class="c1"># Compute associated deformation</span>
+      <span class="n">da</span> <span class="o">=</span> <span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">/</span> <span class="n">tau</span><span class="p">)</span>
+      <span class="n">dx</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">dx</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">amp</span> <span class="o">*</span> <span class="n">da</span>
+      
+      <span class="c1"># Compute partial derivatives of the model parameters</span>
+      <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">da</span>
+      <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">amp</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">/</span> <span class="n">tau</span><span class="p">)</span> <span class="o">/</span> <span class="n">tau</span><span class="o">**</span><span class="mi">2</span>
+      
+  <span class="c1"># Compute formal error of the Up component of the post-seismic deformations</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">snx</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span><span class="n">ind</span><span class="p">)]</span>
+    <span class="n">sx</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">dot</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span><span class="p">)))</span>
+
+  <span class="k">return</span> <span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">sx</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

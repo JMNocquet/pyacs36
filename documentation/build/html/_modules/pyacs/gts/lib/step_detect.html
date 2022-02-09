@@ -1,0 +1,439 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.gts.lib.step_detect &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.gts.lib.step_detect</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.gts.lib.step_detect</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Thomas Kahn</span>
+<span class="sd">thomas.b.kahn@gmail.com</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
+<span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">six.moves</span> <span class="kn">import</span> <span class="nb">range</span>
+<span class="kn">from</span> <span class="nn">six.moves</span> <span class="kn">import</span> <span class="nb">zip</span>
+
+
+<div class="viewcode-block" id="t_scan"><a class="viewcode-back" href="../../../../pyacs.gts.lib.html#pyacs.gts.lib.step_detect.t_scan">[docs]</a><span class="k">def</span> <span class="nf">t_scan</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">window</span> <span class="o">=</span> <span class="mf">1e3</span><span class="p">,</span> <span class="n">num_workers</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes t statistic for i to i+window points versus i-window to i</span>
+<span class="sd">    points for each point i in input array. Uses multiple processes to</span>
+<span class="sd">    do this calculation asynchronously. Array is decomposed into window</span>
+<span class="sd">    number of frames, each consisting of points spaced at window</span>
+<span class="sd">    intervals. This optimizes the calculation, as the drone function</span>
+<span class="sd">    need only compute the mean and variance for each set once.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    L : numpy array</span>
+<span class="sd">        1 dimensional array that represents time series of datapoints</span>
+<span class="sd">    window : int / float</span>
+<span class="sd">        Number of points that comprise the windows of data that are</span>
+<span class="sd">        compared</span>
+<span class="sd">    num_workers : int</span>
+<span class="sd">        Number of worker processes for multithreaded t_stat computation</span>
+<span class="sd">        Defult value uses num_cpu - 1 workers</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    t_stat : numpy array</span>
+<span class="sd">        Array which holds t statistic values for each point. The first </span>
+<span class="sd">        and last (window) points are replaced with zero, since the t</span>
+<span class="sd">        statistic calculation cannot be performed in that case.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">size</span>    <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">window</span>  <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+    <span class="n">frames</span>  <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">window</span><span class="p">))</span>
+    <span class="n">n_cols</span>  <span class="o">=</span> <span class="p">(</span><span class="n">size</span> <span class="o">//</span> <span class="n">window</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    
+    <span class="n">t_stat</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">window</span><span class="p">,</span> <span class="n">n_cols</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">num_workers</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">_t_scan_drone</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">n_cols</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">window</span><span class="p">)</span> <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">frames</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">num_workers</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">num_workers</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">pool</span>    <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">Pool</span><span class="p">(</span><span class="n">processes</span> <span class="o">=</span> <span class="n">num_workers</span><span class="p">)</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">pool</span><span class="o">.</span><span class="n">apply_async</span><span class="p">(</span><span class="n">_t_scan_drone</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">n_cols</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">window</span><span class="p">))</span> <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">frames</span><span class="p">]</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+        <span class="n">pool</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="n">t_stat</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span>
+    
+    <span class="n">t_stat</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">window</span><span class="p">),</span>
+        <span class="n">t_stat</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="s1">&#39;C&#39;</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span> <span class="o">%</span> <span class="n">window</span><span class="p">)</span>
+    <span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">t_stat</span></div>
+
+
+<span class="k">def</span> <span class="nf">_t_scan_drone</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">n_cols</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mf">1e3</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Drone function for t_scan. Not Intended to be called manually.</span>
+<span class="sd">    Computes t_scan for the designated frame, and returns result as</span>
+<span class="sd">    array along with an integer tag for proper placement in the </span>
+<span class="sd">    aggregate array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">size</span>   <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">window</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+    <span class="n">root_n</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+
+    <span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_cols</span><span class="p">)</span>
+    <span class="n">b</span>      <span class="o">=</span> <span class="n">L</span><span class="p">[</span><span class="n">frame</span><span class="p">:</span><span class="n">window</span><span class="o">+</span><span class="n">frame</span><span class="p">]</span>
+    <span class="n">b_mean</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">b_var</span>  <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">window</span><span class="o">+</span><span class="n">frame</span><span class="p">,</span> <span class="n">size</span><span class="o">-</span><span class="n">window</span><span class="p">,</span> <span class="n">window</span><span class="p">):</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">window</span><span class="p">]</span>
+        <span class="n">a_mean</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">a_var</span>  <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+        <span class="n">output</span><span class="p">[</span><span class="n">i</span> <span class="o">//</span> <span class="n">window</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">root_n</span> <span class="o">*</span> <span class="p">(</span><span class="n">a_mean</span> <span class="o">-</span> <span class="n">b_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">a_var</span> <span class="o">+</span> <span class="n">b_var</span><span class="p">)</span>
+        <span class="n">b_mean</span><span class="p">,</span> <span class="n">b_var</span> <span class="o">=</span> <span class="n">a_mean</span><span class="p">,</span> <span class="n">a_var</span>
+
+    <span class="k">return</span> <span class="n">frame</span><span class="p">,</span> <span class="n">output</span>
+
+
+<div class="viewcode-block" id="mz_fwt"><a class="viewcode-back" href="../../../../pyacs.gts.lib.html#pyacs.gts.lib.step_detect.mz_fwt">[docs]</a><span class="k">def</span> <span class="nf">mz_fwt</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the multiscale product of the Mallat-Zhong discrete forward</span>
+<span class="sd">    wavelet transform up to and including scale n for the input data x.</span>
+<span class="sd">    If n is even, the spikes in the signal will be positive. If n is odd</span>
+<span class="sd">    the spikes will match the polarity of the step (positive for steps</span>
+<span class="sd">    up, negative for steps down).</span>
+<span class="sd">    This function is essentially a direct translation of the MATLAB code</span>
+<span class="sd">    provided by Sadler and Swami in section A.4 of the following:</span>
+<span class="sd">    http://www.dtic.mil/dtic/tr/fulltext/u2/a351960.pdf</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : numpy array</span>
+<span class="sd">        1 dimensional array that represents time series of data points</span>
+<span class="sd">    n : int</span>
+<span class="sd">        Highest scale to multiply to</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    prod : numpy array</span>
+<span class="sd">        The multiscale product for x</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">N_pnts</span>   <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">lambda_j</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.12</span><span class="p">,</span> <span class="mf">1.03</span><span class="p">,</span> <span class="mf">1.01</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="n">n</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="n">lambda_j</span> <span class="o">+=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">4</span><span class="p">)</span>
+    
+    <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.125</span><span class="p">,</span> <span class="mf">0.375</span><span class="p">,</span> <span class="mf">0.375</span><span class="p">,</span> <span class="mf">0.125</span><span class="p">])</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">])</span>
+    
+    <span class="n">Gn</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">Hn</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">Gn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">q</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">Hn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">q</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">S</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">x</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">))</span>
+    <span class="n">S</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">S</span><span class="p">,</span> <span class="n">x</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">prod</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">N_pnts</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">n_zeros</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">Gz</span>      <span class="o">=</span> <span class="n">_insert_zeros</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">n_zeros</span><span class="p">)</span>
+        <span class="n">Hz</span>      <span class="o">=</span> <span class="n">_insert_zeros</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">n_zeros</span><span class="p">)</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="n">lambda_j</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">S</span><span class="p">,</span><span class="n">Gz</span><span class="p">)</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="p">[</span><span class="n">N_pnts</span><span class="o">+</span><span class="n">Gn</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span><span class="mi">2</span><span class="o">*</span><span class="n">N_pnts</span><span class="o">+</span><span class="n">Gn</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span>
+        <span class="n">prod</span>    <span class="o">*=</span> <span class="n">current</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">S_new</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">Hz</span><span class="p">)</span>
+        <span class="n">S_new</span>   <span class="o">=</span> <span class="n">S_new</span><span class="p">[</span><span class="n">N_pnts</span><span class="o">+</span><span class="n">Hn</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span><span class="mi">2</span><span class="o">*</span><span class="n">N_pnts</span><span class="o">+</span><span class="n">Hn</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span>
+        <span class="n">S</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">S_new</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">S_new</span><span class="p">))</span>
+        <span class="n">S</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">S</span><span class="p">,</span> <span class="n">S_new</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">prod</span></div>
+
+
+<span class="k">def</span> <span class="nf">_insert_zeros</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Helper function for mz_fwt. Splits input array and adds n zeros</span>
+<span class="sd">    between values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">newlen</span>       <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">out</span>          <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">newlen</span><span class="p">)</span>
+    <span class="n">indices</span>      <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">newlen</span><span class="o">-</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">out</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<div class="viewcode-block" id="find_steps"><a class="viewcode-back" href="../../../../pyacs.gts.lib.html#pyacs.gts.lib.step_detect.find_steps">[docs]</a><span class="k">def</span> <span class="nf">find_steps</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Finds local maxima by segmenting array based on positions at which</span>
+<span class="sd">    the threshold value is crossed. Note that this thresholding is </span>
+<span class="sd">    applied after the absolute value of the array is taken. Thus,</span>
+<span class="sd">    the distinction between upward and downward steps is lost. However,</span>
+<span class="sd">    get_step_sizes can be used to determine directionality after the</span>
+<span class="sd">    fact.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    array : numpy array</span>
+<span class="sd">        1 dimensional array that represents time series of data points</span>
+<span class="sd">    threshold : int / float</span>
+<span class="sd">        Threshold value that defines a step</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    steps : list</span>
+<span class="sd">        List of indices of the detected steps</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">steps</span>        <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">array</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+    <span class="n">above_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">array</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">ap_dif</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">above_points</span><span class="p">)</span>
+    <span class="n">cross_ups</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">ap_dif</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">cross_dns</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">ap_dif</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">upi</span><span class="p">,</span> <span class="n">dni</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">cross_ups</span><span class="p">,</span><span class="n">cross_dns</span><span class="p">):</span>
+        <span class="n">steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">array</span><span class="p">[</span><span class="n">upi</span><span class="p">:</span><span class="n">dni</span><span class="p">])</span> <span class="o">+</span> <span class="n">upi</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">steps</span></div>
+
+
+<div class="viewcode-block" id="get_step_sizes"><a class="viewcode-back" href="../../../../pyacs.gts.lib.html#pyacs.gts.lib.step_detect.get_step_sizes">[docs]</a><span class="k">def</span> <span class="nf">get_step_sizes</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates step size for each index within the supplied list. Step</span>
+<span class="sd">    size is determined by averaging over a range of points (specified</span>
+<span class="sd">    by the window parameter) before and after the index of step</span>
+<span class="sd">    occurrence. The directionality of the step is reflected by the sign</span>
+<span class="sd">    of the step size (i.e. a positive value indicates an upward step,</span>
+<span class="sd">    and a negative value indicates a downward step). The combined </span>
+<span class="sd">    standard deviation of both measurements (as a measure of uncertainty</span>
+<span class="sd">    in step calculation) is also provided.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    array : numpy array</span>
+<span class="sd">        1 dimensional array that represents time series of data points</span>
+<span class="sd">    indices : list</span>
+<span class="sd">        List of indices of the detected steps (as provided by </span>
+<span class="sd">        find_steps, for example)</span>
+<span class="sd">    window : int, optional</span>
+<span class="sd">        Number of points to average over to determine baseline levels</span>
+<span class="sd">        before and after step.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    step_sizes : list</span>
+<span class="sd">        List of the calculated sizes of each step</span>
+<span class="sd">    step_error : list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">step_sizes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">step_error</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">indices</span>    <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+    <span class="n">last</span>       <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">indices</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="n">last</span><span class="p">:</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">index</span> <span class="o">-</span> <span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">index</span><span class="o">-</span><span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">index</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">array</span><span class="p">[</span><span class="n">index</span><span class="p">:</span><span class="n">index</span><span class="o">+</span><span class="n">q</span><span class="p">]</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">array</span><span class="p">[</span><span class="n">index</span><span class="o">-</span><span class="n">q</span><span class="p">:</span><span class="n">index</span><span class="p">]</span>
+        <span class="n">step_sizes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">-</span> <span class="n">b</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+        <span class="n">step_error</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">var</span><span class="p">()</span><span class="o">+</span><span class="n">b</span><span class="o">.</span><span class="n">var</span><span class="p">()))</span>
+    <span class="k">return</span> <span class="n">step_sizes</span><span class="p">,</span> <span class="n">step_error</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

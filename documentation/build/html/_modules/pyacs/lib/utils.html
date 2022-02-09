@@ -1,0 +1,381 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.lib.utils &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.lib.utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.lib.utils</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Various useful routines</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1">###############################################################################</span>
+<span class="k">def</span> <span class="nf">__ensure_list_of_list</span><span class="p">(</span><span class="n">ll</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ensures ll is a list of lists</span>
+<span class="sd">    [a,b] returns [[a,b]], and [[a,b]] returns [[a,b]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># check this is a list</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ll</span><span class="p">,</span><span class="nb">list</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;!!! __ensure_list_of_list requires a list or a list of list as argument: &#39;</span><span class="p">,</span><span class="n">ll</span><span class="p">)</span>
+    
+    <span class="c1"># case simple list</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ll</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="nb">list</span><span class="p">):</span>
+        <span class="k">return</span><span class="p">([</span><span class="n">ll</span><span class="p">])</span>
+    <span class="c1"># case list of list</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">ll</span><span class="p">)</span>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="numpy_array_2_numpy_recarray"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.utils.numpy_array_2_numpy_recarray">[docs]</a><span class="k">def</span> <span class="nf">numpy_array_2_numpy_recarray</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">names</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a numpy array to a numpy recarray</span>
+<span class="sd">    names is the names of each field</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rec</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">records</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">A</span><span class="p">[:,:]</span><span class="o">.</span><span class="n">T</span><span class="p">)),</span><span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;names&#39;</span><span class="p">:</span><span class="n">names</span><span class="p">,</span><span class="s1">&#39;formats&#39;</span><span class="p">:</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]))})))</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="numpy_recarray_2_numpy_array"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.utils.numpy_recarray_2_numpy_array">[docs]</a><span class="k">def</span> <span class="nf">numpy_recarray_2_numpy_array</span><span class="p">(</span><span class="n">A</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a structured array (with homogeneous dtype) to a np.array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,))))</span></div>
+
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="save_np_array_with_string"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.utils.save_np_array_with_string">[docs]</a><span class="k">def</span> <span class="nf">save_np_array_with_string</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">S</span><span class="p">,</span><span class="n">fmt</span><span class="p">,</span><span class="n">outfile</span><span class="p">,</span><span class="n">comment</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    saves a numpy array as a text file.</span>
+<span class="sd">    This is equivalent to np.savetxt except that S contains strings that are added to each row.</span>
+<span class="sd">    </span>
+<span class="sd">    :param A: 2D numpy array to be saved</span>
+<span class="sd">    :param S: 1D numpy string array. S.ndim = A.shape[0]</span>
+<span class="sd">    :param fmt: format for printing</span>
+<span class="sd">    :param outfile: out file</span>
+<span class="sd">    </span>
+<span class="sd">    :example:</span>
+<span class="sd">    A = np.arange(4).reshape(-1,2)</span>
+<span class="sd">    S = np.array([&#39;lima&#39;,&#39;quito&#39;])</span>
+<span class="sd">    from pyacs.lib.utils import save_np_array_with_string</span>
+<span class="sd">    save_np_array_with_string(A,S,&quot;%03d %03d %s&quot;,&#39;test.dat&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># import</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    
+    <span class="c1"># check</span>
+    
+    <span class="k">if</span> <span class="n">S</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span>
+    <span class="c1"># open file</span>
+    <span class="n">out</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span><span class="s1">&#39;w+&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># comment</span>
+    <span class="k">if</span> <span class="n">comment</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span><span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="n">comment</span> <span class="o">=</span> <span class="s1">&#39;# &#39;</span>
+    
+    <span class="k">if</span> <span class="n">comment</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;#&#39;</span><span class="p">:</span>
+        <span class="n">comment</span> <span class="o">=</span> <span class="s1">&#39;# &#39;</span> <span class="o">+</span> <span class="n">comment</span>
+    
+    <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">comment</span><span class="p">)</span>
+    
+    <span class="c1"># loop</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">):</span>
+        <span class="n">fmtstr</span><span class="o">=</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="nb">tuple</span><span class="p">(</span> <span class="nb">list</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,:])</span><span class="o">+</span><span class="p">[</span><span class="n">S</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="p">))</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span>  <span class="n">fmtstr</span> <span class="p">)</span>
+    
+    <span class="c1"># close file</span>
+    <span class="n">out</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="make_grid"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.utils.make_grid">[docs]</a><span class="k">def</span> <span class="nf">make_grid</span><span class="p">(</span><span class="n">min_lon</span><span class="p">,</span><span class="n">max_lon</span><span class="p">,</span><span class="n">min_lat</span><span class="p">,</span><span class="n">max_lat</span><span class="p">,</span> \
+              <span class="n">nx</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ny</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">step_x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">step_y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;psvelo&#39;</span> <span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a text file as a grid</span>
+<span class="sd">    </span>
+<span class="sd">    :param min_lon,max_lon,min_lat,max_lat: grid bounds coordinates in decimal degrees</span>
+<span class="sd">    :param nx ny: number of points in the grid along longitude. If ny is not provided, ny=nx</span>
+<span class="sd">    :param step_x,step_y: step for the grid. This is an alternative to nx. If step_y is not provided, step_y=step_x</span>
+<span class="sd">    :param outfile: output file name. Default=None, no file written</span>
+<span class="sd">    :param format: if format is None, then only lon, lat are written. If format=&#39;psvelo&#39; (default), then the line is filled with 0. and sequentially site names</span>
+<span class="sd">    :param comment: comment to be added to the output file.</span>
+<span class="sd">    </span>
+<span class="sd">    :return: the grid as 2D numpy array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># import</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">from</span> <span class="nn">colors</span> <span class="kn">import</span> <span class="n">red</span>
+
+    <span class="c1"># check arguments</span>
+    
+    <span class="k">if</span> <span class="p">[</span><span class="n">nx</span><span class="p">,</span><span class="n">step_x</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+        <span class="n">error_str</span> <span class="o">=</span> <span class="n">red</span><span class="p">(</span> <span class="s2">&quot;[PYACS ERROR] please provide a value for argument nx or step_x&quot;</span>  <span class="p">)</span> 
+        <span class="nb">print</span><span class="p">(</span> <span class="n">error_str</span> <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span>
+    
+    <span class="k">if</span> <span class="p">(</span> <span class="n">nx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="p">)</span> <span class="ow">and</span> <span class="p">(</span> <span class="n">step_x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="p">):</span>
+        <span class="n">error_str</span> <span class="o">=</span> <span class="n">red</span><span class="p">(</span> <span class="s2">&quot;[PYACS ERROR] nx or step_x argument need to be specified, not both&quot;</span>  <span class="p">)</span> 
+        <span class="nb">print</span><span class="p">(</span> <span class="n">error_str</span> <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span>
+    
+    
+    <span class="c1"># start</span>
+    <span class="k">if</span> <span class="n">nx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ny</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ny</span> <span class="o">=</span> <span class="n">nx</span> 
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">min_lon</span><span class="p">,</span><span class="n">max_lon</span><span class="p">,</span> <span class="n">nx</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">min_lat</span><span class="p">,</span><span class="n">max_lat</span><span class="p">,</span> <span class="n">ny</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">step_x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">step_y</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">step_y</span><span class="o">=</span> <span class="n">step_x</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">min_lon</span><span class="p">,</span><span class="n">max_lon</span><span class="p">,</span> <span class="n">step_x</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">min_lat</span><span class="p">,</span><span class="n">max_lat</span><span class="p">,</span> <span class="n">step_y</span><span class="p">)</span>
+
+    <span class="n">mesh_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">mesh_grid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span><span class="n">mesh_grid</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">flatten</span><span class="p">()))</span><span class="o">.</span><span class="n">T</span>
+    
+    <span class="c1"># write results</span>
+    
+    <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s1">&#39;psvelo&#39;</span><span class="p">:</span>
+        <span class="n">output_np</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span> <span class="n">grid</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="mi">8</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">output_np</span><span class="p">[:,:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">grid</span>
+        <span class="n">output_np</span><span class="p">[:,</span><span class="mi">7</span><span class="p">]</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span> <span class="n">grid</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span> 
+
+        <span class="k">if</span> <span class="n">outfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">output_np</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%10.6lf</span><span class="s2"> </span><span class="si">%10.6lf</span><span class="s2"> </span><span class="si">%4.1lf</span><span class="s2"> </span><span class="si">%4.1lf</span><span class="s2"> </span><span class="si">%4.1lf</span><span class="s2"> </span><span class="si">%4.1lf</span><span class="s2"> </span><span class="si">%4.1lf</span><span class="s2"> </span><span class="si">%04d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">comment</span><span class="p">)</span>
+        
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">outfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%10.6lf</span><span class="s2"> </span><span class="si">%10.6lf</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">comment</span><span class="p">)</span>
+        
+    <span class="k">return</span><span class="p">(</span> <span class="n">grid</span> <span class="p">)</span></div>
+    
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="str2list_float"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.utils.str2list_float">[docs]</a><span class="k">def</span> <span class="nf">str2list_float</span><span class="p">(</span><span class="n">my_str</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a list provided as a string to a true list of float</span>
+<span class="sd">    </span>
+<span class="sd">    :param my_str: string e.g. &#39;[0,2.5,1E9]&#39;</span>
+<span class="sd">    :return:[0,2.5,1E9]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span> <span class="nb">map</span><span class="p">(</span> <span class="nb">float</span><span class="p">,</span>  <span class="n">my_str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;]&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>   </div>
+
+    
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

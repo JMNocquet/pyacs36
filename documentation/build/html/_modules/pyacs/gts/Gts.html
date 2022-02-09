@@ -1,0 +1,678 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.gts.Gts &mdash; pyacs 0.65.66 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.66
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.gts.Gts</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.gts.Gts</h1><div class="highlight"><pre>
+<span></span>
+<span class="c1">#from pyacs.gts.lib.offset import __fmt_date</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The individual Geodetic Time Series Class</span>
+
+<span class="sd">    The Gts implemented in PYACS has the following attributes:</span>
+
+<span class="sd">    Mandatory attributes:</span>
+<span class="sd">        - data:        a 2D numpy array with 10 columns: dec.year, N, E, U, S_N, S_E, S_U, S_NE, S_NU, S_EU</span>
+<span class="sd">        - code:            station 4-letters code</span>
+<span class="sd">    Coordinates attributes</span>
+<span class="sd">        - lon,lat,h:       approximate longitude, latitude (geodetic, deg.dec) and ellipsoidal height (m)</span>
+<span class="sd">        - X0,Y0,Z0         XYZ reference position in the Geocentric Frame. N,E,U are considered with respect to X0,Y0,Z0</span>
+<span class="sd">        - t0               reference date in decimal year for X0,Y0,Z0</span>
+<span class="sd">    Not persisting attributes</span>
+<span class="sd">        - data_xyz:        a 2D numpy array with 10 columns: dec.year, X, Y, Z, SX, SY, SZ, S_XY, S_XZ, S_YZ</span>
+<span class="sd">            because many Gts methods are applied on NEU components, .data_xyz is often set to None.</span>
+<span class="sd">            it can however be rebuilt using the neu2xyz method</span>
+<span class="sd">    Attributes populated after some analysis</span>
+<span class="sd">        - outliers:        list of index of outliers in a time series (all components)</span>
+<span class="sd">        - offsets_values:  a 2D numpy array with 7 columns: dec.year N, E, U, S_N, S_E, S_U</span>
+<span class="sd">        - offsets_dates:   a list of dates for offsets</span>
+<span class="sd">        - velocity:        a 1D numpy array with 6 columns: vel_N, vel_E, vel_U, S_vel_N, S_vel_E, S_vel_U</span>
+<span class="sd">        - annual:          a 1D numpy array with 6 columns: Amplitude_N, Phase_N, Amplitude_E, Phase_E, Amplitude_U, Phase_U</span>
+<span class="sd">        - semi_annual:     a 1D numpy array with 6 columns: Amplitude_N, Phase_N, Amplitude_E, Phase_E, Amplitude_U, Phase_U</span>
+<span class="sd">    Metadata attributes</span>
+<span class="sd">        - ifile:          original input file of the time series</span>
+<span class="sd">        - log:            log of operations</span>
+<span class="sd">        - metadata:       any information the analyst would like to be recorded</span>
+
+<span class="sd">    Units Conventions</span>
+<span class="sd">        - dates are in decimal year</span>
+<span class="sd">        - coordinates are in meters</span>
+<span class="sd">        - phases are in radians</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="get_index_from_dates"><a class="viewcode-back" href="../../../pyacs.gts.html#pyacs.gts.Gts.get_index_from_dates">[docs]</a><span class="k">def</span> <span class="nf">get_index_from_dates</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span><span class="n">data</span><span class="p">,</span><span class="n">tol</span><span class="o">=</span><span class="mf">0.25</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    returns the list of index in data corresponding to given dates within tolerance</span>
+<span class="sd">    </span>
+<span class="sd">    :param dates: list of dates in decimal year</span>
+<span class="sd">    :param data: a 2D numpy array with decimal dates in the first column</span>
+<span class="sd">    :param tol: date tolerance to decide that two dates are equal. (default 0.25 day)</span>
+<span class="sd">    </span>
+<span class="sd">    :return : list of index </span>
+<span class="sd">     </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># check argument dates</span>
+    
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span> <span class="n">dates</span> <span class="p">,</span> <span class="nb">list</span> <span class="p">):</span>
+        <span class="k">if</span> <span class="n">dates</span> <span class="o">==</span> <span class="p">[]</span> <span class="p">:</span> 
+            <span class="k">return</span><span class="p">(</span> <span class="p">[]</span> <span class="p">)</span>
+    
+    <span class="c1"># check argument data</span>
+    
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span><span class="p">(</span> <span class="p">[]</span> <span class="p">)</span>
+    
+    <span class="c1"># import</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    
+    <span class="c1"># sort dates - very important</span>
+     
+    <span class="n">dates</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="n">dates</span><span class="p">)</span>
+ 
+    <span class="c1"># tolerance in decimal year</span>
+    <span class="n">tolerance</span><span class="o">=</span><span class="n">tol</span><span class="o">/</span><span class="mf">365.25</span>
+     
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+     
+    <span class="n">index</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">lindex</span><span class="o">=</span><span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dates</span><span class="p">)):</span>
+
+        <span class="k">while</span> <span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">&lt;</span><span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">tolerance</span><span class="p">:</span>
+        
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">-</span><span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">&lt;</span><span class="n">tolerance</span><span class="p">:</span>
+                <span class="n">lindex</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+                <span class="k">break</span>
+            <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span>
+            
+            <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;</span> <span class="n">data</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">break</span>
+    
+    <span class="k">return</span><span class="p">(</span><span class="n">lindex</span><span class="p">)</span></div>
+ 
+<span class="c1">###################################################################</span>
+<span class="c1">## Init Gts</span>
+<span class="c1">###################################################################</span>
+
+<div class="viewcode-block" id="Gts"><a class="viewcode-back" href="../../../pyacs.gts.html#pyacs.gts.Gts.Gts">[docs]</a><span class="k">class</span> <span class="nc">Gts</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>\
+                  <span class="n">lat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">lon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">h</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>\
+                  <span class="n">X0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Y0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Z0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>\
+                  <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>\
+                  <span class="n">data_xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">data_corr_neu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">data_corr_xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>\
+                  <span class="n">offsets_dates</span><span class="o">=</span><span class="p">[],</span><span class="n">offsets_values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>\
+                  <span class="n">outliers</span><span class="o">=</span><span class="p">[],</span>\
+                  <span class="n">annual</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">semi_annual</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>\
+                  <span class="n">velocity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>\
+                  <span class="n">ifile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The Geodetic time series class</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="o">=</span><span class="n">code</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="n">lat</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="n">lon</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h</span>   <span class="o">=</span> <span class="n">h</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">X0</span><span class="o">=</span><span class="n">X0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Y0</span><span class="o">=</span><span class="n">Y0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Z0</span><span class="o">=</span><span class="n">Z0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="o">=</span><span class="n">t0</span>
+
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_xyz</span> <span class="o">=</span> <span class="n">data_xyz</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_corr_neu</span> <span class="o">=</span> <span class="n">data_corr_neu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_corr_xyz</span> <span class="o">=</span> <span class="n">data_corr_xyz</span>
+        
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">outliers</span> <span class="o">=</span> <span class="n">outliers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offsets_dates</span> <span class="o">=</span> <span class="n">offsets_dates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offsets_values</span> <span class="o">=</span> <span class="n">offsets_values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annual</span> <span class="o">=</span> <span class="n">annual</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">semi_annual</span> <span class="o">=</span> <span class="n">semi_annual</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span> <span class="o">=</span> <span class="n">velocity</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">ifile</span><span class="o">=</span><span class="n">ifile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">=</span><span class="n">log</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
+
+<span class="c1"># Old attributes from Trong in case of post-seismic</span>
+<span class="c1">#        self.earthquakes = earthquakes</span>
+<span class="c1">#        self.post_seismics = post_seismics</span>
+<span class="c1">#        self.rate_change = rate_change</span>
+<span class="c1">#        self.H_conf = H_conf</span>
+
+
+<div class="viewcode-block" id="Gts.read"><a class="viewcode-back" href="../../../pyacs.gts.html#pyacs.gts.Gts.Gts.read">[docs]</a>    <span class="nd">@classmethod</span>        
+<span class="c1">###################################################################</span>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">tsfile</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+        
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reads a time series file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># import</span>
+        <span class="kn">import</span> <span class="nn">inspect</span>
+
+        <span class="c1"># init</span>
+        <span class="n">ts</span> <span class="o">=</span> <span class="n">Gts</span><span class="p">()</span>
+        <span class="kn">from</span> <span class="nn">pyacs.gts.lib.errors</span> <span class="kn">import</span> <span class="n">GtsReadFileError</span>
+
+        <span class="c1"># PRIDE POS</span>
+        <span class="k">if</span> <span class="n">fmt</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s1">&#39;pride_pos&#39;</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">read_pride_pos</span><span class="p">(</span><span class="n">tsfile</span><span class="o">=</span><span class="n">tsfile</span> <span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span> <span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+                
+        <span class="c1"># PRIDE KINEMATICS</span>
+        <span class="k">if</span> <span class="n">fmt</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s1">&#39;pride&#39;</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">read_pride</span><span class="p">(</span><span class="n">tsfile</span><span class="o">=</span><span class="n">tsfile</span> <span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span> <span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">GtsReadFileError</span><span class="p">(</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span><span class="vm">__name__</span><span class="p">,</span><span class="n">tsfile</span> <span class="p">)</span>
+                <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># MB_FILE</span>
+        <span class="k">if</span> <span class="n">fmt</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s1">&#39;mb_file&#39;</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">read_mb_file</span><span class="p">(</span><span class="n">tsfile</span><span class="o">=</span><span class="n">tsfile</span> <span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span> <span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">GtsReadFileError</span><span class="p">(</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span><span class="vm">__name__</span><span class="p">,</span><span class="n">tsfile</span> <span class="p">)</span>
+                <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># TDP</span>
+        <span class="k">if</span> <span class="n">fmt</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s1">&#39;tdp&#39;</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">read_tdp</span><span class="p">(</span><span class="n">tsfile</span><span class="o">=</span><span class="n">tsfile</span> <span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span> <span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">GtsReadFileError</span><span class="p">(</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span><span class="vm">__name__</span><span class="p">,</span><span class="n">tsfile</span> <span class="p">)</span>
+                <span class="k">return</span> <span class="kc">None</span>
+        
+        <span class="c1"># KENV</span>
+        <span class="k">if</span> <span class="n">fmt</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s1">&#39;kenv&#39;</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">read_kenv</span><span class="p">(</span><span class="n">tsfile</span><span class="o">=</span><span class="n">tsfile</span> <span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span> <span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">GtsReadFileError</span><span class="p">(</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span><span class="vm">__name__</span><span class="p">,</span><span class="n">tsfile</span> <span class="p">)</span>
+                <span class="k">return</span> <span class="kc">None</span>
+        
+        <span class="c1"># CATS</span>
+        <span class="k">if</span> <span class="n">fmt</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s1">&#39;cats&#39;</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">read_cats</span><span class="p">(</span><span class="n">tsfile</span><span class="o">=</span><span class="n">tsfile</span> <span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span> <span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">GtsReadFileError</span><span class="p">(</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span><span class="vm">__name__</span><span class="p">,</span><span class="n">tsfile</span> <span class="p">)</span>
+                <span class="k">return</span> <span class="kc">None</span>
+        
+        
+        <span class="c1"># POS FORMAT</span>
+        <span class="k">if</span> <span class="n">fmt</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s1">&#39;pos&#39;</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">ts</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">read_pos</span><span class="p">(</span><span class="n">tsfile</span><span class="o">=</span><span class="n">tsfile</span> <span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span> <span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">GtsReadFileError</span><span class="p">(</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span><span class="vm">__name__</span><span class="p">,</span><span class="n">tsfile</span> <span class="p">)</span>
+                <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># TRACK FORMAT</span>
+        <span class="k">if</span> <span class="n">fmt</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s1">&#39;track&#39;</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">ts</span><span class="o">.</span><span class="n">read_track_neu</span><span class="p">(</span><span class="n">tsfile</span><span class="o">=</span><span class="n">tsfile</span> <span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span> <span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">GtsReadFileError</span><span class="p">(</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span><span class="vm">__name__</span><span class="p">,</span><span class="n">tsfile</span> <span class="p">)</span>
+                <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">return</span><span class="p">(</span> <span class="n">ts</span> <span class="p">)</span></div></div>
+
+        
+        
+
+<span class="c1">###################################################################</span>
+<span class="c1">##  METHODS IMPORT</span>
+<span class="c1">###################################################################</span>
+
+<span class="c1"># DATES</span>
+
+<span class="kn">import</span> <span class="nn">pyacs.gts</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib</span>
+
+
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.gts_dates</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">np_yyyy_mm_dd_hh_mm_ss_2_decyear</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">gts_dates</span><span class="o">.</span><span class="n">np_yyyy_mm_dd_hh_mm_ss_2_decyear</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">np_yyyy_mm_dd_hh_mm_ss_2_datetime</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">gts_dates</span><span class="o">.</span><span class="n">np_yyyy_mm_dd_hh_mm_ss_2_datetime</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">np_datetime_2_eq_time</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">gts_dates</span><span class="o">.</span><span class="n">np_datetime_2_eq_time</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">decyear2days</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">gts_dates</span><span class="o">.</span><span class="n">decyear2days</span>
+
+<span class="c1"># FORMATS</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.format.cats</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.format.force_daily</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.format.kenv</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.format.mb_file</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.format.pos</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.format.pride</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.format.tdp</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.format.track</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.format.get_unr</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.format.to_pandas_df</span>
+
+
+
+<span class="n">Gts</span><span class="o">.</span><span class="n">read_pos</span>         <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">pos</span><span class="o">.</span><span class="n">read_pos</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">read_pride</span>       <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">pride</span><span class="o">.</span><span class="n">read_pride</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">read_pride_pos</span>    <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">pride</span><span class="o">.</span><span class="n">read_pride_pos</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">read_kenv</span>        <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">kenv</span><span class="o">.</span><span class="n">read_kenv</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">read_mb_file</span>     <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">mb_file</span><span class="o">.</span><span class="n">read_mb_file</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">read_tdp</span>         <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">tdp</span><span class="o">.</span><span class="n">read_tdp</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">read_cats_file</span>   <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">cats</span><span class="o">.</span><span class="n">read_cats_file</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">read_track_NEU</span>   <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">track</span><span class="o">.</span><span class="n">read_track_NEU</span>
+
+<span class="n">Gts</span><span class="o">.</span><span class="n">write_pos</span>        <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">pos</span><span class="o">.</span><span class="n">write_pos</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">write_mb_file</span>    <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">mb_file</span><span class="o">.</span><span class="n">write_mb_file</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">write_cats</span>       <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">cats</span><span class="o">.</span><span class="n">write_cats</span>
+
+<span class="n">Gts</span><span class="o">.</span><span class="n">force_daily</span>      <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">force_daily</span><span class="o">.</span><span class="n">force_daily</span>
+
+<span class="n">Gts</span><span class="o">.</span><span class="n">get_unr</span>          <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">get_unr</span><span class="o">.</span><span class="n">get_unr</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">to_pandas_df</span>     <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">to_pandas_df</span><span class="o">.</span><span class="n">to_pandas_df</span>
+
+<span class="c1"># PRIMITIVE</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.cdata</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.copy</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.differentiate</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.extract_periods</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.exclude_periods</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.extract_dates</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.substract_ts</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.substract_ts_daily</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.add_offsets_dates</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.remove_velocity</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.set_zero_at_date</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.decimate</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.displacement</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.add_obs</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.add_obs_xyz</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.xyz2neu</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.neu2xyz</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.reorder</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.extract_ndates_before_date</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.extract_ndates_after_date</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.extract_ndates_around_date</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.get_coseismic</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.correct_duplicated_dates</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.rotate</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.insert_gts_data</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.find_large_uncertainty</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.split_gap</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.interpolate</span>
+<span class="kn">import</span>  <span class="nn">pyacs.gts.lib.primitive.insert_ts</span>
+
+
+<span class="n">Gts</span><span class="o">.</span><span class="n">cdata</span>                      <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">cdata</span><span class="o">.</span><span class="n">cdata</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">copy</span>                       <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">copy</span><span class="o">.</span><span class="n">copy</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">differentiate</span>              <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">differentiate</span><span class="o">.</span><span class="n">differentiate</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">extract_periods</span>            <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">extract_periods</span><span class="o">.</span><span class="n">extract_periods</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">exclude_periods</span>            <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">exclude_periods</span><span class="o">.</span><span class="n">exclude_periods</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">extract_dates</span>              <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">extract_dates</span><span class="o">.</span><span class="n">extract_dates</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">substract_ts</span>               <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">substract_ts</span><span class="o">.</span><span class="n">substract_ts</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">substract_ts_daily</span>         <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">substract_ts_daily</span><span class="o">.</span><span class="n">substract_ts_daily</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">add_offsets_dates</span>          <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">add_offsets_dates</span><span class="o">.</span><span class="n">add_offsets_dates</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">remove_velocity</span>            <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">remove_velocity</span><span class="o">.</span><span class="n">remove_velocity</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">set_zero_at_date</span>           <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">set_zero_at_date</span><span class="o">.</span><span class="n">set_zero_at_date</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">decimate</span>                   <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">decimate</span><span class="o">.</span><span class="n">decimate</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">displacement</span>               <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">displacement</span><span class="o">.</span><span class="n">displacement</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">add_obs</span>                    <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">add_obs</span><span class="o">.</span><span class="n">add_obs</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">add_obs_xyz</span>                <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">add_obs_xyz</span><span class="o">.</span><span class="n">add_obs_xyz</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">xyz2neu</span>                    <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">xyz2neu</span><span class="o">.</span><span class="n">xyz2neu</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">neu2xyz</span>                    <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">neu2xyz</span><span class="o">.</span><span class="n">neu2xyz</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">reorder</span>                    <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">reorder</span><span class="o">.</span><span class="n">reorder</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">extract_ndates_before_date</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">extract_ndates_before_date</span><span class="o">.</span><span class="n">extract_ndates_before_date</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">extract_ndates_after_date</span>  <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">extract_ndates_after_date</span><span class="o">.</span><span class="n">extract_ndates_after_date</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">extract_ndates_around_date</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">extract_ndates_around_date</span><span class="o">.</span><span class="n">extract_ndates_around_date</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">get_coseismic</span>              <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">get_coseismic</span><span class="o">.</span><span class="n">get_coseismic</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">correct_duplicated_dates</span>   <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">correct_duplicated_dates</span><span class="o">.</span><span class="n">correct_duplicated_dates</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">rotate</span>                     <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">rotate</span><span class="o">.</span><span class="n">rotate</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">insert_gts_data</span>            <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">insert_gts_data</span><span class="o">.</span><span class="n">insert_gts_data</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">find_large_uncertainty</span>     <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">find_large_uncertainty</span><span class="o">.</span><span class="n">find_large_uncertainty</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">split_gap</span>                  <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">split_gap</span><span class="o">.</span><span class="n">split_gap</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">interpolate</span>                <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">interpolate</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">insert_ts</span>                  <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">insert_ts</span><span class="o">.</span><span class="n">insert_ts</span>
+
+<span class="c1"># METADATA</span>
+
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.metadata</span>
+
+<span class="n">Gts</span><span class="o">.</span><span class="n">read_lon_lat</span>            <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">read_lon_lat</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">save_velocity</span>           <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">save_velocity</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">save_offsets</span>            <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">save_offsets</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">read_eq_rename</span>          <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">read_eq_rename</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">save_eq_rename</span>          <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">save_eq_rename</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">save_apr</span>                <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">save_apr</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">make_dynamic_apr</span>        <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">make_dynamic_apr</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">read_offset_dates</span>       <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">read_offset_dates</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">info</span>                    <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">info</span>
+
+<span class="c1"># PLOT</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.plot.plot</span>
+<span class="c1">## plot</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">plot</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot</span>
+
+<span class="c1"># MODEL</span>
+
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.model.add_vel_sigma</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.model.detrend</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.model.detrend_annual</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.model.detrend_seasonal</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.model.remove_pole</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.model.frame</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.model.make_model</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.model.mmodel</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.model.detrend_median</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.model.detrend_seasonal_median</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.model.trajectory</span>
+
+<span class="n">Gts</span><span class="o">.</span><span class="n">add_vel_sigma</span>            <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">add_vel_sigma</span><span class="o">.</span><span class="n">add_vel_sigma</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">detrend</span>                  <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">detrend</span><span class="o">.</span><span class="n">detrend</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">detrend_annual</span>           <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">detrend_annual</span><span class="o">.</span><span class="n">detrend_annual</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">detrend_seasonal</span>         <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">detrend_seasonal</span><span class="o">.</span><span class="n">detrend_seasonal</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">remove_pole</span>              <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">remove_pole</span><span class="o">.</span><span class="n">remove_pole</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">frame</span>                    <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">frame</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">make_model</span>               <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">make_model</span><span class="o">.</span><span class="n">make_model</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">mmodel</span>                   <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mmodel</span><span class="o">.</span><span class="n">mmodel</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">detrend_median</span>           <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">detrend_median</span><span class="o">.</span><span class="n">detrend_median</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">detrend_seasonal_median</span>  <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">detrend_seasonal_median</span><span class="o">.</span><span class="n">detrend_seasonal_median</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">trajectory</span>               <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">trajectory</span>
+
+<span class="c1"># OFFSET</span>
+
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.offset</span>
+
+<span class="n">Gts</span><span class="o">.</span><span class="n">suspect_offsets</span>            <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">offset</span><span class="o">.</span><span class="n">suspect_offsets</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">suspect_offsets_mf</span>         <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">offset</span><span class="o">.</span><span class="n">suspect_offsets_mf</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">test_offset_significance</span>   <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">offset</span><span class="o">.</span><span class="n">test_offset_significance</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">find_time_offsets</span>          <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">offset</span><span class="o">.</span><span class="n">find_time_offsets</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">delete_small_offsets</span>       <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">offset</span><span class="o">.</span><span class="n">delete_small_offsets</span>
+<span class="c1">#Gts.test_offsets_significance=pyacs.gts.lib.offset.test_offsets_significance</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">test_offsets</span>               <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">offset</span><span class="o">.</span><span class="n">test_offsets</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">estimate_local_offset</span>      <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">offset</span><span class="o">.</span><span class="n">estimate_local_offset</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">apply_offsets</span>              <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">offset</span><span class="o">.</span><span class="n">apply_offsets</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">find_offsets</span>               <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">offset</span><span class="o">.</span><span class="n">find_offsets</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">local_offset_robust</span>        <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">offset</span><span class="o">.</span><span class="n">local_offset_robust</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">find_offsets_t_scan</span>        <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">offset</span><span class="o">.</span><span class="n">find_offsets_t_scan</span>
+
+<span class="c1"># OUTLIERS</span>
+
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.outliers</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.outliers.find_l1trend</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.outliers.find_outliers_percentage</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.outliers.find_outliers_sliding_window</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.outliers.find_outliers_vondrak</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.outliers.remove_outliers</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.outliers.find_outliers_around_date</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.outliers.find_outliers_simple</span>
+
+
+
+<span class="n">Gts</span><span class="o">.</span><span class="n">remove_outliers</span>                                   <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">outliers</span><span class="o">.</span><span class="n">remove_outliers</span><span class="o">.</span><span class="n">remove_outliers</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">find_outliers_percentage</span>                          <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">outliers</span><span class="o">.</span><span class="n">find_outliers_percentage</span><span class="o">.</span><span class="n">find_outliers_percentage</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">find_outliers_simple</span>                              <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">outliers</span><span class="o">.</span><span class="n">find_outliers_simple</span><span class="o">.</span><span class="n">find_outliers_simple</span>
+<span class="c1">#Gts.find_outliers_and_offsets_through_differentiation = pyacs.gts.lib.outliers_old.find_outliers_and_offsets_through_differentiation</span>
+<span class="c1">#Gts.find_outliers_by_RMS_ts                           = pyacs.gts.lib.outliers_old.find_outliers_by_RMS_ts</span>
+<span class="c1">#Gts.find_outliers_by_residuals                        = pyacs.gts.lib.outliers_old.find_outliers_by_residuals</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">find_outliers_sliding_window</span>                      <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">outliers</span><span class="o">.</span><span class="n">find_outliers_sliding_window</span><span class="o">.</span><span class="n">find_outliers_sliding_window</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">find_outlier_around_date</span>                          <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">outliers</span><span class="o">.</span><span class="n">find_outliers_around_date</span><span class="o">.</span><span class="n">find_outliers_around_date</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">find_outliers_vondrak</span>                             <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">outliers</span><span class="o">.</span><span class="n">find_outliers_vondrak</span><span class="o">.</span><span class="n">find_outliers_vondrak</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">find_outliers_l1trend</span>                             <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">outliers</span><span class="o">.</span><span class="n">find_l1trend</span><span class="o">.</span><span class="n">find_l1trend</span>
+
+<span class="c1"># NOISE</span>
+
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.noise</span>
+
+<span class="n">Gts</span><span class="o">.</span><span class="n">realistic_sigma</span>   <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">noise</span><span class="o">.</span><span class="n">realistic_sigma</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">wrms</span>              <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">noise</span><span class="o">.</span><span class="n">wrms</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">sigma_vel_tsfit</span>   <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">noise</span><span class="o">.</span><span class="n">sigma_vel_tsfit</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">sigma_cats</span>        <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">noise</span><span class="o">.</span><span class="n">sigma_cats</span>
+
+<span class="c1"># FILTER</span>
+
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.filters.median</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.filters.minimum_component</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.filters.savitzky_golay</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.filters.total_variation</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.filters.vondrak</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.filters.wiener</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.filters.piecewise_linear</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.step_detect_edge_filter</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.filters.l1_trend</span>
+<span class="c1">#import pyacs.gts.lib.filters.el1_trend</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.filters.spline</span>
+<span class="kn">import</span> <span class="nn">pyacs.gts.lib.filters.smooth</span>
+
+<span class="n">Gts</span><span class="o">.</span><span class="n">spline</span>            <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">spline</span><span class="o">.</span><span class="n">spline</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">smooth</span>            <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">smooth</span><span class="o">.</span><span class="n">smooth</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">median_filter</span>     <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">median</span><span class="o">.</span><span class="n">median_filter</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">minimum_component</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">minimum_component</span><span class="o">.</span><span class="n">minimum_component</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">savitzky_golay</span>    <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">savitzky_golay</span><span class="o">.</span><span class="n">savitzky_golay</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">edge_filter</span>       <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">total_variation</span><span class="o">.</span><span class="n">edge</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">tv_l2_filter</span>      <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">total_variation</span><span class="o">.</span><span class="n">edge_l2</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">vondrak</span>           <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">vondrak</span><span class="o">.</span><span class="n">vondrak</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">wiener</span>            <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">wiener</span><span class="o">.</span><span class="n">wiener</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">pwlf</span>              <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">piecewise_linear</span><span class="o">.</span><span class="n">pwlf</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">l1_trend</span>          <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">l1_trend</span><span class="o">.</span><span class="n">l1_trend</span>
+<span class="c1">#Gts.el1_trend          = pyacs.gts.lib.filters.el1_trend.el1_trend</span>
+<span class="n">Gts</span><span class="o">.</span><span class="n">find_offsets_edge_filter</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">step_detect_edge_filter</span><span class="o">.</span><span class="n">find_offsets_edge_filter</span>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

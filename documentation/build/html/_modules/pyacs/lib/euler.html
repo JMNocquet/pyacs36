@@ -1,0 +1,515 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.lib.euler &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.lib.euler</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.lib.euler</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">Euler poles manipulation</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="rot2euler"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.euler.rot2euler">[docs]</a><span class="k">def</span> <span class="nf">rot2euler</span><span class="p">(</span><span class="n">Wx</span><span class="p">,</span><span class="n">Wy</span><span class="p">,</span><span class="n">Wz</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;Converts a rotation rate vector Wx Wy Wz in radians/yr into </span>
+<span class="sd">    an Euler pole (long. lat. deg/Myr) into geographical (spherical) coordinates and angular velocity</span>
+<span class="sd"> </span>
+<span class="sd">    :param Wx,Wy,Wz: rotation rate vector in geocentric cartesian coordinates with units of radians/yr</span>
+<span class="sd">    :returns longitude,latitude,omega: longitude and latitude of the Euler pole in radians and the</span>
+<span class="sd">    angular velocity in decimal degrees per Myr.</span>
+<span class="sd">    </span>
+<span class="sd">    :note: longitude and latitude are relative to the sphere, not the ellipsoid. This is because </span>
+<span class="sd">    Euler pole and rigid rotations only have sense on a sphere. </span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>  
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    
+    <span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">Wx</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">Wy</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">Wz</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">W_lat</span> <span class="o">=</span> <span class="mf">90.0</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">Wz</span><span class="o">/</span><span class="n">W</span><span class="p">)</span><span class="o">*</span><span class="mf">180.0</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">Wx</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">):</span>
+        <span class="n">W_long</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">Wy</span><span class="o">/</span><span class="n">Wx</span><span class="p">)</span><span class="o">*</span><span class="mf">180.0</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">Wx</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">Wy</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">):</span> 
+            <span class="n">W_long</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">Wy</span><span class="o">/</span><span class="n">Wx</span><span class="p">)</span><span class="o">*</span><span class="mf">180.0</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">+</span><span class="mf">180.0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">W_long</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">Wy</span><span class="o">/</span><span class="n">Wx</span><span class="p">)</span><span class="o">*</span><span class="mf">180.0</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">-</span><span class="mf">180.0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Wx = 0</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">Wy</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">):</span> 
+            <span class="n">W_long</span> <span class="o">=</span> <span class="mf">90.</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">W_long</span> <span class="o">=</span> <span class="o">-</span><span class="mf">90.</span>
+        
+    
+    <span class="n">W_omega</span><span class="o">=</span><span class="n">W</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="mi">180</span><span class="o">*</span><span class="mf">1.0E6</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">W_long</span><span class="p">,</span><span class="n">W_lat</span><span class="p">,</span><span class="n">W_omega</span><span class="p">)</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="euler2rot"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.euler.euler2rot">[docs]</a><span class="k">def</span> <span class="nf">euler2rot</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">omega</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;Converts Euler poles (long., lat., deg/Myr) into cartesian geocentric </span>
+<span class="sd">       rotation rate vector Wx Wy Wz in radians/yr</span>
+<span class="sd">       </span>
+<span class="sd">    :parameters longitude,latitude,omega: longitude and latitude of the Euler pole in decimal degrees and the</span>
+<span class="sd">    angular velocity in decimal degrees per Myr.</span>
+<span class="sd">    :returns Wx Wy Wz: in radians/yr </span>
+<span class="sd">   </span>
+<span class="sd">    :note: longitude and latitude are relative to the sphere, not the ellipsoid.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="n">wx</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat</span><span class="p">))</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lon</span><span class="p">))</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">omega</span><span class="p">)</span><span class="o">*</span><span class="mf">1.0E-6</span>
+    <span class="n">wy</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat</span><span class="p">))</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lon</span><span class="p">))</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">omega</span><span class="p">)</span><span class="o">*</span><span class="mf">1.0E-6</span>
+    <span class="n">wz</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat</span><span class="p">))</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">omega</span><span class="p">)</span><span class="o">*</span><span class="mf">1.0E-6</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">wx</span><span class="p">,</span><span class="n">wy</span><span class="p">,</span><span class="n">wz</span><span class="p">)</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="euler_uncertainty"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.euler.euler_uncertainty">[docs]</a><span class="k">def</span> <span class="nf">euler_uncertainty</span><span class="p">(</span> <span class="n">w</span><span class="p">,</span> <span class="n">vcv</span> <span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates Euler pole parameters uncertainty</span>
+<span class="sd">    </span>
+<span class="sd">    :param w: rotation vector in XYZ coordinates as numpy 1D array</span>
+<span class="sd">    :param vcv: covariance of w as numpy 2D array</span>
+<span class="sd">    </span>
+<span class="sd">    :return: vcv_euler as numpy 2D array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">pyacs.lib.coordinates</span> <span class="k">as</span> <span class="nn">Coordinates</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="n">nw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">w</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span>
+        
+    <span class="p">(</span><span class="n">llambda</span><span class="p">,</span><span class="n">phi</span><span class="p">,</span><span class="n">omega</span><span class="p">)</span> <span class="o">=</span> <span class="n">rot2euler</span><span class="p">(</span> <span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">w</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">)</span>
+
+    <span class="c1"># Propagates vcv into the local frame to get the Euler pole uncertainties</span>
+    
+    <span class="n">R</span><span class="o">=</span><span class="n">Coordinates</span><span class="o">.</span><span class="n">mat_rot_general_to_local</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">llambda</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">phi</span><span class="p">))</span>
+
+    <span class="n">VCV_POLE_ENU</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">vcv</span><span class="p">),</span><span class="n">R</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+    <span class="n">vcv11</span><span class="o">=</span><span class="n">VCV_POLE_ENU</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">vcv12</span><span class="o">=</span><span class="n">VCV_POLE_ENU</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">vcv22</span><span class="o">=</span><span class="n">VCV_POLE_ENU</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">vcv33</span><span class="o">=</span><span class="n">VCV_POLE_ENU</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="c1"># Error ellipse parameters</span>
+    
+    <span class="n">max_sigma</span><span class="o">=</span><span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">vcv11</span><span class="o">+</span><span class="n">vcv22</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">vcv11</span><span class="o">-</span><span class="n">vcv22</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="mi">4</span><span class="o">*</span><span class="n">vcv12</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">max_sigma</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">max_sigma</span><span class="p">)</span><span class="o">/</span> <span class="n">nw</span> <span class="p">))</span>
+    <span class="n">min_sigma</span><span class="o">=</span><span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">vcv11</span><span class="o">+</span><span class="n">vcv22</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">vcv11</span><span class="o">-</span><span class="n">vcv22</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="mi">4</span><span class="o">*</span><span class="n">vcv12</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">min_sigma</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">min_sigma</span><span class="p">)</span><span class="o">/</span> <span class="n">nw</span> <span class="p">))</span>
+    <span class="n">azimuth</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">vcv12</span><span class="o">/</span><span class="p">(</span><span class="n">vcv11</span><span class="o">-</span><span class="n">vcv22</span><span class="p">)))</span>
+    <span class="n">s_omega</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">vcv33</span><span class="p">))</span><span class="o">*</span><span class="mf">1.E06</span>
+
+    <span class="k">return</span><span class="p">(</span> <span class="n">max_sigma</span><span class="p">,</span> <span class="n">min_sigma</span><span class="p">,</span> <span class="n">azimuth</span><span class="p">,</span> <span class="n">s_omega</span> <span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="vel_from_euler"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.euler.vel_from_euler">[docs]</a><span class="k">def</span> <span class="nf">vel_from_euler</span><span class="p">(</span><span class="n">lonp</span><span class="p">,</span><span class="n">latp</span><span class="p">,</span><span class="n">lon_euler</span><span class="p">,</span><span class="n">lat_euler</span><span class="p">,</span><span class="n">omega_euler</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the horizontal velocity predicted at lonp,latp from an Euler pole</span>
+<span class="sd">    </span>
+<span class="sd">    :param lonp,latp: longitude,latitude in decimal degrees where velocity will be predicted</span>
+<span class="sd">    :param lon_euler,lat_euler_omega_euler: longitude and latitude of the Euler pole in decimal degrees and the</span>
+<span class="sd">    angular velocity in decimal degrees per Myr.</span>
+<span class="sd">    </span>
+<span class="sd">    :return: ve,vn in mm/yr</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">import</span> <span class="nn">pyacs.lib.coordinates</span>
+    
+    <span class="c1"># convert to rotation rate vector</span>
+    <span class="p">(</span><span class="n">wx</span><span class="p">,</span><span class="n">wy</span><span class="p">,</span><span class="n">wz</span><span class="p">)</span> <span class="o">=</span> <span class="n">euler2rot</span><span class="p">(</span><span class="n">lon_euler</span><span class="p">,</span> <span class="n">lat_euler</span><span class="p">,</span> <span class="n">omega_euler</span><span class="p">)</span>
+    
+    <span class="c1"># W</span>
+    <span class="n">W</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">W</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">wx</span>
+    <span class="n">W</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">wy</span>
+    <span class="n">W</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">wz</span>
+
+
+    <span class="c1"># get spherical coordinates</span>
+
+    <span class="n">he</span> <span class="o">=</span> <span class="mf">0.</span>
+    <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">geo2xyz</span><span class="p">(</span> <span class="n">lonp</span> <span class="p">,</span> <span class="n">latp</span> <span class="p">,</span> <span class="n">he</span> <span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;dec_deg&#39;</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">_</span><span class="p">)</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">xyz2geospheric</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">unit</span><span class="o">=</span><span class="s1">&#39;radians&#39;</span><span class="p">)</span>
+    <span class="n">R</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">mat_rot_general_to_local</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">p</span><span class="p">)</span>
+
+    <span class="c1"># Observation equation in local frame</span>
+            
+    <span class="n">Ai</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span><span class="nb">float</span><span class="p">)</span>
+    
+    <span class="n">Ai</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span> <span class="n">z</span>
+    <span class="n">Ai</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=-</span><span class="n">y</span>
+    <span class="n">Ai</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">=-</span><span class="n">z</span>
+    <span class="n">Ai</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span> <span class="n">x</span>
+    <span class="n">Ai</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span> <span class="n">y</span>
+    <span class="n">Ai</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=-</span><span class="n">x</span>
+            
+    <span class="n">RAi</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">Ai</span><span class="p">)</span>
+        
+    <span class="c1"># Predicted velocity</span>
+            
+    <span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">RAi</span><span class="p">,</span><span class="n">W</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E3</span> <span class="c1"># to get mm/yr</span>
+    
+    <span class="k">return</span><span class="p">(</span> <span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="n">V</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span></div>
+    
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="pole_matrix"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.euler.pole_matrix">[docs]</a><span class="k">def</span> <span class="nf">pole_matrix</span><span class="p">(</span> <span class="n">coor</span> <span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the matrix relating the horizontal velocity to a rotation rate vector.</span>
+<span class="sd">    Given a 2D-numpy array of n positions [lonp , latp] in decimal degrees the return matrix is W so that</span>
+<span class="sd">    np.dot( W , w ) gives a 2D-numpy array of [ve1,vn1,ve2,vn2,....] expressed in m/yr for a rotation rate vector in rad/yr </span>
+<span class="sd">    </span>
+<span class="sd">    :param coor: 2D numpy array of [lon, lat] in decimal degrees</span>
+<span class="sd">    </span>
+<span class="sd">    :return: the pole matrix as a 2D-numpy array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># import </span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">import</span> <span class="nn">pyacs.lib.coordinates</span>
+
+    <span class="c1"># ensures dimension</span>
+    
+    <span class="n">coor</span> <span class="o">=</span> <span class="n">coor</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># pole_matrix</span>
+
+    <span class="n">pole_matrix</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># loop if points</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span> <span class="n">coor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">):</span>
+        
+        <span class="c1"># get spherical coordinates</span>
+    
+        <span class="n">he</span> <span class="o">=</span> <span class="mf">0.</span>
+        <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">geo2xyz</span><span class="p">(</span> <span class="n">coor</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="n">coor</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="p">,</span> <span class="n">he</span> <span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;dec_deg&#39;</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">_</span><span class="p">)</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">xyz2geospheric</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">unit</span><span class="o">=</span><span class="s1">&#39;radians&#39;</span><span class="p">)</span>
+        <span class="n">R</span>       <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">mat_rot_general_to_local</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">p</span><span class="p">)</span>
+    
+        <span class="c1"># Observation equation in local frame</span>
+                
+        <span class="n">Ai</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span><span class="nb">float</span><span class="p">)</span>
+        
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span> <span class="n">z</span>
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=-</span><span class="n">y</span>
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">=-</span><span class="n">z</span>
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span> <span class="n">x</span>
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span> <span class="n">y</span>
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=-</span><span class="n">x</span>
+                
+        <span class="n">RAi</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">Ai</span><span class="p">)[:</span><span class="mi">2</span><span class="p">,:]</span>
+        
+        <span class="c1"># Predicted velocity</span>
+                
+        <span class="k">if</span> <span class="n">pole_matrix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">pole_matrix</span> <span class="o">=</span> <span class="n">RAi</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pole_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span> <span class="n">pole_matrix</span> <span class="p">,</span> <span class="n">RAi</span> <span class="p">))</span>
+        
+
+    <span class="k">return</span> <span class="n">pole_matrix</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="pole_matrix_fault"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.euler.pole_matrix_fault">[docs]</a><span class="k">def</span> <span class="nf">pole_matrix_fault</span><span class="p">(</span> <span class="n">coor</span> <span class="p">,</span> <span class="n">strike</span> <span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="kc">None</span> <span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the matrix relating the along strike and normal slip components of a fault to a rotation rate vector.</span>
+<span class="sd">    Given a 2D-numpy array of n positions [lonp , latp] in decimal degrees and strike counter-clockwise from north the return matrix is W so that</span>
+<span class="sd">    np.dot( W , w ) gives a 2D-numpy array of [ss1,ns1,ss2,ns2,....] expressed in m/yr for a rotation rate vector in rad/yr </span>
+<span class="sd">    </span>
+<span class="sd">    :param coor  : 2D numpy array of [lon, lat] in decimal degrees</span>
+<span class="sd">    :param strike: 1D numpy array of [strike] in decimal degrees</span>
+<span class="sd">    </span>
+<span class="sd">    :return: the pole matrix as a 2D-numpy array</span>
+<span class="sd">    :note: np.dot( W , w ).reshape(-1,2) gives the along strike,and normal components in two columns</span>
+<span class="sd">    :note: the value are given for the hanging-wall block (right-polygon)  </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># import </span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">import</span> <span class="nn">pyacs.lib.coordinates</span>
+
+    <span class="c1"># ensures dimension</span>
+    
+    <span class="n">coor</span> <span class="o">=</span> <span class="n">coor</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># strike in radians</span>
+    
+    <span class="c1">#strike = strike.reshape(-1,1) </span>
+    <span class="n">rstrike</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="n">strike</span> <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">order</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">pmf_SS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span> <span class="n">strike</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="mi">3</span>  <span class="p">))</span>
+        <span class="n">pmf_DS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span> <span class="n">strike</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="mi">3</span>  <span class="p">))</span>
+
+    <span class="c1"># pole_matrix</span>
+
+    <span class="n">pole_matrix</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># loop if points</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span> <span class="n">coor</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">):</span>
+        
+        <span class="c1"># get spherical coordinates</span>
+    
+        <span class="n">he</span> <span class="o">=</span> <span class="mf">0.</span>
+        <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">geo2xyz</span><span class="p">(</span> <span class="n">coor</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="n">coor</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="p">,</span> <span class="n">he</span> <span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;dec_deg&#39;</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">_</span><span class="p">)</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">xyz2geospheric</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">unit</span><span class="o">=</span><span class="s1">&#39;radians&#39;</span><span class="p">)</span>
+        <span class="n">R</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">mat_rot_general_to_local</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">p</span><span class="p">)</span>
+    
+        <span class="c1"># Observation equation in local frame</span>
+                
+        <span class="n">Ai</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span><span class="nb">float</span><span class="p">)</span>
+        
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span> <span class="n">z</span>
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=-</span><span class="n">y</span>
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">=-</span><span class="n">z</span>
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span> <span class="n">x</span>
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span> <span class="n">y</span>
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=-</span><span class="n">x</span>
+                
+        <span class="n">RAi</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">Ai</span><span class="p">)[:</span><span class="mi">2</span><span class="p">,:]</span>
+        
+        <span class="c1"># rotates into the fault coordinates</span>
+
+        <span class="n">RF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span> <span class="p">[</span>  <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">rstrike</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span>  <span class="p">,</span>  <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">rstrike</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span> <span class="p">]</span> <span class="p">,</span> \
+                         <span class="p">[</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">rstrike</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span>  <span class="p">,</span>  <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">rstrike</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span> <span class="p">]</span> <span class="p">]</span> <span class="p">)</span>
+
+        <span class="c1"># RW</span>
+        <span class="n">RW</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span> <span class="n">RF</span> <span class="p">,</span> <span class="n">RAi</span>  <span class="p">)</span>
+        
+        <span class="c1"># Predicted velocity</span>
+
+        <span class="k">if</span> <span class="n">order</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">pmf_SS</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">RW</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span>
+            <span class="n">pmf_DS</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">RW</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span>
+
+                
+        <span class="k">if</span> <span class="n">pole_matrix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">pole_matrix</span> <span class="o">=</span> <span class="n">RW</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pole_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span> <span class="n">pole_matrix</span> <span class="p">,</span> <span class="n">RW</span> <span class="p">))</span>
+    
+    <span class="k">if</span> <span class="n">order</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span> <span class="p">(</span><span class="n">pmf_SS</span><span class="p">,</span><span class="n">pmf_DS</span><span class="p">)</span> <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pole_matrix</span></div>
+
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

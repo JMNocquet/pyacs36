@@ -1,0 +1,313 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.sol.read_conf &mdash; pyacs 0.65.66 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.66
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.sol.read_conf</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.sol.read_conf</h1><div class="highlight"><pre>
+<span></span>
+<div class="viewcode-block" id="Conf"><a class="viewcode-back" href="../../../pyacs.sol.html#pyacs.sol.read_conf.Conf">[docs]</a><span class="k">class</span> <span class="nc">Conf</span><span class="p">:</span>
+    
+    <span class="sd">&quot;&quot;&quot;Configuration: various parameters read by the program&quot;&quot;&quot;</span>
+
+    
+    <span class="k">def</span> <span class="fm">__init__</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conf_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+        <span class="kn">import</span> <span class="nn">logging</span>
+        <span class="kn">import</span> <span class="nn">pyacs.message.message</span> <span class="k">as</span> <span class="nn">MESSAGE</span>
+        <span class="kn">import</span> <span class="nn">pyacs.message.verbose_message</span> <span class="k">as</span> <span class="nn">VERBOSE</span>
+        <span class="kn">import</span> <span class="nn">pyacs.message.error</span> <span class="k">as</span> <span class="nn">ERROR</span>
+        <span class="kn">import</span> <span class="nn">pyacs.message.warning</span> <span class="k">as</span> <span class="nn">WARNING</span>
+        <span class="kn">import</span> <span class="nn">pyacs.message.debug_message</span> <span class="k">as</span> <span class="nn">DEBUG</span>
+
+        <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Initializing default values for PYACS&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ref_exclude_all</span><span class="o">=</span><span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ref_reject</span><span class="o">=</span><span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rename</span><span class="o">=</span><span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ref_only_all</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_repeat</span><span class="o">=</span><span class="p">[]</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">ref_outlier_up_value</span><span class="o">=</span><span class="mf">50.0</span> <span class="c1"># 50 mm for up outlier detection </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ref_outlier_en_value</span><span class="o">=</span><span class="mf">30.0</span> <span class="c1"># 30 mm for e&amp;n outlier detection </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ref_prefit_value</span><span class="o">=</span><span class="mf">10.0</span>     <span class="c1"># 10 m </span>
+        <span class="k">if</span> <span class="n">conf_file</span><span class="p">:</span>
+            <span class="n">MESSAGE</span><span class="p">(</span><span class="s2">&quot;Reading configuration file: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">conf_file</span><span class="p">)</span>
+            <span class="n">fs</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">conf_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fs</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">2</span> <span class="ow">or</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;#&#39;</span> <span class="ow">or</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span><span class="p">):</span><span class="k">continue</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">lline</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+                    <span class="c1"># min_repeats</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;min_repeat&#39;</span><span class="p">):</span>
+                        <span class="n">lline</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">min_repeat</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">lline</span><span class="p">)</span> 
+
+                    <span class="c1"># ref_exclude_all</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;ref_exclude_all&#39;</span><span class="p">):</span>
+                        <span class="n">lline</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">ref_exclude_all</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">lline</span><span class="p">)</span> 
+                    
+                    <span class="c1"># ref_only_all</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;ref_only_all&#39;</span><span class="p">):</span>
+                        <span class="n">lline</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">ref_only_all</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">lline</span><span class="p">)</span> 
+                    
+                    <span class="c1"># ref_outlier_up_value</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;ref_outlier_up_value&#39;</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">ref_outlier_up_value</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="o">.</span><span class="n">pop</span><span class="p">())</span> 
+                    
+                    <span class="c1"># ref_outlier_en_value</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;ref_outlier_en_value&#39;</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">ref_outlier_en_value</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="o">.</span><span class="n">pop</span><span class="p">())</span> 
+                    
+                    <span class="c1"># ref_prefit_value</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;ref_prefit_value&#39;</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">ref_prefit_value</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="o">.</span><span class="n">pop</span><span class="p">())</span> 
+                    
+                    <span class="c1"># rename</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;rename&#39;</span><span class="p">):</span>
+                        <span class="n">code_orig</span><span class="o">=</span><span class="n">lline</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="n">code_new</span><span class="o">=</span><span class="n">lline</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lline</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">3</span><span class="p">):</span>
+                            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">lline</span><span class="p">)):</span>
+                                <span class="n">sinex</span><span class="o">=</span><span class="n">lline</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                                <span class="k">if</span> <span class="n">sinex</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rename</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span><span class="bp">self</span><span class="o">.</span><span class="n">rename</span><span class="p">[</span><span class="n">sinex</span><span class="p">]</span><span class="o">=</span><span class="p">[]</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">rename</span><span class="p">[</span><span class="n">sinex</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">code_orig</span><span class="p">,</span><span class="n">code_new</span><span class="p">))</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="ow">not</span> <span class="s1">&#39;all&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rename</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span><span class="bp">self</span><span class="o">.</span><span class="n">rename</span><span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">]</span><span class="o">=</span><span class="p">[]</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">rename</span><span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">code_orig</span><span class="p">,</span><span class="n">code_new</span><span class="p">))</span>
+
+                    <span class="c1"># reject_ref</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;reject_ref&#39;</span><span class="p">):</span>
+                        <span class="n">code</span><span class="o">=</span><span class="n">lline</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="n">component</span><span class="o">=</span><span class="n">lline</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                        <span class="n">sinex</span><span class="o">=</span><span class="n">lline</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">sinex</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ref_reject</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span> 
+                            <span class="bp">self</span><span class="o">.</span><span class="n">ref_reject</span><span class="p">[</span><span class="n">sinex</span><span class="p">]</span><span class="o">=</span><span class="p">{}</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">ref_reject</span><span class="p">[</span><span class="n">sinex</span><span class="p">][</span><span class="n">code</span><span class="p">]</span><span class="o">=</span><span class="n">component</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ref_reject</span><span class="p">[</span><span class="n">sinex</span><span class="p">]:</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">ref_reject</span><span class="p">[</span><span class="n">sinex</span><span class="p">][</span><span class="n">code</span><span class="p">]</span><span class="o">=</span><span class="n">component</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="n">component</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ref_reject</span><span class="p">[</span><span class="n">sinex</span><span class="p">][</span><span class="n">code</span><span class="p">]:</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">ref_reject</span><span class="p">[</span><span class="n">sinex</span><span class="p">][</span><span class="n">code</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ref_reject</span><span class="p">[</span><span class="n">sinex</span><span class="p">][</span><span class="n">code</span><span class="p">]</span><span class="o">+</span><span class="n">component</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">MESSAGE</span><span class="p">(</span><span class="s2">&quot;No configuration file provided; Using defaults values&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../pyacs.sol.html#pyacs.sol.read_conf.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    
+    <span class="n">conf</span><span class="o">=</span><span class="n">Conf</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">v</span><span class="o">==</span><span class="p">[]</span> <span class="ow">or</span> <span class="n">v</span><span class="o">==</span><span class="p">{}:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">,</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">)</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,555 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.sol.helmert &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.sol.helmert</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.sol.helmert</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">calculates Helmert transformation </span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">pyacs.sol.errors</span> <span class="kn">import</span> <span class="n">PyacsSol_HelmertError</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="helmert_matrix"><a class="viewcode-back" href="../../../pyacs.sol.html#pyacs.sol.helmert.helmert_matrix">[docs]</a><span class="k">def</span> <span class="nf">helmert_matrix</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">tran</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">rot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">scale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">equilibrate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a Helmert transformation matrix for a single point</span>
+<span class="sd">    Can also create translation/rotation/scale transformation matrix</span>
+<span class="sd">    </span>
+<span class="sd">    :param x,y,z: point geocentric coordinates (m)</span>
+<span class="sd">    :param tran,rot,scale: boolean telling that translation/rotation/scale will be included</span>
+<span class="sd">    :param equilibrate: (default True) changes the unit of the matrix so that x are in km and scale in mas for better conditionning of the matrix</span>
+<span class="sd">    </span>
+<span class="sd">    :returns H: the transformation matrix as 2D numpy matrix</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    
+    <span class="c1"># equilibrate</span>
+    <span class="k">if</span> <span class="n">equilibrate</span><span class="p">:</span>
+        <span class="n">c</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.</span><span class="o">/</span><span class="mf">3600.</span> <span class="c1"># factor used to equilibrate Helmert&#39;s equation</span>
+        <span class="n">m</span><span class="o">=</span><span class="mf">1.E-6</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">c</span><span class="o">=</span><span class="mf">1.</span>
+        <span class="n">m</span><span class="o">=</span><span class="mf">1.</span>
+    
+    <span class="c1"># initialization</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span> <span class="nb">float</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">tran</span><span class="p">:</span>
+        <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span>
+        <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span>
+        <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span>
+    
+    <span class="k">if</span> <span class="n">rot</span><span class="p">:</span>
+        <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span><span class="o">*</span><span class="n">c</span>
+        <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">y</span><span class="o">*</span><span class="n">c</span>
+        <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">z</span><span class="o">*</span><span class="n">c</span>
+        <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="n">c</span>
+        <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span><span class="o">*</span><span class="n">c</span>
+        <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">x</span><span class="o">*</span><span class="n">c</span>
+        
+    <span class="k">if</span> <span class="n">scale</span><span class="p">:</span>
+        <span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="n">m</span>
+        <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span><span class="o">*</span><span class="n">m</span>
+        <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span><span class="o">*</span><span class="n">m</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">A</span><span class="p">)</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="observation_equation_helmert_local"><a class="viewcode-back" href="../../../pyacs.sol.html#pyacs.sol.helmert.observation_equation_helmert_local">[docs]</a><span class="k">def</span> <span class="nf">observation_equation_helmert_local</span><span class="p">(</span><span class="n">xf</span><span class="p">,</span><span class="n">yf</span><span class="p">,</span><span class="n">zf</span><span class="p">,</span><span class="n">xr</span><span class="p">,</span><span class="n">yr</span><span class="p">,</span><span class="n">zr</span><span class="p">,</span><span class="n">tran</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">rot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">scale</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate the linear transformation equation system for coordinate of a sites in two reference system.</span>
+<span class="sd">    The equation system is generated for E,N,U components</span>
+<span class="sd">    </span>
+<span class="sd">    :param xf,yf,zf: geocentric coordinates in the initial reference (also called &#39;free&#39; frame) </span>
+<span class="sd">    :param xr,yr,zr: geocentric coordinates in the final reference (the reference frame) </span>
+<span class="sd">    :param tran,rot,scale: boolean telling that translation/rotation/scale will be included</span>
+
+<span class="sd">    :return A,B: the design matrix and observation vector</span>
+<span class="sd">    </span>
+<span class="sd">    :note: VCV not accounted yet </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">import</span> <span class="nn">pyacs.lib.coordinates</span>
+    
+    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">xr</span><span class="o">-</span><span class="n">xf</span>
+    <span class="n">B</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">yr</span><span class="o">-</span><span class="n">yf</span>
+    <span class="n">B</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">zr</span><span class="o">-</span><span class="n">zf</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">B</span><span class="p">))</span>
+    
+    <span class="p">(</span><span class="n">lam</span><span class="p">,</span><span class="n">phi</span><span class="p">,</span><span class="n">_h</span><span class="p">)</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">xyz2geo</span><span class="p">(</span><span class="n">xr</span><span class="p">,</span> <span class="n">yr</span><span class="p">,</span> <span class="n">zr</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">mat_rot_general_to_local</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span><span class="n">phi</span><span class="p">)</span>
+    
+    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">B</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">helmert_matrix</span><span class="p">(</span><span class="n">xr</span><span class="p">,</span><span class="n">yr</span><span class="p">,</span><span class="n">zr</span><span class="p">,</span><span class="n">tran</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">rot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">scale</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">A</span><span class="p">)</span>   
+    
+    <span class="k">return</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="estimate_helmert"><a class="viewcode-back" href="../../../pyacs.sol.html#pyacs.sol.helmert.estimate_helmert">[docs]</a><span class="k">def</span> <span class="nf">estimate_helmert</span><span class="p">(</span><span class="n">H_Gpoint_ref</span><span class="p">,</span><span class="n">H_Gpoint_free</span><span class="p">,</span>
+            <span class="n">vcv_xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">psd</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">tran</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">rot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">scale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">lexclude</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Dikin_LS&#39;</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">5.</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Estimates Helmert or transformation parameters between two sets of coordinates</span>
+<span class="sd">    Default is a 7-parameters transformation (translation, rotation &amp; scale)</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    :param H_Gpoint_ref : dictionary of Geodetic Points (Gpoint instance) used as reference</span>
+<span class="sd">    :param H_Gpoint_free: dictionary of Geodetic Points (Gpoint instance) used as free</span>
+<span class="sd">    :param psd: psd object from sinex library for post-seismic deformation</span>
+<span class="sd">    :param tran,rot,scale: boolean telling if the transformation will use translation/rotation/scale </span>
+<span class="sd">    :param method: &#39;LS&#39; (Least-Squares) or &#39;Dikin_LS&#39; (a sequence of L1 and L2 norm) estimation</span>
+<span class="sd">    :param threshold: threshold value for outlier rejection (default 5.)</span>
+<span class="sd">    :param verbose: boolean</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">import</span> <span class="nn">pyacs.lib.glinalg</span>
+    <span class="kn">import</span> <span class="nn">pyacs.lib.robustestimators</span> <span class="k">as</span> <span class="nn">RobustEstimators</span> 
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Helmert parameters estimation using method: &quot;</span><span class="p">,</span><span class="n">method</span><span class="p">)</span>
+
+    <span class="n">n_points</span><span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">H_Gpoint_ref</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+
+    <span class="n">A</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="o">*</span><span class="n">n_points</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
+    <span class="n">B</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="o">*</span><span class="n">n_points</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">for</span> <span class="n">code</span><span class="p">,</span><span class="n">soln</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">H_Gpoint_ref</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+
+        <span class="n">Xref</span><span class="o">=</span><span class="n">H_Gpoint_ref</span><span class="p">[</span><span class="n">code</span><span class="p">,</span><span class="n">soln</span><span class="p">]</span>
+
+        <span class="n">Xref</span><span class="o">.</span><span class="n">assign_index</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">xr</span><span class="p">,</span><span class="n">yr</span><span class="p">,</span><span class="n">zr</span><span class="p">)</span><span class="o">=</span><span class="n">Xref</span><span class="o">.</span><span class="n">posxyz</span><span class="p">()</span>
+        <span class="n">epoch_ref</span><span class="o">=</span><span class="n">Xref</span><span class="o">.</span><span class="n">epoch</span>
+        
+        <span class="n">Xfree</span><span class="o">=</span> <span class="n">H_Gpoint_free</span><span class="p">[</span><span class="n">code</span><span class="p">,</span><span class="n">soln</span><span class="p">]</span>
+        <span class="p">(</span><span class="n">xf</span><span class="p">,</span><span class="n">yf</span><span class="p">,</span><span class="n">zf</span><span class="p">)</span><span class="o">=</span><span class="n">Xfree</span><span class="o">.</span><span class="n">posxyz</span><span class="p">()</span>
+        <span class="c1">#(sxf, syf, szf) = Xfree.staxyz()</span>
+        <span class="n">epoch_free</span><span class="o">=</span><span class="n">Xfree</span><span class="o">.</span><span class="n">epoch</span>
+        
+        <span class="p">(</span><span class="n">vxr</span><span class="p">,</span><span class="n">vyr</span><span class="p">,</span><span class="n">vzr</span><span class="p">)</span><span class="o">=</span><span class="n">Xref</span><span class="o">.</span><span class="n">velxyz</span><span class="p">()</span>
+        <span class="n">delta_t</span><span class="o">=</span><span class="n">epoch_free</span><span class="o">-</span><span class="n">epoch_ref</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">xr</span><span class="o">+</span><span class="n">delta_t</span><span class="o">*</span><span class="n">vxr</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">yr</span><span class="o">+</span><span class="n">delta_t</span><span class="o">*</span><span class="n">vyr</span>
+        <span class="n">z</span><span class="o">=</span><span class="n">zr</span><span class="o">+</span><span class="n">delta_t</span><span class="o">*</span><span class="n">vzr</span>
+
+        <span class="k">if</span> <span class="n">psd</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">pyacs.sinex</span> <span class="kn">import</span> <span class="n">snxutils</span>
+            
+            <span class="kn">import</span> <span class="nn">pyacs.lib.astrotime</span>
+            <span class="kn">import</span> <span class="nn">pyacs.lib.coordinates</span>
+
+            <span class="n">epoch</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2epoch</span><span class="p">(</span><span class="n">Xfree</span><span class="o">.</span><span class="n">epoch</span><span class="p">)</span>
+            <span class="c1"># Compute ENH post-seismic deformations</span>
+            <span class="p">(</span><span class="n">denh</span><span class="p">,</span> <span class="n">senh</span><span class="p">)</span> <span class="o">=</span> <span class="n">snxutils</span><span class="o">.</span><span class="n">compute_psd</span><span class="p">(</span><span class="n">psd</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">epoch</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">denh</span><span class="p">)</span> <span class="ow">and</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- psd correction: &#39;</span><span class="p">,</span><span class="n">code</span><span class="p">,</span><span class="n">denh</span> <span class="o">*</span> <span class="mf">1000.</span> <span class="p">)</span>
+            <span class="c1"># Compute XYZ post-seismic deformations</span>
+            <span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">he</span><span class="p">)</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">xyz2geo</span><span class="p">(</span><span class="n">xf</span><span class="p">,</span> <span class="n">yf</span><span class="p">,</span> <span class="n">zf</span><span class="p">)</span>
+            <span class="n">R</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">mat_rot_local_to_general</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+            <span class="n">dxyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">denh</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+            <span class="c1"># Add post-seismic deformations</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="o">+</span><span class="n">dxyz</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="o">+</span><span class="n">dxyz</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="o">+</span><span class="n">dxyz</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+
+        <span class="p">(</span><span class="n">Ai</span><span class="p">,</span><span class="n">Bi</span><span class="p">)</span><span class="o">=</span><span class="n">observation_equation_helmert_local</span><span class="p">(</span><span class="n">xf</span><span class="p">,</span><span class="n">yf</span><span class="p">,</span><span class="n">zf</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
+
+        <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="p">:</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">3</span><span class="p">,:]</span><span class="o">=</span><span class="n">Ai</span>
+        <span class="n">B</span><span class="p">[</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="p">:</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">3</span><span class="p">,:]</span><span class="o">=</span><span class="n">Bi</span>
+
+        <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span>
+        
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;Dikin_LS&#39;</span><span class="p">:</span>
+    
+    <span class="c1">### Robust estimators of Dikin + LS</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Doing Dikin estimation&quot;</span><span class="p">)</span>
+        
+        
+        <span class="n">X</span><span class="p">,</span><span class="n">V</span><span class="o">=</span><span class="n">RobustEstimators</span><span class="o">.</span><span class="n">Dikin</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">W</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+        <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">V</span><span class="o">=</span><span class="n">V</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="p">[</span><span class="n">median_east</span><span class="p">,</span><span class="n">median_north</span><span class="p">,</span><span class="n">median_up</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">V</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="mf">1000.0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    
+    <span class="c1">### reject the outliers et re-adjust by LS</span>
+    
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Testing outliers; Threshold for outliers detection: &quot;</span><span class="p">,</span><span class="n">threshold</span><span class="p">)</span>
+        
+        <span class="n">np_outliers</span> <span class="o">=</span> <span class="n">find_outliers_Helmert</span><span class="p">(</span><span class="n">V</span><span class="p">,</span><span class="n">threshold</span><span class="o">=</span><span class="n">threshold</span><span class="p">)</span>
+
+        <span class="n">l_np_outliers</span><span class="o">=</span><span class="n">np_outliers</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- # of outliers detected: &quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">l_np_outliers</span><span class="p">))</span>
+
+        <span class="c1"># remove outliers for LS Helmert and flag</span>
+
+        <span class="n">FLAG_VV</span><span class="o">=</span><span class="n">V</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="mf">0.0</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">l_np_outliers</span><span class="p">)</span><span class="o">!=</span><span class="mi">0</span><span class="p">:</span>
+            
+
+            <span class="n">loutliers</span><span class="o">=</span><span class="p">[]</span>
+            
+            <span class="k">for</span> <span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="ow">in</span> <span class="n">l_np_outliers</span><span class="p">:</span>
+                
+                <span class="n">FLAG_VV</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span>
+                <span class="n">loutliers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="p">)</span>
+            
+            <span class="n">A_rejected</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">loutliers</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">B_rejected</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="n">loutliers</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="c1"># raise PyacsSol_HelmertError if problem</span>
+            <span class="k">if</span> <span class="n">A_rejected</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">7</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Too many outliers. Cannot calculate Helmert Transformation&#39;</span>
+                <span class="k">raise</span> <span class="n">PyacsSol_HelmertError</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span><span class="vm">__name__</span><span class="p">,</span><span class="n">msg</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Doing LS estimation without outliers&quot;</span><span class="p">)</span>
+            
+            <span class="n">LS_X</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">glinalg</span><span class="o">.</span><span class="n">ls</span><span class="p">(</span><span class="n">A_rejected</span><span class="p">,</span><span class="n">B_rejected</span><span class="p">)</span>
+            <span class="n">LS_V</span> <span class="o">=</span> <span class="n">B</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">X</span><span class="p">)</span>
+
+                
+    <span class="k">else</span><span class="p">:</span>
+    <span class="c1">### LS estimation, no outlier detection</span>
+
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Doing LS estimation without outlier detection&quot;</span><span class="p">)</span>
+
+        <span class="n">LS_X</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">glinalg</span><span class="o">.</span><span class="n">ls</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">)</span>
+        <span class="n">V</span> <span class="o">=</span> <span class="n">B</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">l_np_outliers</span><span class="o">=</span><span class="p">[]</span>
+
+    <span class="c1">### Creating residuals, accounting for rejected</span>
+    
+    <span class="n">LS_V</span> <span class="o">=</span> <span class="n">B</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">X</span><span class="p">)</span>
+      
+    <span class="n">VV</span><span class="o">=</span><span class="n">LS_V</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+    
+    <span class="n">S_VV</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">VV</span><span class="o">*</span><span class="mf">1000.0</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+
+    
+    <span class="c1"># adding code,soln</span>
+    
+    <span class="n">S_VV</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">S_VV</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">H_Gpoint_ref</span><span class="o">.</span><span class="n">keys</span><span class="p">()))[:,</span><span class="mi">1</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">S_VV</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">S_VV</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">H_Gpoint_ref</span><span class="o">.</span><span class="n">keys</span><span class="p">()))[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Adding flag</span>
+    
+    <span class="n">S_VV</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">S_VV</span><span class="p">,</span><span class="n">FLAG_VV</span><span class="p">))</span>
+    
+    <span class="c1"># Statistics</span>
+    
+    <span class="n">wrms</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span> <span class="p">(</span> <span class="p">(</span><span class="n">VV</span><span class="o">*</span><span class="mf">1000.0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">FLAG_VV</span><span class="o">*</span><span class="mf">1.E12</span> <span class="o">+</span><span class="mf">1.</span><span class="p">),</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span> <span class="p">(</span> <span class="mf">1.</span> <span class="o">/</span> <span class="p">(</span><span class="n">FLAG_VV</span><span class="o">*</span><span class="mf">1.E12</span> <span class="o">+</span><span class="mf">1.</span><span class="p">),</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="p">)</span>
+
+    <span class="n">H_stat</span><span class="o">=</span><span class="p">{}</span>
+    
+    <span class="n">H_stat</span><span class="p">[</span><span class="s1">&#39;rejection_threshold&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">threshold</span>
+    <span class="n">H_stat</span><span class="p">[</span><span class="s1">&#39;n_site&#39;</span><span class="p">]</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">H_Gpoint_ref</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+    <span class="n">H_stat</span><span class="p">[</span><span class="s1">&#39;n_obs_raw&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">H_stat</span><span class="p">[</span><span class="s1">&#39;n_site&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">3</span>
+    <span class="n">H_stat</span><span class="p">[</span><span class="s1">&#39;n_obs_rejected&#39;</span><span class="p">]</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">l_np_outliers</span><span class="p">)</span>
+    <span class="n">H_stat</span><span class="p">[</span><span class="s1">&#39;percent_rejected&#39;</span><span class="p">]</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l_np_outliers</span><span class="p">))</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">H_stat</span><span class="p">[</span><span class="s1">&#39;n_obs_raw&#39;</span><span class="p">])</span><span class="o">*</span><span class="mf">100.0</span>
+
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;Dikin_LS&#39;</span><span class="p">:</span>
+        <span class="n">H_stat</span><span class="p">[</span><span class="s1">&#39;median_L1&#39;</span><span class="p">]</span><span class="o">=</span><span class="p">[</span><span class="n">median_east</span><span class="p">,</span><span class="n">median_north</span><span class="p">,</span><span class="n">median_up</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">H_stat</span><span class="p">[</span><span class="s1">&#39;median_L1&#39;</span><span class="p">]</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">]</span>
+    
+    <span class="n">H_stat</span><span class="p">[</span><span class="s1">&#39;wrms&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">wrms</span>
+
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">S_VV</span><span class="p">,</span><span class="n">H_stat</span><span class="p">)</span></div>
+
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="find_outliers_Helmert"><a class="viewcode-back" href="../../../pyacs.sol.html#pyacs.sol.helmert.find_outliers_Helmert">[docs]</a><span class="k">def</span> <span class="nf">find_outliers_Helmert</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">threshold</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns index outliers points</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">suppress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="n">V</span><span class="o">=</span><span class="n">R</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="mf">1000.0</span>
+
+    <span class="n">median</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">V</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">X</span><span class="o">=</span><span class="n">V</span><span class="o">/</span><span class="p">(</span><span class="n">threshold</span><span class="o">*</span><span class="n">median</span><span class="p">)</span>
+    
+    <span class="n">np_outliers</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">X</span><span class="o">**</span><span class="mi">2</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">)</span>
+
+
+    <span class="c1"># If only East or North have been flagged then flag both</span>
+    
+    <span class="k">for</span> <span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="ow">in</span> <span class="n">np_outliers</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">j</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">np_outliers</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np_outliers</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">]]),</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">j</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">np_outliers</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np_outliers</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">]]),</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    
+    <span class="c1"># accepted from Numpy &gt;= 1.13</span>
+    <span class="c1">#np_outliers=np.unique( np_outliers, axis=0 )</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">np_outliers</span><span class="p">)</span> <span class="o">!=</span>  <span class="mi">0</span><span class="p">:</span>
+
+        <span class="n">np_outliers</span><span class="o">=</span><span class="n">np_outliers</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">np_outliers</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])]</span>
+        <span class="n">np_outliers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">({</span><span class="nb">tuple</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">np_outliers</span> <span class="p">})</span>
+    
+    <span class="k">return</span> <span class="n">np_outliers</span></div>
+
+
+<span class="c1"># ###############################################################################</span>
+<span class="c1"># def LS_adjustment(A,L,P=None):</span>
+<span class="c1"># ###############################################################################</span>
+<span class="c1">#     if P!=None:</span>
+<span class="c1">#         ATP = np.dot(np.transpose(A),P)</span>
+<span class="c1">#         N = np.dot(ATP,A)</span>
+<span class="c1">#         M = np.dot(ATP,L)</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         N = np.dot(np.transpose(A),A)</span>
+<span class="c1">#         M = np.dot(np.transpose(A),L)</span>
+<span class="c1">#         </span>
+<span class="c1"># </span>
+<span class="c1">#     Q=np.linalg.inv(N)</span>
+<span class="c1">#     X = np.dot(Q,M)</span>
+<span class="c1">#     V = L-np.dot(A,X)</span>
+<span class="c1">#     </span>
+<span class="c1">#     rows,cols=np.shape(A)</span>
+<span class="c1">#     if P!=None:</span>
+<span class="c1">#         sigma=np.sqrt(np.dot(np.dot(np.transpose(V),P),V)/(rows-cols))[0,0] #variance_unit_weight</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         if rows != cols:</span>
+<span class="c1">#             sigma=np.sqrt(np.dot(np.transpose(V),V)/(rows-cols)) #variance_unit_weight</span>
+<span class="c1">#         else:</span>
+<span class="c1">#             sigma=np.sqrt(np.dot(np.transpose(V),V)) #variance_unit_weight</span>
+<span class="c1">#             </span>
+<span class="c1">#     SX = sigma*np.sqrt(np.diag(Q))</span>
+<span class="c1">#   </span>
+<span class="c1">#     return X,SX,V,sigma</span>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

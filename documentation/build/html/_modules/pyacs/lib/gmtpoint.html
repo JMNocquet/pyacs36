@@ -1,0 +1,590 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.lib.gmtpoint &mdash; pyacs 0.65.66 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.66
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.lib.gmtpoint</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.lib.gmtpoint</h1><div class="highlight"><pre>
+<span></span>
+<div class="viewcode-block" id="GMT_Point"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point">[docs]</a><span class="k">class</span> <span class="nc">GMT_Point</span><span class="p">:</span>
+    
+    
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simple Point Class</span>
+<span class="sd">    </span>
+<span class="sd">    Attributes (mandatory)</span>
+<span class="sd">    lon: longitude (decimal degrees)</span>
+<span class="sd">    lat: latitude (decimal degrees)</span>
+<span class="sd">    </span>
+<span class="sd">    Attributes (optinal):</span>
+<span class="sd">    code : 4-letters code</span>
+<span class="sd">    he : height above the ellipsoid</span>
+<span class="sd">    ve, vn: east &amp; north components of velocity </span>
+<span class="sd">    sve,svn,sven: formal error (standard deviation) on velocity component and correlation [-1,1] &quot;&quot;&quot;</span>
+
+
+<span class="c1">###################################################################</span>
+    <span class="k">def</span> <span class="fm">__init__</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">lon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">lat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">he</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">Ve</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Vn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Vu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>\
+                  <span class="n">SVe</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">SVn</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">SVu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">SVen</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>\
+                  <span class="n">Cv_xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Cv_enu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="o">=</span><span class="n">code</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Ve</span><span class="o">=</span><span class="n">Ve</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Vn</span><span class="o">=</span><span class="n">Vn</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Vu</span><span class="o">=</span><span class="n">Vu</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">SVe</span><span class="o">=</span><span class="n">SVe</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">SVn</span><span class="o">=</span><span class="n">SVn</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">SVen</span><span class="o">=</span><span class="n">SVen</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">SVu</span><span class="o">=</span><span class="n">SVu</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="o">=</span><span class="n">lon</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">=</span><span class="n">lat</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">he</span><span class="o">=</span><span class="n">he</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Cv_xyz</span><span class="o">=</span><span class="n">Cv_xyz</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Cv_enu</span><span class="o">=</span><span class="n">Cv_enu</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">index</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;!!! Error. Could not init GMT_Point.&#39;</span><span class="p">)</span>
+        
+        
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="GMT_Point.copy"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+        <span class="n">NEW</span><span class="o">=</span><span class="n">GMT_Point</span><span class="p">()</span>
+        <span class="n">NEW</span><span class="o">.</span><span class="n">code</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span>
+        <span class="n">NEW</span><span class="o">.</span><span class="n">Ve</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Ve</span>
+        <span class="n">NEW</span><span class="o">.</span><span class="n">Vn</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Vn</span>
+        <span class="n">NEW</span><span class="o">.</span><span class="n">Vu</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Vu</span>
+        <span class="n">NEW</span><span class="o">.</span><span class="n">SVe</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SVe</span>
+        <span class="n">NEW</span><span class="o">.</span><span class="n">SVn</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SVn</span>
+        <span class="n">NEW</span><span class="o">.</span><span class="n">SVen</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SVen</span>
+        <span class="n">NEW</span><span class="o">.</span><span class="n">SVu</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SVu</span>
+        <span class="n">NEW</span><span class="o">.</span><span class="n">lon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span>
+        <span class="n">NEW</span><span class="o">.</span><span class="n">lat</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span>
+        <span class="n">NEW</span><span class="o">.</span><span class="n">he</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">he</span>
+        <span class="n">NEW</span><span class="o">.</span><span class="n">Cv_xyz</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Cv_xyz</span>
+        <span class="n">NEW</span><span class="o">.</span><span class="n">Cv_enu</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Cv_enu</span>
+        <span class="n">NEW</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span>
+        
+        <span class="k">return</span><span class="p">(</span><span class="n">NEW</span><span class="p">)</span></div>
+        
+        
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="GMT_Point.get_info"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.get_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Print information of the current GMT_Point</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">info_legend</span><span class="o">=</span><span class="s2">&quot;code     &quot;</span>
+        <span class="n">info</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%4s</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+        
+        <span class="n">info_legend</span><span class="o">=</span><span class="n">info_legend</span> <span class="o">+</span> <span class="s2">&quot; long.        lat.&quot;</span>
+        <span class="n">info_legend</span><span class="o">=</span><span class="n">info_legend</span> <span class="o">+</span> <span class="s2">&quot;       Ve.        Vn.&quot;</span>
+        <span class="n">info_legend</span><span class="o">=</span><span class="n">info_legend</span><span class="o">+</span><span class="s2">&quot;      SVe.       SVn.       SVen&quot;</span>
+        
+        <span class="n">info_legend</span><span class="o">=</span><span class="n">info_legend</span><span class="o">+</span><span class="s2">&quot;      V_magnitud    V_azimuth&quot;</span>
+
+        <span class="n">info</span> <span class="o">=</span><span class="n">info</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%10.5lf</span><span class="s2">  </span><span class="si">%10.5lf</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">Ve</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">info</span><span class="o">=</span><span class="n">info</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%10.3lf</span><span class="s2"> </span><span class="si">%10.3lf</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Ve</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Vn</span><span class="p">))</span>
+            <span class="p">(</span><span class="n">mag</span><span class="p">,</span><span class="n">az</span><span class="p">)</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">magaz</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">SVe</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="n">info</span><span class="o">=</span><span class="n">info</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%10.3lf</span><span class="s2"> </span><span class="si">%10.3lf</span><span class="s2"> </span><span class="si">%10.3lf</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SVe</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">SVn</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">SVen</span><span class="p">))</span>
+                <span class="n">info</span><span class="o">=</span><span class="n">info</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;      </span><span class="si">%10.3lf</span><span class="s2">   </span><span class="si">%10.1lf</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">mag</span><span class="p">,</span><span class="n">az</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">legend</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">info_legend</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">display</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+            
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- returning info string for site: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="p">)</span>
+        
+        <span class="k">return</span><span class="p">(</span><span class="n">info</span><span class="p">)</span></div>
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="GMT_Point.magaz"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.magaz">[docs]</a>    <span class="k">def</span> <span class="nf">magaz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns norm &amp; azimuth of velocity from the current GMT_Point</span>
+<span class="sd">        </span>
+<span class="sd">        :return: norm,azimuth in mm/yr and decimal degree clockwise from North</span>
+<span class="sd">        </span>
+<span class="sd">        :note: sigmas not implemented yet</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">math</span>
+        <span class="c1"># magnitude &amp; azimuth</span>
+        <span class="n">mag</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Ve</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">Vn</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1">#!!!!!!!!!!!!!!!!! NOT CHECKED</span>
+        <span class="c1">#if (self.SVe != None):</span>
+        <span class="n">az</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Ve</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Vn</span><span class="p">))</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">mag</span><span class="p">,</span><span class="n">az</span><span class="p">)</span></div>
+    
+        
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="GMT_Point.assign_index"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.assign_index">[docs]</a>    <span class="k">def</span> <span class="nf">assign_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">index</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Assigns an index to the current GMT_Point.</span>
+<span class="sd">        Useful for building linear systems.</span>
+<span class="sd">        </span>
+<span class="sd">        :param index: index</span>
+<span class="sd">        </span>
+<span class="sd">        :return : the modified GMT_Point instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">index</span>
+        <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="GMT_Point.get_index"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.get_index">[docs]</a>    <span class="k">def</span> <span class="nf">get_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns index of the current GMT_Point</span>
+<span class="sd">        </span>
+<span class="sd">        :return: index</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span></div>
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="GMT_Point.spherical_distance"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.spherical_distance">[docs]</a>    <span class="k">def</span> <span class="nf">spherical_distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">M</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns spherical distance between two GMT_Point (in meters)</span>
+<span class="sd">        </span>
+<span class="sd">        :param M: GMT_Point instance</span>
+<span class="sd">        </span>
+<span class="sd">        :return : distance along the sphere between current instance and M</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">import</span> <span class="nn">pyacs.lib.coordinates</span>
+        <span class="kn">import</span> <span class="nn">pyacs.message.message</span> <span class="k">as</span> <span class="nn">MESSAGE</span>
+        <span class="kn">import</span> <span class="nn">pyacs.message.verbose_message</span> <span class="k">as</span> <span class="nn">VERBOSE</span>
+        <span class="kn">import</span> <span class="nn">pyacs.message.error</span> <span class="k">as</span> <span class="nn">ERROR</span>
+        <span class="kn">import</span> <span class="nn">pyacs.message.warning</span> <span class="k">as</span> <span class="nn">WARNING</span>
+        <span class="kn">import</span> <span class="nn">pyacs.message.debug_message</span> <span class="k">as</span> <span class="nn">DEBUG</span>
+
+        <span class="n">DEBUG</span><span class="p">(</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%.5lf</span><span class="s2"> </span><span class="si">%.5lf</span><span class="s2"> </span><span class="si">%.5lf</span><span class="s2"> </span><span class="si">%.5lf</span><span class="s2"> &quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span>  <span class="n">M</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">lat</span><span class="p">)</span> <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">geo_spherical_distance</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;dec_deg&#39;</span><span class="p">)</span></div>
+
+    
+            
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="GMT_Point.pole"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.pole">[docs]</a>    <span class="k">def</span> <span class="nf">pole</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">W</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">SW</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">type_euler</span><span class="o">=</span><span class="s1">&#39;rot&#39;</span><span class="p">,</span><span class="n">option</span><span class="o">=</span><span class="s1">&#39;predict&#39;</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+
+        <span class="sd">&quot;&quot;&quot;Substract the prediction of a given Euler pole&quot;&quot;&quot;</span>
+        
+        <span class="kn">import</span> <span class="nn">pyacs.lib.coordinates</span> <span class="k">as</span> <span class="nn">Coordinates</span>
+        <span class="kn">import</span> <span class="nn">pyacs.lib.euler</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+        
+        
+        <span class="n">ltype</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;euler&#39;</span><span class="p">,</span><span class="s1">&#39;rot&#39;</span><span class="p">]</span> <span class="c1"># type is either Euler pole (long. lat in dec. degrees and deg/Myr or cartesian rotation rate vector in rad/yr)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">type_euler</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ltype</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;!!! Error. type_euler should be either euler &quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;or rot (Euler pole (long. lat in dec. degrees and deg/Myr)&quot;</span> <span class="o">+</span>
+                <span class="s2">&quot; or cartesian rotation rate vector in rad/yr. type_euler = </span><span class="si">%s</span><span class="s2"> )&quot;</span>
+                <span class="p">,</span> <span class="n">type_euler</span> <span class="p">)</span>
+
+        <span class="n">loption</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;remove&#39;</span><span class="p">,</span><span class="s1">&#39;predict&#39;</span><span class="p">,</span><span class="s1">&#39;add&#39;</span><span class="p">]</span> <span class="c1">#</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">option</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">loption</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;!!! Error. option should be either predict, remove or  add. option = </span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="p">,</span>
+            <span class="n">option</span>
+            <span class="p">)</span>
+            
+        
+        <span class="k">if</span> <span class="p">(</span><span class="n">type_euler</span> <span class="o">==</span> <span class="s1">&#39;euler&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">W</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">!=</span><span class="mi">2</span><span class="p">):</span>
+                <span class="n">W</span><span class="o">=</span><span class="n">W</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="c1"># convert to rotation rate vector</span>
+            <span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">omega</span><span class="p">)</span><span class="o">=</span><span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">W</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">W</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+            <span class="p">(</span><span class="n">wx</span><span class="p">,</span><span class="n">wy</span><span class="p">,</span><span class="n">wz</span><span class="p">)</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">euler</span><span class="o">.</span><span class="n">euler2rot</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">omega</span><span class="p">)</span>
+            
+            <span class="c1"># W</span>
+            <span class="n">W</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">W</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">wx</span>
+            <span class="n">W</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">wy</span>
+            <span class="n">W</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">wz</span>
+
+
+        <span class="c1"># get spherical coordinates</span>
+        
+        <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span><span class="o">=</span><span class="n">Coordinates</span><span class="o">.</span><span class="n">geo2xyz</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">he</span><span class="p">,</span><span class="n">unit</span><span class="o">=</span><span class="s1">&#39;dec_deg&#39;</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">_</span><span class="p">)</span><span class="o">=</span><span class="n">Coordinates</span><span class="o">.</span><span class="n">xyz2geospheric</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">unit</span><span class="o">=</span><span class="s1">&#39;radians&#39;</span><span class="p">)</span>
+        <span class="n">R</span><span class="o">=</span><span class="n">Coordinates</span><span class="o">.</span><span class="n">mat_rot_general_to_local</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">p</span><span class="p">)</span>
+
+        <span class="c1"># Observation equation in local frame</span>
+                
+        <span class="n">Ai</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span> <span class="n">z</span>
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=-</span><span class="n">y</span>
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">=-</span><span class="n">z</span>
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span> <span class="n">x</span>
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span> <span class="n">y</span>
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=-</span><span class="n">x</span>
+                
+        <span class="n">RAi</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">Ai</span><span class="p">)</span>
+            
+        <span class="c1"># Predicted velocity</span>
+                
+        <span class="n">Pi</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">RAi</span><span class="p">,</span><span class="n">W</span><span class="p">)</span>
+            
+        <span class="n">pve</span><span class="o">=</span><span class="n">Pi</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mf">1.E3</span>
+        <span class="n">pvn</span><span class="o">=</span><span class="n">Pi</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mf">1.E3</span>
+        
+        <span class="n">N</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            
+        <span class="k">if</span> <span class="p">(</span><span class="n">option</span><span class="o">==</span><span class="s1">&#39;remove&#39;</span><span class="p">):</span>                
+            <span class="n">N</span><span class="o">.</span><span class="n">Ve</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Ve</span><span class="o">-</span><span class="n">pve</span>
+            <span class="n">N</span><span class="o">.</span><span class="n">Vn</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Vn</span><span class="o">-</span><span class="n">pvn</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">option</span><span class="o">==</span><span class="s1">&#39;add&#39;</span><span class="p">):</span>                
+            <span class="n">N</span><span class="o">.</span><span class="n">Ve</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Ve</span><span class="o">+</span><span class="n">pve</span>
+            <span class="n">N</span><span class="o">.</span><span class="n">Vn</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Vn</span><span class="o">+</span><span class="n">pvn</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">option</span><span class="o">==</span><span class="s1">&#39;predict&#39;</span><span class="p">):</span>                
+            <span class="n">N</span><span class="o">.</span><span class="n">Ve</span><span class="o">=</span><span class="n">pve</span>
+            <span class="n">N</span><span class="o">.</span><span class="n">Vn</span><span class="o">=</span><span class="n">pvn</span>
+
+        <span class="k">if</span> <span class="n">SW</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># uses pole variance-covariance matrix</span>
+            <span class="n">VCV</span><span class="o">=</span><span class="n">SW</span>
+            <span class="c1">#print VCV.shape,Ai.shape</span>
+<span class="c1">#            VCV=np.zeros((3,3))</span>
+<span class="c1">#            VCV[0,0]=SW[0]</span>
+<span class="c1">#            VCV[1,1]=SW[1]</span>
+<span class="c1">#            VCV[2,2]=SW[2]</span>
+        
+<span class="c1">#            VCV[1,2]=SW[3]</span>
+<span class="c1">#            VCV[1,3]=SW[4]</span>
+<span class="c1">#            VCV[2,3]=SW[5]</span>
+            
+<span class="c1">#            VCV_PREDICTION=np.dot(np.dot(Ai,VCV),Ai.T)</span>
+            <span class="n">VCV_PREDICTION_ENU</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">RAi</span><span class="p">,</span><span class="n">VCV</span><span class="p">),</span><span class="n">RAi</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">SVe</span><span class="p">,</span><span class="n">N</span><span class="o">.</span><span class="n">SVn</span><span class="p">)</span><span class="o">=</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">VCV_PREDICTION_ENU</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="mf">1000.0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">VCV_PREDICTION_ENU</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="mf">1000.0</span> <span class="p">)</span>  
+
+        <span class="k">return</span><span class="p">(</span><span class="n">N</span><span class="p">)</span></div>
+        
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="GMT_Point.add_to_gmt_psvelo"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.add_to_gmt_psvelo">[docs]</a>    <span class="k">def</span> <span class="nf">add_to_gmt_psvelo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">fname</span><span class="p">,</span><span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds the current GMT_Point to a gmt psvelo file</span>
+<span class="sd">        </span>
+<span class="sd">        :param fname: gmt psvelo file</span>
+<span class="sd">        :param overwrite: will overwrite the line corresponding having the same code (default is False), generate an error otherwises</span>
+<span class="sd">        :param verbose: verbose mode</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># reads the velocity file</span>
+        <span class="kn">import</span> <span class="nn">pyacs.lib.vel_field</span>
+        
+        <span class="n">vel</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">vel_field</span><span class="o">.</span><span class="n">Velocity_Field</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">vel</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="n">fname</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- file does not exist. Creating: </span><span class="si">%s</span><span class="s1"> &#39;</span> <span class="p">,</span> <span class="n">fname</span> <span class="p">)</span>
+
+        <span class="c1"># if overwrite option</span>
+        
+        <span class="k">if</span> <span class="n">overwrite</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="ow">in</span> <span class="n">vel</span><span class="o">.</span><span class="n">lcode</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- replacing site </span><span class="si">%s</span><span class="s1">:</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span><span class="n">vel</span><span class="o">.</span><span class="n">site</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">)</span><span class="o">.</span><span class="n">get_info</span><span class="p">()))</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- with      site </span><span class="si">%s</span><span class="s1">:</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">get_info</span><span class="p">()))</span>
+
+            <span class="n">vel</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+
+        <span class="c1"># add self</span>
+        
+        <span class="n">vel</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># write output psvelo file</span>
+        
+        <span class="n">vel</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span></div>
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="GMT_Point.rotate_vel"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.rotate_vel">[docs]</a>    <span class="k">def</span> <span class="nf">rotate_vel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span><span class="n">unit</span><span class="o">=</span><span class="s1">&#39;radians&#39;</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+        
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Rotate a vector of angle (clockwise)</span>
+<span class="sd">        </span>
+<span class="sd">        :param angle: angle</span>
+<span class="sd">        :param unit: &#39;dec_deg&#39; or &#39;radians&#39; (default radians)</span>
+<span class="sd">        </span>
+<span class="sd">        :return : rotated components of velocity</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+        
+        <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s1">&#39;degrees&#39;</span><span class="p">:</span>
+            <span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+
+        <span class="n">N</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">__rotate__</span><span class="p">(</span><span class="n">V</span><span class="p">,</span><span class="n">rad_angle</span><span class="p">):</span>
+
+            <span class="n">cos</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">rad_angle</span><span class="p">)</span>
+            <span class="n">sin</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">rad_angle</span><span class="p">)</span>
+            <span class="n">R</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">cos</span><span class="p">,</span><span class="o">-</span><span class="n">sin</span><span class="p">],[</span><span class="n">sin</span><span class="p">,</span><span class="n">cos</span><span class="p">]])</span>
+            <span class="k">return</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">V</span><span class="p">))</span>
+        
+
+        <span class="n">V</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">Ve</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Vn</span><span class="p">])</span>
+        <span class="n">rotated</span><span class="o">=</span><span class="n">__rotate__</span><span class="p">(</span><span class="n">V</span><span class="p">,</span><span class="n">angle</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">Ve</span><span class="p">,</span><span class="n">N</span><span class="o">.</span><span class="n">Vn</span><span class="p">)</span><span class="o">=</span><span class="p">(</span><span class="n">rotated</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">rotated</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        
+        <span class="k">return</span><span class="p">(</span><span class="n">N</span><span class="p">)</span></div>
+ 
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="GMT_Point.midpoint"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.midpoint">[docs]</a>    <span class="k">def</span> <span class="nf">midpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span> <span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="s1">&#39;Mm&#39;</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+        
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        returns the mid-point between two GMT_Point</span>
+<span class="sd">        </span>
+<span class="sd">        :param point: GMT_Point</span>
+<span class="sd">        </span>
+<span class="sd">        :return : mid_point as GMT_Point</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="kn">import</span> <span class="nn">pyacs.lib.coordinates</span>
+        
+        <span class="p">(</span><span class="n">Xi</span><span class="p">,</span><span class="n">Yi</span><span class="p">,</span><span class="n">Zi</span><span class="p">)</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">geo2xyz</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;dec_deg&#39;</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">Xe</span><span class="p">,</span><span class="n">Ye</span><span class="p">,</span><span class="n">Ze</span><span class="p">)</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">geo2xyz</span><span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">point</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;dec_deg&#39;</span><span class="p">)</span>
+
+        <span class="n">X</span> <span class="o">=</span> <span class="p">(</span> <span class="n">Xi</span> <span class="o">+</span> <span class="n">Xe</span> <span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="p">(</span> <span class="n">Yi</span> <span class="o">+</span> <span class="n">Ye</span> <span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span>
+        <span class="n">Z</span> <span class="o">=</span> <span class="p">(</span> <span class="n">Zi</span> <span class="o">+</span> <span class="n">Ze</span> <span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span>
+        
+        <span class="p">(</span> <span class="n">lonMm</span> <span class="p">,</span> <span class="n">latMm</span><span class="p">,</span> <span class="n">heMm</span> <span class="p">)</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">xyz2geo</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;dec_deg&#39;</span> <span class="p">)</span>
+        
+        
+        <span class="n">Mm</span> <span class="o">=</span> <span class="n">GMT_Point</span><span class="p">(</span><span class="n">code</span> <span class="o">=</span> <span class="n">code</span><span class="p">)</span>
+        <span class="n">Mm</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="n">lonMm</span>
+        <span class="n">Mm</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="n">latMm</span>        
+        <span class="n">Mm</span><span class="o">.</span><span class="n">he</span>  <span class="o">=</span> <span class="n">heMm</span>
+        
+        <span class="k">return</span> <span class="n">Mm</span></div></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

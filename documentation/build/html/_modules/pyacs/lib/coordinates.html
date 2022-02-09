@@ -1,0 +1,704 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.lib.coordinates &mdash; pyacs 0.65.66 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.66
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.lib.coordinates</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.lib.coordinates</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Coordinates library.</span>
+
+<span class="sd">-- Local/Geocentric frame conversion</span>
+
+<span class="sd">-- Geodetic/Geocentric frame conversion</span>
+
+<span class="sd">-- Spherical/Geocentric conversion</span>
+
+<span class="sd">-- Geodetic/Flat Earth conversion</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">pyacs.lib.errors</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="mat_rot_general_to_local"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.coordinates.mat_rot_general_to_local">[docs]</a><span class="k">def</span> <span class="nf">mat_rot_general_to_local</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span><span class="n">phi</span><span class="p">,</span><span class="n">unit</span><span class="o">=</span><span class="s1">&#39;radians&#39;</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+    
+    <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Generates the conversion matrix R from general geocentric cartesian coordinates (XYZ) to local cartesian coordinates (ENU):</span>
+<span class="sd">    </span>
+<span class="sd">    :param lam,phi: longitude</span>
+<span class="sd">    :param unit: &#39;radians&#39; or &#39;dec_deg&#39; (default is &#39;radians&#39;)</span>
+<span class="sd">    </span>
+<span class="sd">    :returns: R as a 2D numpy array</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    :note: R = [[-sin(lambda)            cos(lambda)         0       ],</span>
+<span class="sd">    </span>
+<span class="sd">    [-sin(phi)*cos(lambda) , -sin(phi)*sin(lamda) , cos(phi)],</span>
+<span class="sd">    </span>
+<span class="sd">    [ cos(phi)*cos(lambda) , cos(phi)*sin(lamda) , sin(phi)]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#print(&quot;unit:&quot;,unit)</span>
+
+
+    <span class="k">if</span> <span class="n">unit</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;radians&#39;</span><span class="p">,</span><span class="s1">&#39;dec_deg&#39;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="n">OptionError</span><span class="p">(</span><span class="s2">&quot;unit option must be in [radians,dec_deg];unit=&quot;</span><span class="p">,</span><span class="n">unit</span><span class="p">)</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+    <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s1">&#39;dec_deg&#39;</span><span class="p">:</span>
+        <span class="n">lam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lam</span><span class="p">)</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
+    
+    <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">R</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lam</span><span class="p">)</span>
+    <span class="n">R</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lam</span><span class="p">)</span>
+
+    <span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lam</span><span class="p">)</span>
+    <span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lam</span><span class="p">)</span>
+    <span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
+    
+    <span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lam</span><span class="p">)</span>
+    <span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lam</span><span class="p">)</span>
+    <span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">R</span></div>
+
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="mat_rot_local_to_general"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.coordinates.mat_rot_local_to_general">[docs]</a><span class="k">def</span> <span class="nf">mat_rot_local_to_general</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span><span class="n">phi</span><span class="p">,</span><span class="n">unit</span><span class="o">=</span><span class="s1">&#39;radians&#39;</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates the conversion matrix R from local cartesian coordinates (ENU) to general geocentric cartesian coordinates (XYZ):</span>
+
+<span class="sd">    :param lam,phi: longitude in radians</span>
+<span class="sd">    :param unit: &#39;radians&#39; or &#39;dec_deg&#39; (default is &#39;radians&#39;)</span>
+
+<span class="sd">    :returns: R as a 2D numpy array</span>
+<span class="sd">    </span>
+<span class="sd">    :note: Since R is orthogonal, it is the inverse and also the transpose of the conversion matrix from general geocentric cartesian coordinates (XYZ) to local cartesian coordinates (ENU)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">unit</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;radians&#39;</span><span class="p">,</span><span class="s1">&#39;dec_deg&#39;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="n">OptionError</span><span class="p">(</span><span class="s2">&quot;unit option must be in [radians,dec_deg];unit=&quot;</span><span class="p">,</span><span class="n">unit</span><span class="p">)</span>
+    
+    <span class="k">return</span><span class="p">(</span><span class="n">mat_rot_general_to_local</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span><span class="n">phi</span><span class="p">,</span><span class="n">unit</span><span class="o">=</span><span class="n">unit</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">)</span></div>
+
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="denu_at_x0y0z0_to_xyz"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.coordinates.denu_at_x0y0z0_to_xyz">[docs]</a><span class="k">def</span> <span class="nf">denu_at_x0y0z0_to_xyz</span><span class="p">(</span><span class="n">de</span><span class="p">,</span><span class="n">dn</span><span class="p">,</span><span class="n">du</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">y0</span><span class="p">,</span><span class="n">z0</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a local vector [dn,de,du] at [x0,y0,z0] in geocentric cartesian coordinates</span>
+<span class="sd">    into X,Y,Z geocentric cartesian coordinates</span>
+<span class="sd">    </span>
+<span class="sd">    :param de,dn,du: east,north, up components of the local vector in meters</span>
+<span class="sd">    :param x0,x0,z0: reference point for the local vector in geocentric cartesian coordinates</span>
+<span class="sd">    </span>
+<span class="sd">    :returns: x,y,z in geocentric cartesian coordinates</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    
+    <span class="p">(</span><span class="n">lam</span><span class="p">,</span><span class="n">phi</span><span class="p">,</span><span class="n">_</span><span class="p">)</span><span class="o">=</span><span class="n">xyz2geo</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="n">y0</span><span class="p">,</span><span class="n">z0</span><span class="p">)</span>
+    <span class="n">R</span><span class="o">=</span><span class="n">mat_rot_local_to_general</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span><span class="n">phi</span><span class="p">)</span>
+    
+    <span class="n">DL</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">de</span><span class="p">,</span><span class="n">dn</span><span class="p">,</span><span class="n">du</span><span class="p">])</span>
+    <span class="n">X0</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x0</span><span class="p">,</span><span class="n">y0</span><span class="p">,</span><span class="n">z0</span><span class="p">])</span>
+    <span class="n">XYZ</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">DL</span><span class="p">)</span><span class="o">+</span><span class="n">X0</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">XYZ</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">XYZ</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">XYZ</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span></div>
+
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="xyz2geo"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.coordinates.xyz2geo">[docs]</a><span class="k">def</span> <span class="nf">xyz2geo</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">A</span><span class="o">=</span><span class="mf">6378137.</span><span class="p">,</span><span class="n">E2</span> <span class="o">=</span> <span class="mf">0.006694380022903</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;radians&#39;</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts geocentric cartesian coordinates (XYZ) to geodetic coordinates (lambda,phi,h)</span>
+<span class="sd">    </span>
+<span class="sd">    :param x,y,z: XYZ coordinates in meters</span>
+<span class="sd">    :param unit: &#39;radians&#39; or &#39;dec_deg&#39; (default is &#39;radians&#39;)</span>
+<span class="sd">    </span>
+<span class="sd">    :returns: long,lat,he: longitude and latitude in radians, he in meters above the ellipsoid</span>
+
+<span class="sd">    :note: Default ellipsoid is GRS80 used for WGS84 with</span>
+<span class="sd">    </span>
+<span class="sd">    A  = 6378137.         # semi major axis = equatorial radius</span>
+<span class="sd">    </span>
+<span class="sd">    E2 = 0.00669438003    # eccentricity and then</span>
+<span class="sd">    </span>
+<span class="sd">    F = 1.0 - sqrt(1-E2)  # flattening</span>
+
+<span class="sd">    :ref: Bowring, 1985, The accuracy of geodetic latitude and height equations, Survey Review, 28, 202-206.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">if</span> <span class="n">unit</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;radians&#39;</span><span class="p">,</span><span class="s1">&#39;dec_deg&#39;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="n">OptionError</span><span class="p">(</span><span class="s2">&quot;unit option must be in [radians,dec_deg];unit=&quot;</span><span class="p">,</span><span class="n">unit</span><span class="p">)</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    
+    <span class="n">F</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">E2</span><span class="p">)</span>
+    
+    <span class="n">TP</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span> <span class="p">(</span><span class="n">TP</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">z</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+ 
+    <span class="n">TMU</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span> <span class="p">(</span><span class="n">z</span><span class="o">/</span><span class="n">TP</span><span class="p">)</span><span class="o">*</span><span class="p">((</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">F</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">E2</span><span class="o">*</span><span class="n">A</span><span class="p">)</span><span class="o">/</span><span class="n">R</span><span class="p">)</span> <span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">RLBDA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="n">S3</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">TMU</span><span class="p">))</span><span class="o">**</span><span class="mi">3</span>
+    <span class="n">C3</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">TMU</span><span class="p">))</span><span class="o">**</span><span class="mi">3</span>
+    <span class="n">T1</span> <span class="o">=</span> <span class="n">z</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">F</span><span class="p">)</span> <span class="o">+</span> <span class="n">E2</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="n">S3</span>
+    <span class="n">T2</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">F</span><span class="p">)</span><span class="o">*</span><span class="p">(</span> <span class="n">TP</span> <span class="o">-</span> <span class="n">E2</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="n">C3</span> <span class="p">)</span>
+
+
+    <span class="n">RPHI</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">T1</span><span class="p">,</span><span class="n">T2</span><span class="p">)</span>
+    <span class="n">RHE</span> <span class="o">=</span> <span class="n">TP</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">RPHI</span><span class="p">))</span> <span class="o">+</span> <span class="n">z</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">RPHI</span><span class="p">))</span>
+    <span class="n">RHE</span> <span class="o">=</span> <span class="n">RHE</span> <span class="o">-</span> <span class="n">A</span><span class="o">*</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">E2</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">RPHI</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s1">&#39;dec_deg&#39;</span><span class="p">:</span>
+        <span class="n">RLBDA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">RLBDA</span><span class="p">)</span>
+        <span class="n">RPHI</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">RPHI</span><span class="p">)</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">RLBDA</span><span class="p">,</span><span class="n">RPHI</span><span class="p">,</span><span class="n">RHE</span><span class="p">)</span></div>
+
+
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="geo2xyz"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.coordinates.geo2xyz">[docs]</a><span class="k">def</span> <span class="nf">geo2xyz</span><span class="p">(</span><span class="n">llambda</span><span class="p">,</span><span class="n">phi</span><span class="p">,</span><span class="n">he</span><span class="p">,</span><span class="n">unit</span><span class="o">=</span><span class="s1">&#39;radians&#39;</span><span class="p">,</span><span class="n">A</span><span class="o">=</span><span class="mf">6378137.</span><span class="p">,</span><span class="n">E2</span> <span class="o">=</span> <span class="mf">0.006694380022903</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts geodetic coordinates (long,lat,he) to geocentric cartesian coordinates (XYZ)</span>
+
+<span class="sd">    :param llambda,phi: longitude, latitude</span>
+<span class="sd">    :param he: ellipsoidal height in meters</span>
+<span class="sd">    :param unit: &#39;radians&#39; or &#39;dec_deg&#39; for llambda and phi (default is &#39;radians&#39;)</span>
+
+<span class="sd">    :returns: x,y,z in meters</span>
+<span class="sd">    </span>
+<span class="sd">    :note: Default ellipsoid is GRS80 used for WGS84 with</span>
+<span class="sd">    </span>
+<span class="sd">    A  = 6378137.         # semi major axis = equatorial radius</span>
+<span class="sd">    </span>
+<span class="sd">    E2 = 0.00669438003    # eccentricity and then</span>
+<span class="sd">    </span>
+<span class="sd">    F = 1.0 - sqrt(1-E2)  # flattening</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">unit</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;radians&#39;</span><span class="p">,</span><span class="s1">&#39;dec_deg&#39;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="n">OptionError</span><span class="p">(</span><span class="s2">&quot;unit option must be in [radians,dec_deg];unit=&quot;</span><span class="p">,</span><span class="n">unit</span><span class="p">)</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+      
+    <span class="k">if</span> <span class="n">unit</span><span class="o">==</span><span class="s1">&#39;dec_deg&#39;</span><span class="p">:</span>
+        <span class="n">llambda</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">llambda</span><span class="p">)</span>
+        <span class="n">phi</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
+
+    <span class="n">a</span><span class="o">=</span><span class="n">A</span>
+    <span class="n">e2</span><span class="o">=</span><span class="n">E2</span>
+
+    <span class="n">wn</span><span class="o">=</span><span class="n">wnorm</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">E2</span><span class="o">=</span><span class="n">e2</span><span class="p">)</span>
+   
+    <span class="n">xx</span><span class="o">=</span><span class="p">(</span><span class="n">wn</span><span class="o">+</span><span class="n">he</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">llambda</span><span class="p">)</span>
+    <span class="n">yy</span><span class="o">=</span><span class="p">(</span><span class="n">wn</span><span class="o">+</span><span class="n">he</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">llambda</span><span class="p">)</span>
+    <span class="n">zz</span><span class="o">=</span><span class="p">(</span><span class="n">wn</span><span class="o">*</span><span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">e2</span><span class="p">)</span><span class="o">+</span><span class="n">he</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
+   
+    <span class="k">return</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">,</span><span class="n">zz</span><span class="p">)</span>     </div>
+
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="wnorm"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.coordinates.wnorm">[docs]</a><span class="k">def</span> <span class="nf">wnorm</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span><span class="n">A</span><span class="o">=</span><span class="mf">6378137.</span><span class="p">,</span><span class="n">E2</span> <span class="o">=</span> <span class="mf">0.006694380022903</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the geodetic radius normal to the ellipsoid</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="n">a</span><span class="o">=</span><span class="n">A</span>
+    <span class="n">e2</span><span class="o">=</span><span class="n">E2</span>
+  
+    <span class="n">wd</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.</span><span class="o">-</span><span class="n">e2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> 
+    <span class="n">result</span><span class="o">=</span><span class="n">a</span><span class="o">/</span><span class="n">wd</span>
+    
+    <span class="k">return</span> <span class="p">(</span><span class="n">result</span><span class="p">)</span>  </div>
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="xyz2geospheric"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.coordinates.xyz2geospheric">[docs]</a><span class="k">def</span> <span class="nf">xyz2geospheric</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">unit</span><span class="o">=</span><span class="s1">&#39;radians&#39;</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts geocentric cartesian coordinates (XYZ) to geo-spherical coordinates (longitude,latitude,radius).</span>
+<span class="sd">    </span>
+<span class="sd">    :param x,y,z: geocentric cartesian coordinates in meters</span>
+<span class="sd">    :param unit: &#39;radians&#39; or &#39;dec_deg&#39; (default is &#39;radians&#39;)</span>
+<span class="sd">    </span>
+<span class="sd">    :returns: longitude,latitude (in radians), radius from the Earth&#39;s center in meters</span>
+<span class="sd">    </span>
+<span class="sd">    :note: Be aware that the obtained coordinates are not what is usually taken as spherical coordinates, which uses co-latitude</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">unit</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;radians&#39;</span><span class="p">,</span><span class="s1">&#39;dec_deg&#39;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="n">OptionError</span><span class="p">(</span><span class="s2">&quot;unit option must be in [radians,dec_deg];unit=&quot;</span><span class="p">,</span><span class="n">unit</span><span class="p">)</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    
+    <span class="n">R</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">z</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">RLBDA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+    
+    <span class="n">Req</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">Req</span> <span class="o">!=</span><span class="mf">0.</span><span class="p">:</span>
+        <span class="n">RPHI</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">z</span><span class="o">/</span><span class="n">Req</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">RPHI</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">2.</span><span class="o">*</span><span class="n">z</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">z</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s1">&#39;dec_deg&#39;</span><span class="p">:</span>
+        <span class="n">RLBDA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">RLBDA</span><span class="p">)</span>
+        <span class="n">RPHI</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">RPHI</span><span class="p">)</span>
+    
+    <span class="k">return</span><span class="p">(</span><span class="n">RLBDA</span><span class="p">,</span><span class="n">RPHI</span><span class="p">,</span><span class="n">R</span><span class="p">)</span></div>
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="xyz_spherical_distance"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.coordinates.xyz_spherical_distance">[docs]</a><span class="k">def</span> <span class="nf">xyz_spherical_distance</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">y1</span><span class="p">,</span><span class="n">z1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">z2</span><span class="p">,</span><span class="n">Rt</span><span class="o">=</span><span class="mf">6.371E6</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the spherical distance between two points of XYZ coordinates x1,y1,z1 and x2,y2,z2</span>
+<span class="sd">     </span>
+<span class="sd">    :param x1,y1,z1,x2,y2,z2: in meters</span>
+<span class="sd">    :param Rt: mean Earth&#39;s radius in meters (default 6 371 000.0 m)</span>
+<span class="sd"> </span>
+<span class="sd">    :returns: distance in meters</span>
+<span class="sd">     </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+ 
+    <span class="kn">import</span> <span class="nn">pyacs.lib.vectors</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+     
+    <span class="n">sp</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">vectors</span><span class="o">.</span><span class="n">scal_prod</span><span class="p">(</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">vectors</span><span class="o">.</span><span class="n">normalize</span><span class="p">([</span><span class="n">x1</span><span class="p">,</span><span class="n">y1</span><span class="p">,</span><span class="n">z1</span><span class="p">]),</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">vectors</span><span class="o">.</span><span class="n">normalize</span><span class="p">([</span><span class="n">x2</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">z2</span><span class="p">]))</span>
+    <span class="n">sp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span><span class="n">decimals</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span> <span class="n">sp</span> <span class="p">)</span> <span class="o">*</span> <span class="n">Rt</span> <span class="p">)</span></div>
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="geo_spherical_distance"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.coordinates.geo_spherical_distance">[docs]</a><span class="k">def</span> <span class="nf">geo_spherical_distance</span><span class="p">(</span><span class="n">lon1</span><span class="p">,</span><span class="n">lat1</span><span class="p">,</span><span class="n">h1</span><span class="p">,</span><span class="n">lon2</span><span class="p">,</span><span class="n">lat2</span><span class="p">,</span><span class="n">h2</span><span class="p">,</span><span class="n">unit</span><span class="o">=</span><span class="s1">&#39;radians&#39;</span><span class="p">,</span><span class="n">Rt</span><span class="o">=</span><span class="mf">6.371E6</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the spherical distance between two points of geodetic coordinates lon1,lat1,lon2,lat2</span>
+<span class="sd">     </span>
+<span class="sd">    :param lon1,lat1,h1,lon2,lat2,h2: longitude, latitude, radius</span>
+<span class="sd">    :param unit: &#39;radians&#39; or &#39;dec_deg&#39; for lon &amp; lat (default is &#39;radians&#39;)</span>
+<span class="sd">    :param Rt: mean Earth&#39;s radius in meters (default 6 371 000.0 m)</span>
+<span class="sd"> </span>
+<span class="sd">    :returns: distance in meters</span>
+<span class="sd">     </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">unit</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;radians&#39;</span><span class="p">,</span><span class="s1">&#39;dec_deg&#39;</span><span class="p">]:</span>
+       <span class="k">raise</span> <span class="n">OptionError</span><span class="p">(</span><span class="s2">&quot;unit option must be in [radians,dec_deg];unit=&quot;</span><span class="p">,</span><span class="n">unit</span><span class="p">)</span>
+
+    <span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">y1</span><span class="p">,</span><span class="n">z1</span><span class="p">)</span><span class="o">=</span><span class="n">geo2xyz</span><span class="p">(</span><span class="n">lon1</span><span class="p">,</span> <span class="n">lat1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="n">unit</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">x2</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">z2</span><span class="p">)</span><span class="o">=</span><span class="n">geo2xyz</span><span class="p">(</span><span class="n">lon2</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="n">unit</span><span class="p">)</span>
+ 
+ 
+    <span class="k">return</span> <span class="n">xyz_spherical_distance</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">y1</span><span class="p">,</span><span class="n">z1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">z2</span><span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="azimuth_to_en"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.coordinates.azimuth_to_en">[docs]</a><span class="k">def</span> <span class="nf">azimuth_to_en</span><span class="p">(</span><span class="n">azimuth</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts an azimuth (clockwise from north) to east and north unit vector</span>
+
+<span class="sd">    :param azimuth: azimuth in decimal degrees</span>
+<span class="sd">    :return east,north: unit vector  </span>
+<span class="sd">    :note: calculation is made using the sphere</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="n">r_az</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">azimuth</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">r_az</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">r_az</span><span class="p">))</span></div>
+
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="geo2flat_earth"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.coordinates.geo2flat_earth">[docs]</a><span class="k">def</span> <span class="nf">geo2flat_earth</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span><span class="n">latitude</span><span class="p">):</span>
+<span class="c1">##################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts geographical coordinates to flat earth approximation</span>
+<span class="sd">    uses pyproj and web Mercator projection.</span>
+<span class="sd">    </span>
+<span class="sd">    :param longitude,latitude: geographical (ellipsoid) coordinates in decimal degrees. Also works with 1D numpy arrays</span>
+<span class="sd">    </span>
+<span class="sd">    :returns x,y: in km</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># import</span>
+    <span class="kn">from</span> <span class="nn">pyproj</span> <span class="kn">import</span> <span class="n">Transformer</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="n">longitude</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">longitude</span><span class="p">)</span>
+    <span class="n">latitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">latitude</span><span class="p">)</span>
+
+    <span class="n">TRAN_4326_TO_3857</span> <span class="o">=</span> <span class="n">Transformer</span><span class="o">.</span><span class="n">from_crs</span><span class="p">(</span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span> <span class="s2">&quot;EPSG:3857&quot;</span><span class="p">,</span> <span class="n">always_xy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span> <span class="o">=</span> <span class="n">TRAN_4326_TO_3857</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span> <span class="n">longitude</span> <span class="p">,</span> <span class="n">latitude</span> <span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mf">1.E-3</span><span class="p">,</span> <span class="n">y</span> <span class="o">*</span> <span class="mf">1.E-3</span></div>
+
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="flat_earth2geo"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.coordinates.flat_earth2geo">[docs]</a><span class="k">def</span> <span class="nf">flat_earth2geo</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="c1">##################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts web Mercator coordinates (units km) to geographical coordinates</span>
+<span class="sd">    uses pyproj and web Mercator projection.</span>
+
+<span class="sd">    :param longitude,latitude: geographical (ellipsoid) coordinates in decimal degrees. Also works with 1D numpy arrays</span>
+
+<span class="sd">    :returns x,y: in km</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># import</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">from</span> <span class="nn">pyproj</span> <span class="kn">import</span> <span class="n">Transformer</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+    <span class="n">TRAN_3857_TO_4326</span> <span class="o">=</span> <span class="n">Transformer</span><span class="o">.</span><span class="n">from_crs</span><span class="p">(</span><span class="s2">&quot;EPSG:3857&quot;</span><span class="p">,</span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">,</span> <span class="n">always_xy</span><span class="o">=</span><span class="kc">True</span> <span class="p">)</span>
+    <span class="k">return</span> <span class="n">TRAN_3857_TO_4326</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="mf">1.E3</span> <span class="p">,</span> <span class="n">y</span> <span class="o">*</span><span class="mf">1.E3</span><span class="p">,</span>  <span class="p">)</span></div>
+
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="spherical_baseline_length_rate"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.coordinates.spherical_baseline_length_rate">[docs]</a><span class="k">def</span> <span class="nf">spherical_baseline_length_rate</span><span class="p">(</span><span class="n">slon</span><span class="p">,</span> <span class="n">slat</span><span class="p">,</span> <span class="n">sve</span><span class="p">,</span> <span class="n">svn</span><span class="p">,</span> <span class="n">elon</span><span class="p">,</span> <span class="n">elat</span><span class="p">,</span> <span class="n">eve</span><span class="p">,</span> <span class="n">evn</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    calculates the baseline (great circle) length rate of change between two points</span>
+<span class="sd">    </span>
+<span class="sd">    :param slon,slat: coordinates of profile start point (decimal degrees) </span>
+<span class="sd">    :param sve,svn: east and north components of start point (mm/yr) </span>
+<span class="sd">    :param elon,elat: coordinates of profile end   point (decimal degrees)</span>
+<span class="sd">    :param eve,evn: east and north components of end point (mm/yr) </span>
+<span class="sd">    :param sigma: list of velocities uncertainties: [sig_sve, sig_svn, corr_sven, sig_eve, sig_evn, corr_even] </span>
+<span class="sd">    </span>
+<span class="sd">    :return         :  length, rate, 1D strain rate</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Rt in meters</span>
+    
+    <span class="n">Rt</span> <span class="o">=</span> <span class="mf">6371.0E3</span>
+    
+    <span class="c1"># </span>
+    <span class="c1">#print(&#39;slon, slat, sve, svn, elon, elat, eve, evn&#39;,slon, slat, sve, svn, elon, elat, eve, evn)</span>
+    <span class="c1">#print(&#39;sigma &#39;, sigma )</span>
+    
+    <span class="c1"># import</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">from</span> <span class="nn">pyacs.lib</span> <span class="kn">import</span> <span class="n">vectors</span>
+    <span class="kn">from</span> <span class="nn">pyacs.lib.gmtpoint</span> <span class="kn">import</span> <span class="n">GMT_Point</span>
+    <span class="kn">from</span> <span class="nn">pyacs.lib</span> <span class="kn">import</span> <span class="n">glinalg</span>
+    <span class="kn">from</span> <span class="nn">pyacs.lib</span> <span class="kn">import</span> <span class="n">euler</span>
+
+    <span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="n">yi</span><span class="p">,</span> <span class="n">zi</span><span class="p">)</span> <span class="o">=</span> <span class="n">geo2xyz</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">slon</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">slat</span><span class="p">),</span> <span class="mf">0.0</span> <span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;radians&#39;</span><span class="p">)</span>
+    <span class="n">Xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xi</span><span class="p">,</span> <span class="n">yi</span><span class="p">,</span> <span class="n">zi</span><span class="p">])</span>
+    <span class="c1">#print(&#39;Xi&#39; , Xi)</span>
+
+    <span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">zs</span><span class="p">)</span> <span class="o">=</span> <span class="n">geo2xyz</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">elon</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">elat</span><span class="p">),</span> <span class="mf">0.0</span> <span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;radians&#39;</span><span class="p">)</span>
+    <span class="n">Xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">zs</span><span class="p">])</span>
+    <span class="c1">#print(&#39;Xs&#39; , Xs)</span>
+
+    <span class="n">POLE</span> <span class="o">=</span> <span class="n">vectors</span><span class="o">.</span><span class="n">vector_product</span><span class="p">(</span><span class="n">Xi</span><span class="p">,</span> <span class="n">Xs</span><span class="p">)</span>
+    <span class="c1">#print( euler.rot2euler(POLE[0], POLE[1], POLE[2]) )</span>
+    <span class="n">POLE</span> <span class="o">=</span> <span class="n">vectors</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">POLE</span><span class="p">)</span>
+
+    <span class="c1"># along / transverse great circle component start point</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">mat_rot_general_to_local</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">slon</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">slat</span><span class="p">),</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;radians&#39;</span><span class="p">)</span>
+    <span class="n">OM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xi</span><span class="p">,</span> <span class="n">yi</span><span class="p">,</span> <span class="n">zi</span><span class="p">])</span>
+    <span class="n">OM</span> <span class="o">=</span> <span class="n">vectors</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">OM</span><span class="p">)</span>
+
+    <span class="n">unit_parallele_xyz</span> <span class="o">=</span> <span class="n">vectors</span><span class="o">.</span><span class="n">vector_product</span><span class="p">(</span><span class="n">POLE</span><span class="p">,</span> <span class="n">OM</span><span class="p">)</span>
+    <span class="n">unit_parallele_enu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">unit_parallele_xyz</span><span class="p">)</span>
+    <span class="c1">#print(&#39;unit_parallele_enu&#39; , unit_parallele_enu*10. )</span>
+
+    <span class="n">sv_parallele</span> <span class="o">=</span> <span class="n">sve</span> <span class="o">*</span> <span class="n">unit_parallele_enu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">svn</span> <span class="o">*</span> <span class="n">unit_parallele_enu</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">sv_perpendicular</span> <span class="o">=</span> <span class="n">sve</span> <span class="o">*</span> <span class="n">unit_parallele_enu</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">svn</span> <span class="o">*</span> <span class="n">unit_parallele_enu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># covariance</span>
+    <span class="k">if</span> <span class="n">sigma</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="n">sigma</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="n">sigma</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">])</span>
+        <span class="n">corr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">corr</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">sigma</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">corr</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">sigma</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">cov</span> <span class="o">=</span> <span class="n">glinalg</span><span class="o">.</span><span class="n">corr_to_cov</span><span class="p">(</span><span class="n">corr</span><span class="p">,</span> <span class="n">sig</span> <span class="p">)</span>
+        <span class="c1"># rotation</span>
+        <span class="n">angle_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span> <span class="n">unit_parallele_enu</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">,</span> <span class="n">unit_parallele_enu</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">)</span>
+        <span class="c1">#print(&#39;angle_rad in deg &#39; , np.degrees( angle_rad ))</span>
+        <span class="n">rot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">rot</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">angle_rad</span> <span class="p">)</span>
+        <span class="n">rot</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">angle_rad</span> <span class="p">)</span>
+        <span class="n">rot</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">angle_rad</span> <span class="p">)</span>
+        <span class="n">rot</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">angle_rad</span> <span class="p">)</span>
+        <span class="n">rot</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">angle_rad</span> <span class="p">)</span>
+        <span class="c1"># apply rotation</span>
+        <span class="n">vcv_en</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span> <span class="n">rot</span> <span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span> <span class="n">cov</span> <span class="p">,</span> <span class="n">rot</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="p">)</span>
+        
+        <span class="n">s_sv_parallel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">vcv_en</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+
+    <span class="c1"># along / transverse great circle component end point</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">mat_rot_general_to_local</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">elon</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">elat</span><span class="p">),</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;radians&#39;</span><span class="p">)</span>
+    <span class="n">OM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">zs</span><span class="p">])</span>
+    <span class="n">OM</span> <span class="o">=</span> <span class="n">vectors</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">OM</span><span class="p">)</span>
+
+    <span class="n">unit_parallele_xyz</span> <span class="o">=</span> <span class="n">vectors</span><span class="o">.</span><span class="n">vector_product</span><span class="p">(</span><span class="n">POLE</span><span class="p">,</span> <span class="n">OM</span><span class="p">)</span>
+    <span class="n">unit_parallele_enu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">unit_parallele_xyz</span><span class="p">)</span>
+    <span class="c1">#print(&#39;unit_parallele_enu&#39; , unit_parallele_enu*10. )</span>
+    <span class="n">ev_parallele</span> <span class="o">=</span> <span class="n">eve</span> <span class="o">*</span> <span class="n">unit_parallele_enu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">evn</span> <span class="o">*</span> <span class="n">unit_parallele_enu</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">ev_perpendicular</span> <span class="o">=</span> <span class="n">eve</span> <span class="o">*</span> <span class="n">unit_parallele_enu</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">evn</span> <span class="o">*</span> <span class="n">unit_parallele_enu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># covariance</span>
+    <span class="k">if</span> <span class="n">sigma</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="n">sigma</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="p">,</span> <span class="n">sigma</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="p">])</span>
+        <span class="n">corr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">corr</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">sigma</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+        <span class="n">corr</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">sigma</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+        <span class="n">cov</span> <span class="o">=</span> <span class="n">glinalg</span><span class="o">.</span><span class="n">corr_to_cov</span><span class="p">(</span><span class="n">corr</span><span class="p">,</span> <span class="n">sig</span> <span class="p">)</span>
+        <span class="c1"># rotation</span>
+        <span class="n">angle_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span> <span class="n">unit_parallele_enu</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">,</span> <span class="n">unit_parallele_enu</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">)</span>
+        <span class="c1">#print(&#39;angle_rad in deg &#39; , np.degrees( angle_rad ))</span>
+        <span class="n">rot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">rot</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">angle_rad</span> <span class="p">)</span>
+        <span class="n">rot</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">angle_rad</span> <span class="p">)</span>
+        <span class="n">rot</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">angle_rad</span> <span class="p">)</span>
+        <span class="n">rot</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">angle_rad</span> <span class="p">)</span>
+        <span class="n">rot</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span> <span class="n">angle_rad</span> <span class="p">)</span>
+        <span class="c1"># apply rotation</span>
+        <span class="n">vcv_en</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span> <span class="n">rot</span> <span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span> <span class="n">cov</span> <span class="p">,</span> <span class="n">rot</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="p">)</span>
+        
+        <span class="n">s_ev_parallel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">vcv_en</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+        
+        
+    <span class="c1"># great circle arc length</span>
+    <span class="n">MS</span> <span class="o">=</span> <span class="n">GMT_Point</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="n">slon</span><span class="p">,</span> <span class="n">lat</span><span class="o">=</span><span class="n">slat</span><span class="p">)</span>
+    <span class="n">ME</span> <span class="o">=</span> <span class="n">GMT_Point</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="n">elon</span><span class="p">,</span> <span class="n">lat</span><span class="o">=</span><span class="n">elat</span><span class="p">)</span>
+    <span class="n">length_arc</span> <span class="o">=</span> <span class="n">MS</span><span class="o">.</span><span class="n">spherical_distance</span><span class="p">(</span><span class="n">ME</span><span class="p">)</span>
+
+    <span class="c1"># lengthening in mm/yr</span>
+    <span class="n">length_rate</span> <span class="o">=</span> <span class="n">ev_parallele</span> <span class="o">-</span> <span class="n">sv_parallele</span>
+
+    <span class="c1"># 1D strain rate in 1/yr</span>
+    <span class="n">strain_rate</span> <span class="o">=</span> <span class="n">length_rate</span> <span class="o">*</span> <span class="mf">1E-3</span> <span class="o">/</span> <span class="n">length_arc</span>
+    
+    <span class="c1"># case covariance</span>
+    <span class="k">if</span> <span class="n">sigma</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span>  <span class="n">length_arc</span> <span class="p">,</span> <span class="n">length_rate</span> <span class="p">,</span> <span class="n">strain_rate</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sig_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">s_sv_parallel</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">s_ev_parallel</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span>
+        <span class="n">sig_strain_rate</span> <span class="o">=</span> <span class="n">sig_v</span> <span class="o">*</span> <span class="mf">1.E-3</span> <span class="o">/</span> <span class="n">length_arc</span>
+        <span class="k">return</span>  <span class="n">length_arc</span> <span class="p">,</span> <span class="n">length_rate</span> <span class="p">,</span> <span class="n">strain_rate</span><span class="p">,</span>  <span class="n">sig_v</span><span class="p">,</span> <span class="n">sig_strain_rate</span></div>
+
+
+
+
+
+
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

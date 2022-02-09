@@ -1,0 +1,306 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.gts.lib.gts_dates &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.gts.lib.gts_dates</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.gts.lib.gts_dates</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module gathers a few useful date functions, which can be used to read different time series formats.</span>
+<span class="sd">pyacs.pygts uses decimal year as time defaults. Seconds for High-Rate GPS solution can also be used.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+
+<div class="viewcode-block" id="np_yyyy_mm_dd_hh_mm_ss_2_decyear"><a class="viewcode-back" href="../../../../pyacs.gts.lib.html#pyacs.gts.Gts.np_yyyy_mm_dd_hh_mm_ss_2_decyear">[docs]</a><span class="k">def</span> <span class="nf">np_yyyy_mm_dd_hh_mm_ss_2_decyear</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts a numpy array including year month mday hour minute sec to decimal year</span>
+<span class="sd">    returns a 1D array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">from</span> <span class="nn">pyacs.lib</span> <span class="kn">import</span>  <span class="n">astrotime</span> <span class="k">as</span> <span class="n">AstroTime</span>
+
+    <span class="n">ndates</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">np_dec_year</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">ndates</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ndates</span><span class="p">):</span>
+        <span class="n">uts</span><span class="o">=</span><span class="n">AstroTime</span><span class="o">.</span><span class="n">hmsmicros2uts</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]),</span> <span class="n">microsecond</span><span class="o">=</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]))</span><span class="o">/</span><span class="mf">1.E6</span><span class="p">)</span>
+        <span class="n">np_dec_year</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">AstroTime</span><span class="o">.</span><span class="n">cal2decyear</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">ut</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">uts</span><span class="o">=</span><span class="n">uts</span><span class="p">)</span>
+        
+    <span class="k">return</span><span class="p">(</span><span class="n">np_dec_year</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="np_yyyy_mm_dd_hh_mm_ss_2_datetime"><a class="viewcode-back" href="../../../../pyacs.gts.lib.html#pyacs.gts.Gts.np_yyyy_mm_dd_hh_mm_ss_2_datetime">[docs]</a><span class="k">def</span> <span class="nf">np_yyyy_mm_dd_hh_mm_ss_2_datetime</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts a numpy array including year month mday hour minute sec to an array of python datetime.datetime object</span>
+<span class="sd">    returns a hash</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">datetime</span>
+    <span class="n">ndates</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">np_datetime</span><span class="o">=</span><span class="p">{}</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ndates</span><span class="p">):</span>
+        <span class="c1"># round error in second time in track e.g. -0.000001</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">0</span> <span class="ow">and</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">&gt;-</span><span class="mf">0.0001</span><span class="p">:</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="mf">0.0</span>
+        
+        <span class="n">microsecond</span><span class="o">=</span><span class="nb">int</span><span class="p">((</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]))</span><span class="o">*</span><span class="mf">1.E6</span><span class="p">)</span>
+        <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">3</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]),</span><span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]),</span><span class="n">microsecond</span><span class="p">)</span>
+    
+    <span class="k">return</span><span class="p">(</span><span class="n">np_datetime</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="np_datetime_2_eq_time"><a class="viewcode-back" href="../../../../pyacs.gts.lib.html#pyacs.gts.Gts.np_datetime_2_eq_time">[docs]</a><span class="k">def</span> <span class="nf">np_datetime_2_eq_time</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">leap_sec</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span><span class="n">eq_time</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    takes a hash of python datetime.datetime object and return a numpy array of seconds with respect to eq_time</span>
+<span class="sd">    if the input array is in GPS time, providing leap_sec correct for the GPS_time - UTC delta</span>
+
+<span class="sd">    :param leap_sec: number of seconds between GPS_time - UTC delta (leap_sec=17 that is GPS is ahead of UTC by 17 seconds on 13/02/2016)</span>
+<span class="sd">    :param eq_time:  time of earthquake as a python datetime.datetime object (in UTC)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+    
+    <span class="n">corrected_data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)))</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+        <span class="c1">#corrected_data[i]=(data[i]-timedelta(seconds=leap_sec)-eq_time).total_seconds()</span>
+        <span class="n">corrected_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">eq_time</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span><span class="o">-</span><span class="n">leap_sec</span>
+            
+    <span class="k">return</span><span class="p">(</span><span class="n">corrected_data</span><span class="p">)</span></div>
+ 
+<div class="viewcode-block" id="decyear2days"><a class="viewcode-back" href="../../../../pyacs.gts.lib.html#pyacs.gts.Gts.decyear2days">[docs]</a><span class="k">def</span> <span class="nf">decyear2days</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">ref_date</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">in_place</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts the dates of a time series from decimal years to days after a reference date</span>
+<span class="sd">    ref_date is read by guess_date</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">pyacs.lib.astrotime</span> <span class="kn">import</span> <span class="n">guess_date</span>
+    
+    <span class="k">if</span> <span class="n">ref_date</span><span class="o">==</span><span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="n">ref_date</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="k">def</span> <span class="nf">np_decyear_2_days</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">ref_date</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        converts a 1-D numpy array including decimal year to a 1-D numpy array of days after a reference date</span>
+<span class="sd">        ref_date is read by guess_date</span>
+<span class="sd">        returns a 1-D numpy array</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    
+        <span class="kn">from</span> <span class="nn">pyacs.lib</span> <span class="kn">import</span>  <span class="n">astrotime</span> <span class="k">as</span> <span class="n">AT</span>
+    
+        <span class="n">lmjd</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">AT</span><span class="o">.</span><span class="n">decyear2mjd</span><span class="p">,</span><span class="n">data</span><span class="p">)))</span>
+        <span class="n">ref_mjd</span><span class="o">=</span><span class="n">AT</span><span class="o">.</span><span class="n">decyear2mjd</span><span class="p">(</span><span class="n">guess_date</span><span class="p">(</span><span class="n">ref_date</span><span class="p">))</span>
+        
+        <span class="k">return</span><span class="p">(</span><span class="n">lmjd</span><span class="o">-</span><span class="n">ref_mjd</span><span class="p">)</span>
+
+    <span class="n">new_Gts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    
+    <span class="n">new_Gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">np_decyear_2_days</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">ref_date</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">in_place</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">=</span><span class="n">new_Gts</span><span class="o">.</span><span class="n">data</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">new_Gts</span><span class="p">)</span></div>
+
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

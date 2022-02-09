@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9ccfbf4f-02d0-489c-8023-b4cf5d3c0815" name="Default Changelist" comment="# 0.65.3 on 20210303 : refactoring of gts.lib.__init__.py and gts.Gts. added gts.insert_ts and update --replace in pyacs_make_time_series.py&#10;# 0.65.2 on 20210302 : refactoring of gts.lib.model&#10;# 0.65.1 on 20210215 : added pck_only option in pacs_make_time_series.py&#10;# 0.65.0 on 20210215 : added cvxpy as required in setup.py. Remove the png files.&#10;# 0.64.9 on 20210113 : add min_yaxis option in ts.plot&#10;# 0.64.8 on 20201220 : faultslip exploded into individual subroutines. geo2flat changed to use pyproj and web Mercator proj&#10;# 0.64.7 on 20201204 : added outliers package to gts.lib and a new outliers.find_l1trend function&#10;# 0.64.6 on 20201115 : extensive l1 trend filtering added and bug in copy in trajectory (data_xyz must be ignored)&#10;# 0.64.5 on 20201115 : slight change in print Euler pole estimation results&#10;# 0.64.3 on 20201029 : added l1_trend filter">
+      <change afterPath="$PROJECT_DIR$/dist/pyacs-0.1.0.tar.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dist/pyacs-0.65.4.tar.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dist/pyacs-0.65.41.tar.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pyacs/gts/lib/tensor_ts/obs_tensor2sgts.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pyacs/gts/lib/tensor_ts/sgts2obs_tensor.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pyacs/lib/faultslip/rake_from_slip_az.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pyacs/lib/faultslip/unit_normal.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pyacs/lib/faultslip/unit_slip.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/pyacs36.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/pyacs36.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/pyacs-0.65.3.tar.gz" beforeDir="false" afterPath="$PROJECT_DIR$/dist/pyacs-0.65.3.tar.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/documentation/source/gts_class.rst" beforeDir="false" afterPath="$PROJECT_DIR$/documentation/source/gts_class.rst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyacs.egg-info/PKG-INFO" beforeDir="false" afterPath="$PROJECT_DIR$/pyacs.egg-info/PKG-INFO" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyacs.egg-info/SOURCES.txt" beforeDir="false" afterPath="$PROJECT_DIR$/pyacs.egg-info/SOURCES.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyacs.egg-info/requires.txt" beforeDir="false" afterPath="$PROJECT_DIR$/pyacs.egg-info/requires.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyacs/gts/Gts.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyacs/gts/Gts.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyacs/gts/Sgts_methods/common_mode.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyacs/gts/Sgts_methods/common_mode.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyacs/gts/lib/plot/plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyacs/gts/lib/plot/plot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyacs/gts/lib/primitive/extract_periods.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyacs/gts/lib/primitive/extract_periods.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyacs/lib/faultslip/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyacs/lib/faultslip/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyacs/lib/faultslip/rake_from_euler.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyacs/lib/faultslip/rake_from_euler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyacs/lib/faultslip/strike_dip_rake_to_dir.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyacs/lib/faultslip/strike_dip_rake_to_dir.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyacs/lib/faultslip/v_to_rake.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyacs/lib/faultslip/v_to_rake.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyacs/lib/units.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyacs/lib/units.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Jupyter Notebook" />
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Jean-Mathieu Nocquet &lt;(nocquet@geoazur.unice.fr)&gt;" />
+      </list>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="SIGN_OFF_COMMIT" value="true" />
+  </component>
+  <component name="JupyterTrust" id="a5309917-cdf2-4586-a3ff-ad895c951c0d">
+    <option name="files">
+      <option value="sandbox/common_mode_vondrak.ipynb" />
+      <option value="sandbox/cvxopt_filters.ipynb" />
+      <option value="sandbox/extensivel1trend_filtering.ipynb" />
+    </option>
+  </component>
+  <component name="ProjectId" id="1cAnFZlMMizqFRz3lDI2L888rED" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="TODO_SCOPE" value="All Places" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="JupyterPython" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/pyacs/gts/lib/tensor_ts" />
+      <recent name="$PROJECT_DIR$/pyacs" />
+      <recent name="$PROJECT_DIR$/pyacs/gts/lib/filters" />
+      <recent name="$USER_HOME$/projets/2020/pyacs_4_ts_ps_18022020/jupyter_notebook" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/sandbox" />
+      <recent name="$PROJECT_DIR$/pyacs/gts/lib/model" />
+      <recent name="$PROJECT_DIR$/pyacs" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="pyacs36" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9ccfbf4f-02d0-489c-8023-b4cf5d3c0815" name="Default Changelist" comment="" />
+      <created>1589980162527</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1589980162527</updated>
+      <workItem from="1589980164797" duration="6648000" />
+      <workItem from="1590222826614" duration="707000" />
+      <workItem from="1590225633517" duration="578000" />
+      <workItem from="1590226890998" duration="601000" />
+      <workItem from="1590235300578" duration="522000" />
+      <workItem from="1590236204537" duration="598000" />
+      <workItem from="1590243587249" duration="5985000" />
+      <workItem from="1590350771825" duration="2987000" />
+      <workItem from="1590435865519" duration="1407000" />
+      <workItem from="1590689355661" duration="3723000" />
+      <workItem from="1591027132262" duration="289000" />
+      <workItem from="1591027430923" duration="3764000" />
+      <workItem from="1592043456965" duration="69000" />
+      <workItem from="1592235648058" duration="50000" />
+      <workItem from="1593461389291" duration="7100000" />
+      <workItem from="1598346566944" duration="43000" />
+      <workItem from="1598599129048" duration="3161000" />
+      <workItem from="1599046954972" duration="337000" />
+      <workItem from="1599120646997" duration="11436000" />
+      <workItem from="1599544625435" duration="514000" />
+      <workItem from="1599553953481" duration="454000" />
+      <workItem from="1599665395948" duration="11000" />
+      <workItem from="1599719983755" duration="642000" />
+      <workItem from="1599763476665" duration="1530000" />
+      <workItem from="1599828528033" duration="569000" />
+      <workItem from="1601023958312" duration="246000" />
+      <workItem from="1601052917544" duration="478000" />
+      <workItem from="1601468021609" duration="4531000" />
+      <workItem from="1602235052336" duration="590000" />
+      <workItem from="1602592857641" duration="1085000" />
+      <workItem from="1602751508340" duration="598000" />
+      <workItem from="1603121753039" duration="220000" />
+      <workItem from="1603140895946" duration="450000" />
+      <workItem from="1603224771434" duration="2907000" />
+      <workItem from="1603736002713" duration="14000" />
+      <workItem from="1603972279944" duration="5223000" />
+      <workItem from="1604311136131" duration="1978000" />
+      <workItem from="1605128708953" duration="2142000" />
+      <workItem from="1605433502887" duration="40693000" />
+      <workItem from="1605958700312" duration="2158000" />
+      <workItem from="1605984734030" duration="3274000" />
+      <workItem from="1606036957434" duration="1190000" />
+      <workItem from="1606039006655" duration="1016000" />
+      <workItem from="1606041354309" duration="2515000" />
+      <workItem from="1606052997891" duration="24000" />
+      <workItem from="1606053035151" duration="1000" />
+      <workItem from="1606053171370" duration="762000" />
+      <workItem from="1606056016460" duration="598000" />
+      <workItem from="1606060776010" duration="7454000" />
+      <workItem from="1606249833583" duration="12638000" />
+      <workItem from="1607071734993" duration="27785000" />
+      <workItem from="1607505396846" duration="82000" />
+      <workItem from="1607513210641" duration="8053000" />
+      <workItem from="1608977283206" duration="1853000" />
+      <workItem from="1609171922587" duration="622000" />
+      <workItem from="1609274686787" duration="3224000" />
+      <workItem from="1611148091021" duration="3283000" />
+      <workItem from="1611933862075" duration="570000" />
+      <workItem from="1612000915058" duration="157000" />
+      <workItem from="1612454387256" duration="1545000" />
+      <workItem from="1613408465934" duration="19680000" />
+      <workItem from="1614851306895" duration="17800000" />
+      <workItem from="1615824986509" duration="4752000" />
+      <workItem from="1616917783873" duration="10832000" />
+      <workItem from="1618041474746" duration="10400000" />
+      <workItem from="1619103272179" duration="2064000" />
+      <workItem from="1619614597191" duration="4090000" />
+      <workItem from="1620797073574" duration="599000" />
+      <workItem from="1621077681291" duration="1539000" />
+      <workItem from="1622187549445" duration="519000" />
+      <workItem from="1622197963165" duration="597000" />
+      <workItem from="1623677475589" duration="1132000" />
+      <workItem from="1623850936195" duration="651000" />
+      <workItem from="1623935625536" duration="631000" />
+      <workItem from="1624542763745" duration="1710000" />
+      <workItem from="1625055860780" duration="736000" />
+      <workItem from="1625555410466" duration="109000" />
+      <workItem from="1626081871166" duration="1325000" />
+    </task>
+    <task id="LOCAL-00001" summary="Initial commit. Corresponds to release 0.64.0.">
+      <created>1599828825635</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1599828825635</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Documentation update and change in setup.py to enable sphinx build from python setup.py build_sphinx">
+      <created>1603121904917</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1603121904917</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Sgts.show_map enhancement &amp; documentation update. Corresponds to release 0.64.2">
+      <created>1603268653891</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1603268653891</updated>
+    </task>
+    <task id="LOCAL-00004" summary="# 0.65.3 on 20210303 : refactoring of gts.lib.__init__.py and gts.Gts. added gts.insert_ts and update --replace in pyacs_make_time_series.py&#10;# 0.65.2 on 20210302 : refactoring of gts.lib.model&#10;# 0.65.1 on 20210215 : added pck_only option in pacs_make_time_series.py&#10;# 0.65.0 on 20210215 : added cvxpy as required in setup.py. Remove the png files.&#10;# 0.64.9 on 20210113 : add min_yaxis option in ts.plot&#10;# 0.64.8 on 20201220 : faultslip exploded into individual subroutines. geo2flat changed to use pyproj and web Mercator proj&#10;# 0.64.7 on 20201204 : added outliers package to gts.lib and a new outliers.find_l1trend function&#10;# 0.64.6 on 20201115 : extensive l1 trend filtering added and bug in copy in trajectory (data_xyz must be ignored)&#10;# 0.64.5 on 20201115 : slight change in print Euler pole estimation results&#10;# 0.64.3 on 20201029 : added l1_trend filter">
+      <created>1614954926863</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1614954926863</updated>
+    </task>
+    <task id="LOCAL-00005" summary="# 0.65.3 on 20210303 : refactoring of gts.lib.__init__.py and gts.Gts. added gts.insert_ts and update --replace in pyacs_make_time_series.py&#10;# 0.65.2 on 20210302 : refactoring of gts.lib.model&#10;# 0.65.1 on 20210215 : added pck_only option in pacs_make_time_series.py&#10;# 0.65.0 on 20210215 : added cvxpy as required in setup.py. Remove the png files.&#10;# 0.64.9 on 20210113 : add min_yaxis option in ts.plot&#10;# 0.64.8 on 20201220 : faultslip exploded into individual subroutines. geo2flat changed to use pyproj and web Mercator proj&#10;# 0.64.7 on 20201204 : added outliers package to gts.lib and a new outliers.find_l1trend function&#10;# 0.64.6 on 20201115 : extensive l1 trend filtering added and bug in copy in trajectory (data_xyz must be ignored)&#10;# 0.64.5 on 20201115 : slight change in print Euler pole estimation results&#10;# 0.64.3 on 20201029 : added l1_trend filter">
+      <created>1614966604104</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1614966604104</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Initial commit. Corresponds to release 0.64.0." />
+    <MESSAGE value="Documentation update and change in setup.py to enable sphinx build from python setup.py build_sphinx" />
+    <MESSAGE value="Sgts.show_map enhancement &amp; documentation update. Corresponds to release 0.64.2" />
+    <MESSAGE value="# 0.65.3 on 20210303 : refactoring of gts.lib.__init__.py and gts.Gts. added gts.insert_ts and update --replace in pyacs_make_time_series.py&#10;# 0.65.2 on 20210302 : refactoring of gts.lib.model&#10;# 0.65.1 on 20210215 : added pck_only option in pacs_make_time_series.py&#10;# 0.65.0 on 20210215 : added cvxpy as required in setup.py. Remove the png files.&#10;# 0.64.9 on 20210113 : add min_yaxis option in ts.plot&#10;# 0.64.8 on 20201220 : faultslip exploded into individual subroutines. geo2flat changed to use pyproj and web Mercator proj&#10;# 0.64.7 on 20201204 : added outliers package to gts.lib and a new outliers.find_l1trend function&#10;# 0.64.6 on 20201115 : extensive l1 trend filtering added and bug in copy in trajectory (data_xyz must be ignored)&#10;# 0.64.5 on 20201115 : slight change in print Euler pole estimation results&#10;# 0.64.3 on 20201029 : added l1_trend filter" />
+    <option name="LAST_COMMIT_MESSAGE" value="# 0.65.3 on 20210303 : refactoring of gts.lib.__init__.py and gts.Gts. added gts.insert_ts and update --replace in pyacs_make_time_series.py&#10;# 0.65.2 on 20210302 : refactoring of gts.lib.model&#10;# 0.65.1 on 20210215 : added pck_only option in pacs_make_time_series.py&#10;# 0.65.0 on 20210215 : added cvxpy as required in setup.py. Remove the png files.&#10;# 0.64.9 on 20210113 : add min_yaxis option in ts.plot&#10;# 0.64.8 on 20201220 : faultslip exploded into individual subroutines. geo2flat changed to use pyproj and web Mercator proj&#10;# 0.64.7 on 20201204 : added outliers package to gts.lib and a new outliers.find_l1trend function&#10;# 0.64.6 on 20201115 : extensive l1 trend filtering added and bug in copy in trajectory (data_xyz must be ignored)&#10;# 0.64.5 on 20201115 : slight change in print Euler pole estimation results&#10;# 0.64.3 on 20201029 : added l1_trend filter" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/sandbox/model_old.py</url>
+          <line>596</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

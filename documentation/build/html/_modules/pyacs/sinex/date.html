@@ -1,0 +1,533 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.sinex.date &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.sinex.date</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.sinex.date</h1><div class="highlight"><pre>
+<span></span><span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Module   : date</span>
+<span class="c1"># Purpose  : Handle dates in various formats</span>
+<span class="c1"># Author   : P. Rebischung</span>
+<span class="c1"># Created  : 22-May-2011</span>
+<span class="c1">#</span>
+<span class="c1"># Changes  :</span>
+<span class="c1">#</span>
+<span class="c1"># Routines : - __init__      : Initialize a date object</span>
+<span class="c1">#            - __str__       : Convert a date object to a string</span>
+<span class="c1">#            - add_s         : Add (or substract) n seconds to a date object</span>
+<span class="c1">#            - add_h         : Add (or substract) n hours to a date object</span>
+<span class="c1">#            - add_d         : Add (or substract) n days to a date object</span>
+<span class="c1">#            - from_mjd      : Create a date object from a modified Julian date</span>
+<span class="c1">#            - from_ymdhms   : Create a date object from year, month, day, hour, minute and second</span>
+<span class="c1">#            - from_weekdow  : Create a date object from GPS week and day of week</span>
+<span class="c1">#            - from_snxepoch : Create a date object from a date in SINEX format</span>
+<span class="c1">#            - from_ydec     : Create a date object from a decimal year</span>
+<span class="c1">#            - from_wdec     : Create a date object from a decimal GPS week</span>
+<span class="c1">#            - snxepoch      : Write a date object in SINEX date format</span>
+<span class="c1">#            - ydec          : Compute decimal year of a date object</span>
+<span class="c1">#            - isoepoch      : Write a date object in ISO date format</span>
+<span class="c1">#            - wdec          : Compute decimal GPS week of a date object</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+
+<span class="c1"># LIBRARIES</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">calendar</span>
+
+<span class="kn">from</span> <span class="nn">.constants</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># CONSTANTS</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="n">gps0</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">timegm</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1980</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">timetuple</span><span class="p">())</span>
+<span class="n">j2000</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">timegm</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">timetuple</span><span class="p">())</span>
+
+
+<span class="c1"># DATE CLASS</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="date"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.date.date">[docs]</a><span class="k">class</span> <span class="nc">date</span><span class="p">:</span>
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : __init__</span>
+<span class="c1"># Purpose : Initialize a date object</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 22-May-2011</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : tsys : System time (seconds since 1970-01-01 00:00:00). Default is &quot;now&quot;.</span>
+<span class="c1"># Output  : t    : date object</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    
+        <span class="n">t</span><span class="o">=</span><span class="bp">self</span>
+        <span class="c1"># If no argument, t = now!</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">tsys</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+    
+        <span class="c1"># If one argument, it should be the system time</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">tsys</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    
+        <span class="c1"># Intermediate struct_time object</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="n">gmtime</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">tsys</span><span class="p">)</span>
+    
+        <span class="c1"># Define &quot;standard&quot; attributes of the date object</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">yyyy</span> <span class="o">=</span> <span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y&#39;</span><span class="p">,</span> <span class="n">st</span><span class="p">)</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">yy</span> <span class="o">=</span> <span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%y&#39;</span><span class="p">,</span> <span class="n">st</span><span class="p">)</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">mm</span> <span class="o">=</span> <span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%m&#39;</span><span class="p">,</span> <span class="n">st</span><span class="p">)</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">dd</span> <span class="o">=</span> <span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">st</span><span class="p">)</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">hour</span> <span class="o">=</span> <span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%H&#39;</span><span class="p">,</span> <span class="n">st</span><span class="p">)</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%M&#39;</span><span class="p">,</span> <span class="n">st</span><span class="p">)</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">sec</span> <span class="o">=</span> <span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%S&#39;</span><span class="p">,</span> <span class="n">st</span><span class="p">)</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">doy</span> <span class="o">=</span> <span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%j&#39;</span><span class="p">,</span> <span class="n">st</span><span class="p">)</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">dow</span> <span class="o">=</span> <span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%w&#39;</span><span class="p">,</span> <span class="n">st</span><span class="p">)</span>
+    
+        <span class="c1"># GPS week</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">week</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">t</span><span class="o">.</span><span class="n">tsys</span> <span class="o">-</span> <span class="n">gps0</span><span class="p">)</span> <span class="o">/</span> <span class="mi">86400</span> <span class="o">/</span> <span class="mi">7</span><span class="p">)</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">week</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0:0&gt;4}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">week</span><span class="p">)</span>
+    
+        <span class="c1"># Week of year</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">wk</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0:0&gt;2}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">doy</span><span class="p">)</span> <span class="o">/</span> <span class="mi">7</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    
+        <span class="c1"># MJD</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">mjd</span> <span class="o">=</span> <span class="n">mjd2000</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">tsys</span> <span class="o">-</span> <span class="n">j2000</span><span class="p">)</span> <span class="o">/</span> <span class="mi">86400</span>
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : __str__</span>
+<span class="c1"># Purpose : Convert a date object to a string (for print)</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 22-May-2011</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : </span>
+<span class="c1"># Output  : String in the format &#39;YYYY-MM-DD HH:MM:SS&#39;</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">t</span><span class="o">=</span><span class="bp">self</span>
+        <span class="k">return</span> <span class="n">t</span><span class="o">.</span><span class="n">yyyy</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">mm</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">dd</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">hour</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">min</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">sec</span>
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : add_s</span>
+<span class="c1"># Purpose : Add (or substract) n seconds to a date object</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 22-May-2011</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : n : Number of seconds to add (or to substract if n &lt; 0)</span>
+<span class="c1"># Output  :</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="date.add_s"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.date.date.add_s">[docs]</a>    <span class="k">def</span> <span class="nf">add_s</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="n">t</span><span class="o">=</span><span class="bp">self</span>
+        <span class="n">t</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">tsys</span> <span class="o">+</span> <span class="n">n</span><span class="p">)</span></div>
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : add_h</span>
+<span class="c1"># Purpose : Add (or substract) n hours to a date object</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 22-May-2011</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : n : Number of hours to add (or to substract if n &lt; 0)</span>
+<span class="c1"># Output  :</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="date.add_h"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.date.date.add_h">[docs]</a>    <span class="k">def</span> <span class="nf">add_h</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="n">t</span><span class="o">=</span><span class="bp">self</span>
+        <span class="n">t</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">tsys</span> <span class="o">+</span> <span class="mi">60</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span></div>
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : add_d</span>
+<span class="c1"># Purpose : Add (or substract) n days to a date object</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 22-May-2011</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : n : Number of days to add (or to substract if n &lt; 0)</span>
+<span class="c1"># Output  :</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="date.add_d"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.date.date.add_d">[docs]</a>    <span class="k">def</span> <span class="nf">add_d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="n">t</span><span class="o">=</span><span class="bp">self</span>
+        <span class="n">t</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">tsys</span> <span class="o">+</span> <span class="mi">86400</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span></div>
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : from_mjd</span>
+<span class="c1"># Purpose : Create a date object from a modified Julian date</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 22-May-2011</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : d : Modified Julian date</span>
+<span class="c1"># Output  : t : date object</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="date.from_mjd"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.date.date.from_mjd">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_mjd</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="n">tsys</span> <span class="o">=</span> <span class="n">j2000</span> <span class="o">+</span> <span class="p">(</span><span class="n">d</span> <span class="o">-</span> <span class="n">mjd2000</span><span class="p">)</span> <span class="o">*</span> <span class="mi">86400</span>
+        <span class="k">return</span> <span class="n">date</span><span class="p">(</span><span class="n">tsys</span><span class="p">)</span></div>
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : from_ymdhms</span>
+<span class="c1"># Purpose : Create a date object from year, month, day, hour, minute and second</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 22-May-2011</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : - y    : Year</span>
+<span class="c1">#           - m    : Month</span>
+<span class="c1">#           - d    : Day</span>
+<span class="c1">#           - hour : Hour.   Default is 0.</span>
+<span class="c1">#           - min  : Minute. Default is 0.</span>
+<span class="c1">#           - sec  : Second. Default is 0.</span>
+<span class="c1"># Output  : - t    : date object</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="date.from_ymdhms"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.date.date.from_ymdhms">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_ymdhms</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">hour</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sec</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="n">tsys</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">timegm</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="n">sec</span><span class="p">)</span><span class="o">.</span><span class="n">timetuple</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">date</span><span class="p">(</span><span class="n">tsys</span><span class="p">)</span></div>
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : from_weekdow</span>
+<span class="c1"># Purpose : Create a date object from GPS week and day of week</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 22-May-2011</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : - w : GPS week</span>
+<span class="c1">#           - d : Day in week</span>
+<span class="c1"># Output  : - t : date object</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="date.from_weekdow"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.date.date.from_weekdow">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_weekdow</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="n">tsys</span> <span class="o">=</span> <span class="n">gps0</span> <span class="o">+</span> <span class="p">(</span><span class="mi">7</span> <span class="o">*</span> <span class="n">w</span> <span class="o">+</span> <span class="n">d</span><span class="p">)</span> <span class="o">*</span> <span class="mi">86400</span>
+        <span class="k">return</span> <span class="n">date</span><span class="p">(</span><span class="n">tsys</span><span class="p">)</span></div>
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : from_snxepoch</span>
+<span class="c1"># Purpose : Create a date object from a date in SINEX format</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 22-May-2011</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : s : Date in SINEX format (e.g. &#39;08:265:73400&#39;)</span>
+<span class="c1"># Output  : t : date object</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="date.from_snxepoch"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.date.date.from_snxepoch">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_snxepoch</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+        <span class="n">tsys</span> <span class="o">=</span> <span class="n">calendar</span><span class="o">.</span><span class="n">timegm</span><span class="p">(</span><span class="n">strptime</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">6</span><span class="p">],</span> <span class="s1">&#39;%y:%j&#39;</span><span class="p">))</span>
+        <span class="n">tsys</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">7</span><span class="p">:</span><span class="mi">12</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">date</span><span class="p">(</span><span class="n">tsys</span><span class="p">)</span></div>
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : from_ydec</span>
+<span class="c1"># Purpose : Create a date object from a decimal year</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 20-Sep-2013</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : y : Decimal year</span>
+<span class="c1"># Output  : t : date object</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="date.from_ydec"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.date.date.from_ydec">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_ydec</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="n">yint</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">yfra</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">yint</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">from_ymdhms</span><span class="p">(</span><span class="n">yint</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(((</span><span class="n">y</span> <span class="o">%</span> <span class="mi">4</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">y</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span><span class="n">y</span> <span class="o">%</span> <span class="mi">400</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)):</span>
+          <span class="n">t</span><span class="o">.</span><span class="n">add_d</span><span class="p">(</span><span class="n">yfra</span> <span class="o">*</span> <span class="mi">366</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+          <span class="n">t</span><span class="o">.</span><span class="n">add_d</span><span class="p">(</span><span class="n">yfra</span> <span class="o">*</span> <span class="mi">365</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">t</span></div>
+  
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : from_wdec</span>
+<span class="c1"># Purpose : Create a date object from a decimal GPS week</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 22-Oct-2014</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   : w : Decimal GPS week</span>
+<span class="c1"># Output  : t : date object</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="date.from_wdec"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.date.date.from_wdec">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_wdec</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+        <span class="n">wint</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+        <span class="n">wfra</span> <span class="o">=</span> <span class="n">w</span> <span class="o">-</span> <span class="n">wint</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">from_weekdow</span><span class="p">(</span><span class="n">wint</span><span class="p">,</span> <span class="n">wfra</span> <span class="o">*</span> <span class="mi">7</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">t</span></div>
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : snxepoch</span>
+<span class="c1"># Purpose : Write a date object in SINEX date format</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 22-May-2011</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   :</span>
+<span class="c1"># Output  : s : Date in SINEX format (e.g. &#39;08:265:73400&#39;)</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="date.snxepoch"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.date.date.snxepoch">[docs]</a>    <span class="k">def</span> <span class="nf">snxepoch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">t</span><span class="o">=</span><span class="bp">self</span>
+        <span class="n">sec</span> <span class="o">=</span> <span class="mi">3600</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">hour</span><span class="p">)</span> <span class="o">+</span> <span class="mi">60</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">min</span><span class="p">)</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">sec</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">t</span><span class="o">.</span><span class="n">yy</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">doy</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="si">{0:0&gt;5}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sec</span><span class="p">)</span></div>
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : ydec</span>
+<span class="c1"># Purpose : Compute decimal year of a date object</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 09-Feb-2012</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   :</span>
+<span class="c1"># Output  : y : Decimal year</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="date.ydec"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.date.date.ydec">[docs]</a>    <span class="k">def</span> <span class="nf">ydec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="n">t</span><span class="o">=</span><span class="bp">self</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">yyyy</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(((</span><span class="n">y</span> <span class="o">%</span> <span class="mi">4</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">y</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span><span class="n">y</span> <span class="o">%</span> <span class="mi">400</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)):</span>
+                <span class="k">return</span> <span class="n">y</span> <span class="o">+</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">doy</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">hour</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">min</span><span class="p">)</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">sec</span><span class="p">)</span> <span class="o">/</span> <span class="mf">60.</span><span class="p">)</span> <span class="o">/</span> <span class="mf">60.</span><span class="p">)</span> <span class="o">/</span> <span class="mf">24.</span><span class="p">)</span> <span class="o">/</span> <span class="mf">366.</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">y</span> <span class="o">+</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">doy</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">hour</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">min</span><span class="p">)</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">sec</span><span class="p">)</span> <span class="o">/</span> <span class="mf">60.</span><span class="p">)</span> <span class="o">/</span> <span class="mf">60.</span><span class="p">)</span> <span class="o">/</span> <span class="mf">24.</span><span class="p">)</span> <span class="o">/</span> <span class="mf">365.</span></div>
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : isoepoch</span>
+<span class="c1"># Purpose : Write a date object in ISO date format</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 27-Aug-2012</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   :</span>
+<span class="c1"># Output  : s : Date in ISO format (e.g. &#39;08-12-31T23:59:59&#39;)</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="date.isoepoch"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.date.date.isoepoch">[docs]</a>    <span class="k">def</span> <span class="nf">isoepoch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">t</span><span class="o">=</span><span class="bp">self</span>
+        <span class="k">return</span> <span class="n">t</span><span class="o">.</span><span class="n">yyyy</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">mm</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">dd</span> <span class="o">+</span> <span class="s1">&#39;T&#39;</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">hour</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">min</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">sec</span></div>
+
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Routine : wdec</span>
+<span class="c1"># Purpose : Compute decimal GPS week of a date object</span>
+<span class="c1"># Author  : P. Rebischung</span>
+<span class="c1"># Created : 27-Aug-2012</span>
+<span class="c1">#</span>
+<span class="c1"># Changes :</span>
+<span class="c1">#</span>
+<span class="c1"># Input   :</span>
+<span class="c1"># Output  : w : Decimal GPS week</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="date.wdec"><a class="viewcode-back" href="../../../pyacs.sinex.html#pyacs.sinex.date.date.wdec">[docs]</a>    <span class="k">def</span> <span class="nf">wdec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">t</span><span class="o">=</span><span class="bp">self</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">week</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">dow</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">hour</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">min</span><span class="p">)</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">sec</span><span class="p">)</span> <span class="o">/</span> <span class="mf">60.</span><span class="p">)</span> <span class="o">/</span> <span class="mf">60.</span><span class="p">)</span> <span class="o">/</span> <span class="mf">24.</span><span class="p">)</span> <span class="o">/</span> <span class="mf">7.</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

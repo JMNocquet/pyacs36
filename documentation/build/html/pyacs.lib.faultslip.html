@@ -1,0 +1,432 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.lib.faultslip package &mdash; pyacs 0.65.66 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pyacs.message package" href="pyacs.message.html" />
+    <link rel="prev" title="pyacs.lib package" href="pyacs.lib.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.66
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time_series.html">Time series analysis</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Full code documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pyacs.html">pyacs package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="pyacs.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pyacs.glinalg.html">pyacs.glinalg package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html">pyacs.gts package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="pyacs.lib.html">pyacs.lib package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.message.html">pyacs.message package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html">pyacs.sinex package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html">pyacs.sol package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.html#module-pyacs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">Full code documentation</a> &raquo;</li>
+        
+          <li><a href="pyacs.html">pyacs package</a> &raquo;</li>
+        
+          <li><a href="pyacs.lib.html">pyacs.lib package</a> &raquo;</li>
+        
+      <li>pyacs.lib.faultslip package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/pyacs.lib.faultslip.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pyacs-lib-faultslip-package">
+<h1>pyacs.lib.faultslip package<a class="headerlink" href="#pyacs-lib-faultslip-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pyacs.lib.faultslip.fault_to_corners">
+<span id="pyacs-lib-faultslip-fault-to-corners-module"></span><h2>pyacs.lib.faultslip.fault_to_corners module<a class="headerlink" href="#module-pyacs.lib.faultslip.fault_to_corners" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.faultslip.fault_to_corners.fault_to_corners">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.faultslip.fault_to_corners.</span></span><span class="sig-name descname"><span class="pre">fault_to_corners</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/lib/faultslip/fault_to_corners.html#fault_to_corners"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.faultslip.fault_to_corners.fault_to_corners" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lon</strong> – origin longitude for fault</p></li>
+<li><p><strong>lat</strong> – origin latitude for fault</p></li>
+<li><p><strong>length</strong> – fault length in km</p></li>
+<li><p><strong>width</strong> – fault width in km</p></li>
+<li><p><strong>strike</strong> – fault strike in degrees</p></li>
+<li><p><strong>dip</strong> – fault dip in degrees</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>lonc, latc, depthc 1D numpy arrays of the 4 fault corners</p>
+</dd>
+<dt class="field-odd">Note</dt>
+<dd class="field-odd"><p>use a flat Earth approximation, depth is negative</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.lib.faultslip.geo_to_strike">
+<span id="pyacs-lib-faultslip-geo-to-strike-module"></span><h2>pyacs.lib.faultslip.geo_to_strike module<a class="headerlink" href="#module-pyacs.lib.faultslip.geo_to_strike" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.faultslip.geo_to_strike.geo_to_strike">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.faultslip.geo_to_strike.</span></span><span class="sig-name descname"><span class="pre">geo_to_strike</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ilon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ilat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elat</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/lib/faultslip/geo_to_strike.html#geo_to_strike"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.faultslip.geo_to_strike.geo_to_strike" title="Permalink to this definition">¶</a></dt>
+<dd><p>for a given fault segment starting at ilon,lat and ending at elon, elat
+, returns the strike.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ilon</strong><strong>,</strong><strong>ilat</strong> – geographical coordinates of fault segment start point in decimal degrees</p></li>
+<li><p><strong>elon</strong><strong>,</strong><strong>elat</strong> – geographical coordinates of fault segment end point in decimal degrees</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns strike</dt>
+<dd class="field-even"><p>in decimal degrees clockwise from north</p>
+</dd>
+<dt class="field-odd">Note</dt>
+<dd class="field-odd"><p>strike here is taken as the initial bearing. Be cautious with long segments</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.lib.faultslip.rake_from_euler">
+<span id="pyacs-lib-faultslip-rake-from-euler-module"></span><h2>pyacs.lib.faultslip.rake_from_euler module<a class="headerlink" href="#module-pyacs.lib.faultslip.rake_from_euler" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.faultslip.rake_from_euler.rake_from_euler">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.faultslip.rake_from_euler.</span></span><span class="sig-name descname"><span class="pre">rake_from_euler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">longitude</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latitude</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">euler</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/lib/faultslip/rake_from_euler.html#rake_from_euler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.faultslip.rake_from_euler.rake_from_euler" title="Permalink to this definition">¶</a></dt>
+<dd><p>predicts rake for a given fault according to an Euler pole, position and strike of the fault</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>longitude</strong><strong>,</strong><strong>latitude</strong> – in decimal degrees</p></li>
+<li><p><strong>strike</strong> – fault strike from north in decimal degrees</p></li>
+<li><p><strong>dip</strong> – fault dip from north in decimal degrees</p></li>
+<li><p><strong>euler</strong> – Euler pole as a string ‘/long/lat/w/style’ (style among ‘inverse’, ‘normal’, ‘leftlateral’,’rightlateral’)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return rake</dt>
+<dd class="field-even"><p>in decimal degrees</p>
+</dd>
+<dt class="field-odd">Note</dt>
+<dd class="field-odd"><p>style needs to be provided to ensure the correct sense of slip.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.lib.faultslip.slip_rake_2_ds_ss">
+<span id="pyacs-lib-faultslip-slip-rake-2-ds-ss-module"></span><h2>pyacs.lib.faultslip.slip_rake_2_ds_ss module<a class="headerlink" href="#module-pyacs.lib.faultslip.slip_rake_2_ds_ss" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.faultslip.slip_rake_2_ds_ss.slip_rake_2_ds_ss">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.faultslip.slip_rake_2_ds_ss.</span></span><span class="sig-name descname"><span class="pre">slip_rake_2_ds_ss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rake</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/lib/faultslip/slip_rake_2_ds_ss.html#slip_rake_2_ds_ss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.faultslip.slip_rake_2_ds_ss.slip_rake_2_ds_ss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a slip vector provided as slip and rake to dip slip and strike-slip components</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>slip</strong> – slip</p></li>
+<li><p><strong>rake</strong> – rake in degrees</p></li>
+</ul>
+</dd>
+</dl>
+<p>:return ( slip*np.sin( np.radians(rake) ) ,  slip*np.cos( np.radians(rake) ))</p>
+<dl class="field-list simple">
+<dt class="field-odd">Note</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<p>ds will be positive for rake in [0,180] that is reverse motion
+ss will be positive for left-lateral motion</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.lib.faultslip.ss_ns_2_ve_vn">
+<span id="pyacs-lib-faultslip-ss-ns-2-ve-vn-module"></span><h2>pyacs.lib.faultslip.ss_ns_2_ve_vn module<a class="headerlink" href="#module-pyacs.lib.faultslip.ss_ns_2_ve_vn" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.faultslip.ss_ns_2_ve_vn.ss_ns_2_ve_vn">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.faultslip.ss_ns_2_ve_vn.</span></span><span class="sig-name descname"><span class="pre">ss_ns_2_ve_vn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ss</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strike</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/lib/faultslip/ss_ns_2_ve_vn.html#ss_ns_2_ve_vn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.faultslip.ss_ns_2_ve_vn.ss_ns_2_ve_vn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts strike-slip and normal slip components of a fault to ve, vn</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ss</strong> – vector of strike-slip</p></li>
+<li><p><strong>ns</strong> – vector of normal-slip</p></li>
+<li><p><strong>strike</strong> – vector of fault strike, counter-clockwise from north in degrees</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>ve, vn, same unit as ss and ds</p>
+</dd>
+<dt class="field-odd">Note</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<p>ss is assume to be positive for left-lateral motion
+ds will be positive for reverse motion</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.lib.faultslip.strike_dip_rake_to_dir">
+<span id="pyacs-lib-faultslip-strike-dip-rake-to-dir-module"></span><h2>pyacs.lib.faultslip.strike_dip_rake_to_dir module<a class="headerlink" href="#module-pyacs.lib.faultslip.strike_dip_rake_to_dir" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.faultslip.strike_dip_rake_to_dir.strike_dip_rake_to_dir">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.faultslip.strike_dip_rake_to_dir.</span></span><span class="sig-name descname"><span class="pre">strike_dip_rake_to_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rake</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/lib/faultslip/strike_dip_rake_to_dir.html#strike_dip_rake_to_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.faultslip.strike_dip_rake_to_dir.strike_dip_rake_to_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>for a given (strike,dip,rake)  returns the azimuth of the horizontal motion
+:param strike,dip,rake: in decimal degrees
+:returns: direction: slip direction (modulo 180 degrees)</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.lib.faultslip.v_to_n_ss">
+<span id="pyacs-lib-faultslip-v-to-n-ss-module"></span><h2>pyacs.lib.faultslip.v_to_n_ss module<a class="headerlink" href="#module-pyacs.lib.faultslip.v_to_n_ss" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.faultslip.v_to_n_ss.v_to_n_ss">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.faultslip.v_to_n_ss.</span></span><span class="sig-name descname"><span class="pre">v_to_n_ss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ve</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strike</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/lib/faultslip/v_to_n_ss.html#v_to_n_ss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.faultslip.v_to_n_ss.v_to_n_ss" title="Permalink to this definition">¶</a></dt>
+<dd><p>for a given relative horizontal velocity (ve,vn) between two blocks separated by a fault of a given strike
+, returns normal and strike-slip component of motion.
+The convention is that the point is in the left-domain with respect to the fault.
+Shortening &amp; right-lateral are positive, extension and left-lateral negative</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ve</strong><strong>,</strong><strong>vn</strong> – east and north components of motion (any unit)</p></li>
+<li><p><strong>strike</strong> – in decimal degrees</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns normal,strike-slip</dt>
+<dd class="field-even"><p>same units as ve,vn</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.lib.faultslip.v_to_rake">
+<span id="pyacs-lib-faultslip-v-to-rake-module"></span><h2>pyacs.lib.faultslip.v_to_rake module<a class="headerlink" href="#module-pyacs.lib.faultslip.v_to_rake" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.faultslip.v_to_rake.v_to_rake">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.faultslip.v_to_rake.</span></span><span class="sig-name descname"><span class="pre">v_to_rake</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ve</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'inverse'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyacs/lib/faultslip/v_to_rake.html#v_to_rake"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.faultslip.v_to_rake.v_to_rake" title="Permalink to this definition">¶</a></dt>
+<dd><p>for a given relative horizontal velocity (ve,vn) between two blocks separated by a fault of a given strike &amp; dip
+, returns the expected rake for the eq. Input can be single float or 1D numpy array</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ve</strong><strong>,</strong><strong>vn</strong> – east and north components of motion (any unit)</p></li>
+<li><p><strong>strike</strong><strong>,</strong><strong>dip</strong> – in decimal degrees</p></li>
+<li><p><strong>style</strong> – string among {‘inverse’, ‘normal’, ‘leftlateral’,’rightlateral’}</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns rake</dt>
+<dd class="field-even"><p>in decimal degrees</p>
+</dd>
+<dt class="field-odd">Note</dt>
+<dd class="field-odd"><p>Because only providing ve,vn is ambiguous (we don’t know whether if ve,vn is hanging wall motion wrt the footwall or the opposite)     an additional information (style) in the form of one of {‘inverse’, ‘normal’, ‘leftlateral’,’rightlateral’} must be provided.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pyacs.lib.faultslip">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyacs.lib.faultslip" title="Permalink to this headline">¶</a></h2>
+<p>Various routines relating fault parameters, slip and motion across faults</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="pyacs.message.html" class="btn btn-neutral float-right" title="pyacs.message package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="pyacs.lib.html" class="btn btn-neutral float-left" title="pyacs.lib package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

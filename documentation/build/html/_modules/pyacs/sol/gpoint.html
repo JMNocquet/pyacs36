@@ -1,0 +1,469 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.sol.gpoint &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.sol.gpoint</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.sol.gpoint</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="Gpoint"><a class="viewcode-back" href="../../../pyacs.sol.html#pyacs.sol.gpoint.Gpoint">[docs]</a><span></span><span class="k">class</span> <span class="nc">Gpoint</span><span class="p">:</span>
+    
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Geodetic point</span>
+<span class="sd">    </span>
+<span class="sd">    Used with sinex class</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Z</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>\
+                  <span class="n">SX</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">SY</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">SZ</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">epoch</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">pt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">soln</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">domes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>\
+                  <span class="n">VX</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">VY</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">VZ</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>\
+                  <span class="n">SVX</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">SVY</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">SVZ</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>\
+                  <span class="n">Ve</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Vn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">Vu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>\
+                  <span class="n">SVe</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">SVn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">SVu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>\
+                  <span class="n">lon</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">lat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">he</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>\
+                  <span class="n">Cv_xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Cv_enu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">=</span><span class="n">X</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="o">=</span><span class="n">Y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="o">=</span><span class="n">Z</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SX</span><span class="o">=</span><span class="n">SX</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SY</span><span class="o">=</span><span class="n">SY</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SZ</span><span class="o">=</span><span class="n">SZ</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span><span class="o">=</span><span class="n">epoch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="o">=</span><span class="n">code</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pt</span><span class="o">=</span><span class="n">pt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">soln</span><span class="o">=</span><span class="n">soln</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">domes</span><span class="o">=</span><span class="n">domes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">VX</span><span class="o">=</span><span class="n">VX</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">VY</span><span class="o">=</span><span class="n">VY</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">VZ</span><span class="o">=</span><span class="n">VZ</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SVX</span><span class="o">=</span><span class="n">SVX</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SVY</span><span class="o">=</span><span class="n">SVY</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SVZ</span><span class="o">=</span><span class="n">SVZ</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Ve</span><span class="o">=</span><span class="n">Ve</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Vn</span><span class="o">=</span><span class="n">Vn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Vu</span><span class="o">=</span><span class="n">Vu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SVe</span><span class="o">=</span><span class="n">SVe</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SVn</span><span class="o">=</span><span class="n">SVn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SVu</span><span class="o">=</span><span class="n">SVu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="o">=</span><span class="n">lon</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">=</span><span class="n">lat</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">he</span><span class="o">=</span><span class="n">he</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Cv_xyz</span><span class="o">=</span><span class="n">Cv_xyz</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Cv_enu</span><span class="o">=</span><span class="n">Cv_enu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">index</span>
+        
+<div class="viewcode-block" id="Gpoint.assign_index"><a class="viewcode-back" href="../../../pyacs.sol.html#pyacs.sol.gpoint.Gpoint.assign_index">[docs]</a>    <span class="k">def</span> <span class="nf">assign_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">index</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">index</span></div>
+ <span class="c1">#   def get_index(self):</span>
+ <span class="c1">#       return self.index</span>
+        
+        
+<div class="viewcode-block" id="Gpoint.posxyz"><a class="viewcode-back" href="../../../pyacs.sol.html#pyacs.sol.gpoint.Gpoint.posxyz">[docs]</a>    <span class="k">def</span> <span class="nf">posxyz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Gpoint.staxyz"><a class="viewcode-back" href="../../../pyacs.sol.html#pyacs.sol.gpoint.Gpoint.staxyz">[docs]</a>    <span class="k">def</span> <span class="nf">staxyz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SX</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">SY</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">SZ</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="Gpoint.covarxyz"><a class="viewcode-back" href="../../../pyacs.sol.html#pyacs.sol.gpoint.Gpoint.covarxyz">[docs]</a>    <span class="k">def</span> <span class="nf">covarxyz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Cv_xyz</span></div>
+
+<div class="viewcode-block" id="Gpoint.covarenu"><a class="viewcode-back" href="../../../pyacs.sol.html#pyacs.sol.gpoint.Gpoint.covarenu">[docs]</a>    <span class="k">def</span> <span class="nf">covarenu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Cv_enu</span></div>
+
+<div class="viewcode-block" id="Gpoint.velxyz"><a class="viewcode-back" href="../../../pyacs.sol.html#pyacs.sol.gpoint.Gpoint.velxyz">[docs]</a>    <span class="k">def</span> <span class="nf">velxyz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">VX</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">VY</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">VZ</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Gpoint.read_from_sinex"><a class="viewcode-back" href="../../../pyacs.sol.html#pyacs.sol.gpoint.Gpoint.read_from_sinex">[docs]</a>    <span class="k">def</span> <span class="nf">read_from_sinex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sinex_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reads an populate self from a sinex file&quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">pyacs.sol.sinex</span> <span class="k">as</span> <span class="nn">SSinex</span>
+        <span class="n">sinex</span><span class="o">=</span><span class="n">SSinex</span><span class="o">.</span><span class="n">SSinex</span><span class="p">(</span><span class="n">sinex_name</span><span class="p">)</span>
+        <span class="n">sinex</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">M</span><span class="o">=</span><span class="n">sinex</span><span class="o">.</span><span class="n">subset</span><span class="p">(</span><span class="n">lcode</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">X</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">Y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">Z</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SX</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">SX</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SY</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">SY</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SZ</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">SZ</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">VX</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">VX</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">VY</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">VY</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">VZ</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">VZ</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SVX</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">SVX</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SVY</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">SVY</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SVZ</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">SVZ</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">epoch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pt</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">pt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">soln</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">soln</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">domes</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">domes</span></div>
+        
+<div class="viewcode-block" id="Gpoint.write_as_estimate"><a class="viewcode-back" href="../../../pyacs.sol.html#pyacs.sol.gpoint.Gpoint.write_as_estimate">[docs]</a>    <span class="k">def</span> <span class="nf">write_as_estimate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">fname</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">VEL</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">VENU</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">CVENU</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">ENU</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">soln</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">epoch</span><span class="o">=</span><span class="mf">2010.0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Writes site information formatted for a ESTIMATE section of a sinex file&quot;&quot;&quot;</span>
+<span class="c1">#   139 STAX   GENO  A    1 10:029:43185 m    2 0.450789227114383E+07 .204988E+00</span>
+        <span class="kn">import</span> <span class="nn">pyacs.lib.astrotime</span> <span class="k">as</span> <span class="nn">AstroTime</span>
+        <span class="kn">import</span> <span class="nn">pyacs.lib.coordinates</span> <span class="k">as</span> <span class="nn">Coordinates</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+        <span class="k">if</span> <span class="n">VENU</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">pass</span>
+        
+        <span class="k">def</span> <span class="nf">decyear2yeardoysod</span><span class="p">(</span><span class="n">decyear</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">                year,doy,sod = decyear2yeardoysod(decyear)</span>
+<span class="sd">                Converts decimal year into calendar year, day of year, second of day</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">year</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">decyear</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">year</span> <span class="o">&gt;=</span> <span class="mi">2000</span><span class="p">:</span> <span class="n">year</span> <span class="o">=</span> <span class="n">year</span> <span class="o">-</span> <span class="mi">2000</span>
+            <span class="k">else</span><span class="p">:</span> <span class="n">year</span> <span class="o">=</span> <span class="n">year</span> <span class="o">-</span> <span class="mi">1900</span>
+            
+            <span class="n">doy</span><span class="p">,</span><span class="n">ut</span> <span class="o">=</span> <span class="n">AstroTime</span><span class="o">.</span><span class="n">decyear2dayno</span><span class="p">(</span><span class="n">decyear</span><span class="p">)</span>
+            
+            <span class="n">sod</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ut</span><span class="o">*</span><span class="mi">86400</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">sod</span> <span class="o">!=</span><span class="mi">0</span><span class="p">:</span>
+                <span class="n">doy</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">sod</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">return</span> <span class="n">year</span><span class="p">,</span><span class="n">doy</span><span class="p">,</span><span class="n">sod</span>
+
+        <span class="n">year</span><span class="p">,</span><span class="n">doy</span><span class="p">,</span><span class="n">sod</span><span class="o">=</span><span class="n">decyear2yeardoysod</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
+
+
+        <span class="p">(</span><span class="n">lam</span><span class="p">,</span><span class="n">phi</span><span class="p">,</span><span class="n">h</span><span class="p">)</span><span class="o">=</span><span class="n">Coordinates</span><span class="o">.</span><span class="n">xyz2geo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">)</span>
+        <span class="n">R</span><span class="o">=</span><span class="n">Coordinates</span><span class="o">.</span><span class="n">mat_rot_local_to_general</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span><span class="n">phi</span><span class="p">,</span><span class="n">h</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">ENU</span>  <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">delta_XYZ</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">ENU</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">-</span><span class="n">delta_XYZ</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mf">1000.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="o">-</span><span class="n">delta_XYZ</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mf">1000.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="o">-</span><span class="n">delta_XYZ</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mf">1000.0</span>
+        
+        <span class="k">if</span> <span class="n">VENU</span><span class="o">!=</span><span class="kc">None</span><span class="p">:</span>
+            <span class="n">VXYZ</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">VENU</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+            <span class="c1">#print VXYZ*1000.0</span>
+             
+            <span class="bp">self</span><span class="o">.</span><span class="n">VX</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">VY</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">VZ</span><span class="o">=</span><span class="n">VXYZ</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">VXYZ</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">VXYZ</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SVX</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">SVY</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">SVZ</span><span class="p">)</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">+</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epoch</span><span class="o">-</span><span class="n">epoch</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">VX</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="o">+</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epoch</span><span class="o">-</span><span class="n">epoch</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">VY</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="o">+</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epoch</span><span class="o">-</span><span class="n">epoch</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">VZ</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">VX</span><span class="o">==</span><span class="kc">None</span><span class="p">:</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">VX</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">VY</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">VZ</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">SVX</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">SVY</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">SVZ</span><span class="p">)</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">CVENU</span><span class="o">!=</span><span class="kc">None</span><span class="p">:</span>
+                <span class="n">CVXYZ</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">CVENU</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+                <span class="c1">#print VXYZ*1000.0</span>
+                 
+                <span class="bp">self</span><span class="o">.</span><span class="n">VX</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">VY</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">VZ</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">VX</span><span class="o">-</span><span class="n">CVXYZ</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">VY</span><span class="o">-</span><span class="n">CVXYZ</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">VZ</span><span class="o">-</span><span class="n">CVXYZ</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SVX</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">SVY</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">SVZ</span><span class="p">)</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">+</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epoch</span><span class="o">-</span><span class="n">epoch</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">VX</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="o">+</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epoch</span><span class="o">-</span><span class="n">epoch</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">VY</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="o">+</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epoch</span><span class="o">-</span><span class="n">epoch</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">VZ</span>
+                
+        
+        <span class="c1">#import sys</span>
+        <span class="c1">#sys.exit()</span>
+        
+        <span class="n">fs</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;index &#39;</span><span class="p">,</span><span class="n">index</span><span class="p">)</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%6d</span><span class="s2"> STAX   </span><span class="si">%4s</span><span class="s2">  A </span><span class="si">%04d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2">:</span><span class="si">%03d</span><span class="s2">:</span><span class="si">%05d</span><span class="s2"> m    2 </span><span class="si">%21.14E</span><span class="s2"> </span><span class="si">%11.5E</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span><span class="n">soln</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">doy</span><span class="p">,</span><span class="n">sod</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">SX</span><span class="p">))</span>
+        <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%6d</span><span class="s2"> STAY   </span><span class="si">%4s</span><span class="s2">  A </span><span class="si">%04d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2">:</span><span class="si">%03d</span><span class="s2">:</span><span class="si">%05d</span><span class="s2"> m    2 </span><span class="si">%21.14E</span><span class="s2"> </span><span class="si">%11.5E</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span><span class="n">soln</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">doy</span><span class="p">,</span><span class="n">sod</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">SY</span><span class="p">))</span>
+        <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%6d</span><span class="s2"> STAZ   </span><span class="si">%4s</span><span class="s2">  A </span><span class="si">%04d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2">:</span><span class="si">%03d</span><span class="s2">:</span><span class="si">%05d</span><span class="s2"> m    2 </span><span class="si">%21.14E</span><span class="s2"> </span><span class="si">%11.5E</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span><span class="n">soln</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">doy</span><span class="p">,</span><span class="n">sod</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">SZ</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">VEL</span><span class="p">:</span>
+            <span class="n">fs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">return</span><span class="p">()</span>
+        <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%6d</span><span class="s2"> VELX   </span><span class="si">%4s</span><span class="s2">  A </span><span class="si">%04d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2">:</span><span class="si">%03d</span><span class="s2">:</span><span class="si">%05d</span><span class="s2"> m    2 </span><span class="si">%21.14E</span><span class="s2"> </span><span class="si">%11.5E</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span><span class="n">soln</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">doy</span><span class="p">,</span><span class="n">sod</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">VX</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">SVX</span><span class="p">))</span>
+        <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%6d</span><span class="s2"> VELY   </span><span class="si">%4s</span><span class="s2">  A </span><span class="si">%04d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2">:</span><span class="si">%03d</span><span class="s2">:</span><span class="si">%05d</span><span class="s2"> m    2 </span><span class="si">%21.14E</span><span class="s2"> </span><span class="si">%11.5E</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span><span class="n">soln</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">doy</span><span class="p">,</span><span class="n">sod</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">VY</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">SVY</span><span class="p">))</span>
+        <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%6d</span><span class="s2"> VELZ   </span><span class="si">%4s</span><span class="s2">  A </span><span class="si">%04d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2">:</span><span class="si">%03d</span><span class="s2">:</span><span class="si">%05d</span><span class="s2"> m    2 </span><span class="si">%21.14E</span><span class="s2"> </span><span class="si">%11.5E</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span><span class="n">soln</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">doy</span><span class="p">,</span><span class="n">sod</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">VZ</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">SVZ</span><span class="p">))</span>
+
+        <span class="n">fs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        
+        <span class="k">return</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="Gpoint.apply_helmert"><a class="viewcode-back" href="../../../pyacs.sol.html#pyacs.sol.gpoint.Gpoint.apply_helmert">[docs]</a>    <span class="k">def</span> <span class="nf">apply_helmert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">T</span><span class="p">):</span>
+        
+        <span class="kn">import</span> <span class="nn">pyacs.sol.helmert</span> <span class="k">as</span> <span class="nn">Helmert</span>
+        <span class="kn">import</span> <span class="nn">copy</span>
+        <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span>
+        
+        <span class="n">H</span><span class="o">=</span><span class="n">Helmert</span><span class="o">.</span><span class="n">helmert_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">,</span><span class="n">tran</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">rot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">scale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">equilibrate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        
+        <span class="n">X1</span><span class="o">=</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">posxyz</span><span class="p">()])</span>
+
+        <span class="n">X</span><span class="o">=</span><span class="n">H</span><span class="o">*</span><span class="n">T</span><span class="o">+</span><span class="n">X1</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">M</span><span class="o">=</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">M</span><span class="o">.</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">M</span><span class="o">.</span><span class="n">Y</span><span class="o">=</span><span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">M</span><span class="o">.</span><span class="n">Z</span><span class="o">=</span><span class="n">X</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">M</span></div>
+
+
+<div class="viewcode-block" id="Gpoint.substract_pole"><a class="viewcode-back" href="../../../pyacs.sol.html#pyacs.sol.gpoint.Gpoint.substract_pole">[docs]</a>    <span class="k">def</span> <span class="nf">substract_pole</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">W</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;rot&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Substract the velocity predicted by an Euler pole or a rotation rate vector</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">W</span><span class="p">,</span><span class="nb">list</span><span class="p">):</span><span class="n">W</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">W</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span><span class="n">W</span><span class="o">=</span><span class="n">W</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+
+        <span class="kn">import</span> <span class="nn">pyacs.lib.coordinates</span> <span class="k">as</span> <span class="nn">Coordinates</span>
+        <span class="kn">import</span> <span class="nn">pyacs.lib.euler</span> <span class="k">as</span> <span class="nn">euler</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+        <span class="n">ltype</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;euler&#39;</span><span class="p">,</span><span class="s1">&#39;rot&#39;</span><span class="p">]</span> <span class="c1"># type is either Euler pole (long. lat in dec. degrees and deg/Myr or cartesian rotation rate vector in rad/yr)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ltype</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;==&gt; type should be either &#39;euler&#39; or &#39;rot&#39; &quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">type</span> <span class="o">==</span> <span class="s1">&#39;euler&#39;</span><span class="p">):</span>
+            <span class="c1"># convert to rotation rate vector</span>
+            <span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">omega</span><span class="p">)</span><span class="o">=</span><span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">W</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">W</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+            <span class="p">(</span><span class="n">wx</span><span class="p">,</span><span class="n">wy</span><span class="p">,</span><span class="n">wz</span><span class="p">)</span><span class="o">=</span><span class="n">euler</span><span class="o">.</span><span class="n">euler2rot</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">omega</span><span class="p">)</span>
+            <span class="n">W</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">W</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">wx</span>
+            <span class="n">W</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">wy</span>
+            <span class="n">W</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">wz</span>
+
+        <span class="kn">import</span> <span class="nn">math</span>
+
+        
+
+        <span class="n">R</span><span class="o">=</span><span class="n">Coordinates</span><span class="o">.</span><span class="n">mat_rot_general_to_local</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">),</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">),</span><span class="mf">0.</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span><span class="o">=</span><span class="n">Coordinates</span><span class="o">.</span><span class="n">geo2xyz</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">),</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">),</span><span class="mf">0.</span><span class="p">)</span>
+        <span class="c1"># Observation equation in local frame</span>
+        
+        <span class="n">Ai</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span> <span class="n">z</span>
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=-</span><span class="n">y</span>
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">=-</span><span class="n">z</span>
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span> <span class="n">x</span>
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span> <span class="n">y</span>
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=-</span><span class="n">x</span>
+        
+        <span class="n">RAi</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">Ai</span><span class="p">)</span>
+        <span class="c1"># Predicted velocity</span>
+        <span class="n">Pi</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">RAi</span><span class="p">,</span><span class="n">W</span><span class="p">)</span>
+        <span class="n">pve</span><span class="o">=</span><span class="n">Pi</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mf">1.E3</span>
+        <span class="n">pvn</span><span class="o">=</span><span class="n">Pi</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mf">1.E3</span>
+        
+        <span class="kn">import</span> <span class="nn">copy</span>
+        <span class="n">N</span><span class="o">=</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        
+        <span class="n">N</span><span class="o">.</span><span class="n">Ve</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Ve</span><span class="o">-</span><span class="n">pve</span>
+        <span class="n">N</span><span class="o">.</span><span class="n">Vn</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Vn</span><span class="o">-</span><span class="n">pvn</span>
+
+        <span class="k">return</span><span class="p">(</span><span class="n">N</span><span class="p">)</span></div>
+        
+
+
+
+
+<div class="viewcode-block" id="Gpoint.xyz_distance"><a class="viewcode-back" href="../../../pyacs.sol.html#pyacs.sol.gpoint.Gpoint.xyz_distance">[docs]</a>    <span class="k">def</span> <span class="nf">xyz_distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">M</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">sqrt</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">-</span><span class="n">M</span><span class="o">.</span><span class="n">X</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="o">-</span><span class="n">M</span><span class="o">.</span><span class="n">Y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="o">-</span><span class="n">M</span><span class="o">.</span><span class="n">Z</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

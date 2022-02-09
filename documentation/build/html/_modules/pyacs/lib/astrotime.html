@@ -1,0 +1,1709 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyacs.lib.astrotime &mdash; pyacs 0.65.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pyacs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.65.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../foreword.html">What is pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">How to install pyacs?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../libraries.html">pyacs core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../time_series.html">Time series analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Full code documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyacs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyacs.lib.astrotime</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyacs.lib.astrotime</h1><div class="highlight"><pre>
+<span></span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">AstroTime.py is a traduction from perl module Astro::Time distributed by CPAN </span>
+<span class="sd">and written by Chris Phillips (Chris.Phillips@csiro.au). Conversion to python made by Jean-Mathieu Nocquet (Geoazur - CNRS-IRD-OCA-Univ. Nice, nocquet@geoazur.unice.fr)</span>
+
+<span class="sd">AstroTime contains a set of Python routines for time based</span>
+<span class="sd">conversions, such as conversion between calendar dates and Modified</span>
+<span class="sd">Julian day and conversion from UT to local sidereal time. Included are</span>
+<span class="sd">routines for conversion between numerical and string representation of</span>
+<span class="sd">angles. All string functions removed.</span>
+
+<span class="sd">Conversion from and to datetime objects have also been added for convenience.</span>
+
+<span class="sd">:note: This module is intended dates manipulation, but leap seconds for instance are not handled. \</span>
+<span class="sd">       See the GPSTime module for GPS, UTC times conversions. </span>
+<span class="sd">:note: python 3.6 : all / operator changed to // to force integer operations </span>
+
+<span class="sd">:warning: !!! all conversions not specifying ut or uts use 12h00mn00s as a default. ut is the decimal fraction of day</span>
+<span class="sd">       and uts is the number of seconds since 00h00m00.0s</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+
+<span class="n">days</span> <span class="o">=</span> <span class="p">[</span><span class="mi">31</span><span class="p">,</span><span class="mi">28</span><span class="p">,</span><span class="mi">31</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">31</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">31</span><span class="p">,</span><span class="mi">31</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">31</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">31</span><span class="p">]</span>
+
+<span class="c1">###############################################################################</span>
+<span class="c1"># PRIVATE ARGUMENT CHECK FUNCTIONS</span>
+<span class="c1">###############################################################################</span>
+
+<span class="c1"># Is the dayno valid?</span>
+<span class="k">def</span> <span class="nf">__daynoOK</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span><span class="n">year</span><span class="p">):</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">dayno</span><span class="o">&lt;</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">dayno</span><span class="o">&gt;</span><span class="mi">366</span> <span class="ow">or</span> <span class="p">(</span><span class="n">dayno</span><span class="o">&gt;</span><span class="mi">365</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">leap_year</span><span class="p">(</span><span class="n">year</span><span class="p">))):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span> <span class="p">(</span><span class="s1">&#39;!!! doy out of range: (doy/year)=(</span><span class="si">%d</span><span class="s1">,</span><span class="si">%d</span><span class="s1">) &#39;</span> <span class="o">%</span> <span class="p">(</span> <span class="n">dayno</span><span class="p">,</span><span class="n">year</span> <span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+
+<span class="c1"># Is the month valid?</span>
+<span class="k">def</span> <span class="nf">__monthOK</span><span class="p">(</span><span class="n">month</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">month</span><span class="p">,</span><span class="nb">int</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">month</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span> <span class="p">(</span><span class="s1">&#39;!!! bad type for month. Must be integer month= &#39;</span> <span class="p">,</span> <span class="n">month</span> <span class="p">)</span> <span class="p">)</span>
+        
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">month</span> <span class="o">&gt;</span> <span class="mi">12</span> <span class="ow">or</span> <span class="n">month</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span> <span class="p">(</span><span class="s1">&#39;!!! month out of range. Must be in the range 1-12 month=</span><span class="si">%d</span><span class="s1"> &#39;</span> <span class="o">%</span> <span class="n">month</span> <span class="p">)</span> <span class="p">)</span>
+        
+
+<span class="c1"># IS the day of month OK? (assumes month IS ok - should be checked first)</span>
+<span class="k">def</span> <span class="nf">__dayOK</span> <span class="p">(</span><span class="n">day</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">year</span><span class="p">):</span>
+    <span class="n">month</span><span class="o">=</span><span class="n">month</span><span class="o">-</span><span class="mi">1</span>             <span class="c1"># For array indexing</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">leap_year</span><span class="p">(</span><span class="n">year</span><span class="p">)):</span><span class="n">days</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">29</span>
+    <span class="k">else</span><span class="p">:</span><span class="n">days</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">28</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">day</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">day</span> <span class="o">&gt;</span> <span class="n">days</span><span class="p">[</span><span class="n">month</span><span class="p">]):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span> <span class="p">(</span><span class="s1">&#39;!!! day of month out of range: (day/month/year)=(</span><span class="si">%d</span><span class="s1">,</span><span class="si">%d</span><span class="s1">,</span><span class="si">%d</span><span class="s1">) &#39;</span> <span class="o">%</span> <span class="p">(</span> <span class="n">day</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">year</span> <span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+
+<span class="c1"># Is the day fraction OK?</span>
+<span class="k">def</span> <span class="nf">__utOK</span> <span class="p">(</span><span class="n">ut</span><span class="p">):</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ut</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">ut</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span> <span class="p">(</span><span class="s1">&#39;!!! fraction day ut out of range [0;1[: ut=</span><span class="si">%.9lf</span><span class="s1">  &#39;</span> <span class="o">%</span> <span class="p">(</span> <span class="n">ut</span> <span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+
+<span class="c1"># Is the number of seconds  OK?</span>
+<span class="k">def</span> <span class="nf">__utsOK</span> <span class="p">(</span><span class="n">uts</span><span class="p">):</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">uts</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">uts</span> <span class="o">&gt;=</span> <span class="mf">24.0</span><span class="o">*</span><span class="mf">60.0</span><span class="o">*</span><span class="mi">60</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span> <span class="p">(</span><span class="s1">&#39;!!! numer of seconds out of range [0;24.0*60.0*60[: uts=</span><span class="si">%.9lf</span><span class="s1">  &#39;</span> <span class="o">%</span> <span class="p">(</span> <span class="n">uts</span> <span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+
+
+<span class="c1">###############################################################################</span>
+<span class="c1"># CALENDAR DATES CONVERSIONS</span>
+<span class="c1">###############################################################################</span>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="cal2dayno"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.cal2dayno">[docs]</a><span class="k">def</span> <span class="nf">cal2dayno</span> <span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the day of year (doy).</span>
+<span class="sd">    </span>
+<span class="sd">    :param day,month,year:</span>
+<span class="sd">    :type: int,int,int</span>
+<span class="sd">    :returns: doy of year as int</span>
+
+<span class="sd">    :Example:</span>
+<span class="sd">    &gt;&gt;&gt; import pyacs</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.cal2dayno(1,1,2000)</span>
+<span class="sd">    &gt;&gt;&gt; 1</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.cal2dayno(29,2,2000)</span>
+<span class="sd">    &gt;&gt;&gt; 60</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.cal2dayno(29.,2,2000)</span>
+<span class="sd">    &gt;&gt;&gt; 60.</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.cal2dayno(29,2,2001)</span>
+<span class="sd">    &gt;&gt;&gt; !!!  29  out of range</span>
+<span class="sd">    &gt;&gt;&gt; !!! bad day</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">day</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">day</span><span class="p">)</span>
+        <span class="n">month</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">month</span><span class="p">)</span>
+        <span class="n">year</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+
+    
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">dayno</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">cal2dayno</span><span class="p">,</span><span class="n">day</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">year</span><span class="p">)))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># check arguments and raise an Error if not OK</span>
+        <span class="n">__monthOK</span><span class="p">(</span><span class="n">month</span><span class="p">)</span>
+        <span class="n">__dayOK</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> 
+    
+        <span class="n">month</span><span class="o">=</span><span class="n">month</span><span class="o">-</span><span class="mi">1</span> <span class="c1"># For array indexing</span>
+    
+        <span class="k">if</span> <span class="p">(</span><span class="n">leap_year</span><span class="p">(</span><span class="n">year</span><span class="p">)):</span><span class="n">days</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">29</span>
+        <span class="k">else</span><span class="p">:</span><span class="n">days</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">28</span>
+    
+    
+        <span class="n">dayno</span> <span class="o">=</span> <span class="n">day</span>
+        <span class="n">mon</span><span class="o">=</span><span class="mi">0</span>
+        <span class="k">while</span> <span class="n">mon</span><span class="o">&lt;</span><span class="n">month</span><span class="p">:</span>
+            <span class="n">dayno</span> <span class="o">=</span> <span class="n">dayno</span> <span class="o">+</span> <span class="n">days</span><span class="p">[</span><span class="n">mon</span><span class="p">]</span>
+            <span class="n">mon</span><span class="o">=</span><span class="n">mon</span><span class="o">+</span><span class="mi">1</span>
+
+    <span class="k">return</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">+</span><span class="mi">0</span> <span class="p">)</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="cal2mjd"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.cal2mjd">[docs]</a><span class="k">def</span> <span class="nf">cal2mjd</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">ut</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;  </span>
+<span class="sd">    Converts a calendar date (universal time) into modified Julian day number.</span>
+<span class="sd">    mjd     Modified Julian day (JD-2400000.5)</span>
+
+<span class="sd">    :param day, month, year:</span>
+<span class="sd">    :param ut : day fraction ([0.,1.[)</span>
+<span class="sd">    :returns: mjd (modified Julian day (julian day -2400000.5))</span>
+<span class="sd">    :rtype: float</span>
+<span class="sd">    :note: Be aware that when ut is not provided, then the middle of the day is used. See example.</span>
+
+<span class="sd">    :Example:</span>
+<span class="sd">    &gt;&gt;&gt; import pyacs</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.cal2mjd(29,2,2000)</span>
+<span class="sd">    &gt;&gt;&gt; 51603.5</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.cal2mjd(29,2,2000,ut=0.0)</span>
+<span class="sd">    &gt;&gt;&gt; 51603.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">day</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">day</span><span class="p">)</span>
+        <span class="n">month</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">month</span><span class="p">)</span>
+        <span class="n">year</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+
+    
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ut</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span><span class="n">ut</span><span class="o">=</span><span class="n">day</span><span class="o">*</span><span class="mf">0.0</span><span class="o">+</span><span class="n">ut</span>
+        <span class="n">mjd</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">cal2mjd</span><span class="p">,</span><span class="n">day</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">ut</span><span class="p">)))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        
+        <span class="c1"># check arguments and raise an Error if not OK</span>
+        <span class="n">__monthOK</span><span class="p">(</span><span class="n">month</span><span class="p">)</span>
+        <span class="n">__dayOK</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+        <span class="n">__utOK</span><span class="p">(</span><span class="n">ut</span><span class="p">)</span>
+    
+        <span class="k">if</span> <span class="p">(</span><span class="n">month</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">month</span><span class="o">+</span><span class="mi">9</span><span class="p">)</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">month</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+    
+        <span class="n">c</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">-</span><span class="n">c</span><span class="o">*</span><span class="mi">100</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">146097.0</span><span class="o">*</span><span class="n">c</span><span class="o">/</span><span class="mf">4.0</span><span class="p">)</span>
+        <span class="n">x2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1461.0</span><span class="o">*</span><span class="n">y</span><span class="o">/</span><span class="mf">4.0</span><span class="p">)</span>
+        <span class="n">x3</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="mf">153.0</span><span class="o">*</span><span class="n">m</span><span class="o">+</span><span class="mf">2.0</span><span class="p">)</span><span class="o">/</span><span class="mf">5.0</span><span class="p">)</span>
+
+        <span class="n">mjd</span><span class="o">=</span><span class="n">x1</span><span class="o">+</span><span class="n">x2</span><span class="o">+</span><span class="n">x3</span><span class="o">+</span><span class="n">day</span><span class="o">-</span><span class="mi">678882</span><span class="o">+</span><span class="n">ut</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">mjd</span><span class="p">)</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="cal2decyear"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.cal2decyear">[docs]</a><span class="k">def</span> <span class="nf">cal2decyear</span><span class="p">(</span><span class="n">day</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">ut</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts a calendar date to decimal year</span>
+
+<span class="sd">    :param day, month, year:</span>
+<span class="sd">    :param ut : day fraction ([0.,1.[)</span>
+<span class="sd">    :returns: decimal year</span>
+<span class="sd">    :rtype: float</span>
+<span class="sd">    :note: Be aware that when ut is not provided, then the middle of the day is used.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">day</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">day</span><span class="p">)</span>
+        <span class="n">month</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">month</span><span class="p">)</span>
+        <span class="n">year</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+   
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ut</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span><span class="n">ut</span><span class="o">=</span><span class="n">day</span><span class="o">*</span><span class="mf">0.0</span><span class="o">+</span><span class="n">ut</span>
+        <span class="n">decyear</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">cal2decyear</span><span class="p">,</span><span class="n">day</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">ut</span><span class="p">)))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># check arguments and raise an Error if not OK</span>
+        <span class="n">__monthOK</span><span class="p">(</span><span class="n">month</span><span class="p">)</span>
+        <span class="n">__dayOK</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> 
+
+        <span class="n">dayno</span><span class="o">=</span><span class="n">cal2dayno</span><span class="p">(</span><span class="n">day</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">year</span><span class="p">)</span>
+        <span class="n">decyear</span><span class="o">=</span><span class="n">dayno2decyear</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">ut</span><span class="o">=</span><span class="n">ut</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">decyear</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="cal2datetime"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.cal2datetime">[docs]</a><span class="k">def</span> <span class="nf">cal2datetime</span><span class="p">(</span><span class="n">day</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">ut</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts a calendar date to a datime python instance</span>
+
+<span class="sd">    :param day, month, year:</span>
+<span class="sd">    :param ut : day fraction ([0.,1.[), optional</span>
+
+<span class="sd">    :note:!!! the returned datetime is at 12:00, that is ut=0.5 by default</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">day</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">day</span><span class="p">)</span>
+        <span class="n">month</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">month</span><span class="p">)</span>
+        <span class="n">year</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+
+    
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ut</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span><span class="n">ut</span><span class="o">=</span><span class="n">day</span><span class="o">*</span><span class="mf">0.0</span><span class="o">+</span><span class="n">ut</span>
+        <span class="n">return_datetime</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">cal2datetime</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">ut</span><span class="p">)))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+    
+        <span class="c1"># check arguments and raise an Error if not OK</span>
+        <span class="n">__monthOK</span><span class="p">(</span><span class="n">month</span><span class="p">)</span>
+        <span class="n">__dayOK</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> 
+
+        <span class="n">dayno</span><span class="o">=</span><span class="n">cal2dayno</span><span class="p">(</span><span class="n">day</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">year</span><span class="p">)</span>
+        <span class="n">return_datetime</span><span class="o">=</span><span class="n">dayno2datetime</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">ut</span><span class="o">=</span><span class="n">ut</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">return_datetime</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<span class="c1"># DAY OF YEAR CONVERSIONS</span>
+<span class="c1">###############################################################################</span>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="dayno2cal"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.dayno2cal">[docs]</a><span class="k">def</span> <span class="nf">dayno2cal</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+
+    <span class="sd">&quot;&quot;&quot;        </span>
+<span class="sd">    Returns the day and month corresponding to dayno of year.</span>
+<span class="sd">    </span>
+<span class="sd">    :param dayno, year:</span>
+<span class="sd">    :returns: day, month</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">dayno</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dayno</span><span class="p">)</span>
+        <span class="n">year</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+
+ 
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="p">[</span><span class="n">day</span><span class="p">,</span><span class="n">month</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">dayno2cal</span><span class="p">,</span><span class="n">dayno</span><span class="p">,</span><span class="n">year</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="c1"># check arguments and raise an Error if not OK</span>
+        <span class="n">__daynoOK</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> 
+    
+        <span class="k">if</span> <span class="p">(</span><span class="n">leap_year</span><span class="p">(</span><span class="n">year</span><span class="p">)):</span><span class="n">days</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">29</span>
+        <span class="k">else</span><span class="p">:</span><span class="n">days</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">28</span>
+    
+        <span class="n">month</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">days</span><span class="p">[</span><span class="n">month</span><span class="p">]</span>
+        <span class="k">while</span> <span class="n">dayno</span> <span class="o">&gt;</span> <span class="n">end</span><span class="p">:</span>
+            <span class="n">month</span><span class="o">=</span><span class="n">month</span><span class="o">+</span><span class="mi">1</span>
+            <span class="n">end</span><span class="o">=</span> <span class="n">end</span> <span class="o">+</span> <span class="n">days</span><span class="p">[</span><span class="n">month</span><span class="p">]</span>
+      
+        <span class="n">end</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">days</span><span class="p">[</span><span class="n">month</span><span class="p">]</span>
+        <span class="n">day</span> <span class="o">=</span> <span class="n">dayno</span> <span class="o">-</span> <span class="n">end</span>
+        <span class="n">month</span><span class="o">=</span><span class="n">month</span><span class="o">+</span><span class="mi">1</span>
+
+    <span class="k">return</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">day</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">+</span><span class="mi">0</span> <span class="p">,</span>\
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">month</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">+</span><span class="mi">0</span><span class="p">)</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="dayno2mjd"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.dayno2mjd">[docs]</a><span class="k">def</span> <span class="nf">dayno2mjd</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">ut</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts a dayno and year to modified Julian day</span>
+
+<span class="sd">    :param dayno, year:</span>
+<span class="sd">    :param ut: day fraction, optional</span>
+<span class="sd">    :returns: modified Julian day (julian day - 2400000.5)</span>
+<span class="sd">    :note: Be aware that when ut is not provided, then the middle of the day is used. See example.</span>
+<span class="sd">    :Example:</span>
+<span class="sd">    &gt;&gt;&gt; import pyacs</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.dayno2mjd(60,2000)</span>
+<span class="sd">    &gt;&gt;&gt; 51603.5</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.dayno2mjd(60.,2000,ut=0)</span>
+<span class="sd">    &gt;&gt;&gt; 51603.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">dayno</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dayno</span><span class="p">)</span>
+        <span class="n">year</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+   
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ut</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span><span class="n">ut</span><span class="o">=</span><span class="n">dayno</span><span class="o">*</span><span class="mf">0.0</span><span class="o">+</span><span class="n">ut</span>
+        <span class="n">mjd</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">dayno2mjd</span><span class="p">,</span><span class="n">dayno</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">ut</span><span class="p">)))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="c1"># check arguments and raise an Error if not OK</span>
+        <span class="n">__daynoOK</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> 
+        <span class="n">__utOK</span><span class="p">(</span><span class="n">ut</span><span class="p">)</span>
+    
+        <span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="n">month</span><span class="p">)</span> <span class="o">=</span> <span class="n">dayno2cal</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+        <span class="n">mjd</span><span class="o">=</span><span class="n">cal2mjd</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">ut</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">mjd</span> </div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="dayno2decyear"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.dayno2decyear">[docs]</a><span class="k">def</span> <span class="nf">dayno2decyear</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">ut</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts julian day to decimal year</span>
+
+<span class="sd">    :param dayno, year:</span>
+<span class="sd">    :param ut: day fraction, optional</span>
+
+<span class="sd">    :returns: decimal year</span>
+<span class="sd">    :note: !!! accounts for leap years with 366 days</span>
+<span class="sd">    :note: !!! unless ut is specified, the returned decimal years is at 12:00, that is ut=0.5 by default</span>
+
+<span class="sd">    :Example:</span>
+<span class="sd">    &gt;&gt;&gt; import pyacs</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.dayno2decyear(60,1999)</span>
+<span class="sd">    &gt;&gt;&gt; 1999.16301369863</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.dayno2decyear(60,2000)</span>
+<span class="sd">    &gt;&gt;&gt; 2000.1625683060108</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.dayno2decyear(60,2001)</span>
+<span class="sd">    &gt;&gt;&gt; 2001.16301369863</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.dayno2decyear(60,2001,ut=0.)</span>
+<span class="sd">    &gt;&gt;&gt; 2001.1616438356164</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">dayno</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dayno</span><span class="p">)</span>
+        <span class="n">year</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+
+    
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ut</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span><span class="n">ut</span><span class="o">=</span><span class="n">dayno</span><span class="o">*</span><span class="mf">0.0</span><span class="o">+</span><span class="n">ut</span>
+        <span class="n">decyear</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">dayno2decyear</span><span class="p">,</span><span class="n">dayno</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">ut</span><span class="p">)))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+    
+        <span class="c1"># check arguments and raise an Error if not OK</span>
+        <span class="n">__daynoOK</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> 
+        <span class="n">__utOK</span><span class="p">(</span><span class="n">ut</span><span class="p">)</span> 
+    
+        <span class="n">nday</span><span class="o">=</span><span class="n">cal2dayno</span><span class="p">(</span><span class="mi">31</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="n">year</span><span class="p">)</span>
+        <span class="n">dayno</span><span class="o">=</span><span class="n">dayno</span><span class="o">-</span><span class="mi">1</span>
+        
+        <span class="n">dayno</span><span class="o">=</span><span class="n">dayno</span><span class="o">+</span><span class="n">ut</span>
+
+        <span class="n">decyear</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">year</span><span class="p">)</span><span class="o">+</span><span class="nb">float</span><span class="p">(</span><span class="n">dayno</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">nday</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">decyear</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="dayno2datetime"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.dayno2datetime">[docs]</a><span class="k">def</span> <span class="nf">dayno2datetime</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">ut</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    julian day to datetime python instance</span>
+
+<span class="sd">    :param dayno, year:</span>
+<span class="sd">    :param ut: day fraction, optional</span>
+
+<span class="sd">    :returns: datetime</span>
+
+<span class="sd">    :note:!!! the returned datetime is at 12:00, that is uts=24.0*60.0*60/2.0 by default</span>
+
+<span class="sd">    :note:!!! specify uts for other time of the day</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">dayno</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dayno</span><span class="p">)</span>
+        <span class="n">year</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ut</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span><span class="n">ut</span><span class="o">=</span><span class="n">dayno</span><span class="o">*</span><span class="mf">0.0</span><span class="o">+</span><span class="n">ut</span>
+        <span class="n">return_datetime</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">dayno2datetime</span><span class="p">,</span><span class="n">dayno</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">ut</span><span class="p">)))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+    
+        <span class="c1"># check arguments and raise an Error if not OK</span>
+        <span class="n">__daynoOK</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> 
+        <span class="n">__utOK</span><span class="p">(</span><span class="n">ut</span><span class="p">)</span> 
+
+        <span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="n">month</span><span class="p">)</span><span class="o">=</span><span class="n">dayno2cal</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span><span class="n">year</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="n">mn</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="n">microsecond</span><span class="p">)</span><span class="o">=</span><span class="n">uts2hmsmicros</span><span class="p">(</span><span class="n">ut2uts</span><span class="p">(</span><span class="n">ut</span><span class="p">))</span>
+        <span class="n">return_datetime</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">mn</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">microsecond</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">return_datetime</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<span class="c1"># MODIFIED JULIAN DAY CONVERSIONS</span>
+<span class="c1">###############################################################################</span>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="mjd2cal"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.mjd2cal">[docs]</a><span class="k">def</span> <span class="nf">mjd2cal</span><span class="p">(</span><span class="n">mjd</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a modified Julian day number into calendar date (universal time). (based on the slalib routine sla_djcl).</span>
+<span class="sd">    </span>
+<span class="sd">    :param mjd: modified Julian day (JD-2400000.5)</span>
+<span class="sd">    :returns: day,month,year,ut</span>
+<span class="sd">    :rtype: int,int,int,float</span>
+<span class="sd">    :note: ut is the the day fraction in [0., 1.[.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mjd</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">mjd</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mjd</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mjd</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="p">[</span><span class="n">day</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">ut</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">mjd2cal</span><span class="p">,</span><span class="n">mjd</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="k">else</span><span class="p">:</span>
+    
+    
+        <span class="n">ut</span> <span class="o">=</span> <span class="n">mjd</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">mjd</span><span class="p">)</span>
+
+        <span class="c1"># check arguments and raise an Error if not OK</span>
+        <span class="n">__utOK</span><span class="p">(</span><span class="n">ut</span><span class="p">)</span> 
+    
+        <span class="n">mmjd</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">mjd</span><span class="p">)</span>
+    
+        <span class="n">jd</span> <span class="o">=</span> <span class="n">mmjd</span> <span class="o">+</span> <span class="mi">2400001</span>
+    
+        <span class="c1"># Do some rather cryptic calculations</span>
+        <span class="c1"># For Python3.6 a/b returns a float even if a &amp; b are integer</span>
+        <span class="c1"># for integer operation, / must be changed to //</span>
+        
+
+        <span class="n">temp1</span> <span class="o">=</span> <span class="mi">4</span><span class="o">*</span><span class="p">(</span><span class="n">jd</span><span class="o">+</span><span class="p">((</span><span class="mi">6</span><span class="o">*</span><span class="p">(((</span><span class="mi">4</span><span class="o">*</span><span class="n">jd</span><span class="o">-</span><span class="mi">17918</span><span class="p">)</span> <span class="o">//</span> <span class="mi">146097</span><span class="p">)))</span> <span class="o">//</span> <span class="mi">4</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="o">-</span><span class="mi">37</span><span class="p">)</span>
+        <span class="n">temp2</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="p">(((</span><span class="n">temp1</span><span class="o">-</span><span class="mi">237</span><span class="p">)</span><span class="o">%</span><span class="mi">1461</span><span class="p">)</span> <span class="o">//</span> <span class="mi">4</span><span class="p">)</span><span class="o">+</span><span class="mi">5</span>
+
+<span class="c1">#        temp1 = 4 * ( jd + int( ( int( (6 * ( ( int( (4*jd-17918) // 146097 ) ) ) ) // 4)  + 1 )/2 ) - 37 )</span>
+<span class="c1">#        temp2 = 10*(((temp1-237)%1461)/4)+5</span>
+    
+        <span class="n">year</span> <span class="o">=</span> <span class="n">temp1</span> <span class="o">//</span> <span class="mi">1461</span><span class="o">-</span><span class="mi">4712</span>
+        <span class="n">month</span> <span class="o">=</span><span class="p">((</span><span class="n">temp2</span> <span class="o">//</span> <span class="mi">306</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span><span class="o">%</span><span class="mi">12</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+        <span class="n">day</span> <span class="o">=</span> <span class="p">(</span><span class="n">temp2</span><span class="o">%</span><span class="mi">306</span><span class="p">)</span> <span class="o">//</span> <span class="mi">10</span><span class="o">+</span><span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">day</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">ut</span> </div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="mjd2dayno"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.mjd2dayno">[docs]</a><span class="k">def</span> <span class="nf">mjd2dayno</span><span class="p">(</span><span class="n">mjd</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;  </span>
+<span class="sd">    converts a modified Julian day into year and dayno (universal time).</span>
+<span class="sd">    </span>
+<span class="sd">    :param mjd: modified julian day</span>
+<span class="sd">    :returns: dayno,year,ut</span>
+<span class="sd">    :rtype: int,int,float</span>
+
+<span class="sd">    :Example:</span>
+<span class="sd">    &gt;&gt;&gt; import pyacs</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.mjd2dayno(51603.0)</span>
+<span class="sd">    &gt;&gt;&gt; (60, 2000, 0.0)</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.mjd2dayno(51603.5)</span>
+<span class="sd">    &gt;&gt;&gt; (60, 2000, 0.5)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mjd</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">mjd</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mjd</span><span class="p">)</span>
+   
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mjd</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="p">[</span><span class="n">dayno</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">ut</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">mjd2dayno</span><span class="p">,</span><span class="n">mjd</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span>
+    
+    <span class="k">else</span><span class="p">:</span>
+        
+        <span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">ut</span><span class="p">)</span> <span class="o">=</span> <span class="n">mjd2cal</span><span class="p">(</span><span class="n">mjd</span><span class="p">)</span>
+        <span class="n">dayno</span><span class="o">=</span><span class="n">cal2dayno</span><span class="p">(</span><span class="n">day</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">year</span><span class="p">)</span>
+    <span class="k">return</span>  <span class="n">dayno</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">ut</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="mjd2decyear"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.mjd2decyear">[docs]</a><span class="k">def</span> <span class="nf">mjd2decyear</span><span class="p">(</span><span class="n">mjd</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts a modified julian day to decimal year conversion</span>
+
+<span class="sd">    :param mjd: modified julian day</span>
+<span class="sd">    :returns: decimal year</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mjd</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">mjd</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mjd</span><span class="p">)</span>
+ 
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mjd</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">decyear</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">mjd2decyear</span><span class="p">,</span><span class="n">mjd</span><span class="p">)))</span>
+    
+    <span class="k">else</span><span class="p">:</span>
+        <span class="p">(</span><span class="n">dayno</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">ut</span><span class="p">)</span><span class="o">=</span><span class="n">mjd2dayno</span><span class="p">(</span><span class="n">mjd</span><span class="p">)</span>
+        <span class="n">decyear</span> <span class="o">=</span> <span class="n">dayno2decyear</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">ut</span><span class="o">=</span><span class="n">ut</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">decyear</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="mjd2datetime"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.mjd2datetime">[docs]</a><span class="k">def</span> <span class="nf">mjd2datetime</span><span class="p">(</span><span class="n">mjd</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    converts Modified Julian Day date to datime python instance</span>
+
+<span class="sd">    :param mjd: modified julian day</span>
+<span class="sd">    :returns: datetime instance</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mjd</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">mjd</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mjd</span><span class="p">)</span>
+  
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mjd</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">return_datetime</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">mjd2datetime</span><span class="p">,</span><span class="n">mjd</span><span class="p">)))</span>
+                                 
+    <span class="k">else</span><span class="p">:</span>
+    
+        <span class="p">(</span><span class="n">dayno</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">ut</span><span class="p">)</span><span class="o">=</span><span class="n">mjd2dayno</span><span class="p">(</span><span class="n">mjd</span><span class="p">)</span>
+        <span class="n">return_datetime</span><span class="o">=</span><span class="n">dayno2datetime</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">ut</span><span class="o">=</span><span class="n">ut</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">return_datetime</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="mjd2gpsweek"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.mjd2gpsweek">[docs]</a><span class="k">def</span> <span class="nf">mjd2gpsweek</span><span class="p">(</span><span class="n">mjd</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts a modified julian day to gps week and gps day of week</span>
+<span class="sd">    </span>
+<span class="sd">    :param mjd: modified julian day</span>
+<span class="sd">    :returns: gps_week,day_of_week</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mjd</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">mjd</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mjd</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mjd</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="p">[</span><span class="n">gweek</span><span class="p">,</span><span class="n">dow</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">mjd2gpsweek</span><span class="p">,</span><span class="n">mjd</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span>
+    
+    <span class="k">else</span><span class="p">:</span>
+    
+        <span class="n">mjd010580</span> <span class="o">=</span> <span class="mi">44243</span>
+        <span class="n">mjd_d</span> <span class="o">=</span> <span class="p">(</span> <span class="nb">int</span><span class="p">(</span><span class="n">mjd</span><span class="p">)</span> <span class="o">-</span> <span class="n">mjd010580</span> <span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">gweek</span> <span class="o">=</span> <span class="n">mjd_d</span> <span class="o">//</span> <span class="mi">7</span>
+        <span class="n">dow</span> <span class="o">=</span> <span class="n">mjd_d</span> <span class="o">%</span> <span class="mi">7</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">gweek</span><span class="p">,</span><span class="n">dow</span><span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<span class="c1"># DECIMAL YEAR CONVERSION</span>
+<span class="c1">###############################################################################</span>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="decyear2cal"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.decyear2cal">[docs]</a><span class="k">def</span> <span class="nf">decyear2cal</span><span class="p">(</span><span class="n">decyear</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    decimal year to calendar date conversion</span>
+
+<span class="sd">    :param decyear: decimal year</span>
+<span class="sd">    :returns: day of month,month,ut</span>
+<span class="sd">    :note: the input decimal year is assumed to account for leap years, that is the day of year is the \</span>
+<span class="sd">    decimal of decyear * number of days in the year.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">decyear</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">decyear</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">decyear</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">decyear</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="p">[</span><span class="n">mday</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">ut</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">decyear2cal</span><span class="p">,</span><span class="n">decyear</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span>
+    
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">year</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">decyear</span><span class="p">)</span>
+        <span class="n">frac_year</span><span class="o">=</span><span class="n">decyear</span><span class="o">-</span><span class="n">year</span>
+        <span class="n">nday</span><span class="o">=</span><span class="n">cal2dayno</span><span class="p">(</span><span class="mi">31</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="n">year</span><span class="p">)</span>
+        <span class="n">doy</span><span class="o">=</span><span class="n">frac_year</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">nday</span><span class="p">)</span>
+        <span class="n">noday</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">doy</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+        <span class="n">ut</span><span class="o">=</span><span class="n">doy</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">doy</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">mday</span><span class="p">,</span><span class="n">month</span><span class="p">)</span><span class="o">=</span><span class="n">dayno2cal</span><span class="p">(</span><span class="n">noday</span><span class="p">,</span><span class="n">year</span><span class="p">)</span>
+
+    <span class="c1"># this trick ensures that a single decyear provided as float</span>
+    <span class="c1"># returns int,int,float for monthday, month and ut</span>
+    <span class="c1"># while a list or np.array of decyear will return</span>
+    <span class="c1"># int 1D np array for monthday and month and float 1D np array for ut</span>
+    
+    <span class="k">return</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mday</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">+</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">month</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">+</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">ut</span><span class="p">)</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="decyear2dayno"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.decyear2dayno">[docs]</a><span class="k">def</span> <span class="nf">decyear2dayno</span><span class="p">(</span><span class="n">decyear</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts decimal year to the day of year</span>
+<span class="sd">    </span>
+<span class="sd">    :param decyear: decimal year</span>
+<span class="sd">    :returns: day of year,ut</span>
+<span class="sd">    :note: the input decimal year is assumed to account for leap years, that is the day of year is the \</span>
+<span class="sd">    decimal of decyear * number of days in the year.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">decyear</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">decyear</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">decyear</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">decyear</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="p">[</span><span class="n">noday</span><span class="p">,</span><span class="n">ut</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">decyear2dayno</span><span class="p">,</span><span class="n">decyear</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="k">else</span><span class="p">:</span>
+    
+        <span class="n">year</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">decyear</span><span class="p">)</span>
+        <span class="n">frac_year</span><span class="o">=</span><span class="n">decyear</span><span class="o">-</span><span class="n">year</span>
+        <span class="n">nday</span><span class="o">=</span><span class="n">cal2dayno</span><span class="p">(</span><span class="mi">31</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="n">year</span><span class="p">)</span>
+        <span class="n">doy</span><span class="o">=</span><span class="n">frac_year</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">nday</span><span class="p">)</span>
+        <span class="n">noday</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">doy</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+        <span class="n">ut</span><span class="o">=</span><span class="n">doy</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">doy</span><span class="p">)</span>
+
+    <span class="k">return</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">noday</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">+</span><span class="mi">0</span><span class="p">,</span><span class="n">ut</span><span class="p">)</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="decyear2mjd"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.decyear2mjd">[docs]</a><span class="k">def</span> <span class="nf">decyear2mjd</span><span class="p">(</span><span class="n">decyear</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    decimal year to modified julian day conversion</span>
+<span class="sd">    </span>
+<span class="sd">    :param decyear: decimal year</span>
+<span class="sd">    :returns: modified julian day</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">decyear</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">decyear</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">decyear</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">decyear</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">mjd</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">decyear2mjd</span><span class="p">,</span><span class="n">decyear</span><span class="p">)))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">year</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">decyear</span><span class="p">)</span>
+        <span class="n">frac_year</span><span class="o">=</span><span class="n">decyear</span><span class="o">-</span><span class="n">year</span>
+        <span class="n">nday</span><span class="o">=</span><span class="n">cal2dayno</span><span class="p">(</span><span class="mi">31</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="n">year</span><span class="p">)</span>
+        <span class="n">doy</span><span class="o">=</span><span class="n">frac_year</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">nday</span><span class="p">)</span>
+        <span class="n">noday</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">doy</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+        <span class="n">ut</span><span class="o">=</span><span class="n">doy</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="n">doy</span><span class="p">)</span>
+        <span class="n">mjd</span><span class="o">=</span><span class="n">dayno2mjd</span><span class="p">(</span><span class="n">noday</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">ut</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">mjd</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="decyear2datetime"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.decyear2datetime">[docs]</a><span class="k">def</span> <span class="nf">decyear2datetime</span><span class="p">(</span><span class="n">decyear</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts a decimal date to a datime python instance</span>
+<span class="sd">    </span>
+<span class="sd">    :param decyear: decimal year</span>
+<span class="sd">    :returns: datetime instance</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">decyear</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">decyear</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">decyear</span> <span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">decyear</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">return_datetime</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">decyear2datetime</span><span class="p">,</span><span class="n">decyear</span><span class="p">)))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">year</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">decyear</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">dayno</span><span class="p">,</span><span class="n">ut</span><span class="p">)</span><span class="o">=</span><span class="n">decyear2dayno</span><span class="p">(</span><span class="n">decyear</span><span class="p">)</span>
+        <span class="n">return_datetime</span><span class="o">=</span><span class="n">dayno2datetime</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">ut</span><span class="o">=</span><span class="n">ut</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">return_datetime</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="decyear2epoch"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.decyear2epoch">[docs]</a><span class="k">def</span> <span class="nf">decyear2epoch</span><span class="p">(</span><span class="n">decyear</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts decimal year to formatted epoch %02d:%03d:%05d</span>
+<span class="sd">    </span>
+<span class="sd">    :param decyear: decimal year</span>
+<span class="sd">    :returns : &#39;yy:doy:sec&#39;</span>
+<span class="sd">    </span>
+<span class="sd">    :note: the input decimal year is assumed to account for leap years, that is the day of year is the \</span>
+<span class="sd">    decimal of decyear * number of days in the year.</span>
+<span class="sd">    </span>
+<span class="sd">    :Example:</span>
+<span class="sd">    &gt;&gt;&gt; import pyacs</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.cal2decyear(1,3,2001)</span>
+<span class="sd">    &gt;&gt;&gt; 2001.16301369863</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.dec</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.decyear2epoch(2001.16301369863)</span>
+<span class="sd">    &gt;&gt;&gt; &#39;01:060:43200&#39;</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.decyear2epoch(2000.16301369863)</span>
+<span class="sd">    &gt;&gt;&gt; &#39;00:060:57284&#39;</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.decyear2epoch(pyacs.cal2decyear(1,3,2000))</span>
+<span class="sd">    &gt;&gt;&gt; &#39;00:061:43200&#39;</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">decyear</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">decyear</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">decyear</span> <span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">decyear</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">epoch</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">decyear2epoch</span><span class="p">,</span><span class="n">decyear</span><span class="p">)))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+    
+        <span class="p">(</span><span class="n">doy</span><span class="p">,</span><span class="n">ut</span><span class="p">)</span><span class="o">=</span><span class="n">decyear2dayno</span><span class="p">(</span><span class="n">decyear</span><span class="p">)</span>
+        <span class="n">seconds</span><span class="o">=</span><span class="n">ut</span><span class="o">*</span><span class="p">(</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">24</span><span class="p">)</span>
+        <span class="n">yr</span><span class="o">=</span><span class="n">year2yr</span><span class="p">(</span><span class="n">decyear</span><span class="p">)</span>
+        <span class="n">epoch</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%02d</span><span class="s2">:</span><span class="si">%03d</span><span class="s2">:</span><span class="si">%05d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">yr</span><span class="p">,</span><span class="n">doy</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="n">seconds</span><span class="p">)))</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span></div>
+
+
+
+<span class="c1">###############################################################################</span>
+<span class="c1"># DATETIME CONVERSIONS</span>
+<span class="c1">###############################################################################</span>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="datetime_from_calarray"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.datetime_from_calarray">[docs]</a><span class="k">def</span> <span class="nf">datetime_from_calarray</span><span class="p">(</span><span class="n">calarray</span><span class="p">,</span> <span class="n">hour</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sec</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">ms</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build a datetime array from an array of calendar dates</span>
+<span class="sd">    </span>
+<span class="sd">    :param calarray: 1D or 2D numpy array. Columns order are year,month,mday,hour,minute,second,microsecond</span>
+<span class="sd">    </span>
+<span class="sd">    :return: numpy 1D array of datime instances</span>
+<span class="sd">    :note: year,month,mday are mandatory. If not provided then hour=12, minute=0, sec=0,ms=0 (middle of the day) </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#import</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+    <span class="c1"># convert to numpy array if a list of list was provided</span>
+    <span class="n">calarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">calarray</span> <span class="p">)</span>
+    
+
+    <span class="c1"># case array is 1D</span>
+    <span class="k">if</span> <span class="n">calarray</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">calarray</span> <span class="o">=</span> <span class="n">calarray</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">calarray</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+        
+    <span class="c1"># prepare a formatted array</span>
+    
+    <span class="n">fmt_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="n">calarray</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="mi">7</span><span class="p">)</span> <span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span> <span class="p">)</span>
+    
+    <span class="c1"># default value for hour</span>
+    
+    <span class="n">fmt_array</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">12</span>
+    
+    <span class="c1"># fill the year, month, mday columns</span>
+    
+    <span class="n">fmt_array</span><span class="p">[:,:</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">calarray</span><span class="p">[:,:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    
+    <span class="c1"># if calarray is not fully integer, then we assume that microseconds are not provided, but seconds are decimal</span>
+    <span class="k">if</span>  <span class="n">calarray</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">):</span>
+        <span class="c1"># if there are 7 columns, then microseconds are provided and dtype was accidentally of float type</span>
+        <span class="k">if</span> <span class="n">calarray</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+            <span class="n">fmt_array</span> <span class="o">=</span> <span class="n">calarray</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="c1"># else, the decimal part of seconds are converted to microseconds</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">seconds</span> <span class="o">=</span> <span class="n">calarray</span><span class="p">[:,</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+            <span class="n">microseconds</span> <span class="o">=</span> <span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">modf</span><span class="p">(</span><span class="n">calarray</span><span class="p">[:,</span><span class="mi">5</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.E6</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> 
+            
+            <span class="n">fmt_array</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">calarray</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+            <span class="n">fmt_array</span><span class="p">[:,</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">calarray</span><span class="p">[:,</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+            <span class="n">fmt_array</span><span class="p">[:,</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">seconds</span>
+            <span class="n">fmt_array</span><span class="p">[:,</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">microseconds</span>
+            
+    <span class="k">return</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">datetime</span><span class="p">,</span><span class="n">fmt_array</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">fmt_array</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span><span class="n">fmt_array</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span><span class="n">fmt_array</span><span class="p">[:,</span><span class="mi">3</span><span class="p">],</span><span class="n">fmt_array</span><span class="p">[:,</span><span class="mi">4</span><span class="p">],</span><span class="n">fmt_array</span><span class="p">[:,</span><span class="mi">5</span><span class="p">],</span><span class="n">fmt_array</span><span class="p">[:,</span><span class="mi">6</span><span class="p">])))</span> <span class="p">)</span></div>
+        
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="datetime2cal"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.datetime2cal">[docs]</a><span class="k">def</span> <span class="nf">datetime2cal</span><span class="p">(</span><span class="n">datetime</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts from python datetime to calendar date</span>
+<span class="sd">    </span>
+<span class="sd">    :param datetime: datetime instance</span>
+<span class="sd">    :returns: year,month,monthday,ut</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">datetime</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">datetime</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">datetime</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">datetime</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">mday</span><span class="p">,</span><span class="n">ut</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">datetime2cal</span><span class="p">,</span><span class="n">datetime</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="k">else</span><span class="p">:</span>
+    
+        <span class="n">year</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">year</span>
+        <span class="n">month</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">month</span>
+        <span class="n">mday</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">day</span>
+        <span class="n">uts</span><span class="o">=</span><span class="n">hmsmicros2uts</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span><span class="n">datetime</span><span class="o">.</span><span class="n">minute</span><span class="p">,</span><span class="n">datetime</span><span class="o">.</span><span class="n">second</span><span class="p">,</span><span class="n">datetime</span><span class="o">.</span><span class="n">microsecond</span><span class="p">)</span>
+        <span class="n">ut</span><span class="o">=</span><span class="n">uts2ut</span><span class="p">(</span><span class="n">uts</span><span class="p">)</span>
+
+    <span class="k">return</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">+</span><span class="mi">0</span><span class="p">,</span>\
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">month</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">+</span><span class="mi">0</span><span class="p">,</span>\
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mday</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">+</span><span class="mi">0</span><span class="p">,</span>\
+            <span class="n">ut</span> <span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="datetime2dayno"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.datetime2dayno">[docs]</a><span class="k">def</span> <span class="nf">datetime2dayno</span><span class="p">(</span><span class="n">datetime</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts python datetime to dayno,year,ut</span>
+<span class="sd">    </span>
+<span class="sd">    :param datetime: pythob datetime instance</span>
+<span class="sd">    :returns: year,dayno,ut</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">datetime</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">datetime</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">datetime</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">datetime</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="p">[</span><span class="n">year</span><span class="p">,</span><span class="n">dayno</span><span class="p">,</span><span class="n">ut</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">datetime2dayno</span><span class="p">,</span><span class="n">datetime</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span>
+    
+    <span class="k">else</span><span class="p">:</span>
+    
+        <span class="n">year</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">year</span>
+        <span class="n">month</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">month</span>
+        <span class="n">mday</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">day</span>
+        <span class="n">uts</span><span class="o">=</span><span class="n">hmsmicros2uts</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span><span class="n">datetime</span><span class="o">.</span><span class="n">minute</span><span class="p">,</span><span class="n">datetime</span><span class="o">.</span><span class="n">second</span><span class="p">,</span><span class="n">datetime</span><span class="o">.</span><span class="n">microsecond</span><span class="p">)</span>
+        <span class="n">ut</span><span class="o">=</span><span class="n">uts2ut</span><span class="p">(</span><span class="n">uts</span><span class="p">)</span>
+        <span class="n">dayno</span><span class="o">=</span><span class="n">cal2dayno</span><span class="p">(</span><span class="n">mday</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+
+    <span class="k">return</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">year</span> <span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">+</span><span class="mi">0</span><span class="p">,</span>\
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">+</span><span class="mi">0</span><span class="p">,</span>\
+            <span class="n">ut</span><span class="p">)</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="datetime2mjd"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.datetime2mjd">[docs]</a><span class="k">def</span> <span class="nf">datetime2mjd</span><span class="p">(</span><span class="n">datetime</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts a python datetime instance to a modified julian day</span>
+<span class="sd">    </span>
+<span class="sd">    :param datetime: python datetime instance</span>
+<span class="sd">    :returns: modified julian day</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">datetime</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">datetime</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">datetime</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">datetime</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">mjd</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">datetime2mjd</span><span class="p">,</span><span class="n">datetime</span><span class="p">)))</span>
+    
+    <span class="k">else</span><span class="p">:</span>
+
+        
+        <span class="n">year</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">year</span>
+        <span class="n">month</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">month</span>
+        <span class="n">mday</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">day</span>
+        <span class="n">h</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">hour</span>
+        <span class="n">mn</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">minute</span>
+        <span class="n">s</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">second</span>
+        <span class="n">microsecond</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">microsecond</span>
+        <span class="n">uts</span><span class="o">=</span><span class="n">hmsmicros2uts</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="n">mn</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span><span class="n">microsecond</span><span class="o">=</span><span class="n">microsecond</span><span class="p">)</span>
+        <span class="n">ut</span><span class="o">=</span><span class="n">uts2ut</span><span class="p">(</span><span class="n">uts</span><span class="p">)</span>
+        <span class="n">mjd</span><span class="o">=</span><span class="n">cal2mjd</span><span class="p">(</span><span class="n">mday</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">ut</span><span class="o">=</span><span class="n">ut</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">mjd</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="datetime2decyear"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.datetime2decyear">[docs]</a><span class="k">def</span> <span class="nf">datetime2decyear</span><span class="p">(</span><span class="n">datetime</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts a python datetime instance to decimal year</span>
+<span class="sd">    </span>
+<span class="sd">    :param datetime: python datetime instance or array of it</span>
+<span class="sd">    :returns: decimal year</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">mjd2decyear</span><span class="p">(</span> <span class="n">datetime2mjd</span><span class="p">(</span><span class="n">datetime</span><span class="p">)</span> <span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="datetime_round_second"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.datetime_round_second">[docs]</a><span class="k">def</span> <span class="nf">datetime_round_second</span><span class="p">(</span><span class="n">my_datetime</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    rounds a python datetime instance to the nearest second</span>
+<span class="sd">    </span>
+<span class="sd">    :param datetime: python datetime instance or array of it</span>
+<span class="sd">    :returns: new rounded datetime</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">datetime</span>
+    
+
+    <span class="k">if</span> <span class="n">my_datetime</span><span class="o">.</span><span class="n">microsecond</span> <span class="o">&lt;=</span> <span class="mi">500000</span><span class="p">:</span>
+        <span class="n">my_datetime</span> <span class="o">=</span> <span class="n">my_datetime</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span> <span class="n">microsecond</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">my_datetime</span> <span class="o">=</span> <span class="n">my_datetime</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span> <span class="n">microsecond</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="n">deltatime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">my_datetime</span> <span class="o">=</span> <span class="n">my_datetime</span> <span class="o">+</span> <span class="n">deltatime</span>
+    
+    <span class="k">return</span><span class="p">(</span><span class="n">my_datetime</span><span class="p">)</span></div>
+ 
+
+<span class="c1">###############################################################################</span>
+<span class="c1"># GPS WEEK CONVERSIONS</span>
+<span class="c1">###############################################################################</span>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="gpsweek2mjd"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.gpsweek2mjd">[docs]</a><span class="k">def</span> <span class="nf">gpsweek2mjd</span><span class="p">(</span><span class="n">gpsweek</span><span class="p">,</span><span class="n">dow</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts a GPS week and dow to modified julian day</span>
+<span class="sd">    </span>
+<span class="sd">    :param gpsweek,dow: gps week, day of week (0 is sunday, 6 saturday)</span>
+<span class="sd">    :returns: modified julian day</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gpsweek</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">gpsweek</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">gpsweek</span><span class="p">)</span>
+        <span class="n">dow</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dow</span><span class="p">)</span>
+
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gpsweek</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">mjd</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">gpsweek2mjd</span><span class="p">,</span><span class="n">gpsweek</span><span class="p">,</span><span class="n">dow</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span>
+    
+    <span class="k">else</span><span class="p">:</span>
+    
+        <span class="n">mjd010580</span> <span class="o">=</span> <span class="mi">44243</span>
+        <span class="n">mjd</span> <span class="o">=</span> <span class="p">(</span> <span class="n">gpsweek</span> <span class="o">*</span> <span class="mi">7</span> <span class="p">)</span> <span class="o">+</span> <span class="n">dow</span> <span class="o">+</span> <span class="n">mjd010580</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">return</span><span class="p">(</span> <span class="n">mjd</span> <span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<span class="c1"># EPOCH CONVERSIONS</span>
+<span class="c1">###############################################################################</span>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="epoch2decyear"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.epoch2decyear">[docs]</a><span class="k">def</span> <span class="nf">epoch2decyear</span><span class="p">(</span><span class="n">epoch</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts an epoch string used in the SINEX format &#39;YY:DOY:SOD&#39; e.g.&#39;17:100:43185&#39; into a decimal year</span>
+<span class="sd">    </span>
+<span class="sd">    :param epoch: epoch formatted string or list of epochs</span>
+<span class="sd">    </span>
+<span class="sd">    :returns: decimal year or array of decimal years</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">epoch</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">decyear</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">epoch2decyear</span><span class="p">,</span><span class="n">epoch</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="k">else</span><span class="p">:</span>
+    
+        <span class="n">lepoch</span> <span class="o">=</span> <span class="n">epoch</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+        <span class="n">yr</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lepoch</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">doy</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lepoch</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">sod</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lepoch</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    
+        <span class="n">year</span><span class="o">=</span><span class="n">yr2year</span><span class="p">(</span><span class="n">yr</span><span class="p">)</span>
+    
+        <span class="n">decyear</span><span class="o">=</span><span class="n">dayno2decyear</span><span class="p">(</span><span class="n">doy</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">ut</span><span class="o">=</span><span class="n">uts2ut</span><span class="p">(</span><span class="n">sod</span><span class="p">))</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">decyear</span><span class="p">)</span></div>
+
+<span class="c1">###############################################################################</span>
+<span class="c1"># JULIAN DAY, LEAP, DAY FRACTIONS, HOUR/MIN/SEC/MICROSECONDS CONVERSIONS</span>
+<span class="c1">###############################################################################</span>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="jd2mjd"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.jd2mjd">[docs]</a><span class="k">def</span> <span class="nf">jd2mjd</span><span class="p">(</span><span class="n">jd</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a Julian day to a Modified Julian day</span>
+<span class="sd">    </span>
+<span class="sd">    :param jd: Julian day</span>
+<span class="sd">    </span>
+<span class="sd">    :returns: jd-2400000.5</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">jd</span><span class="o">-</span><span class="mf">2400000.5</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="mjd2jd"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.mjd2jd">[docs]</a><span class="k">def</span> <span class="nf">mjd2jd</span><span class="p">(</span><span class="n">mjd</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    converts a Modified Julian day to Julian day</span>
+<span class="sd">    </span>
+<span class="sd">    :param mjd:     Modified Julian day</span>
+<span class="sd">    </span>
+<span class="sd">    :returns: mjd + 2400000.5</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">return</span> <span class="n">mjd</span><span class="o">+</span><span class="mf">2400000.5</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="yr2year"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.yr2year">[docs]</a><span class="k">def</span> <span class="nf">yr2year</span><span class="p">(</span><span class="n">yr</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts two digits year to four digits year</span>
+<span class="sd">    </span>
+<span class="sd">    :param yr: 2-digits year (e.g. 01)</span>
+<span class="sd">    :returns: 4-digit years (2001). This is yr+2000 if yr&lt;80 yr+1900 otherwise.</span>
+<span class="sd">    </span>
+<span class="sd">    :note: This is an heritage from a bad practice in the geodesy community assuming that origin of the universe started with GPS. See example.</span>
+
+<span class="sd">    :Example:</span>
+<span class="sd">    &gt;&gt;&gt; import pyacs</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.yr2year(96)</span>
+<span class="sd">    &gt;&gt;&gt; 1996</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.yr2year(11)</span>
+<span class="sd">    &gt;&gt;&gt; 2011</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">yr</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">yr</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">yr</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">yr</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">year</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">yr2year</span><span class="p">,</span><span class="n">yr</span><span class="p">)))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+    
+        <span class="k">if</span> <span class="n">yr</span><span class="o">&lt;</span><span class="mi">80</span><span class="p">:</span><span class="n">year</span><span class="o">=</span><span class="n">yr</span><span class="o">+</span><span class="mi">2000</span>
+        <span class="k">else</span><span class="p">:</span><span class="n">year</span><span class="o">=</span><span class="n">yr</span><span class="o">+</span><span class="mi">1900</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">year</span><span class="p">)</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="year2yr"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.year2yr">[docs]</a><span class="k">def</span> <span class="nf">year2yr</span><span class="p">(</span><span class="n">year</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts 4-digits year to 2-digits year</span>
+
+<span class="sd">    :param yr: 4-digits year (e.g. 2001)</span>
+<span class="sd">    :returns: 2-digit years (01). This is yr-2000 if yr&lt;80 yr-1900 otherwise.</span>
+<span class="sd">    </span>
+<span class="sd">    :note: This is an heritage from a bad practice in the geodesy community assuming that origin of the universe started with GPS in 1980. See example.</span>
+
+<span class="sd">    :Example:</span>
+<span class="sd">    &gt;&gt;&gt; import pyacs</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.year2yr(1996)</span>
+<span class="sd">    &gt;&gt;&gt; 96</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.year2yr(2011)</span>
+<span class="sd">    &gt;&gt;&gt; 11</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">year</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">yr</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">year2yr</span><span class="p">,</span><span class="n">year</span><span class="p">)))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+    
+        
+        <span class="k">if</span> <span class="n">year</span> <span class="o">&gt;</span> <span class="mi">1999</span><span class="p">:</span><span class="n">yr</span><span class="o">=</span><span class="n">year</span><span class="o">-</span><span class="mi">2000</span>
+        <span class="k">else</span><span class="p">:</span><span class="n">yr</span><span class="o">=</span><span class="n">year</span><span class="o">-</span><span class="mi">1900</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">yr</span><span class="p">)</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="leap_year"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.leap_year">[docs]</a><span class="k">def</span> <span class="nf">leap_year</span><span class="p">(</span><span class="n">year</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns true if year is a leap year.</span>
+<span class="sd">    </span>
+<span class="sd">    :param year: year in YYYY</span>
+<span class="sd">    </span>
+<span class="sd">    :returns: True if year is leap, False otherwise </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">OK</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">leap_year</span><span class="p">,</span><span class="n">year</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="k">else</span><span class="p">:</span>
+    
+        <span class="n">year</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+        <span class="n">OK</span><span class="o">=</span><span class="p">((</span> <span class="ow">not</span> <span class="p">(</span><span class="n">year</span><span class="o">%</span><span class="mi">4</span><span class="p">))</span><span class="ow">and</span><span class="p">(</span><span class="n">year</span><span class="o">%</span><span class="mi">100</span><span class="p">))</span><span class="ow">or</span><span class="p">(</span><span class="ow">not</span><span class="p">(</span><span class="n">year</span><span class="o">%</span><span class="mi">400</span><span class="p">))</span>
+        
+    <span class="k">return</span> <span class="n">OK</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="uts2hmsmicros"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.uts2hmsmicros">[docs]</a><span class="k">def</span> <span class="nf">uts2hmsmicros</span><span class="p">(</span><span class="n">uts</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts decimal seconds on a day (0-86400) to hours, min, seconde, microseconds</span>
+<span class="sd">    </span>
+<span class="sd">    :param uts: decimal seconds since 00:00:00.0. Must be in the [0.,86400.[ range.</span>
+<span class="sd">    :returns: hours,minutes,seconds,microseconds</span>
+<span class="sd">    :rtype: int,int,int,float</span>
+<span class="sd">    :Example:</span>
+<span class="sd">    &gt;&gt;&gt; import pyacs</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.uts2hmsmicros(86399.999999)</span>
+<span class="sd">    &gt;&gt;&gt; (23, 59, 59, 999999.0000069374)</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.uts2hmsmicros(86400)</span>
+<span class="sd">    &gt;&gt;&gt; !!!  86400 uts out of range [0- 86400.0 [</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">uts</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">uts</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">uts</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">uts</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="p">[</span><span class="n">h</span><span class="p">,</span><span class="n">mn</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="n">microsecond</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">uts2hmsmicros</span><span class="p">,</span><span class="n">uts</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">__utsOK</span><span class="p">(</span><span class="n">uts</span><span class="p">)</span>
+        
+        <span class="n">nsec_hour</span><span class="o">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span>
+        <span class="n">nsec_min</span><span class="o">=</span> <span class="mi">60</span>
+        
+        <span class="n">int_sec</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">uts</span><span class="p">)</span>
+        
+        <span class="n">h</span> <span class="o">=</span> <span class="n">int_sec</span> <span class="o">//</span> <span class="n">nsec_hour</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">int_sec</span> <span class="o">%</span> <span class="n">nsec_hour</span>
+
+        <span class="n">mn</span> <span class="o">=</span> <span class="n">r</span> <span class="o">//</span> <span class="n">nsec_min</span>
+        <span class="n">s</span> <span class="o">=</span>  <span class="n">r</span> <span class="o">%</span> <span class="n">nsec_min</span>
+
+        <span class="n">microsecond</span><span class="o">=</span> <span class="p">(</span><span class="n">uts</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">int_sec</span><span class="p">))</span> <span class="o">*</span> <span class="mf">1.E6</span>
+
+        <span class="k">return</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">+</span><span class="mi">0</span><span class="p">,</span>\
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mn</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">+</span><span class="mi">0</span><span class="p">,</span>\
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">+</span><span class="mi">0</span><span class="p">,</span>\
+                <span class="n">microsecond</span><span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="hmsmicros2uts"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.hmsmicros2uts">[docs]</a><span class="k">def</span> <span class="nf">hmsmicros2uts</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="n">mn</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts hour minute seconds to uts</span>
+<span class="sd">    </span>
+<span class="sd">    :param hours,minutes,seconds,microseconds</span>
+<span class="sd">    :returns: uts</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">nsec_hour</span><span class="o">=</span><span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span>
+    <span class="n">nsec_min</span><span class="o">=</span><span class="mi">60</span>
+
+    <span class="k">return</span><span class="p">((</span><span class="n">h</span><span class="o">*</span><span class="n">nsec_hour</span><span class="o">+</span><span class="n">mn</span><span class="o">*</span><span class="n">nsec_min</span><span class="o">+</span><span class="n">s</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="n">microsecond</span><span class="p">)</span><span class="o">/</span><span class="mf">1.E6</span><span class="p">)</span>    </div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="hmsmicros2ut"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.hmsmicros2ut">[docs]</a><span class="k">def</span> <span class="nf">hmsmicros2ut</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="n">mn</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts hour minute seconds to fractional day</span>
+<span class="sd">    </span>
+<span class="sd">    :param hours,minutes,seconds,microseconds</span>
+<span class="sd">    :returns: ut</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">uts</span><span class="o">=</span><span class="n">hmsmicros2uts</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="n">mn</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span><span class="n">microsecond</span><span class="o">=</span><span class="n">microsecond</span><span class="p">)</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">uts2ut</span><span class="p">(</span><span class="n">uts</span><span class="p">))</span>    </div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="ut2uts"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.ut2uts">[docs]</a><span class="k">def</span> <span class="nf">ut2uts</span><span class="p">(</span><span class="n">ut</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts fractional day to seconds</span>
+<span class="sd">    </span>
+<span class="sd">    :param ut: fractional day in [0.,1.[</span>
+<span class="sd">    :returns: ut * 60.*60.*24.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">nsec_day</span><span class="o">=</span><span class="mf">60.</span><span class="o">*</span><span class="mf">60.</span><span class="o">*</span><span class="mf">24.</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">ut</span><span class="o">*</span><span class="n">nsec_day</span><span class="p">)</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="uts2ut"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.uts2ut">[docs]</a><span class="k">def</span> <span class="nf">uts2ut</span><span class="p">(</span><span class="n">uts</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts uts in seconds to fractional day</span>
+<span class="sd">    </span>
+<span class="sd">    :param uts: seconds in [0.,86400.[</span>
+<span class="sd">    :returns: uts / (60.*60.*24.)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">uts</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">uts</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">uts</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">uts</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">ut</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">uts2ut</span><span class="p">,</span><span class="n">uts</span><span class="p">)))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        
+        <span class="n">__utsOK</span><span class="p">(</span><span class="n">uts</span><span class="p">)</span>
+        <span class="n">nsec_day</span><span class="o">=</span><span class="mf">60.</span><span class="o">*</span><span class="mf">60.</span><span class="o">*</span><span class="mf">24.</span>
+        <span class="n">ut</span><span class="o">=</span><span class="n">uts</span><span class="o">/</span><span class="n">nsec_day</span>
+    
+    <span class="k">return</span> <span class="n">ut</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="day_since_decyear"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.day_since_decyear">[docs]</a><span class="k">def</span> <span class="nf">day_since_decyear</span><span class="p">(</span><span class="n">decyear</span><span class="p">,</span><span class="n">ref_decyear</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the number of days since a reference date.</span>
+<span class="sd">    </span>
+<span class="sd">    :param decyear: decimal year</span>
+<span class="sd">    :returns: days elapsed since decyear (float)</span>
+<span class="sd">    </span>
+<span class="sd">    :note: negative number means before the reference date</span>
+<span class="sd">    :note: a useful function for postseismic analysis.</span>
+<span class="sd">    </span>
+<span class="sd">    :Example:</span>
+<span class="sd">    &gt;&gt;&gt; import pyacs</span>
+<span class="sd">    &gt;&gt;&gt; ref_decyear=pyacs.cal2decyear(16,4,2016,ut=pyacs.hmsmicros2ut(23, 58, 33)) # Ecuador, Mw 7.8 EQ</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.day_since_decyear(pyacs.cal2decyear(17,4,2016,ut=pyacs.hmsmicros2ut(23, 58, 32)),ref_decyear)</span>
+<span class="sd">    &gt;&gt;&gt; 0.9999884259232203</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.day_since_decyear(pyacs.cal2decyear(17,4,2016,ut=pyacs.hmsmicros2ut(23, 58, 33)),ref_decyear)</span>
+<span class="sd">    &gt;&gt;&gt; 0.9999999999854481</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.day_since_decyear(pyacs.cal2decyear(16,4,2017,ut=pyacs.hmsmicros2ut(23, 58, 33)),ref_decyear)</span>
+<span class="sd">    &gt;&gt;&gt; 364.9999999999345</span>
+<span class="sd">    &gt;&gt;&gt; ld=pyacs.mjd2decyear(np.arange(pyacs.cal2mjd(13,4,2016),pyacs.cal2mjd(19,4,2016)))</span>
+<span class="sd">    &gt;&gt;&gt; ld</span>
+<span class="sd">    &gt;&gt;&gt; array([ 2016.283,  2016.286,  2016.288,  2016.291,  2016.294,  2016.296])</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.day_since_decyear(ld,ref_decyear)</span>
+<span class="sd">    &gt;&gt;&gt; array([-3.499, -2.499, -1.499, -0.499,  0.501,  1.501])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">mjd</span><span class="o">=</span><span class="n">decyear2mjd</span><span class="p">(</span><span class="n">decyear</span><span class="p">)</span>
+    
+    <span class="n">ref_mjd</span><span class="o">=</span><span class="n">decyear2mjd</span><span class="p">(</span><span class="n">ref_decyear</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">mjd</span><span class="o">-</span><span class="n">ref_mjd</span></div>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="guess_date"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.guess_date">[docs]</a><span class="k">def</span> <span class="nf">guess_date</span><span class="p">(</span><span class="n">date</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Tries to guess a date from input parameter</span>
+<span class="sd">    returns a decimal year</span>
+
+<span class="sd">    :param date: date as string or float</span>
+<span class="sd">    :returns: decimal year</span>
+
+<span class="sd">    :Example:</span>
+<span class="sd">    &gt;&gt;&gt; import pyacs</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.guess_date(&#39;2016/04/16&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; 2016.2909836065573</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">decyear</span><span class="o">=</span><span class="s1">&#39;UNKNOWN&#39;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">date</span><span class="p">,</span><span class="nb">float</span><span class="p">):</span>
+        <span class="c1"># it is then mjd or decimal year</span>
+        <span class="k">if</span> <span class="n">date</span> <span class="o">&gt;</span> <span class="mf">3000.0</span><span class="p">:</span>
+            <span class="c1"># certainly a date is mjd type</span>
+            <span class="n">decyear</span><span class="o">=</span><span class="n">mjd2decyear</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># certainly a date is decyear type</span>
+            <span class="n">decyear</span><span class="o">=</span><span class="n">date</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">date</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+        <span class="c1"># cal,dayno or decyear passed as a string</span>
+        <span class="kn">import</span> <span class="nn">re</span>
+
+        <span class="n">ldate</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[\w&#39;.]+&quot;</span><span class="p">,</span> <span class="n">date</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ldate</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span> <span class="c1"># again decyear or mjd</span>
+            <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">date</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">3000.0</span><span class="p">:</span><span class="n">decyear</span><span class="o">=</span><span class="n">mjd2decyear</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">date</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span><span class="n">decyear</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ldate</span><span class="p">)</span><span class="o">==</span><span class="mi">2</span><span class="p">:</span> <span class="c1"># dayno</span>
+            <span class="n">arg1</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">ldate</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">arg2</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">ldate</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">arg1</span><span class="o">&gt;</span> <span class="mi">1980</span><span class="p">:</span>
+                <span class="n">year</span><span class="o">=</span><span class="n">arg1</span>
+                <span class="n">doy</span><span class="o">=</span><span class="n">arg2</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">year</span><span class="o">=</span><span class="n">arg2</span>
+                <span class="n">doy</span><span class="o">=</span><span class="n">arg1</span>
+            <span class="n">decyear</span><span class="o">=</span><span class="n">dayno2decyear</span><span class="p">(</span><span class="n">doy</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">ut</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ldate</span><span class="p">)</span><span class="o">==</span><span class="mi">3</span><span class="p">:</span> <span class="c1"># cal</span>
+            <span class="n">arg1</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">ldate</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">arg2</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">ldate</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">arg3</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">ldate</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">arg1</span><span class="o">&gt;</span><span class="mi">1980</span><span class="p">:</span>
+                <span class="n">year</span><span class="o">=</span><span class="n">arg1</span>
+                <span class="n">month</span><span class="o">=</span><span class="n">arg2</span>
+                <span class="n">mday</span><span class="o">=</span><span class="n">arg3</span>
+            <span class="k">if</span> <span class="n">arg3</span><span class="o">&gt;</span><span class="mi">1980</span><span class="p">:</span>
+                <span class="n">year</span><span class="o">=</span><span class="n">arg3</span>
+                <span class="n">month</span><span class="o">=</span><span class="n">arg2</span>
+                <span class="n">mday</span><span class="o">=</span><span class="n">arg1</span>
+            <span class="n">decyear</span><span class="o">=</span><span class="n">cal2decyear</span><span class="p">(</span><span class="n">mday</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">ut</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">decyear</span> <span class="o">==</span> <span class="s1">&#39;UNKNOWN&#39;</span><span class="p">:</span>
+        <span class="c1"># we were not able to guess</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span> <span class="p">(</span><span class="s1">&#39;!!! guess_date was unable to guess the format of </span><span class="si">%s</span><span class="s1"> &#39;</span> <span class="o">%</span> <span class="p">(</span> <span class="nb">str</span><span class="p">(</span><span class="n">date</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+    
+    <span class="k">return</span><span class="p">(</span><span class="n">decyear</span><span class="p">)</span></div>
+
+<span class="c1">##############################################################################</span>
+<div class="viewcode-block" id="decyear2seconds"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.decyear2seconds">[docs]</a><span class="k">def</span> <span class="nf">decyear2seconds</span><span class="p">(</span> <span class="n">np_decyear</span> <span class="p">,</span> <span class="n">rounding</span><span class="o">=</span><span class="s1">&#39;day&#39;</span> <span class="p">):</span>
+<span class="c1">##############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts decimal year to a seconds since 1980/1/1/0/0/0</span>
+<span class="sd">    </span>
+<span class="sd">    :param rounding: controls rounding. &#39;day&#39; means at 12:00:00, </span>
+<span class="sd">    &#39;hour&#39; at 00:00, &#39;minute&#39; at the current minute with 00 seconds, &#39;second&#39; at the integer of the current second.</span>
+<span class="sd">    :return: 1D integer (np.int64) numpy array </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># import  </span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+    
+    <span class="c1"># reference date is 1980.0</span>
+    <span class="n">ref_date_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">1980</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    
+    <span class="n">np_datetime</span> <span class="o">=</span> <span class="n">decyear2datetime</span><span class="p">(</span> <span class="n">np_decyear</span> <span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span><span class="p">(</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">np_datetime</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="p">):</span>
+        <span class="n">np_datetime</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="n">np_datetime</span> <span class="p">])</span>
+
+    <span class="c1"># handle round</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span> <span class="n">np_datetime</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">):</span>
+        
+        <span class="k">if</span> <span class="n">rounding</span> <span class="o">==</span> <span class="s1">&#39;day&#39;</span><span class="p">:</span>
+            <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span> <span class="mi">12</span><span class="p">,</span> <span class="n">minute</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">second</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">microsecond</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rounding</span> <span class="o">==</span> <span class="s1">&#39;hour&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">minute</span> <span class="o">&gt;=</span> <span class="mi">30</span><span class="p">:</span>
+                <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span> <span class="n">minutes</span><span class="o">=</span><span class="mi">30</span> <span class="p">)</span> 
+            <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span> <span class="n">minute</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">second</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">microsecond</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rounding</span> <span class="o">==</span> <span class="s1">&#39;minute&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">second</span> <span class="o">&gt;=</span> <span class="mi">30</span><span class="p">:</span>
+                <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span> <span class="n">seconds</span><span class="o">=</span><span class="mi">30</span> <span class="p">)</span> 
+            <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span> <span class="n">second</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">microsecond</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rounding</span> <span class="o">==</span> <span class="s1">&#39;second&#39;</span><span class="p">:</span>
+            <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np_datetime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span> <span class="n">microsecond</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+
+    
+    <span class="c1"># convert to timedelta and then to seconds</span>
+
+    <span class="n">np_dates_s</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,[</span><span class="n">x</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span> <span class="n">np_datetime</span> <span class="o">-</span> <span class="n">ref_date_time</span><span class="p">)</span> <span class="p">])),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+
+    <span class="c1"># return</span>
+    
+    <span class="k">return</span><span class="p">(</span> <span class="n">np_dates_s</span> <span class="p">)</span> </div>
+
+<span class="c1">##############################################################################</span>
+<div class="viewcode-block" id="datetime2seconds"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.datetime2seconds">[docs]</a><span class="k">def</span> <span class="nf">datetime2seconds</span><span class="p">(</span> <span class="n">np_datetime</span> <span class="p">):</span>
+<span class="c1">##############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts dattime to seconds since 1980/1/1/0/0/0</span>
+<span class="sd">    :param datetime:</span>
+<span class="sd">    :return: 1D numpy array of seconds</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="c1"># import</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
+    <span class="c1"># reference date is 1980.0</span>
+    <span class="n">ref_date_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">1980</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">np_datetime</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+        <span class="n">np_datetime</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np_datetime</span><span class="p">])</span>
+
+
+    <span class="c1"># convert to timedelta and then to seconds</span>
+
+    <span class="n">np_dates_s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span><span class="n">np_datetime</span> <span class="o">-</span> <span class="n">ref_date_time</span><span class="p">)])),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+
+    <span class="c1"># return</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">np_dates_s</span><span class="p">)</span></div>
+
+
+<span class="c1">##############################################################################</span>
+<div class="viewcode-block" id="seconds2datetime"><a class="viewcode-back" href="../../../pyacs.lib.html#pyacs.lib.astrotime.seconds2datetime">[docs]</a><span class="k">def</span> <span class="nf">seconds2datetime</span><span class="p">(</span> <span class="n">seconds</span> <span class="p">):</span>
+<span class="c1">##############################################################################</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts seconds since 1980/1/1/0/0/0 to a datetime object</span>
+<span class="sd">    </span>
+<span class="sd">    :return:a 1D numpy array of datetime object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># import  </span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span> <span class="p">,</span> <span class="n">timedelta</span>
+    
+    <span class="c1"># reference date is 1980.0</span>
+    <span class="n">ref_date_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">1980</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span> <span class="n">seconds</span> <span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">np_datetime</span> <span class="o">=</span>   <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">ref_date_time</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">x</span><span class="p">)</span> <span class="p">,</span>  <span class="n">seconds</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="p">)))</span> 
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">np_datetime</span> <span class="o">=</span>   <span class="n">ref_date_time</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">seconds</span><span class="p">))</span> 
+    <span class="k">return</span> <span class="n">np_datetime</span></div>
+    
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Jean-Mathieu Nocquet IRD.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

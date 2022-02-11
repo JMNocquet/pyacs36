@@ -13,6 +13,9 @@ def make_model(self, option='detrend', method='L2', loutlier=None, in_place=Fals
     from pyacs.gts.Gts import Gts
     import inspect
 
+    # after this method .data  and .data_xyz are not consistent so .data_xyz is set to None
+    self.data_xyz = None
+
     ###########################################################################
     # check data is not None
     from pyacs.gts.lib.errors import GtsInputDataNone

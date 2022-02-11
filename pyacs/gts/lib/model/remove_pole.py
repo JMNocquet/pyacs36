@@ -14,6 +14,9 @@ def remove_pole(self, pole, pole_type='euler', in_place=False, verbose=True):
     from pyacs.gts.Gts import Gts
     import inspect
 
+    # after this method .data  and .data_xyz are not consistent so .data_xyz is set to None
+    self.data_xyz = None
+
 
     ###########################################################################
     # check data is not None

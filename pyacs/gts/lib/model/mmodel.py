@@ -11,6 +11,10 @@ def mmodel(self):
     from pyacs.gts.Gts import Gts
     import inspect
 
+    # after this method .data  and .data_xyz are not consistent so .data_xyz is set to None
+    self.data_xyz = None
+
+
     if isinstance(self.offsets_values, np.ndarray):
         noffset = len(self.offsets_values)
         offsets_values = np.zeros((noffset, 7))

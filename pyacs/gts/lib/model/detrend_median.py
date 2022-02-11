@@ -19,6 +19,10 @@ def detrend_median(self, delta_day=None, in_place=False, periods=[], exclude_per
     from pyacs.gts.Gts import Gts
     import inspect
 
+
+    # after this method .data  and .data_xyz are not consistent so .data_xyz is set to None
+    self.data_xyz = None
+
     ###########################################################################
     # check data is not None
     from pyacs.gts.lib.errors import GtsInputDataNone

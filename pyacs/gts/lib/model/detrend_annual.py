@@ -20,6 +20,9 @@ def detrend_annual(self, method='L2', in_place=False, periods=None, exclude_peri
     from pyacs.gts.Gts import Gts
     import inspect
 
+    # after this method .data  and .data_xyz are not consistent so .data_xyz is set to None
+    self.data_xyz = None
+
 
     ###########################################################################
     # check data is not None

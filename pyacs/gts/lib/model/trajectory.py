@@ -75,7 +75,11 @@ def trajectory(self,
     import numpy as np
     import pyacs.lib.astrotime as at
 
-    # fills the H_fix, H_constraints & H_bounds for the components
+
+    # after this method .data  and .data_xyz are not consistent so .data_xyz is set to None
+    self.data_xyz = None
+
+# fills the H_fix, H_constraints & H_bounds for the components
 
     if 'N' in component:
         i = 0

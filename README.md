@@ -18,7 +18,7 @@ pip install pyacs-XXX.tar.gz
 ```
 You might prefer to install it under a dedicated conda virtual env
 ```
-conda create -n env_pyacs python=3.9
+conda create -n env_pyacs python=3.9 ipython
 conda activate env_pyacs
 pip install pyacs-XXX.tar.gz
 ```
@@ -32,7 +32,7 @@ alias ipyacs='ipython `which ipyacs.py` -i'
 ## Documentation
 
 A documentation is available [here][pyacs_doc].
-Report bug or desired enhancement in the [Github issues][https://github.com/JMNocquet/pyacs36/issues].
+Report bug or desired enhancement in the [Github issues][github_issues].
 
 ## Authors
 PYACS has been developed by [Jean-Mathieu Nocquet][web_nocquet] and [Dinh Trong Tran][tran_researchgate] as part of his PhD.  
@@ -41,6 +41,7 @@ PYACS has been developed by [Jean-Mathieu Nocquet][web_nocquet] and [Dinh Trong 
 [pyacs_doc]:https://jmnocquet.github.io/pyacs_docs/pyacs
 [web_nocquet]:https://jmnocquet.github.io/
 [tran_researchgate]:https://www.researchgate.net/profile/Dinh-Tran-14
+[github_issues]:https://github.com/JMNocquet/pyacs36/issues
 
 ## A few studies which have used PYACS
 

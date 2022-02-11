@@ -55,6 +55,8 @@ import pyacs.gts.Sgts_methods.to_obs_tensor
 import pyacs.gts.Sgts_methods.apply_coseismic
 import pyacs.gts.Sgts_methods.get_unr
 import pyacs.gts.Sgts_methods.info
+import pyacs.gts.Sgts_methods.to_kml
+import pyacs.gts.Sgts_methods.plot_data_sum
 
 
 Sgts.append             = pyacs.gts.Sgts_methods.append.append
@@ -86,6 +88,8 @@ Sgts.to_obs_tensor      = pyacs.gts.Sgts_methods.to_obs_tensor.to_obs_tensor
 Sgts.apply_coseismic    = pyacs.gts.Sgts_methods.apply_coseismic.apply_coseismic
 Sgts.get_unr            = pyacs.gts.Sgts_methods.get_unr.get_unr
 Sgts.info               = pyacs.gts.Sgts_methods.info.info
+Sgts.to_kml             = pyacs.gts.Sgts_methods.to_kml.to_kml
+Sgts.plot_data_sum      = pyacs.gts.Sgts_methods.plot_data_sum.plot_data_sum
 
 #
 # 

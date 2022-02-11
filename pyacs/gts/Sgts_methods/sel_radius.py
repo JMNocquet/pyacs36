@@ -35,7 +35,6 @@ def sel_radius(self, center, range, verbose=True):
     for code in self.lcode():
         XXXX = GMT_Point(code='XXXX', lon=self.__dict__[code].lon, lat=self.__dict__[code].lat, he=0.)
         sdistance = CNTR.spherical_distance(XXXX) / 1.E3
-        print("distance for %s %.1lf" % (code,sdistance))
         if sdistance >= range[0] and sdistance < range[1]:
             # print("%s %s : %10.1lf " % (EQ__.code,code,EQ__.spherical_distance(XXXX)/1.E3))
             lsel.append(code)

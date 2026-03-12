@@ -1,10 +1,17 @@
 ###################################################################
 def has_ts(self, code):
 ###################################################################
-    """
-    Tests whether a time series exists in the current Sgts instance
-     
-    :param code: 4-character code
+    """Check if a time series with the given code exists in this Sgts.
+
+    Parameters
+    ----------
+    code : str
+        4-character site code.
+
+    Returns
+    -------
+    bool
+        True if code is in Sgts, False otherwise.
     """
 
     if code in self.lcode():

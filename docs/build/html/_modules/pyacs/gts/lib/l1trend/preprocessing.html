@@ -1,0 +1,379 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.gts.lib.l1trend.preprocessing &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../libraries.html">core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyacs.gts.lib.l1trend.preprocessing</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyacs.gts.lib.l1trend.preprocessing</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Pre-processing functions for L1-trend analysis.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">at</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+
+
+<div class="viewcode-block" id="pre_process_test">
+<a class="viewcode-back" href="../../../../../api/pyacs.gts.lib.l1trend.preprocessing.html#pyacs.gts.lib.filters.l1trend.pre_process_test">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">pre_process_test</span><span class="p">(</span><span class="n">gts</span><span class="p">,</span> <span class="n">component</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">5000.</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pre-process. Test whether a large offset is present in the time series.</span>
+<span class="sd">    Find the largest offset exceeding threshold found in the time series.</span>
+<span class="sd">    Returns the index in the time series immediately after the largest offset or a void list if no offset is found</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    gts : Gts</span>
+<span class="sd">        Input time series</span>
+<span class="sd">    component : str</span>
+<span class="sd">        Component to test (&#39;E&#39;, &#39;N&#39;, or &#39;U&#39;)</span>
+<span class="sd">    threshold : float</span>
+<span class="sd">        Threshold for offset detection</span>
+<span class="sd">    logger : logging.Logger, optional</span>
+<span class="sd">        Logger instance for logging messages</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        List of indices where offsets are found</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">threshold_up</span> <span class="o">=</span> <span class="n">threshold</span> <span class="o">*</span> <span class="mi">5</span>
+
+    <span class="c1"># Ensure threshold is float</span>
+    <span class="n">threshold</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">threshold</span><span class="p">)</span>
+
+    <span class="c1"># get time period</span>
+    <span class="n">str_sdate</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
+    <span class="n">str_edate</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
+    <span class="n">str_period</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">str_sdate</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">str_edate</span><span class="si">}</span><span class="s2">]&quot;</span>
+
+    <span class="n">mesg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Running pre_process_test on Gts </span><span class="si">{</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">str_period</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2"> with threshold </span><span class="si">{</span><span class="n">threshold</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+
+    <span class="c1"># case only one value</span>
+    <span class="k">if</span> <span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">mesg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;In pre_process_test on Gts </span><span class="si">{</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">str_period</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2">. Only one value found. No offset returned.&quot;</span>
+        <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">WARNING</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="c1"># case only two values</span>
+    <span class="k">if</span> <span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">mesg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;In pre_process_test on Gts </span><span class="si">{</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">str_period</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2">. Only two values found.&quot;</span>
+        <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">WARNING</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+        
+        <span class="n">ivel</span> <span class="o">=</span> <span class="n">gts</span><span class="o">.</span><span class="n">ivel</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s1">&#39;E&#39;</span> <span class="ow">in</span> <span class="n">component</span> <span class="ow">or</span> <span class="s1">&#39;N&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ivel</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">ivel</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E3</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">:</span>
+                <span class="n">str_date_offset</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()[:</span><span class="mi">19</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()[:</span><span class="mi">19</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">mesg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;In pre_process_test on Gts </span><span class="si">{</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">str_period</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2">. Offset detected on horizontal component </span><span class="si">{</span><span class="n">str_date_offset</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">WARNING</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s1">&#39;U&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">ivel</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span> <span class="o">*</span> <span class="mf">1.E3</span> <span class="o">&gt;</span> <span class="n">threshold_up</span><span class="p">:</span>
+                <span class="n">str_date_offset</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()[:</span><span class="mi">19</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()[:</span><span class="mi">19</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">mesg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;In pre_process_test on Gts </span><span class="si">{</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">str_period</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2">. Offset detected on up component </span><span class="si">{</span><span class="n">str_date_offset</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">WARNING</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="c1"># case 3 values</span>
+    <span class="k">if</span> <span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">mesg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;In pre_process_test on Gts </span><span class="si">{</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">str_period</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2">. Only three values found.&quot;</span>
+        <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">WARNING</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+        <span class="n">ivel</span> <span class="o">=</span> <span class="n">gts</span><span class="o">.</span><span class="n">ivel</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s1">&#39;E&#39;</span> <span class="ow">in</span> <span class="n">component</span> <span class="ow">or</span> <span class="s1">&#39;N&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ivel</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">ivel</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ivel</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">ivel</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E3</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">:</span>
+                <span class="n">str_date_offset</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()[:</span><span class="mi">19</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()[:</span><span class="mi">19</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">mesg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;In pre_process_test on Gts </span><span class="si">{</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">str_period</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2">. Offset detected on horizontal component </span><span class="si">{</span><span class="n">str_date_offset</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">WARNING</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mesg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;No offset found for Gts </span><span class="si">{</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">str_period</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2"> horizontal component&quot;</span>
+                <span class="n">VERBOSE</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="s1">&#39;U&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">ivel</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]))</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">ivel</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span> <span class="o">*</span> <span class="mf">1.E3</span> <span class="o">&gt;</span> <span class="n">threshold_up</span><span class="p">:</span>
+                <span class="n">str_date_offset</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()[:</span><span class="mi">19</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()[:</span><span class="mi">19</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">mesg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;In pre_process_test on Gts </span><span class="si">{</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">str_period</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2">. Offset detected on up component </span><span class="si">{</span><span class="n">str_date_offset</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">WARNING</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mesg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;No offset found for Gts </span><span class="si">{</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">str_period</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2"> horizontal component&quot;</span>
+                <span class="n">VERBOSE</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">[]</span>
+    
+    <span class="c1"># case 4-5 values</span>
+    <span class="k">if</span> <span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span> <span class="ow">or</span> <span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="n">mesg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;In pre_process_test on Gts </span><span class="si">{</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">str_period</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2">. Only four values found.&quot;</span>
+        <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">WARNING</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+        <span class="n">its</span> <span class="o">=</span> <span class="n">gts</span><span class="o">.</span><span class="n">median_filter</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="c1"># compute ivel</span>
+        <span class="n">ivel</span> <span class="o">=</span> <span class="n">its</span><span class="o">.</span><span class="n">ivel</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s1">&#39;E&#39;</span> <span class="ow">in</span> <span class="n">component</span> <span class="ow">or</span> <span class="s1">&#39;N&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+            <span class="n">norm_ivel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ivel</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">ivel</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E3</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">norm_ivel</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">norm_ivel</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">:</span>
+                <span class="n">str_date_offset</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()[:</span><span class="mi">19</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()[:</span><span class="mi">19</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">mesg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Found offset on horizontal component at middle of </span><span class="si">{</span><span class="n">str_date_offset</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">VERBOSE</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mesg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;No offset found for Gts </span><span class="si">{</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">str_period</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2"> horizontal component&quot;</span>
+                <span class="n">VERBOSE</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="s1">&#39;U&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+            <span class="n">norm_ivel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">ivel</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">])</span> <span class="o">*</span> <span class="mf">1.E3</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">norm_ivel</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">norm_ivel</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">threshold_up</span><span class="p">:</span>
+                <span class="n">str_date_offset</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()[:</span><span class="mi">19</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()[:</span><span class="mi">19</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">mesg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Found offset on up component at middle of </span><span class="si">{</span><span class="n">str_date_offset</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">VERBOSE</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mesg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;No offset found for Gts </span><span class="si">{</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">str_period</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2"> up component&quot;</span>
+                <span class="n">VERBOSE</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">[]</span>
+    
+    <span class="c1"># case &gt;= 5 values</span>
+    <span class="k">if</span> <span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="n">its3</span> <span class="o">=</span> <span class="n">gts</span><span class="o">.</span><span class="n">median_filter</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">its5</span> <span class="o">=</span> <span class="n">gts</span><span class="o">.</span><span class="n">median_filter</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+        <span class="c1"># compute ivel</span>
+        <span class="n">ivel3</span> <span class="o">=</span> <span class="n">its3</span><span class="o">.</span><span class="n">ivel</span><span class="p">()</span>
+        <span class="n">ivel5</span> <span class="o">=</span> <span class="n">its5</span><span class="o">.</span><span class="n">ivel</span><span class="p">()</span>
+        <span class="c1"># compute the mean of the two ivels</span>
+        <span class="k">if</span> <span class="s1">&#39;E&#39;</span> <span class="ow">in</span> <span class="n">component</span> <span class="ow">or</span> <span class="s1">&#39;N&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+            <span class="n">mean_ivel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="p">((</span><span class="n">ivel3</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">ivel5</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">((</span><span class="n">ivel3</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">ivel5</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E3</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">mean_ivel</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">mean_ivel</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="o">**</span><span class="mi">2</span><span class="p">:</span>
+                <span class="n">str_date_offset</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()[:</span><span class="mi">19</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()[:</span><span class="mi">19</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">mesg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Found offset on horizontal component at middle of </span><span class="si">{</span><span class="n">str_date_offset</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">VERBOSE</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mesg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;No offset found for Gts </span><span class="si">{</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">str_period</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2"> horizontal component&quot;</span>
+                <span class="n">VERBOSE</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="s1">&#39;U&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+            <span class="n">mean_ivel</span> <span class="o">=</span> <span class="p">(</span><span class="n">ivel3</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">ivel5</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="mf">1.E3</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">mean_ivel</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">mean_ivel</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">&gt;</span> <span class="n">threshold_up</span><span class="o">**</span><span class="mi">2</span><span class="p">:</span>
+                <span class="n">str_date_offset</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()[:</span><span class="mi">19</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()[:</span><span class="mi">19</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">mesg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Found offset on up component at middle of </span><span class="si">{</span><span class="n">str_date_offset</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">VERBOSE</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mesg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;No offset found for Gts </span><span class="si">{</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">str_period</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2"> up component.&quot;</span>
+                <span class="n">VERBOSE</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">[]</span></div>
+
+
+
+<div class="viewcode-block" id="pre_process_ts">
+<a class="viewcode-back" href="../../../../../api/pyacs.gts.lib.l1trend.preprocessing.html#pyacs.gts.lib.filters.l1trend.pre_process_ts">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">pre_process_ts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">5000.</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pre-process a time series to avoid convergence problems in l1trend.</span>
+<span class="sd">    It performs change point detection analysis, correct for unrealistically large velocity</span>
+<span class="sd">    and return a cleaned time series</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Running pre_process_ts on Gts </span><span class="si">%s</span><span class="s2"> with threshold </span><span class="si">%.1lf</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">threshold</span><span class="p">))</span>
+
+    <span class="c1"># detrend</span>
+    <span class="n">dts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detrend_median</span><span class="p">()</span>
+    <span class="c1"># working time series</span>
+    <span class="n">nts</span> <span class="o">=</span> <span class="n">dts</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">its</span> <span class="o">=</span> <span class="n">dts</span><span class="o">.</span><span class="n">median_filter</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="c1"># compute ivel</span>
+    <span class="n">ivel</span> <span class="o">=</span> <span class="n">its</span><span class="o">.</span><span class="n">ivel</span><span class="p">()</span>
+    <span class="c1"># set all reasonable ivel to zero</span>
+    <span class="c1"># horizontal components</span>
+    <span class="n">lidxe</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">ivel</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">threshold</span> <span class="o">*</span> <span class="mf">1.E-3</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">lidxn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">ivel</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">threshold</span> <span class="o">*</span> <span class="mf">1.E-3</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">lidx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lidxe</span><span class="p">,</span> <span class="n">lidxn</span><span class="p">)))</span>
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Found </span><span class="si">%d</span><span class="s2"> offsets in horizontal components&quot;</span> <span class="o">%</span> <span class="n">lidx</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">lidx</span><span class="p">:</span>
+        <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">its</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()))</span>
+    <span class="n">lidxx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">ivel</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">lidxx</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">ivel</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">ivel</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">lidxx</span>
+    <span class="n">ivel</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">ivel</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">lidxx</span>
+
+    <span class="c1"># vertical component</span>
+    <span class="n">lidx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">ivel</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">threshold</span> <span class="o">*</span> <span class="mf">1.E-3</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Found </span><span class="si">%d</span><span class="s2"> offsets in up component&quot;</span> <span class="o">%</span> <span class="n">lidx</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">lidx</span><span class="p">:</span>
+        <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">its</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()))</span>
+    <span class="n">lidxx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">ivel</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">lidxx</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">ivel</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">ivel</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">lidxx</span>
+
+    <span class="c1"># compute its</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]:</span>
+        <span class="n">its</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">ivel</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">its</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])))</span>
+        <span class="n">nts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">dts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">its</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
+    <span class="c1"># remove obvious outliers</span>
+    <span class="n">ots</span> <span class="o">=</span> <span class="n">nts</span><span class="o">.</span><span class="n">find_outliers_simple</span><span class="p">()</span>
+    <span class="n">its</span><span class="o">.</span><span class="n">outliers</span> <span class="o">=</span> <span class="n">ots</span><span class="o">.</span><span class="n">outliers</span>
+    <span class="c1"># return</span>
+    <span class="k">return</span> <span class="n">ots</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">(),</span> <span class="n">its</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">()</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

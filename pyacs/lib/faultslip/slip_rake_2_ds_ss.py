@@ -1,18 +1,25 @@
 ###################################################################
 def slip_rake_2_ds_ss(slip, rake):
 ###################################################################
-    """
-    Converts a slip vector provided as slip and rake to dip slip and strike-slip components
+    """Convert slip magnitude and rake to dip-slip and strike-slip components.
 
-    :param slip: slip
-    :param rake: rake in degrees
+    Parameters
+    ----------
+    slip : float or array-like
+        Slip magnitude.
+    rake : float or array-like
+        Rake in degrees.
 
-    :return ( slip*np.sin( np.radians(rake) ) ,  slip*np.cos( np.radians(rake) ))
+    Returns
+    -------
+    ds : float or numpy.ndarray
+        Dip-slip component (positive for reverse, rake in [0, 180]).
+    ss : float or numpy.ndarray
+        Strike-slip component (positive for left-lateral).
 
-    :note:
-    ds will be positive for rake in [0,180] that is reverse motion
-    ss will be positive for left-lateral motion
-
+    Notes
+    -----
+    ds positive for reverse motion; ss positive for left-lateral motion.
     """
 
     import numpy as np

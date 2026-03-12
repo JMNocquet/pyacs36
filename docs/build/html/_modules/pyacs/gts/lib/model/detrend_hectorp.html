@@ -1,0 +1,563 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.gts.lib.model.detrend_hectorp &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../libraries.html">core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyacs.gts.lib.model.detrend_hectorp</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyacs.gts.lib.model.detrend_hectorp</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<div class="viewcode-block" id="detrend_hectorp">
+<a class="viewcode-back" href="../../../../../api/pyacs.gts.lib.model.detrend_hectorp.html#pyacs.gts.lib.model.detrend_hectorp.detrend_hectorp">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">detrend_hectorp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component</span><span class="o">=</span><span class="s1">&#39;NEU&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Detrend a time series using the Hector model (HECTOR from Machiel Bos).</span>
+
+<span class="sd">    References: Bos et al. (2013), J. Geodesy 87(4), 351-360.</span>
+<span class="sd">    See https://gitlab.com/machielsimonbos/hectorp and estimatetrend wiki.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    component : str, optional</span>
+<span class="sd">        Component(s) to detrend (&#39;N&#39;, &#39;E&#39;, &#39;U&#39; or &#39;NEU&#39;). Default is &#39;NEU&#39;.</span>
+<span class="sd">    **kwargs : dict, optional</span>
+<span class="sd">        Additional arguments for the Hector control file (estimatetrend).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Gts</span>
+<span class="sd">        Residual time series with velocity (and sigmas), offsets attributes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.gts.Gts</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gts</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+
+    <span class="c1"># check if hectorp is installed by running os command estimatetrend</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;estimatetrend&#39;</span><span class="p">,</span> <span class="s1">&#39;--help&#39;</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">ERROR</span><span class="p">(</span><span class="s2">&quot;hectorp is not installed. Please install it from https://gitlab.com/machielsimonbos/hectorp&quot;</span><span class="p">,</span> <span class="n">exit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># function to convert a Gts object to a HectorP .mom format </span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">gts2mom</span><span class="p">(</span><span class="n">gts</span><span class="p">):</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">at</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+        <span class="n">date_mom</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2mjd</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="c1"># force mid-day (integer MJD day)</span>
+        <span class="n">date_mom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">date_mom</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span>
+        <span class="n">pos_mom</span> <span class="o">=</span> <span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span><span class="o">*</span><span class="mf">1.E3</span>
+
+        <span class="c1"># header</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="s2">&quot;sampling period 1.000000&quot;</span>
+        <span class="c1"># offsets</span>
+        <span class="k">if</span> <span class="n">gts</span><span class="o">.</span><span class="n">offsets_dates</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="p">:</span>
+            <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">gts</span><span class="o">.</span><span class="n">offsets_dates</span><span class="p">:</span>
+                <span class="n">header</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">offset </span><span class="si">%f</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">at</span><span class="o">.</span><span class="n">decyear2mjd</span><span class="p">(</span><span class="n">date</span><span class="p">))</span>
+
+        <span class="c1"># create output directory if it does not exist</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;tmp_hectorp&#39;</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s1">&#39;tmp_hectorp&#39;</span><span class="p">)</span>
+
+        <span class="c1"># north</span>
+        <span class="n">out_mom_north</span> <span class="o">=</span> <span class="s1">&#39;tmp_hectorp/&#39;</span><span class="o">+</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span> <span class="o">+</span> <span class="s2">&quot;_north.mom&quot;</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">out_mom_north</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">date_mom</span><span class="p">,</span> <span class="n">pos_mom</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]],</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%10.5f</span><span class="s2"> </span><span class="si">%15.6f</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">header</span><span class="p">)</span>
+        <span class="c1"># east</span>
+        <span class="n">out_mom_east</span> <span class="o">=</span> <span class="s1">&#39;tmp_hectorp/&#39;</span><span class="o">+</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span> <span class="o">+</span> <span class="s2">&quot;_east.mom&quot;</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">out_mom_east</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">date_mom</span><span class="p">,</span> <span class="n">pos_mom</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%10.5f</span><span class="s2"> </span><span class="si">%15.6f</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">header</span><span class="p">)</span>
+        <span class="c1"># up</span>
+        <span class="n">out_mom_up</span> <span class="o">=</span> <span class="s1">&#39;tmp_hectorp/&#39;</span><span class="o">+</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span> <span class="o">+</span> <span class="s2">&quot;_up.mom&quot;</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">out_mom_up</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">date_mom</span><span class="p">,</span> <span class="n">pos_mom</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]],</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%10.5f</span><span class="s2"> </span><span class="si">%15.6f</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">header</span><span class="p">)</span>  
+
+    <span class="c1"># parse estimatetrend report</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse_estimatetrend_report</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse &#39;estimatetrend&#39; text output and extract:</span>
+<span class="sd">        - noise_models: list of dicts</span>
+<span class="sd">        - bias: dict(value, sigma, epoch)</span>
+<span class="sd">        - trend: dict(value, sigma, unit)</span>
+<span class="sd">        - seasonal: dict(period -&gt; {cos/sin/amp/pha: {value, sigma, unit/deg}})</span>
+<span class="sd">        - offsets: list of dicts(epoch, value, sigma, unit)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+        <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">asdict</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+        <span class="nd">@dataclass</span>
+        <span class="k">class</span><span class="w"> </span><span class="nc">NoiseModel</span><span class="p">:</span>
+            <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+            <span class="n">fraction</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">sigma</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">sigma_unit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">d</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">kappa</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">one_minus_phi</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">_to_float</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+            <span class="c1"># Handles &quot;  3.0183&quot;, &quot;-1.0000&quot;, &quot;0.0000&quot;, etc.</span>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+        <span class="n">out</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;noise_models&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;bias&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;trend&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;seasonal&quot;</span><span class="p">:</span> <span class="p">{},</span>  <span class="c1"># keyed by period (float)</span>
+            <span class="s2">&quot;offsets&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="p">}</span>
+
+        <span class="c1"># -------- Noise Models block --------</span>
+        <span class="c1"># We&#39;ll locate &quot;Noise Models&quot; section and parse model sub-blocks like:</span>
+        <span class="c1"># FlickerGGM:</span>
+        <span class="c1"># fraction  = 0.36643</span>
+        <span class="c1"># sigma     =  3.0183 mm/yr^0.25</span>
+        <span class="c1"># d         =  0.5000 (fixed)</span>
+        <span class="c1"># kappa     = -1.0000 (fixed)</span>
+        <span class="c1"># 1-phi     =  0.0000 (fixed)</span>
+        <span class="c1">#</span>
+        <span class="c1"># White:</span>
+        <span class="c1"># fraction  = 0.63357</span>
+        <span class="c1"># sigma     =  0.9079 mm</span>
+        <span class="c1"># ...</span>
+        <span class="n">noise_section_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+            <span class="sa">r</span><span class="s2">&quot;(?ms)^Noise Models\s*\n-+\s*\n(?P&lt;body&gt;.*?)(?:\n\s*\n|^bias\s*:|^trend\s*:|^offset\b|$)&quot;</span><span class="p">,</span>
+            <span class="n">text</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">noise_section_match</span><span class="p">:</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="n">noise_section_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;body&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Split into model blocks by headers &quot;Name:&quot;</span>
+            <span class="c1"># Keep header lines using a regex finditer.</span>
+            <span class="n">model_header_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(?m)^(?P&lt;name&gt;[A-Za-z0-9_\-]+)\s*:\s*$&quot;</span><span class="p">)</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">model_header_re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">body</span><span class="p">))</span>
+
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">headers</span><span class="p">):</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+                <span class="n">start</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+                <span class="n">end</span> <span class="o">=</span> <span class="n">headers</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="k">if</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span> <span class="k">else</span> <span class="nb">len</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+                <span class="n">block</span> <span class="o">=</span> <span class="n">body</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span>
+
+                <span class="n">nm</span> <span class="o">=</span> <span class="n">NoiseModel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+                <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(?m)^\s*fraction\s*=\s*(?P&lt;v&gt;[+-]?\d+(?:\.\d+)?)\s*$&quot;</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+                    <span class="n">nm</span><span class="o">.</span><span class="n">fraction</span> <span class="o">=</span> <span class="n">_to_float</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;v&quot;</span><span class="p">))</span>
+
+                <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+                    <span class="sa">r</span><span class="s2">&quot;(?m)^\s*sigma\s*=\s*(?P&lt;v&gt;[+-]?\d+(?:\.\d+)?)\s*(?P&lt;u&gt;.+?)\s*$&quot;</span><span class="p">,</span>
+                    <span class="n">block</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+                    <span class="n">nm</span><span class="o">.</span><span class="n">sigma</span> <span class="o">=</span> <span class="n">_to_float</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;v&quot;</span><span class="p">))</span>
+                    <span class="n">nm</span><span class="o">.</span><span class="n">sigma_unit</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;u&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+                <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(?m)^\s*d\s*=\s*(?P&lt;v&gt;[+-]?\d+(?:\.\d+)?)\b&quot;</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+                    <span class="n">nm</span><span class="o">.</span><span class="n">d</span> <span class="o">=</span> <span class="n">_to_float</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;v&quot;</span><span class="p">))</span>
+
+                <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(?m)^\s*kappa\s*=\s*(?P&lt;v&gt;[+-]?\d+(?:\.\d+)?)\b&quot;</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+                    <span class="n">nm</span><span class="o">.</span><span class="n">kappa</span> <span class="o">=</span> <span class="n">_to_float</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;v&quot;</span><span class="p">))</span>
+
+                <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(?m)^\s*1-phi\s*=\s*(?P&lt;v&gt;[+-]?\d+(?:\.\d+)?)\b&quot;</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+                    <span class="n">nm</span><span class="o">.</span><span class="n">one_minus_phi</span> <span class="o">=</span> <span class="n">_to_float</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;v&quot;</span><span class="p">))</span>
+
+                <span class="n">out</span><span class="p">[</span><span class="s2">&quot;noise_models&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">asdict</span><span class="p">(</span><span class="n">nm</span><span class="p">))</span>
+
+        <span class="c1"># -------- bias --------</span>
+        <span class="c1"># bias : 4.320 +/- 0.946 (at 55965.50)</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+            <span class="sa">r</span><span class="s2">&quot;(?m)^\s*bias\s*:\s*(?P&lt;v&gt;[+-]?\d+(?:\.\d+)?)\s*\+/-\s*(?P&lt;s&gt;[+-]?\d+(?:\.\d+)?)\s*\(at\s*(?P&lt;t&gt;[+-]?\d+(?:\.\d+)?)\)\s*$&quot;</span><span class="p">,</span>
+            <span class="n">text</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+            <span class="n">out</span><span class="p">[</span><span class="s2">&quot;bias&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">_to_float</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;v&quot;</span><span class="p">)),</span> <span class="s2">&quot;sigma&quot;</span><span class="p">:</span> <span class="n">_to_float</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">)),</span> <span class="s2">&quot;epoch&quot;</span><span class="p">:</span> <span class="n">_to_float</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">))}</span>
+
+        <span class="c1"># -------- trend --------</span>
+        <span class="c1"># trend: 0.955 +/- 0.164 mm/days</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+            <span class="sa">r</span><span class="s2">&quot;(?m)^\s*trend\s*:\s*(?P&lt;v&gt;[+-]?\d+(?:\.\d+)?)\s*\+/-\s*(?P&lt;s&gt;[+-]?\d+(?:\.\d+)?)\s*(?P&lt;u&gt;.+?)\s*$&quot;</span><span class="p">,</span>
+            <span class="n">text</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+            <span class="n">out</span><span class="p">[</span><span class="s2">&quot;trend&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">_to_float</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;v&quot;</span><span class="p">)),</span> <span class="s2">&quot;sigma&quot;</span><span class="p">:</span> <span class="n">_to_float</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">)),</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;u&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()}</span>
+
+        <span class="c1"># -------- seasonal terms --------</span>
+        <span class="c1"># cos  365.250 : -0.387 +/- 0.139 mm</span>
+        <span class="c1"># sin  365.250 : -0.158 +/- 0.141 mm</span>
+        <span class="c1"># amp  365.250 : 0.442 +/- 0.135 mm</span>
+        <span class="c1"># pha  365.250 : -111.046 +/- 108.700 degrees</span>
+        <span class="n">seasonal_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+            <span class="sa">r</span><span class="s2">&quot;(?m)^\s*(?P&lt;kind&gt;cos|sin|amp|pha)\s+(?P&lt;per&gt;\d+(?:\.\d+)?)\s*:\s*(?P&lt;v&gt;[+-]?\d+(?:\.\d+)?)\s*\+/-\s*(?P&lt;s&gt;[+-]?\d+(?:\.\d+)?)\s*(?P&lt;u&gt;mm|degrees)\s*$&quot;</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">seasonal_re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+            <span class="n">kind</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;kind&quot;</span><span class="p">)</span>
+            <span class="n">per</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;per&quot;</span><span class="p">))</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">_to_float</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;v&quot;</span><span class="p">))</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">_to_float</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">))</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;u&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">per</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">out</span><span class="p">[</span><span class="s2">&quot;seasonal&quot;</span><span class="p">]:</span>
+                <span class="n">out</span><span class="p">[</span><span class="s2">&quot;seasonal&quot;</span><span class="p">][</span><span class="n">per</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">out</span><span class="p">[</span><span class="s2">&quot;seasonal&quot;</span><span class="p">][</span><span class="n">per</span><span class="p">][</span><span class="n">kind</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">v</span><span class="p">,</span> <span class="s2">&quot;sigma&quot;</span><span class="p">:</span> <span class="n">s</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="n">u</span><span class="p">}</span>
+
+        <span class="c1"># -------- offsets --------</span>
+        <span class="c1"># offset at 56129.5000 :   -4.77 +/-  0.61 mm</span>
+        <span class="n">offset_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+            <span class="sa">r</span><span class="s2">&quot;(?m)^\s*offset\s+at\s+(?P&lt;t&gt;[+-]?\d+(?:\.\d+)?)\s*:\s*(?P&lt;v&gt;[+-]?\d+(?:\.\d+)?)\s*\+/-\s*(?P&lt;s&gt;[+-]?\d+(?:\.\d+)?)\s*(?P&lt;u&gt;mm)\s*$&quot;</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">offset_re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+            <span class="n">out</span><span class="p">[</span><span class="s2">&quot;offsets&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">{</span><span class="s2">&quot;epoch&quot;</span><span class="p">:</span> <span class="n">_to_float</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">)),</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">_to_float</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;v&quot;</span><span class="p">)),</span> <span class="s2">&quot;sigma&quot;</span><span class="p">:</span> <span class="n">_to_float</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">)),</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;u&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()}</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span>    
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_hectorp</span><span class="p">(</span><span class="n">gts</span><span class="p">,</span> <span class="n">component</span><span class="o">=</span><span class="s1">&#39;ENU&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">icecream</span><span class="w"> </span><span class="kn">import</span> <span class="n">ic</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">at</span>
+
+        <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+
+        <span class="c1"># check tmp_hector exists</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;tmp_hectorp&#39;</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s1">&#39;tmp_hectorp&#39;</span><span class="p">)</span>
+
+        <span class="c1"># new data</span>
+        <span class="n">new_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">3</span><span class="p">))</span>
+
+        <span class="c1"># create control file</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="n">gts</span><span class="o">.</span><span class="n">code</span>
+        <span class="n">default_ctl</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;DataFile&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base</span><span class="si">}</span><span class="s2">_north.mom&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;DataDirectory&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span><span class="o">+</span><span class="s1">&#39;/tmp_hectorp&#39;</span><span class="p">,</span>
+            <span class="s2">&quot;OutputFile&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span><span class="o">+</span><span class="s1">&#39;/tmp_hectorp/&#39;</span><span class="o">+</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base</span><span class="si">}</span><span class="s2">_north.out&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;TimeUnit&quot;</span><span class="p">:</span> <span class="s2">&quot;days&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;interpolate&quot;</span><span class="p">:</span> <span class="s2">&quot;no&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;PhysicalUnit&quot;</span><span class="p">:</span> <span class="s2">&quot;mm&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ScaleFactor&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s2">&quot;periodicsignals&quot;</span><span class="p">:</span> <span class="s2">&quot;365.25 182.625&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;DegreePolynomial&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;NoiseModels&quot;</span><span class="p">:</span> <span class="s2">&quot;GGM White&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;GGM_1mphi&quot;</span><span class="p">:</span> <span class="s2">&quot;6.9e-06&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;useRMLE&quot;</span> <span class="p">:</span>  <span class="s2">&quot;no&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Verbose&quot;</span><span class="p">:</span> <span class="s2">&quot;yes&quot;</span>
+        <span class="p">}</span>
+
+        <span class="c1"># update with user-provided parameters</span>
+        <span class="n">default_ctl</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">link_path</span> <span class="o">=</span> <span class="s1">&#39;estimatetrend.ctl&#39;</span>
+
+        <span class="c1"># North component</span>
+        <span class="k">if</span> <span class="s1">&#39;N&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+            <span class="n">default_ctl</span><span class="p">[</span><span class="s2">&quot;DataFile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base</span><span class="si">}</span><span class="s2">_north.mom&quot;</span>
+            <span class="n">default_ctl</span><span class="p">[</span><span class="s2">&quot;OutputFile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span><span class="o">+</span><span class="s1">&#39;/tmp_hectorp/&#39;</span><span class="o">+</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base</span><span class="si">}</span><span class="s2">_north.out&quot;</span>
+            <span class="c1"># write control file for noth component</span>
+            <span class="n">ctl_file</span> <span class="o">=</span> <span class="s1">&#39;tmp_hectorp/&#39;</span><span class="o">+</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span> <span class="o">+</span> <span class="s2">&quot;_north.ctl&quot;</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">ctl_file</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">ctl_file</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">ctl_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">default_ctl</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="c1"># run HectorP command</span>
+            <span class="c1"># Remove existing file/symlink (including broken symlink)</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">lexists</span><span class="p">(</span><span class="n">link_path</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">link_path</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">symlink</span><span class="p">(</span><span class="n">ctl_file</span><span class="p">,</span> <span class="n">link_path</span><span class="p">)</span>
+            <span class="c1"># run HectorP command</span>
+            <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;estimatetrend&#39;</span><span class="p">]</span>
+            <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Running HectorP for north component (</span><span class="si">%d</span><span class="s2"> data) with Noise Models = </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">default_ctl</span><span class="p">[</span><span class="s2">&quot;NoiseModels&quot;</span><span class="p">]))</span>
+            <span class="n">completed</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="c1"># get HectorP output</span>
+            <span class="n">results_north</span> <span class="o">=</span> <span class="n">parse_estimatetrend_report</span><span class="p">(</span><span class="n">completed</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+            <span class="c1"># check processing is OK</span>
+            <span class="k">if</span> <span class="n">results_north</span><span class="p">[</span><span class="s2">&quot;trend&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ERROR</span><span class="p">(</span><span class="s2">&quot;HectorP processing failed for north component. &quot;</span><span class="p">,</span> <span class="n">exit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="c1"># populate new_data</span>
+            <span class="n">new_data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">default_ctl</span><span class="p">[</span><span class="s2">&quot;OutputFile&quot;</span><span class="p">],</span> <span class="n">usecols</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="mf">1.E-3</span>
+            <span class="c1"># write completed.stdout to file</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;tmp_hectorp&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base</span><span class="si">}</span><span class="s2">_north.log&quot;</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">completed</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+
+
+        <span class="c1"># East component</span>
+        <span class="k">if</span> <span class="s1">&#39;E&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+            <span class="n">default_ctl</span><span class="p">[</span><span class="s2">&quot;DataFile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base</span><span class="si">}</span><span class="s2">_east.mom&quot;</span>
+            <span class="n">default_ctl</span><span class="p">[</span><span class="s2">&quot;OutputFile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span><span class="o">+</span><span class="s1">&#39;/tmp_hectorp/&#39;</span><span class="o">+</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base</span><span class="si">}</span><span class="s2">_east.out&quot;</span>
+            <span class="c1"># write control file for east component</span>
+            <span class="n">ctl_file</span> <span class="o">=</span> <span class="s1">&#39;tmp_hectorp/&#39;</span><span class="o">+</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span> <span class="o">+</span> <span class="s2">&quot;_east.ctl&quot;</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">ctl_file</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">ctl_file</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">ctl_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">default_ctl</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="c1"># run HectorP command</span>
+            <span class="c1"># Remove existing file/symlink (including broken symlink)</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">lexists</span><span class="p">(</span><span class="n">link_path</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">link_path</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">symlink</span><span class="p">(</span><span class="n">ctl_file</span><span class="p">,</span> <span class="n">link_path</span><span class="p">)</span>
+            <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;estimatetrend&#39;</span><span class="p">]</span>
+            <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Running HectorP for  east component (</span><span class="si">%d</span><span class="s2"> data) with Noise Models = </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">default_ctl</span><span class="p">[</span><span class="s2">&quot;NoiseModels&quot;</span><span class="p">]))</span>
+            <span class="n">completed</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="c1"># get HectorP output</span>
+            <span class="n">results_east</span> <span class="o">=</span> <span class="n">parse_estimatetrend_report</span><span class="p">(</span><span class="n">completed</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">results_east</span><span class="p">[</span><span class="s2">&quot;trend&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ERROR</span><span class="p">(</span><span class="s2">&quot;HectorP processing failed for east component. &quot;</span><span class="p">,</span> <span class="n">exit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="c1"># populate new_data</span>
+            <span class="n">new_data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">default_ctl</span><span class="p">[</span><span class="s2">&quot;OutputFile&quot;</span><span class="p">],</span> <span class="n">usecols</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="mf">1.E-3</span>
+            <span class="c1"># write completed.stdout to file</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;tmp_hectorp&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base</span><span class="si">}</span><span class="s2">_east.log&quot;</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">completed</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+
+        <span class="c1"># Up component</span>
+        <span class="k">if</span> <span class="s1">&#39;U&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+            <span class="n">default_ctl</span><span class="p">[</span><span class="s2">&quot;DataFile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base</span><span class="si">}</span><span class="s2">_up.mom&quot;</span>
+            <span class="n">default_ctl</span><span class="p">[</span><span class="s2">&quot;OutputFile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span><span class="o">+</span><span class="s1">&#39;/tmp_hectorp/&#39;</span><span class="o">+</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base</span><span class="si">}</span><span class="s2">_up.out&quot;</span>
+            <span class="c1"># write control file for up component</span>
+            <span class="n">ctl_file</span> <span class="o">=</span> <span class="s1">&#39;tmp_hectorp/&#39;</span><span class="o">+</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span> <span class="o">+</span> <span class="s2">&quot;_up.ctl&quot;</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">ctl_file</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">ctl_file</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">ctl_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">default_ctl</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="c1"># run HectorP command</span>
+            <span class="c1"># Remove existing file/symlink (including broken symlink)</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">lexists</span><span class="p">(</span><span class="n">link_path</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">link_path</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">symlink</span><span class="p">(</span><span class="n">ctl_file</span><span class="p">,</span> <span class="n">link_path</span><span class="p">)</span>
+            <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;estimatetrend&#39;</span><span class="p">]</span>
+            <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Running HectorP for    up component (</span><span class="si">%d</span><span class="s2"> data) with Noise Models = </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">default_ctl</span><span class="p">[</span><span class="s2">&quot;NoiseModels&quot;</span><span class="p">]))</span>
+            <span class="n">completed</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="c1"># get HectorP output</span>
+            <span class="n">results_up</span> <span class="o">=</span> <span class="n">parse_estimatetrend_report</span><span class="p">(</span><span class="n">completed</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">results_up</span><span class="p">[</span><span class="s2">&quot;trend&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ERROR</span><span class="p">(</span><span class="s2">&quot;HectorP processing failed for up component. &quot;</span><span class="p">,</span> <span class="n">exit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="c1"># populate new_data</span>
+            <span class="n">new_data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">default_ctl</span><span class="p">[</span><span class="s2">&quot;OutputFile&quot;</span><span class="p">],</span> <span class="n">usecols</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="mf">1.E-3</span>
+            <span class="c1"># write completed.stdout to file</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;tmp_hectorp&#39;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base</span><span class="si">}</span><span class="s2">_up.log&quot;</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">completed</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+
+        <span class="c1"># Populate and return residual gts</span>
+        <span class="n">new_gts</span> <span class="o">=</span> <span class="n">gts</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">new_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">-</span> <span class="n">new_data</span>
+        <span class="c1"># robust velocity assignment: keep existing values when available, fill only processed components</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">new_gts</span><span class="p">,</span> <span class="s2">&quot;velocity&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_gts</span><span class="o">.</span><span class="n">velocity</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">6</span><span class="p">:</span>
+            <span class="n">velocity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_gts</span><span class="o">.</span><span class="n">velocity</span><span class="p">[:</span><span class="mi">6</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">velocity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;results_north&quot;</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span> <span class="ow">and</span> <span class="n">results_north</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;trend&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">velocity</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">results_north</span><span class="p">[</span><span class="s2">&quot;trend&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+            <span class="n">velocity</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">results_north</span><span class="p">[</span><span class="s2">&quot;trend&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;results_east&quot;</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span> <span class="ow">and</span> <span class="n">results_east</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;trend&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">velocity</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">results_east</span><span class="p">[</span><span class="s2">&quot;trend&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+            <span class="n">velocity</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">results_east</span><span class="p">[</span><span class="s2">&quot;trend&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;results_up&quot;</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span> <span class="ow">and</span> <span class="n">results_up</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;trend&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">velocity</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">results_up</span><span class="p">[</span><span class="s2">&quot;trend&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+            <span class="n">velocity</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">results_up</span><span class="p">[</span><span class="s2">&quot;trend&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+
+        <span class="n">new_gts</span><span class="o">.</span><span class="n">velocity</span> <span class="o">=</span> <span class="n">velocity</span> <span class="o">*</span> <span class="mf">1.E-3</span> <span class="c1"># convert from mm/yr to m/yr</span>
+
+        <span class="c1"># offsets</span>
+        <span class="k">if</span> <span class="n">gts</span><span class="o">.</span><span class="n">offsets_dates</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">np_offsets_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">offsets_dates</span><span class="p">),</span> <span class="mi">7</span><span class="p">))</span> <span class="c1"># epoch + 3 components + 3 sigmas</span>
+            <span class="k">if</span> <span class="s2">&quot;results_north&quot;</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span> <span class="ow">and</span> <span class="n">results_north</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;offsets&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="p">[]:</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">offset</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">results_north</span><span class="p">[</span><span class="s2">&quot;offsets&quot;</span><span class="p">]):</span>
+                    <span class="n">np_offsets_values</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">mjd2decyear</span><span class="p">(</span><span class="n">offset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;epoch&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">))</span>
+                    <span class="n">np_offsets_values</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E-3</span> <span class="c1"># convert from mm to m</span>
+                    <span class="n">np_offsets_values</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E-3</span> <span class="c1"># convert from mm to m</span>
+            <span class="k">if</span> <span class="s2">&quot;results_east&quot;</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span> <span class="ow">and</span> <span class="n">results_east</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;offsets&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="p">[]:</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">offset</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">results_east</span><span class="p">[</span><span class="s2">&quot;offsets&quot;</span><span class="p">]):</span>
+                    <span class="n">np_offsets_values</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">mjd2decyear</span><span class="p">(</span><span class="n">offset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;epoch&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">))</span>
+                    <span class="n">np_offsets_values</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E-3</span> <span class="c1"># convert from mm to m</span>
+                    <span class="n">np_offsets_values</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E-3</span> <span class="c1"># convert from mm to m</span>
+            <span class="k">if</span> <span class="s2">&quot;results_up&quot;</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span> <span class="ow">and</span> <span class="n">results_up</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;offsets&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="p">[]:</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">offset</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">results_up</span><span class="p">[</span><span class="s2">&quot;offsets&quot;</span><span class="p">]):</span>
+                    <span class="n">np_offsets_values</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">mjd2decyear</span><span class="p">(</span><span class="n">offset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;epoch&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">))</span>
+                    <span class="n">np_offsets_values</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E-3</span> <span class="c1"># convert from mm to m</span>
+                    <span class="n">np_offsets_values</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E-3</span> <span class="c1"># convert from mm to m</span>
+            <span class="n">new_gts</span><span class="o">.</span><span class="n">offsets_values</span> <span class="o">=</span> <span class="n">np_offsets_values</span>
+
+        <span class="c1"># annual and semi annual terms</span>
+        <span class="n">np_annual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+        <span class="n">np_semi_annual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;results_north&quot;</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span> <span class="ow">and</span> <span class="n">results_north</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;seasonal&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="p">[]:</span>
+            <span class="n">amp</span> <span class="o">=</span> <span class="n">results_north</span><span class="p">[</span><span class="s2">&quot;seasonal&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mf">365.25</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amp&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> 
+            <span class="n">pha</span> <span class="o">=</span> <span class="n">results_north</span><span class="p">[</span><span class="s2">&quot;seasonal&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mf">365.25</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pha&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+            <span class="n">np_annual</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">amp</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">pha</span><span class="o">/</span><span class="mf">180.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E-3</span> <span class="c1"># convert from mm to m</span>
+            <span class="n">np_annual</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">amp</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">pha</span><span class="o">/</span><span class="mf">180.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E-3</span> <span class="c1"># convert from mm to m</span>
+
+        <span class="k">if</span> <span class="s2">&quot;results_east&quot;</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span> <span class="ow">and</span> <span class="n">results_east</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;seasonal&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="p">[]:</span>
+            <span class="n">amp</span> <span class="o">=</span> <span class="n">results_east</span><span class="p">[</span><span class="s2">&quot;seasonal&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mf">365.25</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amp&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> 
+            <span class="n">pha</span> <span class="o">=</span> <span class="n">results_east</span><span class="p">[</span><span class="s2">&quot;seasonal&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mf">365.25</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pha&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+            <span class="n">np_annual</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">amp</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">pha</span><span class="o">/</span><span class="mf">180.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E-3</span> <span class="c1"># convert from mm to m</span>
+            <span class="n">np_annual</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">amp</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">pha</span><span class="o">/</span><span class="mf">180.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E-3</span> <span class="c1"># convert from mm to m</span>
+        <span class="k">if</span> <span class="s2">&quot;results_up&quot;</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span> <span class="ow">and</span> <span class="n">results_up</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;seasonal&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="p">[]:</span>
+            <span class="n">amp</span> <span class="o">=</span> <span class="n">results_up</span><span class="p">[</span><span class="s2">&quot;seasonal&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mf">365.25</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amp&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> 
+            <span class="n">pha</span> <span class="o">=</span> <span class="n">results_up</span><span class="p">[</span><span class="s2">&quot;seasonal&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mf">365.25</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pha&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+            <span class="n">np_annual</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">amp</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">pha</span><span class="o">/</span><span class="mf">180.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E-3</span> <span class="c1"># convert from mm to m</span>
+            <span class="n">np_annual</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">amp</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">pha</span><span class="o">/</span><span class="mf">180.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E-3</span> <span class="c1"># convert from mm to m</span>
+
+        <span class="k">if</span> <span class="n">np_annual</span><span class="o">.</span><span class="n">any</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">new_gts</span><span class="o">.</span><span class="n">annual</span> <span class="o">=</span> <span class="n">np_annual</span>
+
+        <span class="c1"># semi_annual</span>
+
+        <span class="k">if</span> <span class="s2">&quot;results_north&quot;</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span> <span class="ow">and</span> <span class="n">results_north</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;seasonal&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="p">[]:</span>
+            <span class="n">amp</span> <span class="o">=</span> <span class="n">results_north</span><span class="p">[</span><span class="s2">&quot;seasonal&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mf">182.625</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amp&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> 
+            <span class="n">pha</span> <span class="o">=</span> <span class="n">results_north</span><span class="p">[</span><span class="s2">&quot;seasonal&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mf">182.625</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pha&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+            <span class="n">np_semi_annual</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">amp</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">pha</span><span class="o">/</span><span class="mf">180.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E-3</span> <span class="c1"># convert from mm to m</span>
+            <span class="n">np_semi_annual</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">amp</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">pha</span><span class="o">/</span><span class="mf">180.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E-3</span> <span class="c1"># convert from mm to m</span>
+
+        <span class="k">if</span> <span class="s2">&quot;results_east&quot;</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span> <span class="ow">and</span> <span class="n">results_east</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;seasonal&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="p">[]:</span>
+            <span class="n">amp</span> <span class="o">=</span> <span class="n">results_east</span><span class="p">[</span><span class="s2">&quot;seasonal&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mf">182.625</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amp&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> 
+            <span class="n">pha</span> <span class="o">=</span> <span class="n">results_east</span><span class="p">[</span><span class="s2">&quot;seasonal&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mf">182.625</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pha&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+            <span class="n">np_semi_annual</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">amp</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">pha</span><span class="o">/</span><span class="mf">180.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E-3</span> <span class="c1"># convert from mm to m</span>
+            <span class="n">np_semi_annual</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">amp</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">pha</span><span class="o">/</span><span class="mf">180.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E-3</span> <span class="c1"># convert from mm to m</span>
+        <span class="k">if</span> <span class="s2">&quot;results_up&quot;</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span> <span class="ow">and</span> <span class="n">results_up</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;seasonal&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="p">[]:</span>
+            <span class="n">amp</span> <span class="o">=</span> <span class="n">results_up</span><span class="p">[</span><span class="s2">&quot;seasonal&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mf">182.625</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amp&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> 
+            <span class="n">pha</span> <span class="o">=</span> <span class="n">results_up</span><span class="p">[</span><span class="s2">&quot;seasonal&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mf">182.625</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pha&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+            <span class="n">np_semi_annual</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">amp</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">pha</span><span class="o">/</span><span class="mf">180.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E-3</span> <span class="c1"># convert from mm to m</span>
+            <span class="n">np_semi_annual</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">amp</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">pha</span><span class="o">/</span><span class="mf">180.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E-3</span> <span class="c1"># convert from mm to m</span>
+
+        <span class="k">if</span> <span class="n">np_semi_annual</span><span class="o">.</span><span class="n">any</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">new_gts</span><span class="o">.</span><span class="n">semi_annual</span> <span class="o">=</span> <span class="n">np_semi_annual</span>
+
+        <span class="c1"># populate the noise attribute - todo</span>
+
+
+
+        <span class="k">return</span> <span class="n">new_gts</span>
+
+    <span class="c1"># MAIN</span>
+    <span class="n">gts2mom</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    <span class="n">new_gts</span> <span class="o">=</span> <span class="n">run_hectorp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component</span><span class="o">=</span><span class="n">component</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">new_gts</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

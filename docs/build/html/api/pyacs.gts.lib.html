@@ -1,0 +1,768 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.gts.lib package &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries.html">core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">pyacs.gts.lib package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/pyacs.gts.lib.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pyacs-gts-lib-package">
+<h1>pyacs.gts.lib package<a class="headerlink" href="#pyacs-gts-lib-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.gts.lib.filters.html">pyacs.gts.lib.filters package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.filters.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.filters.disp2vel.html">pyacs.gts.lib.filters.disp2vel module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.disp2vel.html#pyacs.gts.lib.filters.disp2vel.disp2vel"><code class="docutils literal notranslate"><span class="pre">disp2vel()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.filters.edge_filter.html">pyacs.gts.lib.filters.edge_filter module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.edge_filter.html#pyacs.gts.lib.filters.edge_filter.edge_filter"><code class="docutils literal notranslate"><span class="pre">edge_filter()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.filters.ivel.html">pyacs.gts.lib.filters.ivel module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.ivel.html#pyacs.gts.lib.filters.ivel.ivel"><code class="docutils literal notranslate"><span class="pre">ivel()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.filters.l1trend.html">pyacs.gts.lib.filters.l1trend module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.l1trend.html#pyacs.gts.lib.filters.l1trend.best_l1trend_custom"><code class="docutils literal notranslate"><span class="pre">best_l1trend_custom()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.l1trend.html#pyacs.gts.lib.filters.l1trend.best_l1trend_golden"><code class="docutils literal notranslate"><span class="pre">best_l1trend_golden()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.l1trend.html#pyacs.gts.lib.filters.l1trend.get_stats_l1_model"><code class="docutils literal notranslate"><span class="pre">get_stats_l1_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.l1trend.html#pyacs.gts.lib.filters.l1trend.l1trend"><code class="docutils literal notranslate"><span class="pre">l1trend()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.l1trend.html#pyacs.gts.lib.filters.l1trend.pre_process_test"><code class="docutils literal notranslate"><span class="pre">pre_process_test()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.l1trend.html#pyacs.gts.lib.filters.l1trend.pre_process_ts"><code class="docutils literal notranslate"><span class="pre">pre_process_ts()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.filters.l1trendi.html">pyacs.gts.lib.filters.l1trendi module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.l1trendi.html#pyacs.gts.lib.filters.l1trendi.best_l1trend_custom"><code class="docutils literal notranslate"><span class="pre">best_l1trend_custom()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.l1trendi.html#pyacs.gts.lib.filters.l1trendi.best_l1trend_golden"><code class="docutils literal notranslate"><span class="pre">best_l1trend_golden()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.l1trendi.html#pyacs.gts.lib.filters.l1trendi.get_stats_l1_model"><code class="docutils literal notranslate"><span class="pre">get_stats_l1_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.l1trendi.html#pyacs.gts.lib.filters.l1trendi.l1trendi"><code class="docutils literal notranslate"><span class="pre">l1trendi()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.l1trendi.html#pyacs.gts.lib.filters.l1trendi.pre_process_test"><code class="docutils literal notranslate"><span class="pre">pre_process_test()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.l1trendi.html#pyacs.gts.lib.filters.l1trendi.pre_process_ts"><code class="docutils literal notranslate"><span class="pre">pre_process_ts()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.filters.median.html">pyacs.gts.lib.filters.median module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.median.html#pyacs.gts.lib.filters.median.median_filter"><code class="docutils literal notranslate"><span class="pre">median_filter()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.filters.minimum_component.html">pyacs.gts.lib.filters.minimum_component module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.minimum_component.html#pyacs.gts.lib.filters.minimum_component.minimum_component"><code class="docutils literal notranslate"><span class="pre">minimum_component()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.filters.refine_l1trend.html">pyacs.gts.lib.filters.refine_l1trend module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.refine_l1trend.html#pyacs.gts.lib.filters.refine_l1trend.check_l1_trend"><code class="docutils literal notranslate"><span class="pre">check_l1_trend()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.refine_l1trend.html#pyacs.gts.lib.filters.refine_l1trend.clean_l1trend"><code class="docutils literal notranslate"><span class="pre">clean_l1trend()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.refine_l1trend.html#pyacs.gts.lib.filters.refine_l1trend.l1trend_to_breakpoints"><code class="docutils literal notranslate"><span class="pre">l1trend_to_breakpoints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.refine_l1trend.html#pyacs.gts.lib.filters.refine_l1trend.optimal_pwlf_refinement"><code class="docutils literal notranslate"><span class="pre">optimal_pwlf_refinement()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.refine_l1trend.html#pyacs.gts.lib.filters.refine_l1trend.optimal_pwlf_refinement_fast"><code class="docutils literal notranslate"><span class="pre">optimal_pwlf_refinement_fast()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.refine_l1trend.html#pyacs.gts.lib.filters.refine_l1trend.refine_l1trend"><code class="docutils literal notranslate"><span class="pre">refine_l1trend()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.refine_l1trend.html#pyacs.gts.lib.filters.refine_l1trend.simplify_l1trend"><code class="docutils literal notranslate"><span class="pre">simplify_l1trend()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.filters.savitzky_golay.html">pyacs.gts.lib.filters.savitzky_golay module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.savitzky_golay.html#pyacs.gts.lib.filters.savitzky_golay.savitzky_golay"><code class="docutils literal notranslate"><span class="pre">savitzky_golay()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.filters.smooth.html">pyacs.gts.lib.filters.smooth module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.smooth.html#pyacs.gts.lib.filters.smooth.smooth"><code class="docutils literal notranslate"><span class="pre">smooth()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.filters.spline.html">pyacs.gts.lib.filters.spline module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.spline.html#pyacs.gts.lib.filters.spline.spline"><code class="docutils literal notranslate"><span class="pre">spline()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.filters.vondrak.html">pyacs.gts.lib.filters.vondrak module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.vondrak.html#pyacs.gts.lib.filters.vondrak.vondrak"><code class="docutils literal notranslate"><span class="pre">vondrak()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.filters.wiener.html">pyacs.gts.lib.filters.wiener module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.filters.wiener.html#pyacs.gts.lib.filters.wiener.wiener"><code class="docutils literal notranslate"><span class="pre">wiener()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.filters.html#module-pyacs.gts.lib.filters">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.gts.lib.format.html">pyacs.gts.lib.format package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.format.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.format.cats.html">pyacs.gts.lib.format.cats module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.format.cats.html#pyacs.gts.lib.format.cats.read_cats_file"><code class="docutils literal notranslate"><span class="pre">read_cats_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.format.cats.html#pyacs.gts.lib.format.cats.write_cats"><code class="docutils literal notranslate"><span class="pre">write_cats()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.format.force_daily.html">pyacs.gts.lib.format.force_daily module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.format.force_daily.html#pyacs.gts.lib.format.force_daily.force_daily"><code class="docutils literal notranslate"><span class="pre">force_daily()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.format.get_unr.html">pyacs.gts.lib.format.get_unr module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.format.get_unr.html#pyacs.gts.lib.format.get_unr.get_unr"><code class="docutils literal notranslate"><span class="pre">get_unr()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.format.get_unr_loading.html">pyacs.gts.lib.format.get_unr_loading module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.format.get_unr_loading.html#pyacs.gts.lib.format.get_unr_loading.get_unr_loading"><code class="docutils literal notranslate"><span class="pre">get_unr_loading()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.format.kenv.html">pyacs.gts.lib.format.kenv module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.format.kenv.html#pyacs.gts.lib.format.kenv.read_kenv"><code class="docutils literal notranslate"><span class="pre">read_kenv()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.format.mb_file.html">pyacs.gts.lib.format.mb_file module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.format.mb_file.html#pyacs.gts.lib.format.mb_file.read_mb_file"><code class="docutils literal notranslate"><span class="pre">read_mb_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.format.mb_file.html#pyacs.gts.lib.format.mb_file.write_mb_file"><code class="docutils literal notranslate"><span class="pre">write_mb_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.format.pos.html">pyacs.gts.lib.format.pos module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.format.pos.html#pyacs.gts.lib.format.pos.read_pos"><code class="docutils literal notranslate"><span class="pre">read_pos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.format.pos.html#pyacs.gts.lib.format.pos.write_pos"><code class="docutils literal notranslate"><span class="pre">write_pos()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.format.pride.html">pyacs.gts.lib.format.pride module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.format.pride.html#pyacs.gts.lib.format.pride.read_pride"><code class="docutils literal notranslate"><span class="pre">read_pride()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.format.pride.html#pyacs.gts.lib.format.pride.read_pride_pos"><code class="docutils literal notranslate"><span class="pre">read_pride_pos()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.format.read_sol.html">pyacs.gts.lib.format.read_sol module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.format.read_sol.html#pyacs.gts.lib.format.read_sol.read_sol"><code class="docutils literal notranslate"><span class="pre">read_sol()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.format.series.html">pyacs.gts.lib.format.series module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.format.series.html#pyacs.gts.lib.format.series.read_series"><code class="docutils literal notranslate"><span class="pre">read_series()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.format.tdp.html">pyacs.gts.lib.format.tdp module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.format.tdp.html#pyacs.gts.lib.format.tdp.read_tdp"><code class="docutils literal notranslate"><span class="pre">read_tdp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.format.to_pandas_df.html">pyacs.gts.lib.format.to_pandas_df module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.format.to_pandas_df.html#pyacs.gts.lib.format.to_pandas_df.to_pandas_df"><code class="docutils literal notranslate"><span class="pre">to_pandas_df()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.format.to_pytrf.html">pyacs.gts.lib.format.to_pytrf module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.format.to_pytrf.html#pyacs.gts.lib.format.to_pytrf.to_pytrf"><code class="docutils literal notranslate"><span class="pre">to_pytrf()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.format.track.html">pyacs.gts.lib.format.track module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.format.track.html#pyacs.gts.lib.format.track.read_track_NEU"><code class="docutils literal notranslate"><span class="pre">read_track_NEU()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.format.html#module-pyacs.gts.lib.format">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.gts.lib.l1trend.html">pyacs.gts.lib.l1trend package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.l1trend.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.breakpoints.html">pyacs.gts.lib.l1trend.breakpoints module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.l1trend.breakpoints.html#pyacs.gts.lib.l1trend.breakpoints.l1trend_to_breakpoints"><code class="docutils literal notranslate"><span class="pre">l1trend_to_breakpoints()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.check_trend.html">pyacs.gts.lib.l1trend.check_trend module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.l1trend.check_trend.html#pyacs.gts.lib.l1trend.check_trend.check_l1_trend"><code class="docutils literal notranslate"><span class="pre">check_l1_trend()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.l1trend.check_trend.html#pyacs.gts.lib.l1trend.check_trend.compute_measure_bias"><code class="docutils literal notranslate"><span class="pre">compute_measure_bias()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.l1trend.check_trend.html#pyacs.gts.lib.l1trend.check_trend.make_node_ts"><code class="docutils literal notranslate"><span class="pre">make_node_ts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.l1trend.check_trend.html#pyacs.gts.lib.l1trend.check_trend.measure_bias"><code class="docutils literal notranslate"><span class="pre">measure_bias()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.cleaning.html">pyacs.gts.lib.l1trend.cleaning module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.l1trend.cleaning.html#pyacs.gts.lib.l1trend.cleaning.clean_l1trend"><code class="docutils literal notranslate"><span class="pre">clean_l1trend()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.l1trend2d.html">pyacs.gts.lib.l1trend.l1trend2d module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.l1trend.l1trend2d.html#pyacs.gts.lib.l1trend.l1trend2d.find_optimal_lambda"><code class="docutils literal notranslate"><span class="pre">find_optimal_lambda()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.l1trend.l1trend2d.html#pyacs.gts.lib.l1trend.l1trend2d.l1_trendfilter_2d"><code class="docutils literal notranslate"><span class="pre">l1_trendfilter_2d()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.l1trend.l1trend2d.html#pyacs.gts.lib.l1trend.l1trend2d.plot_lambda_selection"><code class="docutils literal notranslate"><span class="pre">plot_lambda_selection()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.l1trend.l1trend2d.html#pyacs.gts.lib.l1trend.l1trend2d.second_diff_matrix"><code class="docutils literal notranslate"><span class="pre">second_diff_matrix()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.l1trendi.html">pyacs.gts.lib.l1trend.l1trendi module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.l1trend.l1trendi.html#pyacs.gts.lib.l1trend.l1trendi.l1trendi"><code class="docutils literal notranslate"><span class="pre">l1trendi()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.optimal_l1trend_workflow.html">pyacs.gts.lib.l1trend.optimal_l1trend_workflow module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.l1trend.optimal_l1trend_workflow.html#pyacs.gts.lib.l1trend.optimal_l1trend_workflow.l1trend_optimal_workflow"><code class="docutils literal notranslate"><span class="pre">l1trend_optimal_workflow()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.optimal_refinement.html">pyacs.gts.lib.l1trend.optimal_refinement module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.l1trend.optimal_refinement.html#pyacs.gts.lib.l1trend.optimal_refinement.optimal_pwlf_refinement"><code class="docutils literal notranslate"><span class="pre">optimal_pwlf_refinement()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.l1trend.optimal_refinement.html#pyacs.gts.lib.l1trend.optimal_refinement.optimal_pwlf_refinement_fast"><code class="docutils literal notranslate"><span class="pre">optimal_pwlf_refinement_fast()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.l1trend.optimal_refinement.html#pyacs.gts.lib.l1trend.optimal_refinement.preprocess_timeseries_for_optimization"><code class="docutils literal notranslate"><span class="pre">preprocess_timeseries_for_optimization()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.optimization.html">pyacs.gts.lib.l1trend.optimization module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.l1trend.optimization.html#pyacs.gts.lib.l1trend.optimization.best_l1trend_custom"><code class="docutils literal notranslate"><span class="pre">best_l1trend_custom()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.l1trend.optimization.html#pyacs.gts.lib.l1trend.optimization.best_l1trend_golden"><code class="docutils literal notranslate"><span class="pre">best_l1trend_golden()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.outlier_flagging.html">pyacs.gts.lib.l1trend.outlier_flagging module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.l1trend.outlier_flagging.html#pyacs.gts.lib.l1trend.outlier_flagging.flag_outliers_using_l1trend"><code class="docutils literal notranslate"><span class="pre">flag_outliers_using_l1trend()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.preprocessing.html">pyacs.gts.lib.l1trend.preprocessing module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.l1trend.preprocessing.html#pyacs.gts.lib.l1trend.preprocessing.pre_process_test"><code class="docutils literal notranslate"><span class="pre">pre_process_test()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.l1trend.preprocessing.html#pyacs.gts.lib.l1trend.preprocessing.pre_process_ts"><code class="docutils literal notranslate"><span class="pre">pre_process_ts()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.refinement.html">pyacs.gts.lib.l1trend.refinement module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.l1trend.refinement.html#pyacs.gts.lib.l1trend.refinement.refine_l1trend"><code class="docutils literal notranslate"><span class="pre">refine_l1trend()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.simplification.html">pyacs.gts.lib.l1trend.simplification module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.l1trend.simplification.html#pyacs.gts.lib.l1trend.simplification.simplify_l1trend"><code class="docutils literal notranslate"><span class="pre">simplify_l1trend()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.l1trend.simplification.html#pyacs.gts.lib.l1trend.simplification.simplify_l1trend_with_fisher_test"><code class="docutils literal notranslate"><span class="pre">simplify_l1trend_with_fisher_test()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.statistics.html">pyacs.gts.lib.l1trend.statistics module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.l1trend.statistics.html#pyacs.gts.lib.l1trend.statistics.get_stats_l1_model"><code class="docutils literal notranslate"><span class="pre">get_stats_l1_model()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.sum_l1_trend.html">pyacs.gts.lib.l1trend.sum_l1_trend module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.l1trend.sum_l1_trend.html#pyacs.gts.lib.l1trend.sum_l1_trend.sum_l1_trend"><code class="docutils literal notranslate"><span class="pre">sum_l1_trend()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.l1trend.html#module-pyacs.gts.lib.l1trend">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.html#pyacs.gts.lib.l1trend.best_l1trend_custom"><code class="docutils literal notranslate"><span class="pre">best_l1trend_custom()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.html#pyacs.gts.lib.l1trend.best_l1trend_golden"><code class="docutils literal notranslate"><span class="pre">best_l1trend_golden()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.html#pyacs.gts.lib.l1trend.check_l1_trend"><code class="docutils literal notranslate"><span class="pre">check_l1_trend()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.html#pyacs.gts.lib.l1trend.clean_l1trend"><code class="docutils literal notranslate"><span class="pre">clean_l1trend()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.html#pyacs.gts.lib.l1trend.find_optimal_lambda"><code class="docutils literal notranslate"><span class="pre">find_optimal_lambda()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.html#pyacs.gts.lib.l1trend.flag_outliers_using_l1trend"><code class="docutils literal notranslate"><span class="pre">flag_outliers_using_l1trend()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.html#pyacs.gts.lib.l1trend.get_stats_l1_model"><code class="docutils literal notranslate"><span class="pre">get_stats_l1_model()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.html#pyacs.gts.lib.l1trend.l1_trendfilter_2d"><code class="docutils literal notranslate"><span class="pre">l1_trendfilter_2d()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.html#pyacs.gts.lib.l1trend.l1trend_optimal_workflow"><code class="docutils literal notranslate"><span class="pre">l1trend_optimal_workflow()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.html#pyacs.gts.lib.l1trend.l1trend_to_breakpoints"><code class="docutils literal notranslate"><span class="pre">l1trend_to_breakpoints()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.html#pyacs.gts.lib.l1trend.l1trendi"><code class="docutils literal notranslate"><span class="pre">l1trendi()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.html#pyacs.gts.lib.l1trend.optimal_pwlf_refinement"><code class="docutils literal notranslate"><span class="pre">optimal_pwlf_refinement()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.html#pyacs.gts.lib.l1trend.optimal_pwlf_refinement_fast"><code class="docutils literal notranslate"><span class="pre">optimal_pwlf_refinement_fast()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.html#pyacs.gts.lib.l1trend.plot_lambda_selection"><code class="docutils literal notranslate"><span class="pre">plot_lambda_selection()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.html#pyacs.gts.lib.l1trend.pre_process_test"><code class="docutils literal notranslate"><span class="pre">pre_process_test()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.html#pyacs.gts.lib.l1trend.pre_process_ts"><code class="docutils literal notranslate"><span class="pre">pre_process_ts()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.html#pyacs.gts.lib.l1trend.preprocess_timeseries_for_optimization"><code class="docutils literal notranslate"><span class="pre">preprocess_timeseries_for_optimization()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.html#pyacs.gts.lib.l1trend.refine_l1trend"><code class="docutils literal notranslate"><span class="pre">refine_l1trend()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.html#pyacs.gts.lib.l1trend.simplify_l1trend"><code class="docutils literal notranslate"><span class="pre">simplify_l1trend()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.html#pyacs.gts.lib.l1trend.simplify_l1trend_with_fisher_test"><code class="docutils literal notranslate"><span class="pre">simplify_l1trend_with_fisher_test()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.l1trend.html#pyacs.gts.lib.l1trend.sum_l1_trend"><code class="docutils literal notranslate"><span class="pre">sum_l1_trend()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.gts.lib.model.html">pyacs.gts.lib.model package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.model.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.model.detrend.html">pyacs.gts.lib.model.detrend module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.model.detrend.html#pyacs.gts.lib.model.detrend.detrend"><code class="docutils literal notranslate"><span class="pre">detrend()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.model.detrend_annual.html">pyacs.gts.lib.model.detrend_annual module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.model.detrend_annual.html#pyacs.gts.lib.model.detrend_annual.detrend_annual"><code class="docutils literal notranslate"><span class="pre">detrend_annual()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.model.detrend_hectorp.html">pyacs.gts.lib.model.detrend_hectorp module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.model.detrend_hectorp.html#pyacs.gts.lib.model.detrend_hectorp.detrend_hectorp"><code class="docutils literal notranslate"><span class="pre">detrend_hectorp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.model.detrend_median.html">pyacs.gts.lib.model.detrend_median module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.model.detrend_median.html#pyacs.gts.lib.model.detrend_median.detrend_median"><code class="docutils literal notranslate"><span class="pre">detrend_median()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.model.detrend_pytrf.html">pyacs.gts.lib.model.detrend_pytrf module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.model.detrend_pytrf.html#pyacs.gts.lib.model.detrend_pytrf.detrend_pytrf"><code class="docutils literal notranslate"><span class="pre">detrend_pytrf()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.model.detrend_seasonal.html">pyacs.gts.lib.model.detrend_seasonal module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.model.detrend_seasonal.html#pyacs.gts.lib.model.detrend_seasonal.detrend_seasonal"><code class="docutils literal notranslate"><span class="pre">detrend_seasonal()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.model.detrend_seasonal_median.html">pyacs.gts.lib.model.detrend_seasonal_median module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.model.detrend_seasonal_median.html#pyacs.gts.lib.model.detrend_seasonal_median.detrend_seasonal_median"><code class="docutils literal notranslate"><span class="pre">detrend_seasonal_median()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.model.frame.html">pyacs.gts.lib.model.frame module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.model.frame.html#pyacs.gts.lib.model.frame.frame"><code class="docutils literal notranslate"><span class="pre">frame()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.model.make_model.html">pyacs.gts.lib.model.make_model module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.model.make_model.html#pyacs.gts.lib.model.make_model.make_model"><code class="docutils literal notranslate"><span class="pre">make_model()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.model.mmodel.html">pyacs.gts.lib.model.mmodel module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.model.mmodel.html#pyacs.gts.lib.model.mmodel.mmodel"><code class="docutils literal notranslate"><span class="pre">mmodel()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.model.non_linear_gts_model.html">pyacs.gts.lib.model.non_linear_gts_model module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.model.non_linear_gts_model.html#pyacs.gts.lib.model.non_linear_gts_model.nl_gts_fit"><code class="docutils literal notranslate"><span class="pre">nl_gts_fit()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.model.remove_pole.html">pyacs.gts.lib.model.remove_pole module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.model.remove_pole.html#pyacs.gts.lib.model.remove_pole.remove_pole"><code class="docutils literal notranslate"><span class="pre">remove_pole()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.model.trajectory.html">pyacs.gts.lib.model.trajectory module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.model.trajectory.html#pyacs.gts.lib.model.trajectory.trajectory"><code class="docutils literal notranslate"><span class="pre">trajectory()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.model.html#module-pyacs.gts.lib.model">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.gts.lib.offsets.html">pyacs.gts.lib.offsets package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.offsets.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.offsets.find_offsets_ivel.html">pyacs.gts.lib.offsets.find_offsets_ivel module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.offsets.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.gts.lib.noise.html">pyacs.gts.lib.noise package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.noise.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.noise.add_vel_sigma.html">pyacs.gts.lib.noise.add_vel_sigma module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.noise.add_vel_sigma.html#pyacs.gts.lib.noise.add_vel_sigma.add_vel_sigma"><code class="docutils literal notranslate"><span class="pre">add_vel_sigma()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.noise.html#module-pyacs.gts.lib.noise">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.noise.html#pyacs.gts.lib.noise.add_vel_sigma"><code class="docutils literal notranslate"><span class="pre">add_vel_sigma()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.noise.html#pyacs.gts.lib.noise.get_spectral_index"><code class="docutils literal notranslate"><span class="pre">get_spectral_index()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.noise.html#pyacs.gts.lib.noise.get_vel_and_sigma"><code class="docutils literal notranslate"><span class="pre">get_vel_and_sigma()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.noise.html#pyacs.gts.lib.noise.realistic_sigma"><code class="docutils literal notranslate"><span class="pre">realistic_sigma()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.noise.html#pyacs.gts.lib.noise.sigma_cats"><code class="docutils literal notranslate"><span class="pre">sigma_cats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.noise.html#pyacs.gts.lib.noise.sigma_vel_tsfit"><code class="docutils literal notranslate"><span class="pre">sigma_vel_tsfit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.noise.html#pyacs.gts.lib.noise.wrms"><code class="docutils literal notranslate"><span class="pre">wrms()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.gts.lib.outliers.html">pyacs.gts.lib.outliers package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.outliers.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.outliers.find_l1trend.html">pyacs.gts.lib.outliers.find_l1trend module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.outliers.find_l1trend.html#pyacs.gts.lib.outliers.find_l1trend.find_l1trend"><code class="docutils literal notranslate"><span class="pre">find_l1trend()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.outliers.find_outliers_around_date.html">pyacs.gts.lib.outliers.find_outliers_around_date module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.outliers.find_outliers_around_date.html#pyacs.gts.lib.outliers.find_outliers_around_date.find_outliers_around_date"><code class="docutils literal notranslate"><span class="pre">find_outliers_around_date()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.outliers.find_outliers_percentage.html">pyacs.gts.lib.outliers.find_outliers_percentage module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.outliers.find_outliers_percentage.html#pyacs.gts.lib.outliers.find_outliers_percentage.find_outliers_percentage"><code class="docutils literal notranslate"><span class="pre">find_outliers_percentage()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.outliers.find_outliers_simple.html">pyacs.gts.lib.outliers.find_outliers_simple module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.outliers.find_outliers_simple.html#pyacs.gts.lib.outliers.find_outliers_simple.find_outliers_simple"><code class="docutils literal notranslate"><span class="pre">find_outliers_simple()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.outliers.find_outliers_sliding_window.html">pyacs.gts.lib.outliers.find_outliers_sliding_window module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.outliers.find_outliers_sliding_window.html#pyacs.gts.lib.outliers.find_outliers_sliding_window.find_outliers_sliding_window"><code class="docutils literal notranslate"><span class="pre">find_outliers_sliding_window()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.outliers.find_outliers_vondrak.html">pyacs.gts.lib.outliers.find_outliers_vondrak module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.outliers.find_outliers_vondrak.html#pyacs.gts.lib.outliers.find_outliers_vondrak.find_outliers_vondrak"><code class="docutils literal notranslate"><span class="pre">find_outliers_vondrak()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.outliers.remove_outliers.html">pyacs.gts.lib.outliers.remove_outliers module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.outliers.remove_outliers.html#pyacs.gts.lib.outliers.remove_outliers.remove_outliers"><code class="docutils literal notranslate"><span class="pre">remove_outliers()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.outliers.html#module-pyacs.gts.lib.outliers">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.gts.lib.plot.html">pyacs.gts.lib.plot package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.plot.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.plot.gts_to_ts.html">pyacs.gts.lib.plot.gts_to_ts module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.plot.gts_to_ts.html#pyacs.gts.lib.plot.gts_to_ts.gts_to_ts"><code class="docutils literal notranslate"><span class="pre">gts_to_ts()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.plot.init_plot_default.html">pyacs.gts.lib.plot.init_plot_default module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.plot.init_plot_settings.html">pyacs.gts.lib.plot.init_plot_settings module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.plot.make_stitle.html">pyacs.gts.lib.plot.make_stitle module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.plot.make_stitle.html#pyacs.gts.lib.plot.make_stitle.make_stitle"><code class="docutils literal notranslate"><span class="pre">make_stitle()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.plot.plot.html">pyacs.gts.lib.plot.plot module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.plot.plot.html#pyacs.gts.lib.plot.plot.plot"><code class="docutils literal notranslate"><span class="pre">plot()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.plot.plot_ts.html">pyacs.gts.lib.plot.plot_ts module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.plot.plot_ts.html#pyacs.gts.lib.plot.plot_ts.plot_ts"><code class="docutils literal notranslate"><span class="pre">plot_ts()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.plot.html#module-pyacs.gts.lib.plot">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.gts.lib.primitive.html">pyacs.gts.lib.primitive package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.primitive.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.add_obs.html">pyacs.gts.lib.primitive.add_obs module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.add_obs.html#pyacs.gts.lib.primitive.add_obs.add_obs"><code class="docutils literal notranslate"><span class="pre">add_obs()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.add_obs_xyz.html">pyacs.gts.lib.primitive.add_obs_xyz module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.add_obs_xyz.html#pyacs.gts.lib.primitive.add_obs_xyz.add_obs_xyz"><code class="docutils literal notranslate"><span class="pre">add_obs_xyz()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.add_offsets_dates.html">pyacs.gts.lib.primitive.add_offsets_dates module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.add_offsets_dates.html#pyacs.gts.lib.primitive.add_offsets_dates.add_offsets_dates"><code class="docutils literal notranslate"><span class="pre">add_offsets_dates()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.cdata.html">pyacs.gts.lib.primitive.cdata module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.cdata.html#pyacs.gts.lib.primitive.cdata.cdata"><code class="docutils literal notranslate"><span class="pre">cdata()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.copy.html">pyacs.gts.lib.primitive.copy module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.copy.html#pyacs.gts.lib.primitive.copy.copy"><code class="docutils literal notranslate"><span class="pre">copy()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.correct_duplicated_dates.html">pyacs.gts.lib.primitive.correct_duplicated_dates module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.correct_duplicated_dates.html#pyacs.gts.lib.primitive.correct_duplicated_dates.correct_duplicated_dates"><code class="docutils literal notranslate"><span class="pre">correct_duplicated_dates()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.decimate.html">pyacs.gts.lib.primitive.decimate module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.decimate.html#pyacs.gts.lib.primitive.decimate.decimate"><code class="docutils literal notranslate"><span class="pre">decimate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.differentiate.html">pyacs.gts.lib.primitive.differentiate module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.differentiate.html#pyacs.gts.lib.primitive.differentiate.differentiate"><code class="docutils literal notranslate"><span class="pre">differentiate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.displacement.html">pyacs.gts.lib.primitive.displacement module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.displacement.html#pyacs.gts.lib.primitive.displacement.displacement"><code class="docutils literal notranslate"><span class="pre">displacement()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.exclude_periods.html">pyacs.gts.lib.primitive.exclude_periods module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.exclude_periods.html#pyacs.gts.lib.primitive.exclude_periods.exclude_periods"><code class="docutils literal notranslate"><span class="pre">exclude_periods()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.extract_dates.html">pyacs.gts.lib.primitive.extract_dates module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.extract_dates.html#pyacs.gts.lib.primitive.extract_dates.extract_dates"><code class="docutils literal notranslate"><span class="pre">extract_dates()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.extract_ndates_after_date.html">pyacs.gts.lib.primitive.extract_ndates_after_date module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.extract_ndates_after_date.html#pyacs.gts.lib.primitive.extract_ndates_after_date.extract_ndates_after_date"><code class="docutils literal notranslate"><span class="pre">extract_ndates_after_date()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.extract_ndates_around_date.html">pyacs.gts.lib.primitive.extract_ndates_around_date module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.extract_ndates_around_date.html#pyacs.gts.lib.primitive.extract_ndates_around_date.extract_ndates_around_date"><code class="docutils literal notranslate"><span class="pre">extract_ndates_around_date()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.extract_ndates_before_date.html">pyacs.gts.lib.primitive.extract_ndates_before_date module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.extract_ndates_before_date.html#pyacs.gts.lib.primitive.extract_ndates_before_date.extract_ndates_before_date"><code class="docutils literal notranslate"><span class="pre">extract_ndates_before_date()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.extract_periods.html">pyacs.gts.lib.primitive.extract_periods module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.extract_periods.html#pyacs.gts.lib.primitive.extract_periods.extract_periods"><code class="docutils literal notranslate"><span class="pre">extract_periods()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.extrapolate.html">pyacs.gts.lib.primitive.extrapolate module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.extrapolate.html#pyacs.gts.lib.primitive.extrapolate.extrapolate"><code class="docutils literal notranslate"><span class="pre">extrapolate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.find_large_uncertainty.html">pyacs.gts.lib.primitive.find_large_uncertainty module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.find_large_uncertainty.html#pyacs.gts.lib.primitive.find_large_uncertainty.find_large_uncertainty"><code class="docutils literal notranslate"><span class="pre">find_large_uncertainty()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.get_coseismic.html">pyacs.gts.lib.primitive.get_coseismic module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.get_coseismic.html#pyacs.gts.lib.primitive.get_coseismic.get_coseismic"><code class="docutils literal notranslate"><span class="pre">get_coseismic()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.get_coseismic2.html">pyacs.gts.lib.primitive.get_coseismic2 module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.get_coseismic2.html#pyacs.gts.lib.primitive.get_coseismic2.get_coseismic2"><code class="docutils literal notranslate"><span class="pre">get_coseismic2()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.get_coseismic_l1trend.html">pyacs.gts.lib.primitive.get_coseismic_l1trend module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.get_coseismic_l1trend.html#pyacs.gts.lib.primitive.get_coseismic_l1trend.get_coseismic_l1trend"><code class="docutils literal notranslate"><span class="pre">get_coseismic_l1trend()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.get_values_at_date.html">pyacs.gts.lib.primitive.get_values_at_date module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.get_values_at_date.html#pyacs.gts.lib.primitive.get_values_at_date.get_values_at_date"><code class="docutils literal notranslate"><span class="pre">get_values_at_date()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.insert_gts_data.html">pyacs.gts.lib.primitive.insert_gts_data module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.insert_gts_data.html#pyacs.gts.lib.primitive.insert_gts_data.insert_gts_data"><code class="docutils literal notranslate"><span class="pre">insert_gts_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.insert_ts.html">pyacs.gts.lib.primitive.insert_ts module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.insert_ts.html#pyacs.gts.lib.primitive.insert_ts.insert_ts"><code class="docutils literal notranslate"><span class="pre">insert_ts()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.interpolate.html">pyacs.gts.lib.primitive.interpolate module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.interpolate.html#pyacs.gts.lib.primitive.interpolate.interpolate"><code class="docutils literal notranslate"><span class="pre">interpolate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.n_obs.html">pyacs.gts.lib.primitive.n_obs module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.n_obs.html#pyacs.gts.lib.primitive.n_obs.n_obs"><code class="docutils literal notranslate"><span class="pre">n_obs()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.neu2xyz.html">pyacs.gts.lib.primitive.neu2xyz module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.neu2xyz.html#pyacs.gts.lib.primitive.neu2xyz.neu2xyz"><code class="docutils literal notranslate"><span class="pre">neu2xyz()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.remove_velocity.html">pyacs.gts.lib.primitive.remove_velocity module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.remove_velocity.html#pyacs.gts.lib.primitive.remove_velocity.remove_velocity"><code class="docutils literal notranslate"><span class="pre">remove_velocity()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.reorder.html">pyacs.gts.lib.primitive.reorder module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.reorder.html#pyacs.gts.lib.primitive.reorder.reorder"><code class="docutils literal notranslate"><span class="pre">reorder()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.rotate.html">pyacs.gts.lib.primitive.rotate module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.rotate.html#pyacs.gts.lib.primitive.rotate.rotate"><code class="docutils literal notranslate"><span class="pre">rotate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.set_zero_at_date.html">pyacs.gts.lib.primitive.set_zero_at_date module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.set_zero_at_date.html#pyacs.gts.lib.primitive.set_zero_at_date.set_zero_at_date"><code class="docutils literal notranslate"><span class="pre">set_zero_at_date()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.split.html">pyacs.gts.lib.primitive.split module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.split.html#pyacs.gts.lib.primitive.split.split"><code class="docutils literal notranslate"><span class="pre">split()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.split_gap.html">pyacs.gts.lib.primitive.split_gap module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.split_gap.html#pyacs.gts.lib.primitive.split_gap.split_gap"><code class="docutils literal notranslate"><span class="pre">split_gap()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.substract_ts.html">pyacs.gts.lib.primitive.substract_ts module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.substract_ts.html#pyacs.gts.lib.primitive.substract_ts.substract_ts"><code class="docutils literal notranslate"><span class="pre">substract_ts()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.substract_ts_daily.html">pyacs.gts.lib.primitive.substract_ts_daily module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.substract_ts_daily.html#pyacs.gts.lib.primitive.substract_ts_daily.substract_ts_daily"><code class="docutils literal notranslate"><span class="pre">substract_ts_daily()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.primitive.xyz2neu.html">pyacs.gts.lib.primitive.xyz2neu module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.primitive.xyz2neu.html#pyacs.gts.lib.primitive.xyz2neu.xyz2neu"><code class="docutils literal notranslate"><span class="pre">xyz2neu()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.primitive.html#module-pyacs.gts.lib.primitive">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.gts.lib.tensor_ts.html">pyacs.gts.lib.tensor_ts package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.tensor_ts.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.tensor_ts.obs_tensor2sgts.html">pyacs.gts.lib.tensor_ts.obs_tensor2sgts module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.tensor_ts.obs_tensor2sgts.html#pyacs.gts.lib.tensor_ts.obs_tensor2sgts.obs_tensor2sgts"><code class="docutils literal notranslate"><span class="pre">obs_tensor2sgts()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.tensor_ts.sgts2obs_tensor.html">pyacs.gts.lib.tensor_ts.sgts2obs_tensor module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.tensor_ts.sgts2obs_tensor.html#pyacs.gts.lib.tensor_ts.sgts2obs_tensor.sgts2tensor"><code class="docutils literal notranslate"><span class="pre">sgts2tensor()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.tensor_ts.sgts2tsr.html">pyacs.gts.lib.tensor_ts.sgts2tsr module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.tensor_ts.sgts2tsr.html#pyacs.gts.lib.tensor_ts.sgts2tsr.sgts2tsr"><code class="docutils literal notranslate"><span class="pre">sgts2tsr()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.tensor_ts.html#module-pyacs.gts.lib.tensor_ts">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.gts.lib.errors.html">pyacs.gts.lib.errors module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.errors.html#pyacs.gts.lib.errors.GtsCDataError"><code class="docutils literal notranslate"><span class="pre">GtsCDataError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.errors.html#pyacs.gts.lib.errors.GtsError"><code class="docutils literal notranslate"><span class="pre">GtsError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.errors.html#pyacs.gts.lib.errors.GtsInputDataBadDim"><code class="docutils literal notranslate"><span class="pre">GtsInputDataBadDim</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.errors.html#pyacs.gts.lib.errors.GtsInputDataBadNcolumns"><code class="docutils literal notranslate"><span class="pre">GtsInputDataBadNcolumns</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.errors.html#pyacs.gts.lib.errors.GtsInputDataBadNrows"><code class="docutils literal notranslate"><span class="pre">GtsInputDataBadNrows</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.errors.html#pyacs.gts.lib.errors.GtsInputDataDiffDate"><code class="docutils literal notranslate"><span class="pre">GtsInputDataDiffDate</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.errors.html#pyacs.gts.lib.errors.GtsInputDataDiffShape"><code class="docutils literal notranslate"><span class="pre">GtsInputDataDiffShape</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.errors.html#pyacs.gts.lib.errors.GtsInputDataNone"><code class="docutils literal notranslate"><span class="pre">GtsInputDataNone</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.errors.html#pyacs.gts.lib.errors.GtsInputDataTypeError"><code class="docutils literal notranslate"><span class="pre">GtsInputDataTypeError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.errors.html#pyacs.gts.lib.errors.GtsInputData_allNone"><code class="docutils literal notranslate"><span class="pre">GtsInputData_allNone</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.errors.html#pyacs.gts.lib.errors.GtsInputData_xyzBadDim"><code class="docutils literal notranslate"><span class="pre">GtsInputData_xyzBadDim</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.errors.html#pyacs.gts.lib.errors.GtsInputData_xyzBadNcolumns"><code class="docutils literal notranslate"><span class="pre">GtsInputData_xyzBadNcolumns</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.errors.html#pyacs.gts.lib.errors.GtsInputData_xyzBadNrows"><code class="docutils literal notranslate"><span class="pre">GtsInputData_xyzBadNrows</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.errors.html#pyacs.gts.lib.errors.GtsInputData_xyzNone"><code class="docutils literal notranslate"><span class="pre">GtsInputData_xyzNone</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.errors.html#pyacs.gts.lib.errors.GtsInputData_xyzTypeError"><code class="docutils literal notranslate"><span class="pre">GtsInputData_xyzTypeError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.errors.html#pyacs.gts.lib.errors.GtsMethodError"><code class="docutils literal notranslate"><span class="pre">GtsMethodError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.errors.html#pyacs.gts.lib.errors.GtsReadFileError"><code class="docutils literal notranslate"><span class="pre">GtsReadFileError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.gts.lib.gts_dates.html">pyacs.gts.lib.gts_dates module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.gts_dates.html#pyacs.gts.lib.gts_dates.decyear2days"><code class="docutils literal notranslate"><span class="pre">decyear2days()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.gts_dates.html#pyacs.gts.lib.gts_dates.np_datetime_2_eq_time"><code class="docutils literal notranslate"><span class="pre">np_datetime_2_eq_time()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.gts_dates.html#pyacs.gts.lib.gts_dates.np_yyyy_mm_dd_hh_mm_ss_2_datetime"><code class="docutils literal notranslate"><span class="pre">np_yyyy_mm_dd_hh_mm_ss_2_datetime()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.gts_dates.html#pyacs.gts.lib.gts_dates.np_yyyy_mm_dd_hh_mm_ss_2_decyear"><code class="docutils literal notranslate"><span class="pre">np_yyyy_mm_dd_hh_mm_ss_2_decyear()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.gts.lib.gts_estimators.html">pyacs.gts.lib.gts_estimators module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.gts_estimators.html#pyacs.gts.lib.gts_estimators.least_square"><code class="docutils literal notranslate"><span class="pre">least_square()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.gts.lib.message.html">pyacs.gts.lib.message module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.message.html#pyacs.gts.lib.message.message"><code class="docutils literal notranslate"><span class="pre">message()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.gts.lib.metadata.html">pyacs.gts.lib.metadata module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.metadata.html#pyacs.gts.lib.metadata.info"><code class="docutils literal notranslate"><span class="pre">info()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.metadata.html#pyacs.gts.lib.metadata.make_dynamic_apr"><code class="docutils literal notranslate"><span class="pre">make_dynamic_apr()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.metadata.html#pyacs.gts.lib.metadata.read_eq_rename"><code class="docutils literal notranslate"><span class="pre">read_eq_rename()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.metadata.html#pyacs.gts.lib.metadata.read_lon_lat"><code class="docutils literal notranslate"><span class="pre">read_lon_lat()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.metadata.html#pyacs.gts.lib.metadata.read_offset_dates"><code class="docutils literal notranslate"><span class="pre">read_offset_dates()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.metadata.html#pyacs.gts.lib.metadata.save_apr"><code class="docutils literal notranslate"><span class="pre">save_apr()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.metadata.html#pyacs.gts.lib.metadata.save_eq_rename"><code class="docutils literal notranslate"><span class="pre">save_eq_rename()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.metadata.html#pyacs.gts.lib.metadata.save_offsets"><code class="docutils literal notranslate"><span class="pre">save_offsets()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.metadata.html#pyacs.gts.lib.metadata.save_velocity"><code class="docutils literal notranslate"><span class="pre">save_velocity()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.gts.lib.offset.html">pyacs.gts.lib.offset module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.offset.html#pyacs.gts.lib.offset.apply_offsets"><code class="docutils literal notranslate"><span class="pre">apply_offsets()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.offset.html#pyacs.gts.lib.offset.delete_small_offsets"><code class="docutils literal notranslate"><span class="pre">delete_small_offsets()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.offset.html#pyacs.gts.lib.offset.estimate_local_offset"><code class="docutils literal notranslate"><span class="pre">estimate_local_offset()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.offset.html#pyacs.gts.lib.offset.find_offsets"><code class="docutils literal notranslate"><span class="pre">find_offsets()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.offset.html#pyacs.gts.lib.offset.find_offsets_ivel"><code class="docutils literal notranslate"><span class="pre">find_offsets_ivel()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.offset.html#pyacs.gts.lib.offset.find_offsets_t_scan"><code class="docutils literal notranslate"><span class="pre">find_offsets_t_scan()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.offset.html#pyacs.gts.lib.offset.find_time_offsets"><code class="docutils literal notranslate"><span class="pre">find_time_offsets()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.offset.html#pyacs.gts.lib.offset.local_offset_robust"><code class="docutils literal notranslate"><span class="pre">local_offset_robust()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.offset.html#pyacs.gts.lib.offset.suspect_offsets"><code class="docutils literal notranslate"><span class="pre">suspect_offsets()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.offset.html#pyacs.gts.lib.offset.suspect_offsets_mf"><code class="docutils literal notranslate"><span class="pre">suspect_offsets_mf()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.offset.html#pyacs.gts.lib.offset.test_offset_significance"><code class="docutils literal notranslate"><span class="pre">test_offset_significance()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.offset.html#pyacs.gts.lib.offset.test_offsets"><code class="docutils literal notranslate"><span class="pre">test_offsets()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.gts.lib.outliers_old.html">pyacs.gts.lib.outliers_old module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.outliers_old.html#pyacs.gts.lib.outliers_old.find_outlier_around_date"><code class="docutils literal notranslate"><span class="pre">find_outlier_around_date()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.outliers_old.html#pyacs.gts.lib.outliers_old.find_outliers_and_offsets_through_differentiation"><code class="docutils literal notranslate"><span class="pre">find_outliers_and_offsets_through_differentiation()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.outliers_old.html#pyacs.gts.lib.outliers_old.find_outliers_by_RMS_ts"><code class="docutils literal notranslate"><span class="pre">find_outliers_by_RMS_ts()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.outliers_old.html#pyacs.gts.lib.outliers_old.find_outliers_by_residuals"><code class="docutils literal notranslate"><span class="pre">find_outliers_by_residuals()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.outliers_old.html#pyacs.gts.lib.outliers_old.find_outliers_percentage"><code class="docutils literal notranslate"><span class="pre">find_outliers_percentage()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.outliers_old.html#pyacs.gts.lib.outliers_old.find_outliers_simple"><code class="docutils literal notranslate"><span class="pre">find_outliers_simple()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.outliers_old.html#pyacs.gts.lib.outliers_old.find_outliers_sliding_window"><code class="docutils literal notranslate"><span class="pre">find_outliers_sliding_window()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.outliers_old.html#pyacs.gts.lib.outliers_old.find_outliers_vondrak"><code class="docutils literal notranslate"><span class="pre">find_outliers_vondrak()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.outliers_old.html#pyacs.gts.lib.outliers_old.remove_outliers"><code class="docutils literal notranslate"><span class="pre">remove_outliers()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.gts.lib.step_detect.html">pyacs.gts.lib.step_detect module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.step_detect.html#pyacs.gts.lib.step_detect.find_steps"><code class="docutils literal notranslate"><span class="pre">find_steps()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.step_detect.html#pyacs.gts.lib.step_detect.get_step_sizes"><code class="docutils literal notranslate"><span class="pre">get_step_sizes()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.step_detect.html#pyacs.gts.lib.step_detect.mz_fwt"><code class="docutils literal notranslate"><span class="pre">mz_fwt()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.step_detect.html#pyacs.gts.lib.step_detect.t_scan"><code class="docutils literal notranslate"><span class="pre">t_scan()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.gts.lib.step_detect_edge_filter.html">pyacs.gts.lib.step_detect_edge_filter module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.step_detect_edge_filter.html#pyacs.gts.lib.step_detect_edge_filter.find_offsets_edge_filter"><code class="docutils literal notranslate"><span class="pre">find_offsets_edge_filter()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="module-pyacs.gts.lib">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyacs.gts.lib" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

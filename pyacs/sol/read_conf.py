@@ -4,7 +4,7 @@ class Conf:
     """Configuration: various parameters read by the program"""
 
     
-    def __init__ (self, conf_file=None,verbose=False):
+    def __init__ (self, conf_file=None):
 
         import logging
         import pyacs.message.message as MESSAGE
@@ -17,6 +17,7 @@ class Conf:
         self.ref_exclude_all=[]
         self.ref_reject={}
         self.rename={}
+        self.exclude={}
         self.ref_only_all = []
         self.min_repeat=[]
         
@@ -70,6 +71,20 @@ class Conf:
                         else:
                             if not 'all' in list(self.rename.keys()):self.rename['all']=[]
                             self.rename['all'].append((code_orig,code_new))
+
+                    # exclude
+                    if (lline[0] == 'exclude'):
+                        code_orig=lline[1]
+                        if (len(lline)>2):
+                            for i in range(2,len(lline)):
+                                sinex=lline[i]
+                                if sinex not in list(self.exclude.keys()):
+                                    self.exclude[sinex]=[]
+                                self.exclude[sinex].append((code_orig))
+                        else:
+                            if not 'all' in list(self.exclude.keys()):
+                                self.exclude['all']=[]
+                            self.exclude['all'].append((code_orig))
 
                     # reject_ref
                     if (lline[0] == 'reject_ref'):

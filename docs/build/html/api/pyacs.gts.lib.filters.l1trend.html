@@ -1,0 +1,273 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.gts.lib.filters.l1trend module &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries.html">core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">pyacs.gts.lib.filters.l1trend module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/pyacs.gts.lib.filters.l1trend.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pyacs.gts.lib.filters.l1trend">
+<span id="pyacs-gts-lib-filters-l1trend-module"></span><h1>pyacs.gts.lib.filters.l1trend module<a class="headerlink" href="#module-pyacs.gts.lib.filters.l1trend" title="Link to this heading"></a></h1>
+<p>L1-trend filtering functions have been moved to pyacs.gts.lib.l1trend package.</p>
+<p>This file has been refactored into a modular structure for better organization and maintainability.</p>
+<p>The functions have been distributed as follows:
+- l1trend -&gt; pyacs.gts.lib.l1trend.l1trendi
+- get_stats_l1_model -&gt; pyacs.gts.lib.l1trend.statistics
+- pre_process_test, pre_process_ts -&gt; pyacs.gts.lib.l1trend.preprocessing
+- best_l1trend_golden, best_l1trend_custom -&gt; pyacs.gts.lib.l1trend.optimization</p>
+<dl class="simple">
+<dt>Please import from the new location:</dt><dd><p>from pyacs.gts.lib.l1trend import l1trendi, get_stats_l1_model, pre_process_test, etc.</p>
+</dd>
+</dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.filters.l1trend.best_l1trend_custom">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.filters.l1trend.</span></span><span class="sig-name descname"><span class="pre">best_l1trend_custom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/l1trend/optimization.html#best_l1trend_custom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.filters.l1trend.best_l1trend_custom" title="Link to this definition"></a></dt>
+<dd><p>Find the optimal hyperparameter alpha in l1trend using a custom search algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>numpy.ndarray</em>) – Input time array</p></li>
+<li><p><strong>y</strong> (<em>numpy.ndarray</em>) – Input data array</p></li>
+<li><p><strong>criterion_idx</strong> (<em>int</em>) – Index of the criterion to use (-1 for BIC, -2 for AICc, -3 for Cp)</p></li>
+<li><p><strong>logger</strong> (<em>logging.Logger</em><em>, </em><em>optional</em>) – Logger instance for logging messages</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(optimal filtered data, history dictionary, optimal alpha)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.filters.l1trend.best_l1trend_golden">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.filters.l1trend.</span></span><span class="sig-name descname"><span class="pre">best_l1trend_golden</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[-2,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/l1trend/optimization.html#best_l1trend_golden"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.filters.l1trend.best_l1trend_golden" title="Link to this definition"></a></dt>
+<dd><p>Find the optimal hyperparameter alpha in l1trend using golden section search algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>numpy.ndarray</em>) – Input time array</p></li>
+<li><p><strong>y</strong> (<em>numpy.ndarray</em>) – Input data array</p></li>
+<li><p><strong>criterion_idx</strong> (<em>int</em>) – Index of the criterion to use (-1 for BIC, -2 for AICc, -3 for Cp)</p></li>
+<li><p><strong>bounds</strong> (<em>list</em>) – Bounds for the search [lower, upper]</p></li>
+<li><p><strong>tol</strong> (<em>float</em>) – Tolerance for convergence</p></li>
+<li><p><strong>logger</strong> (<em>logging.Logger</em><em>, </em><em>optional</em>) – Logger instance for logging messages</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Optimally filtered data</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.filters.l1trend.get_stats_l1_model">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.filters.l1trend.</span></span><span class="sig-name descname"><span class="pre">get_stats_l1_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/l1trend/statistics.html#get_stats_l1_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.filters.l1trend.get_stats_l1_model" title="Link to this definition"></a></dt>
+<dd><p>Calculate statistics for L1-trend model evaluation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>numpy.ndarray</em>) – Input time as 1D array</p></li>
+<li><p><strong>y</strong> (<em>numpy.ndarray</em>) – Input raw data as 1D array</p></li>
+<li><p><strong>fy</strong> (<em>numpy.ndarray</em>) – Input l1trend filtered data as 1D array</p></li>
+<li><p><strong>alpha</strong> (<em>float</em>) – Hyperparameter used for l1 filtering</p></li>
+<li><p><strong>component_mask</strong> (<em>numpy.ndarray</em><em>, </em><em>optional</em>) – Boolean mask indicating which data points should be considered for statistics.
+If None, all points are considered.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(alpha, cchi2, sigma, cp, cchi2_probability, Cp, AICc, BIC)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.filters.l1trend.l1trend">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.filters.l1trend.</span></span><span class="sig-name descname"><span class="pre">l1trend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ndays_mf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BIC'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lcomponent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ENU'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'golden'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_process</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[-2,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_samples_per_segment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold_bias_res_detect</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold_vel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_sample_segment_refinement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'L2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.gts.lib.filters.l1trend.l1trend" title="Link to this definition"></a></dt>
+<dd><p>Performs l1 trend filter on GPS time series. For each component, optimal filter parameter is searched using specified criterion.
+Uses <a class="reference external" href="https://pypi.org/project/trendfilter/">https://pypi.org/project/trendfilter/</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alpha</strong> (<em>float</em><em> or </em><em>str</em>) – Either hyperparameter as float or ‘auto’ to find optimal filtering using criterion</p></li>
+<li><p><strong>ndays_mf</strong> (<em>int</em>) – Parameter for a median filter to be applied prior to l1-trend filtering</p></li>
+<li><p><strong>criterion</strong> (<em>str</em>) – Criterion to select automatic optimal l1-trend filtering. Options: ‘BIC’ (default), ‘AICc’, ‘Cp’</p></li>
+<li><p><strong>lcomponent</strong> (<em>str</em>) – List of components to be filtered. Other components will remain unchanged</p></li>
+<li><p><strong>algo</strong> (<em>str</em>) – Algorithm to find optimal alpha. Options: ‘golden’ (default) or ‘custom’</p></li>
+<li><p><strong>pre_process</strong> (<em>float</em>) – Pre-process time series to avoid convergence problems in l1trend. It corrects for unrealistically large
+velocity using the threshold provided (mm/yr). Correction is then added again after l1_trend.
+Default is 3600 (3.6 m/yr)</p></li>
+<li><p><strong>bounds</strong> (<em>list</em>) – Bounds for golden section search algorithm. Default is [-2, 1]</p></li>
+<li><p><strong>tol</strong> (<em>float</em>) – Tolerance for golden section search algorithm. Default is 0.01</p></li>
+<li><p><strong>refine</strong> (<em>bool</em>) – If True, will run refinement after l1 trend filtering</p></li>
+<li><p><strong>min_samples_per_segment</strong> (<em>int</em>) – Minimum number of samples per segment for refinement</p></li>
+<li><p><strong>threshold_bias_res_detect</strong> (<em>float</em>) – Threshold for bias detection in refinement</p></li>
+<li><p><strong>threshold_vel</strong> (<em>float</em>) – Threshold for velocity detection in refinement</p></li>
+<li><p><strong>min_sample_segment_refinement</strong> (<em>int</em>) – Minimum number of samples per segment in refinement</p></li>
+<li><p><strong>norm</strong> (<em>str</em>) – Norm to use for refinement. Options: ‘L2’ (default)</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Enable verbose output for debugging</p></li>
+<li><p><strong>log_dir</strong> (<em>str</em><em> or </em><em>None</em>) – If provided, directory where the log file will be created. The log file will be named ‘SITE_l1trendi.log’
+where SITE is the site code. If None, no file logging is performed.</p></li>
+<li><p><strong>component</strong> (<em>str</em><em> or </em><em>None</em>) – Components to process (‘N’, ‘E’, ‘U’, ‘NE’, ‘EN’, ‘NU’, ‘UN’, ‘EU’, ‘UE’, ‘NEU’, etc.).
+If None, uses lcomponent parameter. Used for component-specific statistics calculation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>l1-trend filtered time series as new Gts instance</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.Gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If invalid parameters are provided</p></li>
+<li><p><strong>RuntimeError</strong> – If processing fails</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.filters.l1trend.pre_process_test">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.filters.l1trend.</span></span><span class="sig-name descname"><span class="pre">pre_process_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/l1trend/preprocessing.html#pre_process_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.filters.l1trend.pre_process_test" title="Link to this definition"></a></dt>
+<dd><p>Pre-process. Test whether a large offset is present in the time series.
+Find the largest offset exceeding threshold found in the time series.
+Returns the index in the time series immediately after the largest offset or a void list if no offset is found</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gts</strong> (<a class="reference internal" href="pyacs.gts.Gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts"><em>Gts</em></a>) – Input time series</p></li>
+<li><p><strong>component</strong> (<em>str</em>) – Component to test (‘E’, ‘N’, or ‘U’)</p></li>
+<li><p><strong>threshold</strong> (<em>float</em>) – Threshold for offset detection</p></li>
+<li><p><strong>logger</strong> (<em>logging.Logger</em><em>, </em><em>optional</em>) – Logger instance for logging messages</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of indices where offsets are found</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.filters.l1trend.pre_process_ts">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.filters.l1trend.</span></span><span class="sig-name descname"><span class="pre">pre_process_ts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5000.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/l1trend/preprocessing.html#pre_process_ts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.filters.l1trend.pre_process_ts" title="Link to this definition"></a></dt>
+<dd><p>Pre-process a time series to avoid convergence problems in l1trend.
+It performs change point detection analysis, correct for unrealistically large velocity
+and return a cleaned time series</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

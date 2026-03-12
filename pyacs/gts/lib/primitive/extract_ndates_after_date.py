@@ -2,15 +2,24 @@
 def extract_ndates_after_date(self,date,n,verbose=False):
 ###################################################################
     """
-    Extract n values after a given date
-    If n values are not available, returns all available values after date
-    .data is set to None if no value at all is available
+    Extract n values after a given date.
 
-    :param date: date in decimal year
-    :param n: number of observations to be extracted
-    
-    :return: a new Gts
+    If n values are not available, returns all available values after date.
+    .data is set to None if no value at all is available.
 
+    Parameters
+    ----------
+    date : float
+        Date in decimal year.
+    n : int
+        Number of observations to extract.
+    verbose : bool, optional
+        Verbose mode.
+
+    Returns
+    -------
+    Gts
+        New Gts with at most n observations after the given date.
     """
 
     # import 

@@ -2,15 +2,24 @@
 def extract_ndates_before_date(self,date,n,verbose=False):
 ###################################################################
     """
-    Extract n values before a given date
-    If n values are not available, returns all available values before date
-    .data is set to None if no value at all is available
-    
-    :param date: date in decimal year
-    :param n: number of observations to be extracted
-    
-    :return: a new Gts
-    
+    Extract n values before a given date.
+
+    If n values are not available, returns all available values before date.
+    .data is set to None if no value at all is available.
+
+    Parameters
+    ----------
+    date : float
+        Date in decimal year.
+    n : int
+        Number of observations to extract.
+    verbose : bool, optional
+        Verbose mode.
+
+    Returns
+    -------
+    Gts
+        New Gts with at most n observations before the given date.
     """
 
     # import 

@@ -1,31 +1,56 @@
 ###################################################################
 def gts(self , method , *args , **kwargs):
 ###################################################################
-    """
-    apply a gts method to all Gts instance of the current Sgts object
-     
-    :param method: Gts method to be applied as string
-    :param *arg: arguments for the Gts method to be applied 
-    :param **kwarg: keyword arguments for the Gts method to be applied 
-    
-    :example : ts.gts('detrend',periods=[2010.0,2013.0])
+    """Apply a Gts method to every series in this Sgts.
+
+    Parameters
+    ----------
+    method : str
+        Name of the Gts method (e.g. 'detrend', 'copy').
+    *args : tuple
+        Positional arguments for the method.
+    **kwargs : dict
+        Keyword arguments for the method.
+
+    Returns
+    -------
+    Sgts
+        New Sgts with results (or self for in-place methods).
+
+    Examples
+    --------
+    >>> ts.gts('detrend', periods=[2010.0, 2013.0])
     """
 
     from pyacs.gts.Sgts import Sgts
+    from tqdm import tqdm
 
-    verbose = kwargs.get('verbose', False)        
+
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
+    import pyacs.debug
+
+    import inspect
+
+    VERBOSE("Running Sgts.%s" % inspect.currentframe().f_code.co_name)
+
+    verbose = kwargs.get('verbose', False)
      
     new_ts = Sgts(read=False)
      
     lsite=self.lcode()
-     
-    for site in sorted( lsite ):
-        if verbose:
-            print('-- processing ', site)
-        
+
+
+    for site in tqdm( sorted( lsite ) , desc=method):
         try:
             func = getattr(self.__dict__[site], method)
             new_ts.append(func(*args, **kwargs) )
         except:
-            print('!!!WARNING: problem with method %s on gts %s. Removed from output' % ( method, site ))
+            WARNING("problem with method %s on gts %s. Removed from output" % ( method, site ))
+
+
     return( new_ts )

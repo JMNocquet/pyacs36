@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyacs.gts.Sgts_methods.save_velocity &#8212; PYACS 0.66.18 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../../_static/documentation_options.js?v=2262e354"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pyacs.gts.Sgts_methods.save_velocity</h1><div class="highlight"><pre>
+<span></span><span class="c1">###################################################################</span>
+<div class="viewcode-block" id="save_velocity">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.Sgts_methods.html#pyacs.gts.Sgts_methods.save_velocity.save_velocity">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">save_velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">vel_file</span><span class="o">=</span><span class="s1">&#39;../stat/vel&#39;</span><span class="p">,</span> <span class="n">en</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">up</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Save horizontal and up velocities in GMT psvelo format from .velocity attributes.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vel_file : str, optional</span>
+<span class="sd">        Output basename (e.g. &#39;../stat/vel&#39; -&gt; _en.gmt, _up.gmt). Default is &#39;../stat/vel&#39;.</span>
+<span class="sd">    en : bool, optional</span>
+<span class="sd">        If True, write East &amp; North velocity. Default is True.</span>
+<span class="sd">    up : bool, optional</span>
+<span class="sd">        If True, write Up velocity. Default is True.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Sgts</span>
+<span class="sd">        self.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># import</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.utils</span>
+
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Running Sgts.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span><span class="p">)</span>
+
+    <span class="c1"># output file name</span>
+    <span class="n">h_vel</span><span class="o">=</span><span class="n">vel_file</span><span class="o">+</span><span class="s1">&#39;_en.gmt&#39;</span>
+    <span class="n">u_vel</span><span class="o">=</span><span class="n">vel_file</span><span class="o">+</span><span class="s1">&#39;_up.gmt&#39;</span>
+
+    <span class="c1"># initialize</span>
+    <span class="n">np_name</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lcode</span><span class="p">()</span> <span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span> <span class="p">)</span>
+    <span class="n">np_vel_en</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span> <span class="n">np_name</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="mi">7</span> <span class="p">))</span>
+    <span class="n">np_vel_en</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">np_vel_up</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">np_name</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">7</span><span class="p">))</span>
+    <span class="n">np_vel_up</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="c1"># loop on sites (en)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span> <span class="n">np_name</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">):</span>
+        <span class="n">code</span> <span class="o">=</span> <span class="n">np_name</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">np_vel_en</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">lon</span>
+        <span class="n">np_vel_en</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">lat</span>
+        <span class="n">np_vel_up</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">lon</span>
+        <span class="n">np_vel_up</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">lat</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">np_vel_en</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mf">1.E3</span>
+            <span class="n">np_vel_en</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mf">1.E3</span>
+            <span class="n">np_vel_en</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">*</span><span class="mf">1.E3</span>
+            <span class="n">np_vel_en</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="mf">1.E3</span>
+
+            <span class="n">np_vel_up</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="mf">1.E3</span>
+            <span class="n">np_vel_up</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">*</span><span class="mf">1.E3</span>
+
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">WARNING</span><span class="p">(</span> <span class="p">(</span><span class="s2">&quot;No velocity for </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">code</span><span class="p">)</span> <span class="p">)</span>
+
+    <span class="c1"># remove nan</span>
+    <span class="n">np_index_nan</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">np_vel_en</span><span class="p">[:,</span><span class="mi">3</span><span class="p">])</span> <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">np_index_nan</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">WARNING</span><span class="p">((</span><span class="s2">&quot;Removing </span><span class="si">%d</span><span class="s2"> sites from output&quot;</span> <span class="o">%</span> <span class="n">np_index_nan</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">np_vel_en</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">np_vel_en</span><span class="p">,</span><span class="n">np_index_nan</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">np_name</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">np_vel_en</span><span class="p">,</span><span class="n">np_index_nan</span><span class="p">)</span>
+
+    <span class="c1"># save</span>
+    <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%10.5lf</span><span class="s2">  </span><span class="si">%10.5lf</span><span class="s2"> </span><span class="si">%10.3lf</span><span class="s2"> </span><span class="si">%10.3lf</span><span class="s2"> </span><span class="si">%10.3lf</span><span class="s2"> </span><span class="si">%10.3lf</span><span class="s2"> </span><span class="si">%10.3lf</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">en</span><span class="p">:</span>
+        <span class="n">MESSAGE</span><span class="p">((</span><span class="s2">&quot;saving </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%d</span><span class="s2"> sites&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">h_vel</span><span class="p">,</span><span class="n">np_name</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="p">))</span>
+        <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">save_np_array_with_string</span><span class="p">(</span><span class="n">np_vel_en</span><span class="p">,</span><span class="n">np_name</span><span class="p">,</span><span class="n">fmt</span><span class="p">,</span><span class="n">h_vel</span><span class="p">,</span><span class="n">comment</span><span class="o">=</span><span class="s2">&quot;# lon lat ve vn sve svn sven code - mm/yr&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">up</span><span class="p">:</span>
+        <span class="n">MESSAGE</span><span class="p">((</span><span class="s2">&quot;saving </span><span class="si">%s</span><span class="s2"> with </span><span class="si">%d</span><span class="s2"> sites&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">u_vel</span><span class="p">,</span> <span class="n">np_name</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+        <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">save_np_array_with_string</span><span class="p">(</span><span class="n">np_vel_up</span><span class="p">,</span> <span class="n">np_name</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">u_vel</span><span class="p">,</span>
+                                                  <span class="n">comment</span><span class="o">=</span><span class="s2">&quot;# lon lat 0 vu 0 svu 0 code - mm/yr&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">PYACS</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Jean-Mathieu NOCQUET.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

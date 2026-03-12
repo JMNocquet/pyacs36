@@ -1,0 +1,357 @@
+astrotime package
+=================
+
+Submodules
+----------
+
+astrotime.cal2datetime module
+-----------------------------
+
+.. automodule:: astrotime.cal2datetime
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.cal2dayno module
+--------------------------
+
+.. automodule:: astrotime.cal2dayno
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.cal2decyear module
+----------------------------
+
+.. automodule:: astrotime.cal2decyear
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.cal2mjd module
+------------------------
+
+.. automodule:: astrotime.cal2mjd
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.datetime2cal module
+-----------------------------
+
+.. automodule:: astrotime.datetime2cal
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.datetime2dayno module
+-------------------------------
+
+.. automodule:: astrotime.datetime2dayno
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.datetime2decyear module
+---------------------------------
+
+.. automodule:: astrotime.datetime2decyear
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.datetime2mjd module
+-----------------------------
+
+.. automodule:: astrotime.datetime2mjd
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.datetime2seconds module
+---------------------------------
+
+.. automodule:: astrotime.datetime2seconds
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.datetime\_from\_calarray module
+-----------------------------------------
+
+.. automodule:: astrotime.datetime_from_calarray
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.datetime\_round\_second module
+----------------------------------------
+
+.. automodule:: astrotime.datetime_round_second
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.day\_since\_decyear module
+------------------------------------
+
+.. automodule:: astrotime.day_since_decyear
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.dayno2cal module
+--------------------------
+
+.. automodule:: astrotime.dayno2cal
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.dayno2datetime module
+-------------------------------
+
+.. automodule:: astrotime.dayno2datetime
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.dayno2decyear module
+------------------------------
+
+.. automodule:: astrotime.dayno2decyear
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.dayno2mjd module
+--------------------------
+
+.. automodule:: astrotime.dayno2mjd
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.decyear2cal module
+----------------------------
+
+.. automodule:: astrotime.decyear2cal
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.decyear2datetime module
+---------------------------------
+
+.. automodule:: astrotime.decyear2datetime
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.decyear2dayno module
+------------------------------
+
+.. automodule:: astrotime.decyear2dayno
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.decyear2epoch module
+------------------------------
+
+.. automodule:: astrotime.decyear2epoch
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.decyear2mjd module
+----------------------------
+
+.. automodule:: astrotime.decyear2mjd
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.decyear2seconds module
+--------------------------------
+
+.. automodule:: astrotime.decyear2seconds
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.epoch2decyear module
+------------------------------
+
+.. automodule:: astrotime.epoch2decyear
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.gpsweek2mjd module
+----------------------------
+
+.. automodule:: astrotime.gpsweek2mjd
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.guess\_date module
+----------------------------
+
+.. automodule:: astrotime.guess_date
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.hmsmicros2ut module
+-----------------------------
+
+.. automodule:: astrotime.hmsmicros2ut
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.hmsmicros2uts module
+------------------------------
+
+.. automodule:: astrotime.hmsmicros2uts
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.jd2mjd module
+-----------------------
+
+.. automodule:: astrotime.jd2mjd
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.jpldate\_2\_datetime module
+-------------------------------------
+
+.. automodule:: astrotime.jpldate_2_datetime
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.jpldate\_2\_decyear module
+------------------------------------
+
+.. automodule:: astrotime.jpldate_2_decyear
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.leap\_year module
+---------------------------
+
+.. automodule:: astrotime.leap_year
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.mjd2cal module
+------------------------
+
+.. automodule:: astrotime.mjd2cal
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.mjd2datetime module
+-----------------------------
+
+.. automodule:: astrotime.mjd2datetime
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.mjd2dayno module
+--------------------------
+
+.. automodule:: astrotime.mjd2dayno
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.mjd2decyear module
+----------------------------
+
+.. automodule:: astrotime.mjd2decyear
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.mjd2gpsweek module
+----------------------------
+
+.. automodule:: astrotime.mjd2gpsweek
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.mjd2jd module
+-----------------------
+
+.. automodule:: astrotime.mjd2jd
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.seconds2datetime module
+---------------------------------
+
+.. automodule:: astrotime.seconds2datetime
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.ut2uts module
+-----------------------
+
+.. automodule:: astrotime.ut2uts
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.uts2hmsmicros module
+------------------------------
+
+.. automodule:: astrotime.uts2hmsmicros
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.uts2ut module
+-----------------------
+
+.. automodule:: astrotime.uts2ut
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.year2yr module
+------------------------
+
+.. automodule:: astrotime.year2yr
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+astrotime.yr2year module
+------------------------
+
+.. automodule:: astrotime.yr2year
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: astrotime
+   :members:
+   :show-inheritance:
+   :undoc-members:

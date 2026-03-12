@@ -1,0 +1,77 @@
+pyacs.sol package
+=================
+
+Submodules
+----------
+
+pyacs.sol.discontinuity module
+------------------------------
+
+.. automodule:: pyacs.sol.discontinuity
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.sol.errors module
+-----------------------
+
+.. automodule:: pyacs.sol.errors
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.sol.gpoint module
+-----------------------
+
+.. automodule:: pyacs.sol.gpoint
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.sol.helmert module
+------------------------
+
+.. automodule:: pyacs.sol.helmert
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.sol.log module
+--------------------
+
+.. automodule:: pyacs.sol.log
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.sol.read\_conf module
+---------------------------
+
+.. automodule:: pyacs.sol.read_conf
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.sol.sinex module
+----------------------
+
+.. automodule:: pyacs.sol.sinex
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.sol.soln module
+---------------------
+
+.. automodule:: pyacs.sol.soln
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: pyacs.sol
+   :members:
+   :show-inheritance:
+   :undoc-members:

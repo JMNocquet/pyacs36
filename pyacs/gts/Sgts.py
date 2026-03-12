@@ -1,11 +1,11 @@
-"""
-    Super Class of Geodetic Time Series Class & methods (Sgts)
-    Sgts is a record of Gts and enables to apply methods at the same time to various Gts
-        
+"""Super class for a collection of geodetic time series (Sgts).
+
+Sgts holds multiple Gts instances and provides methods to operate on them
+collectively.
 """
 
 import sys
-from pyacs.gts.Gts import Gts
+#from pyacs.gts.Gts import Gts
 
 class Sgts:
 
@@ -13,6 +13,29 @@ class Sgts:
     ###################################################################
     def __init__ (self, ts_dir='.', add_key='', verbose=True, name_filter='', read=True,sites=[],lexclude=[],type=None,xyz=True):
     ###################################################################
+        """Initialize Sgts: optionally load time series from a directory.
+
+        Parameters
+        ----------
+        ts_dir : str, optional
+            Directory containing time series files. Default is '.'.
+        add_key : str, optional
+            Suffix to add to site codes.
+        verbose : bool, optional
+            If True, print progress. Default is True.
+        name_filter : str, optional
+            Filter on file/site names.
+        read : bool, optional
+            If True, read time series from ts_dir. Default is True.
+        sites : list, optional
+            If non-empty, only these sites are loaded.
+        lexclude : list, optional
+            Site codes to exclude.
+        type : str, optional
+            File type filter.
+        xyz : bool, optional
+            If True, load XYZ data. Default is True.
+        """
         self.dir=ts_dir
         self.filter=name_filter
         self.verbose=verbose
@@ -57,8 +80,23 @@ import pyacs.gts.Sgts_methods.get_unr
 import pyacs.gts.Sgts_methods.info
 import pyacs.gts.Sgts_methods.to_kml
 import pyacs.gts.Sgts_methods.plot_data_sum
+import pyacs.gts.Sgts_methods.plot_component
+import pyacs.gts.Sgts_methods.dates
+import pyacs.gts.Sgts_methods.sel_from_grid
+import pyacs.gts.Sgts_methods.compute_common_mode_l1trend
+import pyacs.gts.Sgts_methods.gts_mp
+import pyacs.gts.Sgts_methods.delnone
+import pyacs.gts.Sgts_methods.to_tspck
+import pyacs.gts.Sgts_methods.to_tsnpz
+import pyacs.gts.Sgts_methods.make_distance_matrix_from_sgts
+import pyacs.gts.Sgts_methods.nearest
+import pyacs.gts.Sgts_methods.show_ivel_map_gmt
+import pyacs.gts.Sgts_methods.correct_offsets_from_file
+import pyacs.gts.Sgts_methods.remove_observations
+import pyacs.gts.Sgts_methods.get_dates
+import pyacs.gts.Sgts_methods.sel_radius_eq
 
-
+Sgts.add_offsets_dates  = pyacs.gts.Sgts_methods.add_offsets_dates.add_offsets_dates
 Sgts.append             = pyacs.gts.Sgts_methods.append.append
 Sgts.copy               = pyacs.gts.Sgts_methods.copy.copy
 Sgts.delts              = pyacs.gts.Sgts_methods.delts.delts
@@ -90,14 +128,18 @@ Sgts.get_unr            = pyacs.gts.Sgts_methods.get_unr.get_unr
 Sgts.info               = pyacs.gts.Sgts_methods.info.info
 Sgts.to_kml             = pyacs.gts.Sgts_methods.to_kml.to_kml
 Sgts.plot_data_sum      = pyacs.gts.Sgts_methods.plot_data_sum.plot_data_sum
-
-#
-# 
-#     ###################################################################
-#     def stack(self , verbose=True):
-#     ###################################################################
-#         """
-#         Compute the stack of the Gts in the current Sgts
-#          
-#         :return Gts: the stacked Gts with '_STK' code
-#         
+Sgts.plot_component     = pyacs.gts.Sgts_methods.plot_component.plot_component
+Sgts.dates              = pyacs.gts.Sgts_methods.dates.dates
+Sgts.sel_from_grid      = pyacs.gts.Sgts_methods.sel_from_grid.sel_from_grid
+Sgts.compute_common_mode_l1trend = pyacs.gts.Sgts_methods.compute_common_mode_l1trend.compute_common_mode_l1trend
+Sgts.gts_mp             = pyacs.gts.Sgts_methods.gts_mp.gts_mp
+Sgts.delnone            = pyacs.gts.Sgts_methods.delnone.delnone
+Sgts.to_tsnpz           = pyacs.gts.Sgts_methods.to_tsnpz.to_tsnpz
+Sgts.to_tspck           = pyacs.gts.Sgts_methods.to_tspck.to_tspck
+Sgts.make_distance_matrix_from_sgts = pyacs.gts.Sgts_methods.make_distance_matrix_from_sgts.make_distance_matrix_from_sgts
+Sgts.nearest           = pyacs.gts.Sgts_methods.nearest.nearest
+Sgts.show_ivel_map_gmt = pyacs.gts.Sgts_methods.show_ivel_map_gmt.show_ivel_map_gmt
+Sgts.correct_offsets_from_file = pyacs.gts.Sgts_methods.correct_offsets_from_file.correct_offsets_from_file
+Sgts.remove_observations = pyacs.gts.Sgts_methods.remove_observations.remove_observations
+Sgts.get_dates = pyacs.gts.Sgts_methods.get_dates.get_dates
+Sgts.sel_radius_eq = pyacs.gts.Sgts_methods.sel_radius_eq.sel_radius_eq

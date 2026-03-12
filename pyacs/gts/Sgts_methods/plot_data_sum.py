@@ -13,20 +13,37 @@ def plot_data_sum(self, period=None):
     """
     import pandas
     import matplotlib.pyplot as plt
-    import pyacs.message.verbose_message as VERBOSE
     import numpy as np
     import pyacs.lib.astrotime as at
 
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
+
+
+    import inspect
+    VERBOSE("Running Sgts.%s" % inspect.currentframe().f_code.co_name)
+
+
     VERBOSE("Gts to tensor conversion for %d sites" % self.n())
     T, np_names, np_seconds_sol = self.to_obs_tensor(rounding='day')
+    VERBOSE("Converting Sgts to pandas DataFrame")
     df = pandas.DataFrame(T[:, :, 0])
     df.index = at.seconds2datetime(np_seconds_sol)
 
     # decipher period
-    if isinstance(period, list):
-        a = df.loc[period[0]:period[1]]
+    VERBOSE("Selecting user provided period")
+    if period is None:
+        VERBOSE("Default period: %s to %s" %(df.index[0].isoformat(),df.index[-1].isoformat()))
+        a = df
     else:
-        a = df.loc[period]
+        if isinstance(period, list):
+            a = df.loc[period[0]:period[1]]
+        else:
+            a = df.loc[period]
 
     npa = np.copy(a.to_numpy())
     # revert nan

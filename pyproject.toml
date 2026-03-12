@@ -1,0 +1,79 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyacs"
+version = "0.66.20"
+description = "PYACS: Geodetic analysis and modeling tools for Tectonics"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  { name = "Jean-Mathieu Nocquet", email = "nocquet@geoazur.unice.fr" }
+]
+license = { text = "MIT" }
+keywords = ["geodesy", "GPS", "earthquake", "elastic", "dislocation", "tectonics", "time series"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3"
+]
+dependencies = [
+  "art",
+  "ansicolors",
+  "hectorp",
+  "build"
+]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[tool.setuptools]
+zip-safe = false
+include-package-data = false
+packages = [
+  "pyacs",
+  "pyacs.message",
+  "pyacs.vel_field",
+  "pyacs.lib",
+  "pyacs.lib.astrotime",
+  "pyacs.lib.coordinates",
+  "pyacs.lib.euler",
+  "pyacs.lib.faultslip",
+  "pyacs.lib.glinalg",
+  "pyacs.lib.gmtpoint",
+  "pyacs.lib.icosahedron",
+  "pyacs.lib.robustestimators",
+  "pyacs.lib.shapefile",
+  "pyacs.lib.timeperiod",
+  "pyacs.lib.units",
+  "pyacs.lib.utils",
+  "pyacs.lib.eq_scaling_laws",
+  "pyacs.gts",
+  "pyacs.gts.lib",
+  "pyacs.gts.lib.filters",
+  "pyacs.gts.lib.format",
+  "pyacs.gts.lib.primitive",
+  "pyacs.gts.lib.plot",
+  "pyacs.gts.lib.outliers",
+  "pyacs.gts.lib.noise",
+  "pyacs.gts.lib.offset",
+  "pyacs.gts.lib.model",
+  "pyacs.gts.lib.tensor_ts",
+  "pyacs.gts.lib.l1trend",
+  "pyacs.sol",
+  "pyacs.sinex",
+  "pyacs.gts.Sgts_methods",
+  "pyacs.glinalg",
+  "pyacs.glinalg.solve",
+  "trendfilter"
+]
+
+[tool.setuptools.package-dir]
+trendfilter = "pyacs/external_pkg/trendfilter"
+
+[tool.setuptools.package-data]
+trendfilter = ["*.yaml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

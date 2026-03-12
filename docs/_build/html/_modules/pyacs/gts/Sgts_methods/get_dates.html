@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyacs.gts.Sgts_methods.get_dates &#8212; PYACS 0.66.18 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../../_static/documentation_options.js?v=2262e354"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pyacs.gts.Sgts_methods.get_dates</h1><div class="highlight"><pre>
+<span></span><span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="get_dates">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.Sgts_methods.html#pyacs.gts.Sgts_methods.get_dates.get_dates">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_dates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;isoformat&#39;</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return start and end dates of all time series in this Sgts.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fmt : str, optional</span>
+<span class="sd">        Output format: &#39;isoformat&#39;, &#39;datetime&#39;, &#39;decyear&#39;, &#39;mjd&#39;, &#39;dayno&#39;, &#39;cal&#39;. Default is &#39;isoformat&#39;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        (start_date, end_date) in the requested format.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Formats: isoformat (ISO 8601), datetime, decyear, mjd, dayno (dayno, year), cal (day, month, year).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># import</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">at</span>
+    
+    <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+    
+    <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+    
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Running Sgts.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span><span class="p">)</span>
+    
+    <span class="c1"># Check if Sgts has any time series</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lcode</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">ERROR</span><span class="p">(</span><span class="s2">&quot;Sgts object contains no time series&quot;</span><span class="p">,</span> <span class="n">exit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="c1"># Collect all start and end dates</span>
+    <span class="n">start_dates</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">end_dates</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lcode</span><span class="p">():</span>
+        <span class="n">gts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span>
+        
+        <span class="c1"># Check if Gts has data</span>
+        <span class="k">if</span> <span class="n">gts</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">WARNING</span><span class="p">(</span><span class="s2">&quot;Site </span><span class="si">%s</span><span class="s2"> has no data, skipping&quot;</span> <span class="o">%</span> <span class="n">code</span><span class="p">)</span>
+            <span class="k">continue</span>
+        
+        <span class="c1"># Get start and end dates (first and last decimal years)</span>
+        <span class="n">start_date</span> <span class="o">=</span> <span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>   <span class="c1"># First observation date</span>
+        <span class="n">end_date</span> <span class="o">=</span> <span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>    <span class="c1"># Last observation date</span>
+        
+        <span class="n">start_dates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start_date</span><span class="p">)</span>
+        <span class="n">end_dates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">end_date</span><span class="p">)</span>
+        
+        <span class="n">DEBUG</span><span class="p">(</span><span class="s2">&quot;Site </span><span class="si">%s</span><span class="s2">: </span><span class="si">%f</span><span class="s2"> to </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">))</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">start_dates</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">ERROR</span><span class="p">(</span><span class="s2">&quot;No valid time series found in Sgts object&quot;</span><span class="p">,</span> <span class="n">exit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="c1"># Convert to numpy arrays and find global min/max</span>
+    <span class="n">start_dates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">start_dates</span><span class="p">)</span>
+    <span class="n">end_dates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">end_dates</span><span class="p">)</span>
+    
+    <span class="n">global_start</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">start_dates</span><span class="p">)</span>
+    <span class="n">global_end</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">end_dates</span><span class="p">)</span>
+    
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Global date range: </span><span class="si">%f</span><span class="s2"> to </span><span class="si">%f</span><span class="s2"> (decimal years)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">global_start</span><span class="p">,</span> <span class="n">global_end</span><span class="p">))</span>
+    
+    <span class="c1"># Convert to requested format</span>
+    <span class="k">if</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s1">&#39;decyear&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">global_start</span><span class="p">,</span> <span class="n">global_end</span><span class="p">)</span>
+    
+    <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s1">&#39;datetime&#39;</span><span class="p">:</span>
+        <span class="n">start_datetime</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">global_start</span><span class="p">)</span>
+        <span class="n">end_datetime</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">global_end</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">start_datetime</span><span class="p">,</span> <span class="n">end_datetime</span><span class="p">)</span>
+    
+    <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s1">&#39;isoformat&#39;</span><span class="p">:</span>
+        <span class="n">start_datetime</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">global_start</span><span class="p">)</span>
+        <span class="n">end_datetime</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">global_end</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">start_datetime</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span> <span class="n">end_datetime</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span>
+    
+    <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s1">&#39;mjd&#39;</span><span class="p">:</span>
+        <span class="n">start_mjd</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2mjd</span><span class="p">(</span><span class="n">global_start</span><span class="p">)</span>
+        <span class="n">end_mjd</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2mjd</span><span class="p">(</span><span class="n">global_end</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">start_mjd</span><span class="p">,</span> <span class="n">end_mjd</span><span class="p">)</span>
+    
+    <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s1">&#39;dayno&#39;</span><span class="p">:</span>
+        <span class="n">start_dayno</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2dayno</span><span class="p">(</span><span class="n">global_start</span><span class="p">)</span>
+        <span class="n">end_dayno</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2dayno</span><span class="p">(</span><span class="n">global_end</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">start_dayno</span><span class="p">,</span> <span class="n">end_dayno</span><span class="p">)</span>
+    
+    <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s1">&#39;cal&#39;</span><span class="p">:</span>
+        <span class="n">start_cal</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2cal</span><span class="p">(</span><span class="n">global_start</span><span class="p">)</span>
+        <span class="n">end_cal</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2cal</span><span class="p">(</span><span class="n">global_end</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">start_cal</span><span class="p">,</span> <span class="n">end_cal</span><span class="p">)</span>
+    
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ERROR</span><span class="p">(</span><span class="s2">&quot;Unknown format &#39;</span><span class="si">%s</span><span class="s2">&#39;. Available formats: &#39;isoformat&#39;, &#39;datetime&#39;, &#39;decyear&#39;, &#39;mjd&#39;, &#39;dayno&#39;, &#39;cal&#39;&quot;</span> <span class="o">%</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">exit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">PYACS</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Jean-Mathieu NOCQUET.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

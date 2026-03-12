@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyacs.sol.sinex &#8212; PYACS 0.66.18 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../_static/documentation_options.js?v=2262e354"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pyacs.sol.sinex</h1><div class="highlight"><pre>
+<span></span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">AstroTime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.sol.discontinuity</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">Discontinuity</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="glx2snx">
+<a class="viewcode-back" href="../../../api/pyacs.sol.html#pyacs.sol.sinex.glx2snx">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">glx2snx</span><span class="p">(</span><span class="n">glx</span><span class="p">,</span> <span class="n">snx</span><span class="p">,</span> <span class="n">dir_snx</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts a GLOBK glx file into a sinex file </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+
+    <span class="c1"># check dir_snx exists</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">dir_snx</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dir_snx</span><span class="p">)</span>
+    
+    <span class="c1"># check output path provided in snx</span>
+    
+    <span class="n">cmd</span> <span class="o">=</span> <span class="s1">&#39;glbtosnx &#39;</span> <span class="o">+</span> <span class="n">dir_snx</span> <span class="o">+</span> <span class="s1">&#39; </span><span class="se">\&#39;\&#39;</span><span class="s1"> &#39;</span> <span class="o">+</span> <span class="n">glx</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">snx</span>
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Running </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">cmd</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">getstatusoutput</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span></div>
+
+
+    
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="snx2ssc">
+<a class="viewcode-back" href="../../../api/pyacs.sol.html#pyacs.sol.sinex.snx2ssc">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">snx2ssc</span><span class="p">(</span><span class="n">snx</span><span class="p">,</span> <span class="n">ssc</span><span class="p">,</span> <span class="n">dir_ssc</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    simplifies a sinex file into a ssc file </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+
+
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Running snx2ssc </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">snx</span><span class="p">,</span> <span class="n">dir_ssc</span><span class="p">,</span> <span class="n">ssc</span><span class="p">)</span> <span class="p">)</span>
+    <span class="c1"># check dir_snx exists</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">dir_ssc</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dir_ssc</span><span class="p">)</span>
+
+    <span class="n">f_in_sinex</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">snx</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;latin-1&quot;</span><span class="p">)</span>
+    <span class="n">f_out_sinex</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">dir_ssc</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">ssc</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span>
+    
+    <span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
+    
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f_in_sinex</span><span class="p">:</span>
+        <span class="n">lline</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;+SOLUTION/ESTIMATE&#39;</span><span class="p">):</span><span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;+SITE/ID&#39;</span><span class="p">):</span><span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">flag</span><span class="p">:</span><span class="n">f_out_sinex</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">line</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;-SOLUTION/ESTIMATE&#39;</span><span class="p">):</span><span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;-SITE/ID&#39;</span><span class="p">):</span><span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="glred_1_day">
+<a class="viewcode-back" href="../../../api/pyacs.sol.html#pyacs.sol.sinex.glred_1_day">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">glred_1_day</span><span class="p">(</span><span class="n">glx</span><span class="p">,</span> <span class="n">dir_prt</span><span class="p">,</span> <span class="n">dir_log</span><span class="p">,</span> <span class="n">apr</span><span class="p">,</span> <span class="n">eq_rename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    run glred over a day</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+
+    <span class="c1"># glx basename</span>
+    
+    <span class="n">glx_basename</span> <span class="o">=</span> <span class="n">glx</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+    
+    <span class="c1"># CREATES GLOBK COMMAND FILE</span>
+    
+    <span class="n">glred_cmd</span> <span class="o">=</span> <span class="s1">&#39;glred_&#39;</span> <span class="o">+</span> <span class="n">glx_basename</span> <span class="o">+</span> <span class="s1">&#39;.cmd&#39;</span>
+    <span class="n">glorg_cmd</span> <span class="o">=</span> <span class="s1">&#39;glorg_&#39;</span> <span class="o">+</span> <span class="n">glx_basename</span> <span class="o">+</span> <span class="s1">&#39;.cmd&#39;</span>
+    
+    <span class="c1"># Creates glred</span>
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Creating </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">glred_cmd</span><span class="p">)</span>
+    
+    <span class="n">fglred</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">glred_cmd</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">eq_rename</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fglred</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;  eq_file </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">eq_rename</span><span class="p">)</span>
+        
+    <span class="n">fglred</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;  com_file @.com</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">fglred</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;  sol_file @.sol</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">fglred</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;  apr_file </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">apr</span><span class="p">)</span>
+    <span class="n">fglred</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;  apr_neu all 1 1 1 0 0 0</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">fglred</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;  apr_scale 1. 0.</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    <span class="n">fglred</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;  apr_wob 10 10 0 0</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">fglred</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;  apr_ut1 10  0</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    <span class="n">fglred</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;  org_opt psum pbo gdl rnrp</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">fglred</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;  org_cmd </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">glorg_cmd</span><span class="p">)</span>
+    <span class="n">fglred</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;  crt_opt nopr</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">fglred</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;  prt_opt nopr</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">fglred</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;  del_scra yes</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    <span class="n">fglred</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    
+    <span class="c1"># creates sites to be used for stabilization</span>
+    
+    <span class="n">stab_file</span> <span class="o">=</span> <span class="s1">&#39;stab_sites.dat&#39;</span>
+    
+    <span class="n">lstab_site</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Creating </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">stab_file</span><span class="p">)</span>
+    
+    <span class="n">fstab</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">stab_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">fapr</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">apr</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;latin-1&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fapr</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39; &#39;</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">:</span><span class="k">continue</span>
+        <span class="n">site</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">site</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lstab_site</span><span class="p">:</span>
+            <span class="n">lstab_site</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">site</span><span class="p">)</span>
+            <span class="n">fstab</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; stab_site </span><span class="si">%s</span><span class="s2">_@</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">site</span><span class="p">)</span>
+    <span class="n">fstab</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">fapr</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    
+    <span class="c1"># glorg file</span>
+    
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Creating </span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span>  <span class="n">glorg_cmd</span><span class="p">)</span>
+    
+    <span class="n">fglorg</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">glorg_cmd</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    
+    <span class="n">fglorg</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; pos_org xtran ytran ztran xrot yrot zrot scale</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">fglorg</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; stab_it  5</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">fglorg</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; stab_site clear</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">fglorg</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; stab_min 0.005 0.003 0.005 0.003&#39;</span><span class="p">)</span>
+    <span class="n">fglorg</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; source </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">stab_file</span><span class="p">)</span>
+    
+    <span class="n">fglorg</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    
+    <span class="c1"># now runs glred</span>
+    <span class="n">log</span> <span class="o">=</span> <span class="n">dir_log</span> <span class="o">+</span> <span class="s1">&#39;/log.&#39;</span> <span class="o">+</span> <span class="n">glx_basename</span>
+    <span class="n">prt</span> <span class="o">=</span> <span class="n">dir_prt</span> <span class="o">+</span> <span class="s1">&#39;/prt.&#39;</span> <span class="o">+</span> <span class="n">glx_basename</span>
+    
+    <span class="n">lglx_file</span> <span class="o">=</span> <span class="s1">&#39;lglx_&#39;</span> <span class="o">+</span> <span class="n">glx_basename</span>
+    <span class="n">lglx</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">lglx_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">lglx</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">glx</span><span class="p">)</span>
+    <span class="n">lglx</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="c1"># ,lglx,glred_cmd</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="s1">&#39;glred 6 &#39;</span> <span class="o">+</span> <span class="n">prt</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">log</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">lglx_file</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">glred_cmd</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">getstatusoutput</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">glred_cmd</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">glorg_cmd</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">lglx_file</span><span class="p">)</span></div>
+
+    
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="SSinex">
+<a class="viewcode-back" href="../../../api/pyacs.sol.html#pyacs.sol.sinex.SSinex">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SSinex</span><span class="p">:</span>
+<span class="c1">###############################################################################</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sinex class: reads and manipulates a Sinex solution.</span>
+<span class="sd">    Sinex (Solution/Technique Independent Exchange format) : Sinex format handling</span>
+<span class="sd">    Description of the Sinex format is available at:</span>
+<span class="sd">    http://www.iers.org/documents/ac/sinex/sinex_v210_proposal.pdf </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+<span class="c1">###############################################################################</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">estimates</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">VCV</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ll</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">basename</span> <span class="o">=</span> <span class="n">ll</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        
+        <span class="k">if</span> <span class="n">estimates</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span> <span class="o">=</span> <span class="n">estimates</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span> <span class="o">=</span> <span class="p">{}</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="s1">&#39;00:000:00000&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span> <span class="o">=</span> <span class="s1">&#39;00:000:00000&#39;</span>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="SSinex.from_sinex">
+<a class="viewcode-back" href="../../../api/pyacs.sol.html#pyacs.sol.sinex.SSinex.from_sinex">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_sinex</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">snx</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructs a PYACS Sinex instance from a P. Rebishung sinex instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.sol.gpoint</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gpoint</span>
+        
+        <span class="n">name</span> <span class="o">=</span> <span class="n">snx</span><span class="o">.</span><span class="n">file</span>
+                
+        <span class="c1"># estimate</span>
+
+        <span class="n">estimates</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">snx</span><span class="o">.</span><span class="n">param</span><span class="p">:</span>
+            <span class="n">XYZ</span> <span class="o">=</span> <span class="n">snx</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">([</span><span class="n">r</span><span class="o">.</span><span class="n">code</span><span class="p">],</span> <span class="n">pt</span><span class="o">=</span><span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">pt</span><span class="p">],</span> <span class="n">soln</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+            <span class="n">M</span> <span class="o">=</span> <span class="n">Gpoint</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">XYZ</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Y</span><span class="o">=</span><span class="n">XYZ</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">Z</span><span class="o">=</span><span class="n">XYZ</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> \
+                         <span class="n">SX</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">SY</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">SZ</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> \
+                         <span class="n">VX</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">VY</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">VZ</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> \
+                         <span class="n">SVX</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">SVY</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">SVZ</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> \
+                         <span class="n">epoch</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">epoch2decyear</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">tref</span><span class="p">),</span> <span class="n">code</span><span class="o">=</span><span class="n">r</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">pt</span><span class="o">=</span><span class="n">r</span><span class="o">.</span><span class="n">pt</span><span class="p">,</span> <span class="n">soln</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">soln</span><span class="p">))</span>
+
+            <span class="n">estimates</span><span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">soln</span><span class="p">)]</span> <span class="o">=</span> <span class="n">M</span>
+  
+        <span class="c1"># VCV</span>
+        <span class="n">VCV</span> <span class="o">=</span> <span class="kc">None</span>
+        
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">estimates</span><span class="p">,</span> <span class="n">VCV</span><span class="p">)</span></div>
+
+        
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="SSinex.clear">
+<a class="viewcode-back" href="../../../api/pyacs.sol.html#pyacs.sol.sinex.SSinex.clear">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Clear the sinex</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="s1">&#39;00:000:00000&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span> <span class="o">=</span> <span class="s1">&#39;00:000:00000&#39;</span></div>
+
+    
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="SSinex.add_site">
+<a class="viewcode-back" href="../../../api/pyacs.sol.html#pyacs.sol.sinex.SSinex.add_site">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_site</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a Gpoint M in the current Sinex instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">M</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">soln</span><span class="p">]</span> <span class="o">=</span> <span class="n">M</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="SSinex.subset_from_code">
+<a class="viewcode-back" href="../../../api/pyacs.sol.html#pyacs.sol.sinex.SSinex.subset_from_code">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">subset_from_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lcode</span><span class="p">,</span> <span class="n">lsoln</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes a subset from a SINEX according to a list of code and optionally a list of associated soln.</span>
+<span class="sd">        Returns a dictionary of Gpoint with key (code,soln)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">SUBSET</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="n">lsoln</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lcode</span><span class="p">)):</span>
+                <span class="n">SUBSET</span><span class="p">[</span><span class="n">lcode</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">lsoln</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">lcode</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">lsoln</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+                
+        <span class="k">else</span><span class="p">:</span> 
+            <span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">soln</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                <span class="k">if</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">lcode</span><span class="p">:</span>
+                    <span class="n">SUBSET</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span>
+        
+        <span class="k">return</span><span class="p">(</span><span class="n">SUBSET</span><span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="SSinex.subset_from_keys">
+<a class="viewcode-back" href="../../../api/pyacs.sol.html#pyacs.sol.sinex.SSinex.subset_from_keys">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">subset_from_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">H</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes a subset from a SINEX according to the key of a dictionary made of (code,soln)</span>
+<span class="sd">        Returns a dictionary of Gpoint with key (code,soln)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">SUBSET</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">soln</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="n">SUBSET</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span>
+        
+        <span class="k">return</span><span class="p">(</span><span class="n">SUBSET</span><span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="SSinex.apply_helmert">
+<a class="viewcode-back" href="../../../api/pyacs.sol.html#pyacs.sol.sinex.SSinex.apply_helmert">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply_helmert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Applies an Helmert transformation to a SINEX instance</span>
+<span class="sd">        returns a new SINEX instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+
+        <span class="n">new_sinex</span> <span class="o">=</span> <span class="n">SSinex</span><span class="p">()</span>
+        
+        <span class="n">new_sinex</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">new_sinex</span><span class="o">.</span><span class="n">epoch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span>
+        
+        <span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">soln</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            
+            <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Applying Helmert transformation to </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">))</span>
+            
+            <span class="n">M</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span>
+            <span class="n">N</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">apply_helmert</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+            <span class="n">new_sinex</span><span class="o">.</span><span class="n">add_site</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+
+        <span class="k">return</span><span class="p">(</span><span class="n">new_sinex</span><span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="SSinex.write_tsxyz">
+<a class="viewcode-back" href="../../../api/pyacs.sol.html#pyacs.sol.sinex.SSinex.write_tsxyz">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">write_tsxyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="n">HCOV</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write a tsxyz file from the current Sinex instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.glinalg</span>
+
+        <span class="n">sinex_basename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">soln</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="n">M</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span>
+
+            <span class="c1"># no uncertainties            </span>
+            <span class="k">if</span> <span class="n">HCOV</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">   </span><span class="si">%10.5lf</span><span class="s2">   </span><span class="si">%4s</span><span class="s2"> </span><span class="si">%5d</span><span class="s2">   </span><span class="si">%16.4lf</span><span class="s2">  </span><span class="si">%16.4lf</span><span class="s2">  </span><span class="si">%16.4lf</span><span class="s2"> </span><span class="si">%16.5lf</span><span class="s2">  </span><span class="si">%16.5lf</span><span class="s2">  </span><span class="si">%16.5lf</span><span class="s2"> </span><span class="si">%8.4f</span><span class="s2">  </span><span class="si">%8.4lf</span><span class="s2">  </span><span class="si">%8.4lf</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> \
+                    <span class="p">(</span><span class="n">sinex_basename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">Z</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,))</span>
+
+            <span class="c1"># handling uncertainties</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                
+                <span class="n">COV</span> <span class="o">=</span> <span class="n">HCOV</span><span class="p">[</span><span class="n">code</span><span class="p">]</span>
+                
+                <span class="p">(</span><span class="n">corr</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">glinalg</span><span class="o">.</span><span class="n">cov_to_corr</span><span class="p">(</span><span class="n">COV</span><span class="p">)</span>
+                <span class="p">(</span><span class="n">Sx</span><span class="p">,</span> <span class="n">Sy</span><span class="p">,</span> <span class="n">Sz</span><span class="p">)</span> <span class="o">=</span> <span class="n">sigma</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+                <span class="n">Rxy</span> <span class="o">=</span> <span class="n">corr</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="n">Rxz</span> <span class="o">=</span> <span class="n">corr</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+                <span class="n">Ryz</span> <span class="o">=</span> <span class="n">corr</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">   </span><span class="si">%10.5lf</span><span class="s2">   </span><span class="si">%4s</span><span class="s2"> </span><span class="si">%5d</span><span class="s2">   </span><span class="si">%16.4lf</span><span class="s2">  </span><span class="si">%16.4lf</span><span class="s2">  </span><span class="si">%16.4lf</span><span class="s2"> </span><span class="si">%16.5lf</span><span class="s2">  </span><span class="si">%16.5lf</span><span class="s2">  </span><span class="si">%16.5lf</span><span class="s2"> </span><span class="si">%8.4f</span><span class="s2">  </span><span class="si">%8.4lf</span><span class="s2">  </span><span class="si">%8.4lf</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> \
+                    <span class="p">(</span><span class="n">sinex_basename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">Z</span><span class="p">,</span> <span class="n">Sx</span><span class="p">,</span> <span class="n">Sy</span><span class="p">,</span> <span class="n">Sz</span><span class="p">,</span> <span class="n">Rxy</span><span class="p">,</span> <span class="n">Rxz</span><span class="p">,</span> <span class="n">Ryz</span><span class="p">,))</span>
+                
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="SSinex.common">
+<a class="viewcode-back" href="../../../api/pyacs.sol.html#pyacs.sol.sinex.SSinex.common">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">common</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">H_Gpoint</span><span class="p">,</span> <span class="n">prefit</span><span class="o">=</span><span class="mf">3.5</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a dictionary of Gpoint common to the current Sinex object and a dictionary (code,soln) of Gpoint</span>
+<span class="sd">        Coordinates will be the ones from the Sinex and NOT from the list of Gpoints</span>
+<span class="sd">        commons point are points with the same code pt and soln</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+
+
+        <span class="n">H_common_Gpoint</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">Hdistance</span> <span class="o">=</span> <span class="p">{}</span>
+        
+        <span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">soln</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">H_Gpoint</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+<span class="c1">#                if code == &#39;CRO1&#39;:print &#39;OK&#39;</span>
+                
+                <span class="n">M</span> <span class="o">=</span> <span class="n">H_Gpoint</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span>
+                <span class="n">N</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span>
+                <span class="n">distance</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">xyz_distance</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">distance</span> <span class="o">&gt;</span> <span class="n">prefit</span><span class="p">):</span>
+                    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Bad prefit (threshold value </span><span class="si">%8.3lf</span><span class="s2">) for </span><span class="si">%s</span><span class="s2">: </span><span class="si">%10.1lf</span><span class="s2"> m&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">prefit</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">xyz_distance</span><span class="p">(</span><span class="n">N</span><span class="p">)))</span>
+                    
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">Hdistance</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span> <span class="o">=</span> <span class="n">distance</span>
+                    <span class="n">H_common_Gpoint</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span>
+<span class="c1">#            else:</span>
+<span class="c1">#                if code == &#39;CRO1&#39;:print &#39; not OK&#39;</span>
+
+        <span class="k">if</span> <span class="n">strict</span><span class="p">:</span>
+            <span class="n">median_distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">Hdistance</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+            
+            <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Median prefit: </span><span class="si">%10.2lf</span><span class="s2"> mm&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">median_distance</span> <span class="o">*</span> <span class="mf">1.E3</span><span class="p">))</span>
+            
+            <span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">soln</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">Hdistance</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                <span class="k">if</span> <span class="n">Hdistance</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">50.</span> <span class="o">*</span> <span class="n">median_distance</span><span class="p">:</span>
+                    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Deleting </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> bad prefit </span><span class="si">%.1lf</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">,</span> <span class="n">Hdistance</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.E3</span> <span class="p">))</span>
+                    <span class="k">del</span> <span class="n">H_common_Gpoint</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span>
+            
+        <span class="k">return</span><span class="p">(</span><span class="n">H_common_Gpoint</span><span class="p">)</span></div>
+
+      
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="SSinex.read_section_estimate">
+<a class="viewcode-back" href="../../../api/pyacs.sol.html#pyacs.sol.sinex.SSinex.read_section_estimate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read_section_estimate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lexclude</span><span class="o">=</span><span class="p">[],</span> <span class="n">lonly</span><span class="o">=</span><span class="p">[],</span> <span class="n">discontinuity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the ESTIMATE section of a SINEX file.</span>
+
+<span class="sd">        Returns a dictionary keyed by (CODE, SOLN) with Gpoint instance values.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        lexclude : list, optional</span>
+<span class="sd">            Site codes to exclude from reading.</span>
+<span class="sd">        lonly : list, optional</span>
+<span class="sd">            If non-empty, only these codes are considered.</span>
+<span class="sd">        discontinuity : object, optional</span>
+<span class="sd">            If provided, used to populate the SOLN field (e.g. from Discontinuity/IGS soln).</span>
+<span class="sd">        rename : dict, optional</span>
+<span class="sd">            Keys: sinex file; values: list of (&#39;OLD_CODE&#39;, &#39;NEW_CODE&#39;). Often from Read_Conf_Pyacs.</span>
+<span class="sd">        exclude : object, optional</span>
+<span class="sd">            Additional exclusion filter.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            Dictionary with (CODE, SOLN) keys and Gpoint instance values.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        A point in SINEX is defined by CODE, PT, DOMES and SOLN; here PT and DOMES</span>
+<span class="sd">        are ignored for versatility.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.sol.gpoint</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gpoint</span>
+
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+
+        <span class="c1"># DEAL WITH RENAME IF PROVIDED</span>
+        <span class="k">if</span> <span class="n">rename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;rename info provided for sinex: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">H_rename</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="c1"># Case for a CODE rename applying for all SINEX files</span>
+            <span class="k">if</span> <span class="s1">&#39;all&#39;</span> <span class="ow">in</span> <span class="n">rename</span><span class="p">:</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">new_code</span><span class="p">)</span> <span class="ow">in</span> <span class="n">rename</span><span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">]:</span>
+                    <span class="n">H_rename</span><span class="p">[</span><span class="n">code</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_code</span>
+            <span class="c1"># Case for a CODE rename applying for the current SINEX</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">rename</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">new_code</span><span class="p">)</span> <span class="ow">in</span> <span class="n">rename</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]:</span>
+                    <span class="n">H_rename</span><span class="p">[</span><span class="n">code</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_code</span>
+
+        <span class="c1"># DEAL WITH EXCLUDE IF PROVIDED</span>
+        <span class="n">H_exclude</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">exclude</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;exclude info provided for sinex: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="c1"># Case for a CODE rename applying for all SINEX files</span>
+            <span class="k">if</span> <span class="s1">&#39;all&#39;</span> <span class="ow">in</span> <span class="n">exclude</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">exclude</span><span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">]:</span>
+                    <span class="n">H_exclude</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">code</span> <span class="p">)</span>
+            <span class="c1"># Case for a CODE rename applying for the current SINEX</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">exclude</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">exclude</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]:</span>
+                    <span class="n">H_exclude</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">code</span> <span class="p">)</span>
+
+
+        <span class="c1"># FINDING SOLUTION/ESTIMATE SECTION IN SINEX</span>
+        <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Reading ESTIMATE section of </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="n">fs</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;latin-1&quot;</span><span class="p">)</span>
+
+        <span class="n">in_section</span> <span class="o">=</span> <span class="kc">False</span>
+        
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fs</span><span class="p">:</span>
+            <span class="c1"># no informative line, next line please</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;*&#39;</span><span class="p">):</span><span class="k">continue</span>
+            
+            <span class="n">lline</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+            <span class="c1"># initialize the flag telling whether we are in the right section</span>
+            
+            <span class="k">if</span> <span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;+SOLUTION/ESTIMATE&#39;</span><span class="p">):</span>
+                <span class="n">in_section</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">continue</span>
+            
+            <span class="k">if</span> <span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;-SOLUTION/ESTIMATE&#39;</span><span class="p">):</span><span class="k">break</span>
+            
+            <span class="c1"># if we are not in the right section, next line please</span>
+            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">in_section</span><span class="p">):</span><span class="k">continue</span>
+
+            <span class="c1"># READING SOLUTION/ESTIMATE SECTION IN SINEX</span>
+
+            <span class="k">if</span> <span class="n">lline</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;STAX&#39;</span><span class="p">:</span>
+                <span class="n">code</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+                <span class="n">pt</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+                <span class="n">soln</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+                <span class="n">epoch</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+
+                <span class="n">x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">8</span><span class="p">])</span>
+                <span class="n">sx</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">9</span><span class="p">])</span>
+                
+                <span class="n">lepoch</span> <span class="o">=</span> <span class="n">lline</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+                <span class="n">yr</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lepoch</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">doy</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lepoch</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">sod</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lepoch</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+                <span class="n">year</span> <span class="o">=</span> <span class="n">AstroTime</span><span class="o">.</span><span class="n">yr2year</span><span class="p">(</span><span class="n">yr</span><span class="p">)</span>
+
+                <span class="n">epoch</span> <span class="o">=</span> <span class="n">AstroTime</span><span class="o">.</span><span class="n">epoch2decyear</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+                
+            <span class="k">if</span> <span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;STAY&#39;</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">==</span> <span class="n">code</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">==</span> <span class="n">pt</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span> <span class="o">==</span> <span class="n">soln</span><span class="p">):</span> 
+                <span class="n">y</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">8</span><span class="p">])</span>
+                <span class="n">sy</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">9</span><span class="p">])</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;STAZ&#39;</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">==</span> <span class="n">code</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">==</span> <span class="n">pt</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span> <span class="o">==</span> <span class="n">soln</span><span class="p">):</span> 
+                <span class="n">z</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">8</span><span class="p">])</span>
+                <span class="n">sz</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">9</span><span class="p">])</span>
+
+                <span class="c1"># WE NOW HAVE ENOUGH INFORMATION TO CREATE A NEW GPOINT</span>
+
+                <span class="c1"># RENAME CASE</span>
+                
+                <span class="k">if</span> <span class="n">rename</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">code</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">H_rename</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                        <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Renaming </span><span class="si">%s</span><span class="s2"> into </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">H_rename</span><span class="p">[</span><span class="n">code</span><span class="p">]))</span>
+    
+                        <span class="n">code</span> <span class="o">=</span> <span class="n">H_rename</span><span class="p">[</span><span class="n">code</span><span class="p">]</span>
+
+                <span class="c1">#### IF DISCONTINUITY IS PROVIDED THEN UPDATE THE SOLN ACCORDINGLY</span>
+                <span class="c1"># CHANGE BY JMN 02/05/2012</span>
+    
+                <span class="k">if</span> <span class="n">discontinuity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    
+                    <span class="p">(</span><span class="n">mday</span><span class="p">,</span> <span class="n">month</span><span class="p">)</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">dayno2cal</span><span class="p">(</span><span class="n">doy</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+                    
+                    <span class="n">hour</span> <span class="o">=</span> <span class="n">sod</span> <span class="o">//</span> <span class="mi">3600</span>
+                    <span class="n">left</span> <span class="o">=</span> <span class="n">sod</span> <span class="o">%</span> <span class="mi">3600</span>
+                    <span class="n">minute</span> <span class="o">=</span> <span class="n">left</span> <span class="o">//</span> <span class="mi">60</span>
+                    <span class="n">second</span> <span class="o">=</span> <span class="n">left</span> <span class="o">%</span> <span class="mi">60</span>
+    
+                    <span class="n">mydate</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">mday</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">)</span>
+    
+                    <span class="n">solnn</span> <span class="o">=</span> <span class="n">discontinuity</span><span class="o">.</span><span class="n">get_soln</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">mydate</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">solnn</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span><span class="n">soln</span> <span class="o">=</span> <span class="n">solnn</span>
+
+                <span class="c1"># CREATES THE GPOINT INSTANCE</span>
+    
+                <span class="n">M</span> <span class="o">=</span> <span class="n">Gpoint</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">Z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span> \
+                         <span class="n">SX</span><span class="o">=</span><span class="n">sx</span><span class="p">,</span> <span class="n">SY</span><span class="o">=</span><span class="n">sy</span><span class="p">,</span> <span class="n">SZ</span><span class="o">=</span><span class="n">sz</span><span class="p">,</span> \
+                         <span class="n">VX</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">VY</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">VZ</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> \
+                         <span class="n">SVX</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">SVY</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">SVZ</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> \
+                         <span class="n">epoch</span><span class="o">=</span><span class="n">epoch</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="n">code</span><span class="p">,</span> <span class="n">pt</span><span class="o">=</span><span class="n">pt</span><span class="p">,</span> <span class="n">soln</span><span class="o">=</span><span class="n">soln</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span> <span class="o">=</span> <span class="n">M</span>
+                
+            <span class="k">if</span> <span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;VELX&#39;</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">==</span> <span class="n">code</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">==</span> <span class="n">pt</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span> <span class="o">==</span> <span class="n">soln</span><span class="p">):</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span><span class="o">.</span><span class="n">VX</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">8</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span><span class="o">.</span><span class="n">SVX</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">9</span><span class="p">])</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;VELY&#39;</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">==</span> <span class="n">code</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">==</span> <span class="n">pt</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span> <span class="o">==</span> <span class="n">soln</span><span class="p">):</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span><span class="o">.</span><span class="n">VY</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">8</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span><span class="o">.</span><span class="n">SVY</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">9</span><span class="p">])</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;VELZ&#39;</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">==</span> <span class="n">code</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">==</span> <span class="n">pt</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span> <span class="o">==</span> <span class="n">soln</span><span class="p">):</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span><span class="o">.</span><span class="n">VZ</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">8</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span><span class="o">.</span><span class="n">SVZ</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">9</span><span class="p">])</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span> <span class="o">=</span> <span class="n">epoch</span>
+
+        <span class="n">fs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="c1"># LEXCLUDE CASE</span>
+        
+        <span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">soln</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+
+            <span class="c1"># lexclude case</span>
+            <span class="k">if</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">lexclude</span><span class="p">:</span>
+                <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;excluding </span><span class="si">%s</span><span class="s2"> from reading </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">code</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span>
+
+            <span class="c1"># exclude case</span>
+            <span class="k">if</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">H_exclude</span><span class="p">:</span>
+                <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;excluding </span><span class="si">%s</span><span class="s2"> from reading </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">code</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span>
+
+            <span class="c1"># lonly case</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">lonly</span> <span class="o">!=</span> <span class="p">[]</span> <span class="p">)</span> <span class="ow">and</span> <span class="p">(</span> <span class="n">code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lonly</span> <span class="p">):</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span></div>
+
+
+<span class="c1">#             if type==&#39;Apr&#39;:</span>
+<span class="c1">#                 print &#39;-- Reading &#39;,self.name</span>
+<span class="c1">#     </span>
+<span class="c1">#                 fapr = open(self.name, &#39;r&#39;)</span>
+<span class="c1">#                 </span>
+<span class="c1">#                 for line in fapr:</span>
+<span class="c1">#                     </span>
+<span class="c1">#                     if line[0]!=&#39; &#39;:continue</span>
+<span class="c1">#                     code=line[1:5].upper()</span>
+<span class="c1">#                     lline=line.split()</span>
+<span class="c1">#                     (x,y,z,epoch)=(float(lline[1]),float(lline[2]),float(lline[3]),float(lline[7]))</span>
+<span class="c1">#                     M=Gpoint(X=x,Y=y,Z=z,\</span>
+<span class="c1">#                              SX=0.0,SY=0.0,SZ=0.0,\</span>
+<span class="c1">#                              epoch=epoch,code=code,pt=&#39;A&#39;,soln=1)</span>
+<span class="c1">#                     #print &#39;XXXX &#39;,M.X</span>
+<span class="c1">#                     self.estimates.append(M)</span>
+<span class="c1">#                     M.VX=0.0</span>
+<span class="c1">#                     M.VY=0.0</span>
+<span class="c1">#                     M.VZ=0.0</span>
+<span class="c1">#                 fapr.close()</span>
+<span class="c1">#                         </span>
+<span class="c1">#         except IOError:# as (errno, strerror):</span>
+<span class="c1">#             print &#39;cannot open:&#39;, self.name</span>
+<span class="c1">#             sys.exit()</span>
+<span class="c1">#         </span>
+<span class="c1">#         except ValueError:</span>
+<span class="c1">#             print &#39;Value error:&#39;, self.name</span>
+<span class="c1">#             sys.exit()</span>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="SSinex.write_sinex">
+<a class="viewcode-back" href="../../../api/pyacs.sol.html#pyacs.sol.sinex.SSinex.write_sinex">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">write_sinex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sinex_name</span><span class="p">,</span> <span class="n">Agency_Code</span><span class="o">=</span><span class="s1">&#39;IRD&#39;</span><span class="p">):</span>
+
+<span class="c1">###############################################################################</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">write_header</span><span class="p">(</span><span class="n">fs</span><span class="p">):</span>
+            <span class="n">Mandatory_Start</span> <span class="o">=</span> <span class="s1">&#39;%=SNX&#39;</span>
+            <span class="n">Format_Version</span> <span class="o">=</span> <span class="mf">1.00</span>
+            <span class="n">File_Agency_Code</span> <span class="o">=</span> <span class="s1">&#39;PYA&#39;</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+            <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+            <span class="n">year</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">year</span>
+            <span class="n">month</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">month</span>
+            <span class="n">mday</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">day</span>
+            
+            <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">AstroTime</span>
+            
+            <span class="n">Time_Sinex_Creation_Doy</span> <span class="o">=</span> <span class="n">AstroTime</span><span class="o">.</span><span class="n">cal2dayno</span> <span class="p">(</span><span class="n">mday</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+            <span class="n">Time_Sinex_Creation_Yr</span> <span class="o">=</span> <span class="n">AstroTime</span><span class="o">.</span><span class="n">year2yr</span><span class="p">(</span><span class="n">now</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
+            <span class="n">Time_Sinex_Creation_Seconds</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">second</span> <span class="o">+</span> <span class="n">now</span><span class="o">.</span><span class="n">minute</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">+</span> <span class="n">now</span><span class="o">.</span><span class="n">hour</span> <span class="o">*</span> <span class="mi">3600</span>
+            
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">:</span><span class="n">Start_Time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span>
+            <span class="k">else</span><span class="p">:</span><span class="n">Start_Time</span> <span class="o">=</span> <span class="s1">&#39;00:000:00000&#39;</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span><span class="p">:</span><span class="n">End_Time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span>
+            <span class="k">else</span><span class="p">:</span><span class="n">End_Time</span> <span class="o">=</span> <span class="s1">&#39;00:000:00000&#39;</span>
+            
+            <span class="n">Number_Estimates</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">)</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%5s</span><span class="s2"> </span><span class="si">%4.2f</span><span class="s2"> </span><span class="si">%3s</span><span class="s2"> </span><span class="si">%02d</span><span class="s2">:</span><span class="si">%03d</span><span class="s2">:</span><span class="si">%05d</span><span class="s2"> </span><span class="si">%3s</span><span class="s2"> </span><span class="si">%12s</span><span class="s2"> </span><span class="si">%12s</span><span class="s2"> P </span><span class="si">%05d</span><span class="s2"> 1 S</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>\
+                    <span class="n">Mandatory_Start</span><span class="p">,</span> <span class="n">Format_Version</span><span class="p">,</span> <span class="n">File_Agency_Code</span><span class="p">,</span> \
+                    <span class="n">Time_Sinex_Creation_Yr</span><span class="p">,</span> <span class="n">Time_Sinex_Creation_Doy</span><span class="p">,</span> <span class="n">Time_Sinex_Creation_Seconds</span><span class="p">,</span> \
+                    <span class="n">Agency_Code</span><span class="p">,</span> <span class="n">Start_Time</span><span class="p">,</span> <span class="n">End_Time</span><span class="p">,</span> <span class="n">Number_Estimates</span><span class="p">))</span>
+            <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">write_section_site</span><span class="p">(</span><span class="n">fs</span><span class="p">):</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.coordinates</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">Coordinates</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">Units</span>
+
+            <span class="n">domes_default</span> <span class="o">=</span> <span class="s1">&#39;XXXXXM001&#39;</span>
+            <span class="n">free_des</span> <span class="o">=</span> <span class="s1">&#39;No_Site_Description___&#39;</span>
+            <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;+SITE/ID</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">M</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">:</span>
+                <span class="c1"># print M.code,M.X,M.Y,M.Z</span>
+                <span class="p">(</span><span class="n">rlon</span><span class="p">,</span> <span class="n">rlat</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="o">=</span> <span class="n">Coordinates</span><span class="o">.</span><span class="n">xyz2geo</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">Z</span><span class="p">)</span>
+                <span class="p">(</span><span class="n">deg_lon</span><span class="p">,</span> <span class="n">mn_lon</span><span class="p">,</span> <span class="n">sec_lon</span><span class="p">)</span> <span class="o">=</span> <span class="n">Units</span><span class="o">.</span><span class="n">radians2deg_mn_sec</span><span class="p">(</span><span class="n">rlon</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="s1">&#39;0-360&#39;</span><span class="p">)</span>
+                <span class="p">(</span><span class="n">deg_lat</span><span class="p">,</span> <span class="n">mn_lat</span><span class="p">,</span> <span class="n">sec_lat</span><span class="p">)</span> <span class="o">=</span> <span class="n">Units</span><span class="o">.</span><span class="n">radians2deg_mn_sec</span><span class="p">(</span><span class="n">rlat</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="s1">&#39;0-360&#39;</span><span class="p">)</span>
+                <span class="n">formatted_line</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot; </span><span class="si">%4s</span><span class="s2">  A </span><span class="si">%9s</span><span class="s2"> P </span><span class="si">%22s</span><span class="s2"> </span><span class="si">%03d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%4.1f</span><span class="s2"> </span><span class="si">%03d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%4.1f</span><span class="s2"> </span><span class="si">%7.1f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> \
+                       <span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">domes_default</span><span class="p">,</span> <span class="n">free_des</span><span class="p">,</span> <span class="n">deg_lon</span><span class="p">,</span> <span class="n">mn_lon</span><span class="p">,</span> <span class="n">sec_lon</span><span class="p">,</span> <span class="n">deg_lat</span><span class="p">,</span> <span class="n">mn_lat</span><span class="p">,</span> <span class="n">sec_lat</span><span class="p">,</span> <span class="n">h</span><span class="p">))</span>
+                <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">formatted_line</span><span class="p">)</span>
+            <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;-SITE/ID</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">write_section_estimate</span><span class="p">(</span><span class="n">fs</span><span class="p">):</span>
+
+            <span class="k">def</span><span class="w"> </span><span class="nf">fmt</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+                <span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">fabs</span>
+                <span class="n">tmp_string</span> <span class="o">=</span> <span class="nb">format</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%21.15E</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">x</span><span class="p">)</span>
+                <span class="n">integer</span> <span class="o">=</span> <span class="n">tmp_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">exponent</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tmp_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">exponent</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">:</span> <span class="n">sign_exponent</span> <span class="o">=</span> <span class="s1">&#39;+&#39;</span>
+                <span class="k">else</span><span class="p">:</span><span class="n">sign_exponent</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span>
+                <span class="n">exponent</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">fabs</span><span class="p">(</span><span class="n">exponent</span><span class="p">))</span>
+                <span class="n">decimal</span> <span class="o">=</span> <span class="n">tmp_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">14</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">integer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span><span class="p">:</span>
+                    <span class="n">sign</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span>
+                    <span class="n">ii</span> <span class="o">=</span> <span class="n">integer</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">sign</span> <span class="o">=</span> <span class="s1">&#39;+&#39;</span>
+                    <span class="n">ii</span> <span class="o">=</span> <span class="n">integer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">sign_exponent</span> <span class="o">==</span> <span class="s1">&#39;+&#39;</span><span class="p">:</span><span class="n">exponent</span> <span class="o">=</span> <span class="n">exponent</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">sign_exponent</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span><span class="p">:</span><span class="n">exponent</span> <span class="o">=</span> <span class="n">exponent</span> <span class="o">-</span> <span class="mi">1</span>
+                
+                <span class="n">fmt</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s%s</span><span class="s2">E</span><span class="si">%s%02d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">sign</span><span class="p">,</span> <span class="n">ii</span><span class="p">,</span> <span class="n">decimal</span><span class="p">,</span> <span class="n">sign_exponent</span><span class="p">,</span> <span class="n">exponent</span><span class="p">))</span>
+                <span class="k">return</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span>
+                    
+            <span class="n">index</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;+SOLUTION/ESTIMATE</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">M</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">:</span>
+                <span class="n">epoch</span> <span class="o">=</span> <span class="n">AstroTime</span><span class="o">.</span><span class="n">decyear2epoch</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">epoch</span><span class="p">)</span>
+                <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; </span><span class="si">%5d</span><span class="s2"> STAX   </span><span class="si">%4s</span><span class="s2">  A </span><span class="si">%4d</span><span class="s2"> </span><span class="si">%12s</span><span class="s2"> m    2 </span><span class="si">%21s</span><span class="s2"> </span><span class="si">%11.5E</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">soln</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">fmt</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">X</span><span class="p">),</span> <span class="n">M</span><span class="o">.</span><span class="n">SX</span><span class="p">))</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; </span><span class="si">%5d</span><span class="s2"> STAY   </span><span class="si">%4s</span><span class="s2">  A </span><span class="si">%4d</span><span class="s2"> </span><span class="si">%12s</span><span class="s2"> m    2 </span><span class="si">%21s</span><span class="s2"> </span><span class="si">%11.5E</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">soln</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">fmt</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">Y</span><span class="p">),</span> <span class="n">M</span><span class="o">.</span><span class="n">SY</span><span class="p">))</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; </span><span class="si">%5d</span><span class="s2"> STAZ   </span><span class="si">%4s</span><span class="s2">  A </span><span class="si">%4d</span><span class="s2"> </span><span class="si">%12s</span><span class="s2"> m    2 </span><span class="si">%21s</span><span class="s2"> </span><span class="si">%11.5E</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">soln</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">fmt</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">Z</span><span class="p">),</span> <span class="n">M</span><span class="o">.</span><span class="n">SZ</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">M</span><span class="o">.</span><span class="n">VX</span><span class="p">:</span>
+                    <span class="n">index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; </span><span class="si">%5d</span><span class="s2"> VELX   </span><span class="si">%4s</span><span class="s2">  A </span><span class="si">%4d</span><span class="s2"> </span><span class="si">%12s</span><span class="s2"> m/y  2 </span><span class="si">%21s</span><span class="s2"> </span><span class="si">%11.5E</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">soln</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">fmt</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">VX</span><span class="p">),</span> <span class="n">M</span><span class="o">.</span><span class="n">SVX</span><span class="p">))</span>
+                    <span class="n">index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; </span><span class="si">%5d</span><span class="s2"> VELY   </span><span class="si">%4s</span><span class="s2">  A </span><span class="si">%4d</span><span class="s2"> </span><span class="si">%12s</span><span class="s2"> m/y  2 </span><span class="si">%21s</span><span class="s2"> </span><span class="si">%11.5E</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">soln</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">fmt</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">VY</span><span class="p">),</span> <span class="n">M</span><span class="o">.</span><span class="n">SVY</span><span class="p">))</span>
+                    <span class="n">index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot; </span><span class="si">%5d</span><span class="s2"> VELZ   </span><span class="si">%4s</span><span class="s2">  A </span><span class="si">%4d</span><span class="s2"> </span><span class="si">%12s</span><span class="s2"> m/y  2 </span><span class="si">%21s</span><span class="s2"> </span><span class="si">%11.5E</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">soln</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">fmt</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">VZ</span><span class="p">),</span> <span class="n">M</span><span class="o">.</span><span class="n">SVZ</span><span class="p">))</span>
+                    
+            <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;-SOLUTION/ESTIMATE</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        
+        <span class="k">def</span><span class="w"> </span><span class="nf">write_trailer</span><span class="p">(</span><span class="n">fs</span><span class="p">):</span>
+            <span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%E</span><span class="s1">NDSNX</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            
+        <span class="n">fs</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">sinex_name</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+        <span class="n">write_header</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span>
+        <span class="n">write_section_site</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span>
+        <span class="n">write_section_estimate</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span>
+        <span class="n">write_trailer</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span>
+        <span class="n">fs</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<span class="c1"># GPoint routines</span>
+<span class="c1">###############################################################################</span>
+
+<div class="viewcode-block" id="SSinex.get_STA">
+<a class="viewcode-back" href="../../../api/pyacs.sol.html#pyacs.sol.sinex.SSinex.get_STA">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_STA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">soln</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">soln_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">psd_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">discontinuity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Provides the predicted coordinates for a site at a given epoch. Accounts for soln and psd if provided.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+
+        <span class="c1"># read soln file if provided</span>
+        
+        <span class="k">if</span> <span class="n">soln_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.sol.discontinuity</span><span class="w"> </span><span class="kn">import</span> <span class="n">Discontinuities</span>
+            <span class="n">discontinuity</span> <span class="o">=</span> <span class="n">Discontinuity</span><span class="p">()</span>
+            <span class="n">discontinuity</span><span class="o">.</span><span class="n">read_igs_discontinuity</span><span class="p">(</span><span class="n">soln_file</span><span class="p">)</span>  
+        
+        <span class="c1"># get the soln is not provided</span>
+        
+        <span class="k">if</span> <span class="n">soln</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># get soln from discontinuity</span>
+            
+            <span class="k">if</span> <span class="p">(</span><span class="n">discontinuity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+        
+                <span class="p">(</span><span class="n">mday</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">ut</span><span class="p">)</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2cal</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
+                
+                <span class="n">sod</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">ut2uts</span><span class="p">(</span><span class="n">ut</span><span class="p">))</span>
+                
+                <span class="n">hour</span> <span class="o">=</span> <span class="n">sod</span> <span class="o">//</span> <span class="mi">3600</span>
+                <span class="n">left</span> <span class="o">=</span> <span class="n">sod</span> <span class="o">%</span> <span class="mi">3600</span>
+                <span class="n">minute</span> <span class="o">=</span> <span class="n">left</span> <span class="o">//</span> <span class="mi">60</span>
+                <span class="n">second</span> <span class="o">=</span> <span class="n">left</span> <span class="o">%</span> <span class="mi">60</span>
+
+                <span class="n">mydate</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">epoch</span><span class="p">),</span> <span class="n">month</span><span class="p">,</span> <span class="n">mday</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">)</span>
+
+                <span class="n">solnn</span> <span class="o">=</span> <span class="n">discontinuity</span><span class="o">.</span><span class="n">get_soln</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">mydate</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">solnn</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span><span class="n">soln</span> <span class="o">=</span> <span class="n">solnn</span>
+
+                <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;soln for site </span><span class="si">%s</span><span class="s2"> </span><span class="si">%.5lf</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> from soln file&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">soln</span><span class="p">))</span>
+            
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">soln</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;soln for site </span><span class="si">%s</span><span class="s2"> at epoch </span><span class="si">%s</span><span class="s2"> is </span><span class="si">%s</span><span class="s2"> (non info provided)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">soln</span><span class="p">))</span>
+        
+        <span class="c1"># get propagated coordinates</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">M</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">WARNING</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> not present in sinex&quot;</span> <span class="o">%</span>  <span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">))</span>
+            <span class="k">return</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+
+        <span class="n">delta_t</span> <span class="o">=</span> <span class="p">(</span><span class="n">epoch</span> <span class="o">-</span> <span class="n">M</span><span class="o">.</span><span class="n">epoch</span><span class="p">)</span>
+
+        <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;propagating coordinates from </span><span class="si">%.2lf</span><span class="s2"> to </span><span class="si">%.4lf</span><span class="s2"> delta_t </span><span class="si">%.2lf</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">delta_t</span><span class="p">))</span>
+
+        <span class="n">X_at_epoch</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">X</span> <span class="o">+</span> <span class="n">delta_t</span> <span class="o">*</span> <span class="n">M</span><span class="o">.</span><span class="n">VX</span>
+        <span class="n">Y_at_epoch</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">Y</span> <span class="o">+</span> <span class="n">delta_t</span> <span class="o">*</span> <span class="n">M</span><span class="o">.</span><span class="n">VY</span>
+        <span class="n">Z_at_epoch</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">Z</span> <span class="o">+</span> <span class="n">delta_t</span> <span class="o">*</span> <span class="n">M</span><span class="o">.</span><span class="n">VZ</span>
+        
+        <span class="c1"># adds psd contribution</span>
+        <span class="k">if</span> <span class="n">psd_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.sinex</span><span class="w"> </span><span class="kn">import</span> <span class="n">snxutils</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.coordinates</span>
+
+            <span class="n">sepoch</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2epoch</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
+            <span class="c1"># Compute ENH post-seismic deformations</span>
+
+            <span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.sinex.sinex</span><span class="w"> </span><span class="kn">import</span> <span class="n">sinex</span>
+            <span class="n">psd</span> <span class="o">=</span> <span class="n">sinex</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">psd_file</span><span class="p">)</span>
+            <span class="p">(</span><span class="n">denh</span><span class="p">,</span> <span class="n">_senh</span><span class="p">)</span> <span class="o">=</span> <span class="n">snxutils</span><span class="o">.</span><span class="n">compute_psd</span><span class="p">(</span><span class="n">psd</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">sepoch</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">denh</span><span class="p">):</span>
+                <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;psd for </span><span class="si">%s</span><span class="s2"> : </span><span class="si">%.1lf</span><span class="s2"> mm &quot;</span> <span class="o">%</span><span class="p">(</span> <span class="n">code</span><span class="p">,</span> <span class="n">denh</span> <span class="o">*</span> <span class="mf">1000.</span><span class="p">))</span>
+
+            <span class="c1"># Compute XYZ post-seismic deformations</span>
+            <span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">_he</span><span class="p">)</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">xyz2geo</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">Z</span><span class="p">)</span>
+            <span class="n">R</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">mat_rot_local_to_general</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+            <span class="n">dxyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">denh</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+            <span class="c1"># Add post-seismic deformations</span>
+            <span class="n">X_at_epoch</span> <span class="o">=</span> <span class="n">X_at_epoch</span> <span class="o">+</span> <span class="n">dxyz</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">Y_at_epoch</span> <span class="o">=</span> <span class="n">Y_at_epoch</span> <span class="o">+</span> <span class="n">dxyz</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">Z_at_epoch</span> <span class="o">=</span> <span class="n">Z_at_epoch</span> <span class="o">+</span> <span class="n">dxyz</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="k">return</span><span class="p">([</span><span class="n">X_at_epoch</span><span class="p">,</span> <span class="n">Y_at_epoch</span><span class="p">,</span> <span class="n">Z_at_epoch</span><span class="p">])</span></div>
+
+      
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="SSinex.print_STA">
+<a class="viewcode-back" href="../../../api/pyacs.sol.html#pyacs.sol.sinex.SSinex.print_STA">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_STA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        print STA values for a given code and optional soln</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+
+
+        <span class="k">if</span> <span class="n">soln</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">M</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span>
+                <span class="n">VERBOSE</span><span class="p">((</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> STAX </span><span class="si">%18.4lf</span><span class="s2"> STAY </span><span class="si">%18.4lf</span><span class="s2"> STAZ </span><span class="si">%18.4lf</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">soln</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">Z</span><span class="p">)))</span>
+                <span class="n">VERBOSE</span><span class="p">((</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> STAX </span><span class="si">%18.4lf</span><span class="s2"> STAY </span><span class="si">%18.4lf</span><span class="s2"> STAZ </span><span class="si">%18.4lf</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">soln</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">Z</span><span class="p">)))</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">WARNING</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> not present in </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">ccode</span><span class="p">,</span> <span class="n">csoln</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">ccode</span> <span class="o">==</span> <span class="n">code</span><span class="p">):</span>
+                        <span class="n">M</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">csoln</span><span class="p">]</span>
+                        <span class="n">VERBOSE</span><span class="p">((</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> STAX </span><span class="si">%18.4lf</span><span class="s2"> STAY </span><span class="si">%18.4lf</span><span class="s2"> STAZ </span><span class="si">%18.4lf</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">soln</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">Z</span><span class="p">)))</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">WARNING</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> not present in </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="SSinex.add_to_STA">
+<a class="viewcode-back" href="../../../api/pyacs.sol.html#pyacs.sol.sinex.SSinex.add_to_STA">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_to_STA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">,</span> <span class="n">add_sta</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        add sta [dx,dx,dz] to STA values for a given code and soln</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+
+
+        <span class="n">M</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span>
+        <span class="n">VERBOSE</span><span class="p">((</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> STAX </span><span class="si">%18.4lf</span><span class="s2"> STAY </span><span class="si">%18.4lf</span><span class="s2"> STAZ </span><span class="si">%18.4lf</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">soln</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">Z</span><span class="p">)))</span>
+        <span class="n">VERBOSE</span><span class="p">((</span><span class="s2">&quot;adding x=</span><span class="si">%10.4lf</span><span class="s2"> y=</span><span class="si">%10.4lf</span><span class="s2"> z=</span><span class="si">%10.4lf</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">add_sta</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">add_sta</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">add_sta</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span>
+        <span class="n">M</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">X</span> <span class="o">+</span> <span class="n">add_sta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">M</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">X</span> <span class="o">+</span> <span class="n">add_sta</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">M</span><span class="o">.</span><span class="n">Z</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">X</span> <span class="o">+</span> <span class="n">add_sta</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">VERBOSE</span><span class="p">((</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> STAX </span><span class="si">%18.4lf</span><span class="s2"> STAY </span><span class="si">%18.4lf</span><span class="s2"> STAZ </span><span class="si">%18.4lf</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">soln</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">Z</span><span class="p">)))</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="SSinex.change_STA">
+<a class="viewcode-back" href="../../../api/pyacs.sol.html#pyacs.sol.sinex.SSinex.change_STA">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">change_STA</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">,</span> <span class="n">add_sta</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        change STA values for a given code and soln</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+
+        <span class="n">M</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span>
+        <span class="n">VERBOSE</span><span class="p">((</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> STAX </span><span class="si">%18.4lf</span><span class="s2"> STAY </span><span class="si">%18.4lf</span><span class="s2"> STAZ </span><span class="si">%18.4lf</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">soln</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">Z</span><span class="p">)))</span>
+        <span class="n">M</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">add_sta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">M</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">add_sta</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">M</span><span class="o">.</span><span class="n">Z</span> <span class="o">=</span> <span class="n">add_sta</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">VERBOSE</span><span class="p">((</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> STAX </span><span class="si">%18.4lf</span><span class="s2"> STAY </span><span class="si">%18.4lf</span><span class="s2"> STAZ </span><span class="si">%18.4lf</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">soln</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">Z</span><span class="p">)))</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="SSinex.site">
+<a class="viewcode-back" href="../../../api/pyacs.sol.html#pyacs.sol.sinex.SSinex.site">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">site</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        return site for a given code and soln</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">])</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="SSinex.info_gpoint">
+<a class="viewcode-back" href="../../../api/pyacs.sol.html#pyacs.sol.sinex.SSinex.info_gpoint">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">info_gpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Print info for a given code and optionally soln</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.debug</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">icecream</span><span class="w"> </span><span class="kn">import</span> <span class="n">ic</span>
+
+        <span class="k">if</span> <span class="n">soln</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">M</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">soln</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">debug</span><span class="p">():</span>
+                <span class="n">ic</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="s1">&#39;code, pt soln epoch&#39;</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">pt</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">soln</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">epoch</span><span class="p">)</span>
+                <span class="n">ic</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="s1">&#39;XYZ&#39;</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">posxyz</span><span class="p">())</span>
+                <span class="n">ic</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="s1">&#39;VXYZ&#39;</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">velxyz</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">ccode</span><span class="p">,</span> <span class="n">csoln</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                <span class="k">if</span> <span class="n">code</span> <span class="o">==</span> <span class="n">ccode</span><span class="p">:</span>
+                    <span class="n">M</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span><span class="n">code</span><span class="p">,</span> <span class="n">csoln</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">debug</span><span class="p">():</span>
+                        <span class="n">ic</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="s1">&#39;code, pt soln epoch&#39;</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">pt</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">soln</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">epoch</span><span class="p">)</span>
+                        <span class="n">ic</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="s1">&#39;XYZ&#39;</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">posxyz</span><span class="p">())</span>
+                        <span class="n">ic</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="s1">&#39;VXYZ&#39;</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">velxyz</span><span class="p">())</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="SSinex.lcode">
+<a class="viewcode-back" href="../../../api/pyacs.sol.html#pyacs.sol.sinex.SSinex.lcode">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">lcode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a list of all point codes in current Sinex object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lcode</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">M</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lcode</span><span class="p">):</span><span class="n">lcode</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">lcode</span><span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="SSinex.read_apr">
+<a class="viewcode-back" href="../../../api/pyacs.sol.html#pyacs.sol.sinex.SSinex.read_apr">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read_apr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lexclude</span><span class="o">=</span><span class="p">[],</span> <span class="n">discontinuity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read a Globk apr file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        lexclude : list, optional</span>
+<span class="sd">            Site codes to exclude from reading.</span>
+<span class="sd">        discontinuity : object, optional</span>
+<span class="sd">            If provided, used to populate the SOLN field (e.g. from Discontinuity/IGS soln).</span>
+<span class="sd">        rename : dict, optional</span>
+<span class="sd">            Keys: sinex file; values: list of (&#39;OLD_CODE&#39;, &#39;NEW_CODE&#39;). Often from Read_Conf_Pyacs.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            Dictionary with (CODE, SOLN) keys and Gpoint instance values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">icecream</span><span class="w"> </span><span class="kn">import</span> <span class="n">ic</span>
+
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.sol.gpoint</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gpoint</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+
+        <span class="c1"># DEAL WITH RENAME IF PROVIDED</span>
+        
+        <span class="k">if</span> <span class="n">rename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            
+            <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Rename info provided for apr file: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+            <span class="n">H_rename</span> <span class="o">=</span> <span class="p">{}</span>
+
+            <span class="c1"># Case for a CODE rename applying for all SINEX files</span>
+            <span class="k">if</span> <span class="s1">&#39;all&#39;</span> <span class="ow">in</span> <span class="n">rename</span><span class="p">:</span>
+                
+                <span class="k">for</span> <span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">new_code</span><span class="p">)</span> <span class="ow">in</span> <span class="n">rename</span><span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">]:</span>
+                    <span class="n">H_rename</span><span class="p">[</span><span class="n">code</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_code</span>
+            
+            <span class="c1"># Case for a CODE rename applying for the current SINEX</span>
+            
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">rename</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+
+                <span class="k">for</span> <span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">new_code</span><span class="p">)</span> <span class="ow">in</span> <span class="n">rename</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]:</span>
+                    <span class="n">H_rename</span><span class="p">[</span><span class="n">code</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_code</span>
+        
+        <span class="c1"># READING APR FILE</span>
+        
+        <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Reading Globk apr file </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">APR_VALUE</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="s1">&#39;#&#39;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">13</span><span class="p">))</span>
+            <span class="n">APR_NAME</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="s1">&#39;#&#39;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">ERROR</span><span class="p">((</span><span class="s2">&quot;Could not read Globk format apr file: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="n">exit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1">#        ic(APR_VALUE)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span> <span class="n">APR_VALUE</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="p">:</span>
+            <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;processing </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">APR_NAME</span><span class="p">[</span><span class="n">i</span><span class="p">][:</span><span class="mi">4</span><span class="p">])</span>
+            <span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">vx</span><span class="p">,</span><span class="n">vy</span><span class="p">,</span><span class="n">vz</span><span class="p">,</span><span class="n">epoch</span><span class="p">,</span> <span class="n">sx</span><span class="p">,</span><span class="n">sy</span><span class="p">,</span><span class="n">sz</span><span class="p">,</span><span class="n">svx</span><span class="p">,</span><span class="n">svy</span><span class="p">,</span><span class="n">svz</span><span class="p">]</span><span class="o">=</span> <span class="n">APR_VALUE</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span>
+            <span class="n">M</span><span class="o">=</span><span class="n">Gpoint</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">x</span><span class="p">,</span><span class="n">Y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span><span class="n">Z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span>\
+                     <span class="n">SX</span><span class="o">=</span><span class="n">sx</span><span class="p">,</span><span class="n">SY</span><span class="o">=</span><span class="n">sy</span><span class="p">,</span><span class="n">SZ</span><span class="o">=</span><span class="n">sz</span><span class="p">,</span>\
+                     <span class="n">VX</span><span class="o">=</span><span class="n">vx</span><span class="p">,</span><span class="n">VY</span><span class="o">=</span><span class="n">vy</span><span class="p">,</span><span class="n">VZ</span><span class="o">=</span><span class="n">vz</span><span class="p">,</span><span class="n">SVX</span><span class="o">=</span><span class="n">svx</span><span class="p">,</span><span class="n">SVY</span><span class="o">=</span><span class="n">svy</span><span class="p">,</span><span class="n">SVZ</span><span class="o">=</span><span class="n">svz</span><span class="p">,</span> \
+                     <span class="n">epoch</span><span class="o">=</span><span class="n">epoch</span><span class="p">,</span><span class="n">code</span><span class="o">=</span><span class="n">APR_NAME</span><span class="p">[</span><span class="n">i</span><span class="p">][:</span><span class="mi">4</span><span class="p">],</span><span class="n">pt</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="n">soln</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1">#            ic(M.VX)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">estimates</span><span class="p">[</span> <span class="n">APR_NAME</span><span class="p">[</span><span class="n">i</span><span class="p">][:</span><span class="mi">4</span><span class="p">],</span> <span class="mi">1</span> <span class="p">]</span> <span class="o">=</span> <span class="n">M</span></div>
+</div>
+
+            
+                 
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">PYACS</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Jean-Mathieu NOCQUET.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

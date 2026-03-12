@@ -30,60 +30,76 @@ def plot(self,
          xlabel_fmt = None,
          **kwargs):
 ###############################################################################
-    """
-    Create a plot of a North-East-Up time series and related info (offsets, outliers) using Matplotlib
+    """Plot North-East-Up time series with offsets/outliers using Matplotlib.
 
-    Coordinates of the time series are assumed to be in meters
-    default plots units will be mm; Use unit='m' to get meters instead
+    Coordinates in meters; default display unit is mm (use unit='m' for meters).
 
-    :param title: string to be added to the site name as a plot title
-    :param loffset: boolean
-        print a dash vertical line at offset dates
-    :param loutliers: boolean
-        print outliers
-    :param verbose: boolean
-        verbose mode
-    :param date: [sdate,edate]
-        start and end date for plots
-        sdate and edate in decimal years if date_unit is either 'decyear' or 'cal', or in days if date_unit is 'days'
-    :param yaxis: [min_y,max_y]
-        min and max value for the yaxis
-        if not provided automatically adjusted
-    :param yupaxis: same as yaxis but applies to the up component only
-    :param xticks_minor_locator: where xticks_minor_locator will be placed. Float when date_unit is 'decyear' or 'days', a string '%Y','%m','%d' is date_unit is 'cal'.  
-    :param lcomponent: list of components to be plotted (default =['N','E','U'])
-    :param error_scale: scaling factor for error bars (default = 1.0, 0 means no error bar)
-    :param lperiod: list of periods to be drawn in background (color=light salmon)
-    :param lvline: list of dates where vertical lines will be drawn in background (color=green)
-    :param save_dir_plots: directory used for saving the plots
-    :param save: name, save the plot into name, if simply True an automatic name is given
-    :param show: boolean, is True show the plot
-    :param unit: 'm','cm','mm', default='mm'
-    :param date_unit: 'decyear' or 'cal' or 'days', default='decyear'
-    :param date_ref: reference date, default=0.0
-    :param center: boolean, if True the y_axis is centered around the mean value for the plotted period
-    :param superimposed: if a gts is provided, it is superimposed to the master, default=None
-    :param lcolor: color list used for the superimposed time series, default=['r','g','c','m','y','k','b']
-    :param label: label for superimposed time series to be displayed in legend, default=None
-    :param legend: boolean. Set true to display label for superimposed time series, default=False
-    :param set_zero_at_date: date at which the master and superimposed gts will be equal (default=None). date can also be a list with [date,offset_north,offset_east,offset_up]
-    :param plot_size: plot size as a tuple. Default, best guess.
-    :param grid: boolean
-    :param info: title to appear in time series subplots
-    :param **kwargs: any argument to be passed to  matplotlib.pyplot.errorbar
+    Parameters
+    ----------
+    title : str, optional
+        Plot title (added to site name). Default is None.
+    loffset : bool, optional
+        Draw vertical lines at offset dates. Default is True.
+    loutliers : bool, optional
+        Plot outliers. Default is True.
+    verbose : bool, optional
+        Verbose mode. Default is False.
+    date : list, optional
+        [sdate, edate] for plot range (decimal years or days per date_unit). Default is [].
+    yaxis : list, optional
+        [min_y, max_y] for y-axis; auto if not provided.
+    min_yaxis : list, optional
+        Alternative y-axis limits.
+    yupaxis : list, optional
+        Same as yaxis for Up component only.
+    xticks_minor_locator : float or str, optional
+        Minor tick spacing; float for 'decyear'/'days', str e.g. '%Y' for 'cal'. Default is 1.
+    lcomponent : list, optional
+        Components to plot. Default is ['N','E','U'].
+    error_scale : float, optional
+        Error bar scale (0 = no bars). Default is 1.0.
+    lperiod : list or dict, optional
+        Background periods (light salmon); or dict per component. Default is [[]].
+    lvline : list, optional
+        Dates for vertical lines (green). Default is [].
+    save_dir_plots : str, optional
+        Directory for saving. Default is '.'.
+    save : bool or str, optional
+        True = auto name, or filename. Default is None.
+    show : bool, optional
+        If True, show plot. Default is True.
+    unit : str, optional
+        'm', 'cm', 'mm'. Default is 'mm'.
+    date_unit : str, optional
+        'decyear', 'cal', or 'days'. Default is 'cal'.
+    date_ref : float, optional
+        Reference date. Default is 0.0.
+    center : bool, optional
+        Center y-axis on mean. Default is True.
+    superimposed : Gts, optional
+        Gts to overlay. Default is None.
+    lcolor : list, optional
+        Colors for superimposed. Default is ['r','g','c','m','y','k','b'].
+    label : str, optional
+        Legend label for superimposed. Default is None.
+    legend : bool, optional
+        Show legend. Default is False.
+    set_zero_at_date : float or list, optional
+        Date (or [date, off_n, off_e, off_u]) to align master and superimposed. Default is None.
+    grid : bool, optional
+        Draw grid. Default is True.
+    plot_size : tuple, optional
+        Figure size. Default is best guess.
+    info : list, optional
+        Titles for subplots. Default is [].
+    xlabel_fmt : str, optional
+        Format for x-axis labels. Default is None.
+    **kwargs : dict, optional
+        Passed to matplotlib.pyplot.errorbar (linewidth, marker, markersize, etc.).
 
-    :note: The list of kwargs are:
-    
-    {  'linewidth' : 0,\
-       'marker' : marker_main_symbol ,\
-       'markersize' : marker_main_size, \
-       'markerfacecolor' : marker_main_color,\
-       'markeredgecolor' : marker_main_color,\
-       'markeredgewidth' : marker_main_colorlw,\
-       'ecolor' : error_bar_color,\
-       'elinewidth' : error_bar_linewidth,\
-       'capsize' : error_bar_capsize }
-
+    Returns
+    -------
+    None
     """
 
     ###########################################################################
@@ -146,9 +162,20 @@ def plot(self,
     
     
     ###########################################################################
-    # ensure lperiod is a list of list
+    # ensure lperiod is a dictionnary of list of list
     ###########################################################################
-    lperiod = pyacs.lib.utils.__ensure_list_of_list( lperiod )
+    if isinstance(lperiod,dict):
+        for component in ['E','N','U']:
+            if component in lperiod:
+                lperiod[component] = pyacs.lib.utils.__ensure_list_of_list( lperiod[component] )
+            else:
+                lperiod[component] = []
+    else:
+        lperiod_all_components = pyacs.lib.utils.__ensure_list_of_list( lperiod )
+        lperiod = {}
+        for component in ['E','N','U']:
+            lperiod[component] = lperiod_all_components
+
     
     ###########################################################################
     # init default plot settings
@@ -167,7 +194,7 @@ def plot(self,
     plt.ioff()
     
     # some drawing default parameters
-    params = {'legend.fontsize': 5}
+    params = {'legend.fontsize': 8}
     plt.rcParams.update(params)
 
     # For figure caption
@@ -252,10 +279,11 @@ def plot(self,
     ###########################################################################
     f.autofmt_xdate(bottom=0.2, rotation=30, ha='right')
 
-# handle case where only one component and ax is not subscriptable
+    # handle case where only one component and ax is not subscriptable
     if not isinstance(ax,np.ndarray):
         ax = np.array([ ax ])
 
+    # get data
     np_date , data = pyacs.gts.lib.plot.gts_to_ts.gts_to_ts( self , \
                                                              date=date, \
                                                              unit=unit , \
@@ -263,8 +291,40 @@ def plot(self,
                                                              date_ref=date_ref, \
                                                              set_zero_at_date = set_zero_at_date, \
                                                              center = center )
-   
-# master time series
+    # get date axis
+
+    if date == []:
+        fake_gts = self.copy(loutliers=False)
+        fake_gts.data = np.copy(self.data[:2,:])
+        if self.data.shape[0] > 2:
+            fake_gts.data[1,0] = self.data[-1,0]
+        else:
+            # time series only has one epoch
+            fake_gts.data = np.zeros((2,10))
+            fake_gts.data[0,0] = self.data[0,0] - 1/365.25
+            fake_gts.data[1,0] = self.data[0,0] + 1/365.25
+        np_date_axis , _ = pyacs.gts.lib.plot.gts_to_ts.gts_to_ts( fake_gts , \
+                                                             date=date, \
+                                                             unit=unit , \
+                                                             date_unit=date_unit , \
+                                                             date_ref=date_ref, \
+                                                             center = center )
+    else:
+
+        fake_gts = self.copy(loutliers=False)
+        fake_gts.data = np.copy(self.data[:2,:])
+        fake_gts.data[0,0] = date[0]
+        fake_gts.data[1,0] = date[1]
+
+        np_date_axis , _ = pyacs.gts.lib.plot.gts_to_ts.gts_to_ts( fake_gts , \
+                                                             date=date, \
+                                                             unit=unit , \
+                                                             date_unit=date_unit , \
+                                                             date_ref=date_ref, \
+                                                             center = center )
+
+
+    # master time series
     ###########################################################################
     idx_ax = 0
 
@@ -287,7 +347,7 @@ def plot(self,
 
         # plot outliers
         if self.outliers != []:
-            ax[idx_ax].plot(np_date[self.outliers],data[self.outliers,idx], 'ro' , markersize=H_kwargs_errorbar['markersize'])
+            ax[idx_ax].plot(np_date[self.outliers],data[self.outliers,idx], 'r*' , markersize=H_kwargs_errorbar['markersize']+5)
             
 
 
@@ -381,27 +441,55 @@ def plot(self,
     ###########################################################################
          
     if lperiod != [[]]:
-        if date_unit == 'days':
-            if (date_ref is None) or (date_ref == 0):
-                # reference data is year.000
-                date_ref=float(int(self.data[0,0]))
+        # Handle lperiod as dictionary with component keys or as list
+        if isinstance(lperiod, dict):
+            # Dictionary case: lperiod has keys for each component
+            idx_ax = 0
+            for component in lcomponent:
+                if component in lperiod:
+                    component_periods = lperiod[component]
+                    
+                    if date_unit == 'days':
+                        if (date_ref is None) or (date_ref == 0):
+                            # reference data is year.000
+                            date_ref=float(int(self.data[0,0]))
+                        component_periods=pyacs.lib.astrotime.day_since_decyear(np.array(component_periods).flatten(),date_ref).reshape(-1,2)
+                    
+                    if date_unit == 'decyear':
+                        component_periods=(np.array(component_periods).flatten()-date_ref).reshape(-1,2)
+                    
+                    if date_unit == 'cal':
+                        component_periods=np.array( pyacs.lib.astrotime.decyear2datetime(np.array(component_periods).flatten())).reshape(-1,2)
+                
+                    # plot color background for periods for this component
+                    for period in component_periods:
+                        (sdate,edate)=period
+                        ax[idx_ax].axvspan(sdate, edate, facecolor=lperiod_facecolor, alpha=lperiod_alpha)
+                
+                idx_ax = idx_ax + 1
+        else:
+            # List case: same periods for all components (original behavior)
+            if date_unit == 'days':
+                if (date_ref is None) or (date_ref == 0):
+                    # reference data is year.000
+                    date_ref=float(int(self.data[0,0]))
 
-            lperiod=pyacs.lib.astrotime.day_since_decyear(np.array(lperiod).flatten(),date_ref).reshape(-1,2)
-        
-        if date_unit == 'decyear':
-            lperiod=(np.array(lperiod).flatten()-date_ref).reshape(-1,2)
-        
-        if date_unit == 'cal':
-            lperiod=np.array( pyacs.lib.astrotime.decyear2datetime(np.array(lperiod).flatten())).reshape(-1,2)
-    
-        # plot color background for periods
-        idx_ax = 0
-        for component in lcomponent:
-            for period in lperiod:
-                (sdate,edate)=period
-                ax[idx_ax].axvspan(sdate, edate, facecolor=lperiod_facecolor, alpha=lperiod_alpha)
+                lperiod=pyacs.lib.astrotime.day_since_decyear(np.array(lperiod).flatten(),date_ref).reshape(-1,2)
             
-            idx_ax = idx_ax + 1
+            if date_unit == 'decyear':
+                lperiod=(np.array(lperiod).flatten()-date_ref).reshape(-1,2)
+            
+            if date_unit == 'cal':
+                lperiod=np.array( pyacs.lib.astrotime.decyear2datetime(np.array(lperiod).flatten())).reshape(-1,2)
+        
+            # plot color background for periods
+            idx_ax = 0
+            for component in lcomponent:
+                for period in lperiod:
+                    (sdate,edate)=period
+                    ax[idx_ax].axvspan(sdate, edate, facecolor=lperiod_facecolor, alpha=lperiod_alpha)
+                
+                idx_ax = idx_ax + 1
     
     # vertical lines option
     ###########################################################################
@@ -461,35 +549,35 @@ def plot(self,
     # date
     ###########################################################################
 
-    if date != []:
+    # if date != []:
 
-        # case 'days'
-        if date_unit == 'days':
-            if (date_ref is None) or (date_ref == 0):
-                np_date_x = pyacs.lib.astrotime.decyear2mjd(np.array(date)) - pyacs.lib.astrotime.decyear2mjd(
-                    date[0])
-            else:
-                np_date_x = pyacs.lib.astrotime.decyear2mjd(np.array(date)) - pyacs.lib.astrotime.decyear2mjd(
-                    date_ref)
+    #     # case 'days'
+    #     if date_unit == 'days':
+    #         if (date_ref is None) or (date_ref == 0):
+    #             np_date_x = pyacs.lib.astrotime.decyear2mjd(np.array(date)) - pyacs.lib.astrotime.decyear2mjd(
+    #                 date[0])
+    #         else:
+    #             np_date_x = pyacs.lib.astrotime.decyear2mjd(np.array(date)) - pyacs.lib.astrotime.decyear2mjd(
+    #                 date_ref)
 
-        # case 'decyear'
-        if date_unit == 'decyear':
-            if (date_ref is None) or (date_ref == 0):
-                np_date_x = np.array(date)
-            else:
-                np_date_x = np.array(date) - date_ref
+    #     # case 'decyear'
+    #     if date_unit == 'decyear':
+    #         if (date_ref is None) or (date_ref == 0):
+    #             np_date_x = np.array(date)
+    #         else:
+    #             np_date_x = np.array(date) - date_ref
 
-        # case 'cal'
-        if date_unit == 'cal':
-            np_date_x = pyacs.lib.astrotime.decyear2datetime(np.array(date))
-        idx_ax = 0
-        for component in lcomponent:
-            if component in ['N', 'E']:
-                ax[idx_ax].set_xlim(np_date_x[0], np_date_x[1])
-            if component == 'U' and yupaxis is not None:
-                ax[idx_ax].set_xlim(np_date_x[0], np_date_x[1])
+    #     # case 'cal'
+    #     if date_unit == 'cal':
+    #         np_date_x = pyacs.lib.astrotime.decyear2datetime(np.array(date))
+    idx_ax = 0
+    for component in lcomponent:
+        if component in ['N', 'E']:
+            ax[idx_ax].set_xlim(np_date_axis[0], np_date_axis[1])
+        if component == 'U' and yupaxis is not None:
+            ax[idx_ax].set_xlim(np_date_axis[0], np_date_axis[1])
 
-            idx_ax = idx_ax + 1
+        idx_ax = idx_ax + 1
 
     # X Label
     ###########################################################################
@@ -563,12 +651,20 @@ def plot(self,
     # legend
     ###########################################################################
 
-    if legend:
-        idx_ax = 0
-        for component in lcomponent:
-            ax[idx_ax].legend()
-            idx_ax = idx_ax + 1
-        
+    if isinstance(legend,int) :
+        if legend != 0:
+            idx_ax = 0
+            for component in lcomponent:
+                ax[idx_ax].legend(fontsize=legend)
+                idx_ax = idx_ax + 1
+
+    if isinstance(legend,bool) :
+        if legend:
+            idx_ax = 0
+            for component in lcomponent:
+                ax[idx_ax].legend()
+                idx_ax = idx_ax + 1
+
 
     # tight_layout
     ###########################################################################

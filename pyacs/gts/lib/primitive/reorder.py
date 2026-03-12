@@ -2,10 +2,17 @@
 def reorder(self,verbose=False):
 ###################################################################
     """
-    reorder data and/or data_xyz by increasing dates
-    always in place
-    
-    :param verbose: verbose mode
+    Reorder .data and/or .data_xyz by increasing dates (always in place).
+
+    Parameters
+    ----------
+    verbose : bool, optional
+        Verbose mode.
+
+    Returns
+    -------
+    Gts
+        self (modified in place).
     """
     
     # import

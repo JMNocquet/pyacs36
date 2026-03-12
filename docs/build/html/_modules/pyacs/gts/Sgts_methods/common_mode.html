@@ -1,0 +1,296 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.gts.Sgts_methods.common_mode &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../libraries.html">core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyacs.gts.Sgts_methods.common_mode</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyacs.gts.Sgts_methods.common_mode</h1><div class="highlight"><pre>
+<span></span><span class="c1">###################################################################</span>
+<div class="viewcode-block" id="common_mode">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.Sgts_methods.common_mode.html#pyacs.gts.Sgts_methods.common_mode.common_mode">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">common_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lref</span><span class="o">=</span><span class="p">[]</span> <span class="p">,</span> <span class="n">detrend_method</span><span class="o">=</span><span class="s1">&#39;detrend_median&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;median&#39;</span> <span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute and remove common mode from time series.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    lref : list, optional</span>
+<span class="sd">        Site codes for reference (common mode). Default is [].</span>
+<span class="sd">    detrend_method : str, optional</span>
+<span class="sd">        &#39;detrend_median&#39; or &#39;detrend&#39; for reference series. Default is &#39;detrend_median&#39;.</span>
+<span class="sd">    method : str, optional</span>
+<span class="sd">        &#39;median&#39; or &#39;mean&#39; for common mode. Default is &#39;median&#39;.</span>
+<span class="sd">    center : bool, optional</span>
+<span class="sd">        If True, center the stack. Default is True.</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        Verbose mode. Default is True.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Sgts</span>
+<span class="sd">        New Sgts with filtered series and _CMM for the common mode.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Assumes daily time series.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="c1"># import  </span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.gts.lib.tensor_ts.sgts2obs_tensor</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.gts.lib.tensor_ts.obs_tensor2sgts</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.gts.Gts</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gts</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">at</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.coordinates</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">coor</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">icecream</span><span class="w"> </span><span class="kn">import</span> <span class="n">ic</span>
+
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Running Sgts.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span><span class="p">)</span>
+
+    <span class="c1"># check lref</span>
+    <span class="k">if</span> <span class="n">lref</span><span class="o">==</span><span class="p">[]:</span>
+        <span class="n">ERROR</span><span class="p">(</span><span class="s2">&quot;lref argument must include at least one site.&quot;</span><span class="p">,</span> <span class="n">exit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># detrend for the reference sites</span>
+
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;detrending using method </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">detrend_method</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">detrend_method</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">linclude</span><span class="o">=</span><span class="n">lref</span><span class="p">)</span><span class="o">.</span><span class="n">gts</span><span class="p">(</span> <span class="n">detrend_method</span> <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">linclude</span><span class="o">=</span><span class="n">lref</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="c1"># filter out None</span>
+    <span class="n">ndts</span> <span class="o">=</span> <span class="n">dts</span><span class="o">.</span><span class="n">delnone</span><span class="p">()</span>
+
+    <span class="c1"># creates an obs_tensor instance from the detrend time series</span>
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Converting to obs tensor&quot;</span><span class="p">)</span>
+    <span class="n">T_OBS_RAW_REF</span> <span class="p">,</span> <span class="n">np_names_t_obs_ref</span><span class="p">,</span> <span class="n">np_obs_date_s_ref</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">tensor_ts</span><span class="o">.</span><span class="n">sgts2obs_tensor</span><span class="o">.</span><span class="n">sgts2tensor</span><span class="p">(</span> <span class="n">ndts</span><span class="p">,</span> <span class="n">rounding</span><span class="o">=</span><span class="s1">&#39;day&#39;</span> <span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span> <span class="p">)</span>
+    
+    <span class="c1"># center time series</span>
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Centering time series&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">center</span><span class="p">:</span>
+        <span class="n">T_OBS_RAW_REF</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">T_OBS_RAW_REF</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span> <span class="n">T_OBS_RAW_REF</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span> <span class="p">)</span>
+        <span class="n">T_OBS_RAW_REF</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">T_OBS_RAW_REF</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span> <span class="n">T_OBS_RAW_REF</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span> <span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span> <span class="p">)</span>
+        <span class="n">T_OBS_RAW_REF</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">T_OBS_RAW_REF</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span> <span class="n">T_OBS_RAW_REF</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">]</span> <span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    
+    <span class="c1"># get the index of sites used for the common mode</span>
+    
+    <span class="c1">#lidx_code = []</span>
+    
+    <span class="c1">#for i in np.arange(np_names_t_obs.shape[0]):</span>
+    <span class="c1">#    if np_names_t_obs[i] in lref:</span>
+    <span class="c1">#         lidx_code.append(i)</span>
+    
+    <span class="c1">#np_idx_code = np.array( sorted( lidx_code ) )</span>
+    
+    <span class="c1"># compute common mode</span>
+
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Computing common mode&quot;</span><span class="p">)</span>
+
+    <span class="c1">#T_OBS_RAW_REF = T_OBS_RAW[:, np_idx_code, :]</span>
+    
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;median&#39;</span><span class="p">:</span>
+        <span class="n">CMM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">T_OBS_RAW_REF</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;mean&#39;</span><span class="p">:</span>
+        <span class="n">CMM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">T_OBS_RAW_REF</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># creates an obs_tensor instance from the original time series</span>
+    
+    <span class="n">T_OBS_RAW</span> <span class="p">,</span> <span class="n">np_names_t_obs</span><span class="p">,</span> <span class="n">np_obs_date_s</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">tensor_ts</span><span class="o">.</span><span class="n">sgts2obs_tensor</span><span class="o">.</span><span class="n">sgts2tensor</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">rounding</span><span class="o">=</span><span class="s1">&#39;day&#39;</span> <span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span> <span class="p">)</span>
+    
+    <span class="c1"># check that dates are the same</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span> <span class="n">np_obs_date_s</span> <span class="o">==</span> <span class="n">np_obs_date_s_ref</span> <span class="p">):</span>
+        <span class="n">WARNING</span><span class="p">(</span><span class="s2">&quot;The list of reference sites for common mode does not provide a common mode estimate at every date&quot;</span><span class="p">)</span>
+        <span class="n">ERROR</span><span class="p">(</span><span class="s2">&quot;Try interpolation&quot;</span><span class="p">,</span> <span class="n">exit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    
+    <span class="c1"># remove common mode</span>
+
+
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Removing common mode&quot;</span><span class="p">)</span>
+
+    <span class="n">T_OBS_RAW</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">T_OBS_RAW</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">CMM</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">T_OBS_RAW</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">T_OBS_RAW</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">CMM</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">T_OBS_RAW</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">T_OBS_RAW</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">CMM</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="c1"># dispersion of the common mode</span>
+    <span class="c1"># TBD</span>
+    
+    
+    <span class="c1"># converts obs_tensor object to Sgts</span>
+
+
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Creating filtered Sgts&quot;</span><span class="p">)</span>
+
+    <span class="n">filtered_sgts</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">tensor_ts</span><span class="o">.</span><span class="n">obs_tensor2sgts</span><span class="o">.</span><span class="n">obs_tensor2sgts</span><span class="p">(</span> <span class="n">T_OBS_RAW</span> <span class="p">,</span> <span class="n">np_names_t_obs</span><span class="p">,</span> <span class="n">np_obs_date_s</span> <span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+    
+    <span class="c1"># adds the common mode time series</span>
+    
+    <span class="n">cmm_ts</span> <span class="o">=</span> <span class="n">Gts</span><span class="p">(</span> <span class="n">code</span><span class="o">=</span><span class="s1">&#39;_CMM&#39;</span> <span class="p">)</span>
+    
+    <span class="c1"># get index where values are Nan</span>
+    
+    <span class="n">lindex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span> <span class="n">CMM</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>  <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span> <span class="n">lindex</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="mi">10</span> <span class="p">)</span> <span class="p">)</span>
+    
+    <span class="c1"># obs_tensor is ENU and Gts are NEU</span>
+    <span class="n">data</span><span class="p">[</span> <span class="p">:</span> <span class="p">,</span> <span class="mi">2</span> <span class="p">]</span> <span class="o">=</span> <span class="n">CMM</span><span class="p">[</span> <span class="n">lindex</span> <span class="p">,</span> <span class="mi">0</span> <span class="p">]</span> <span class="o">*</span> <span class="mf">1E-3</span>
+    <span class="n">data</span><span class="p">[</span> <span class="p">:</span> <span class="p">,</span> <span class="mi">1</span> <span class="p">]</span> <span class="o">=</span> <span class="n">CMM</span><span class="p">[</span> <span class="n">lindex</span> <span class="p">,</span> <span class="mi">1</span> <span class="p">]</span> <span class="o">*</span> <span class="mf">1E-3</span>    
+    <span class="n">data</span><span class="p">[</span> <span class="p">:</span> <span class="p">,</span> <span class="mi">3</span> <span class="p">]</span> <span class="o">=</span> <span class="n">CMM</span><span class="p">[</span> <span class="n">lindex</span> <span class="p">,</span> <span class="mi">2</span> <span class="p">]</span> <span class="o">*</span> <span class="mf">1E-3</span>
+    <span class="c1"># set std as 1 mm to avoid singularity</span>
+    <span class="n">data</span><span class="p">[</span> <span class="p">:</span> <span class="p">,</span> <span class="mi">4</span> <span class="p">]</span> <span class="o">=</span>  <span class="mf">1E-3</span>
+    <span class="n">data</span><span class="p">[</span> <span class="p">:</span> <span class="p">,</span> <span class="mi">5</span> <span class="p">]</span> <span class="o">=</span>  <span class="mf">1E-3</span>    
+    <span class="n">data</span><span class="p">[</span> <span class="p">:</span> <span class="p">,</span> <span class="mi">6</span> <span class="p">]</span> <span class="o">=</span>  <span class="mf">1E-3</span>
+    
+    
+    <span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">datetime2decyear</span><span class="p">(</span> <span class="n">at</span><span class="o">.</span><span class="n">seconds2datetime</span><span class="p">(</span><span class="n">np_obs_date_s</span><span class="p">[</span><span class="n">lindex</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+
+    <span class="c1"># populate X0, Y0, Z0, lon, lat, he</span>
+    <span class="n">X_cmm</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">Y_cmm</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">Z_cmm</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">filtered_sgts</span><span class="o">.</span><span class="n">lcode</span><span class="p">():</span>
+        <span class="n">filtered_sgts</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">X0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">X0</span>
+        <span class="n">filtered_sgts</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">Y0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">Y0</span>
+        <span class="n">filtered_sgts</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">Z0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">Z0</span>
+
+        <span class="n">filtered_sgts</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">lon</span>
+        <span class="n">filtered_sgts</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">lat</span>
+        <span class="n">filtered_sgts</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">h</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">h</span>
+
+        <span class="n">X_cmm</span> <span class="o">=</span> <span class="n">X_cmm</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">X0</span>
+        <span class="n">Y_cmm</span> <span class="o">=</span> <span class="n">Y_cmm</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">Y0</span>
+        <span class="n">Z_cmm</span> <span class="o">=</span> <span class="n">Z_cmm</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">Z0</span>
+
+
+    <span class="n">cmm_ts</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+    
+    <span class="n">X_cmm</span> <span class="o">=</span> <span class="n">X_cmm</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span> <span class="n">filtered_sgts</span><span class="o">.</span><span class="n">lcode</span><span class="p">()</span> <span class="p">)</span>
+    <span class="n">Y_cmm</span> <span class="o">=</span> <span class="n">Y_cmm</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span> <span class="n">filtered_sgts</span><span class="o">.</span><span class="n">lcode</span><span class="p">()</span> <span class="p">)</span>
+    <span class="n">Z_cmm</span> <span class="o">=</span> <span class="n">Z_cmm</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span> <span class="n">filtered_sgts</span><span class="o">.</span><span class="n">lcode</span><span class="p">()</span> <span class="p">)</span>
+    
+    <span class="n">cmm_ts</span><span class="o">.</span><span class="n">X0</span> <span class="o">=</span> <span class="n">X_cmm</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span> <span class="n">filtered_sgts</span><span class="o">.</span><span class="n">lcode</span><span class="p">()</span> <span class="p">)</span>
+    <span class="n">cmm_ts</span><span class="o">.</span><span class="n">Y0</span> <span class="o">=</span> <span class="n">Y_cmm</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span> <span class="n">filtered_sgts</span><span class="o">.</span><span class="n">lcode</span><span class="p">()</span> <span class="p">)</span>
+    <span class="n">cmm_ts</span><span class="o">.</span><span class="n">Z0</span> <span class="o">=</span> <span class="n">Z_cmm</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span> <span class="n">filtered_sgts</span><span class="o">.</span><span class="n">lcode</span><span class="p">()</span> <span class="p">)</span>
+    
+    <span class="p">(</span> <span class="n">cmm_ts</span><span class="o">.</span><span class="n">lon</span> <span class="p">,</span> <span class="n">cmm_ts</span><span class="o">.</span><span class="n">lat</span> <span class="p">,</span> <span class="n">cmm_ts</span><span class="o">.</span> <span class="n">h</span> <span class="p">)</span> <span class="o">=</span> <span class="n">coor</span><span class="o">.</span><span class="n">xyz2geo</span><span class="p">(</span><span class="n">cmm_ts</span><span class="o">.</span><span class="n">X0</span><span class="p">,</span> <span class="n">cmm_ts</span><span class="o">.</span><span class="n">Y0</span><span class="p">,</span> <span class="n">cmm_ts</span><span class="o">.</span><span class="n">Z0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;dec_deg&#39;</span><span class="p">)</span>
+    
+    <span class="n">filtered_sgts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">cmm_ts</span> <span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">filtered_sgts</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

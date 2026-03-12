@@ -1,107 +1,231 @@
 """
-Reads PRIDE kinematic files
+Read PRIDE kinematic files (PRIDE-PPPAR format).
 """
 
 ###############################################################################
 def read_pride(self,tsdir='.',tsfile=None, xyz=True, verbose=False):
 ###############################################################################
     """
-    Read PRIDE-PPPAR kinematic result file
-    :param tsdir: directory of pride-pppar kinematic files
-    :param tsfile: pride-pppar kinematic file to be loaded
-    :param verbose: verbose mode
-    :return Nothing:
-    :note: If file=None, then read_pride will look for a files named kin_*code
+    Read PRIDE-PPPAR kinematic result file.
+
+    Parameters
+    ----------
+    tsdir : str, optional
+        Directory of pride-pppar kinematic files.
+    tsfile : str, optional
+        Pride-pppar kinematic file to load. If None, looks for kin_*code.
+    xyz : bool, optional
+        If True, keep data in XYZ; otherwise convert to NEU.
+    verbose : bool, optional
+        Verbose mode.
+
+    Notes
+    -----
+    If tsfile is None, read_pride looks for a file named kin_*code.
     """
 
     # import
     import numpy as np
     import pyacs.lib.astrotime
     from glob import glob
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
+    import re
 
-    # name of the file to be read - if not provided, tries to guess
-    
-    if (tsfile is None):
-        if (self.code is not None):
 
-            try:
-                l_pride_file=glob( tsdir+'/kin_*'+self.code.lower() )
-            except:
-                print("!!! Error: Could not find any time series file for code ",self.code)
-                return()
-        else:
-            print("!!! Error: no code or file provided.")
+    def read_old_format(pride_file):
+        """
+        Read PRIDE-PPPAR kinematic result file (old format).
 
-    else:
-        l_pride_file = [ tsfile]
+        Parameters
+        ----------
+        pride_file : str
+            Path to pride-pppar kinematic file.
 
-    if verbose:
-        print('-- will read: ')
-        for pride_file in sorted( l_pride_file ):
-            print("%s" % pride_file)
-    for pride_file in sorted( l_pride_file ):
-        if verbose:
-            print("-- reading: %s " % pride_file)
-        
+        Returns
+        -------
+        None
+            Data are loaded into self.data_xyz and self.data.
+        """
         # read pride file
         data = np.genfromtxt(pride_file,skip_header=3)
         # remove lines with star indicating processing problems
         if np.isnan( data ).any():
-            print("!!!WARNING: Nan found in: %s" % pride_file )
-            print("!!!WARNING: Removing lines: " , np.argwhere(np.isnan(data))[:,0].flatten())
+            WARNING("Nan found in: %s" % pride_file )
+            WARNING("Removing lines: " , np.argwhere(np.isnan(data))[:,0].flatten())
             data = data[~np.isnan(data).any(axis=1)]
-      
+    
         # fill future .data_xyz
         data_mod = np.zeros((data.shape[0],10))
         data_mod[:,4:7] = 1.E-3
-        data_mod[:,0] = data[:,0] + data[:,1] / (60 * 60 * 24. ) 
-
-      
+        data_mod[:,0] = data[:,0] + data[:,1] / (60 * 60 * 24. )
+    
         data_mod[:,1:4] = data[:,2:]
         if self.data_xyz is None:
             self.data_xyz = data_mod
         else:
             self.data_xyz = np.vstack((self.data_xyz,data_mod))
     
-    self.xyz2neu( corr=False , verbose=verbose )
-    self.data_xyz[:,0] = self.data[:,0] = pyacs.lib.astrotime.mjd2decyear( self.data_xyz[:,0] )
+        self.xyz2neu( corr=False , verbose=verbose )
+        self.data_xyz[:,0] = self.data[:,0] = pyacs.lib.astrotime.mjd2decyear( self.data_xyz[:,0] )
 
-    # fill t0
-    self.t0=self.data[0,0]
+        # fill t0
+        self.t0=self.data[0,0]
 
-    # fill lon, lat
-    lon_radian,lat_radian,self.h=pyacs.lib.coordinates.xyz2geo(self.X0,self.Y0,self.Z0)
-    self.lon=np.degrees(lon_radian)
-    self.lat=np.degrees(lat_radian)
+        # fill lon, lat
+        lon_radian,lat_radian,self.h=pyacs.lib.coordinates.xyz2geo(self.X0,self.Y0,self.Z0)
+        self.lon=np.degrees(lon_radian)
+        self.lat=np.degrees(lat_radian)
+        
+        # check duplicate or non-ordered entries
+        #if self.data.shape[0]>1:
+        #    if np.min(np.diff(self.data[:,0])) <=0:
+        #        print("!!! time series not properly ordered by dates or dates duplicated ")
+        #        self.reorder()
+
+        # force clean
+
+        self.offsets_dates=[]
+        self.offsets_values=None
+        self.outliers=[]
+        self.annual=None
+        self.semi_annual=None
+        self.velocity=None
+
+        return(self)
+
+
+    def read_new_format(filename):
+        """Read PRIDE-PPPAR kinematic result file (new format).
+
+        Data are read after the line containing the header
+        "* Mjd       Sod               X             Y             Z         Latitude        Longitude        Height".
+
+        Parameters
+        ----------
+        filename : str
+            Path to the PRIDE-PPPAR kinematic file.
+
+        Returns
+        -------
+        self
+            Gts instance with data loaded.
+        """
+        # pattern
+        pattern = '* Mjd       Sod               X             Y             Z         Latitude        Longitude        Height'    
+        # First, find the line where the data starts
+        with open(filename, 'r') as f:
+            lines = f.readlines()
+
+        # Detect the line matching your pattern
+        for i, line in enumerate(lines):
+            if pattern in line:
+                data_start = i + 1  # Assuming data starts on the next line
+                break
+        else:
+            raise ValueError("Pattern not found in file")
+
+        # Read the data part using np.genfromtxt
+        data = np.genfromtxt(lines[data_start:], usecols=(0,1,2,3,4), delimiter=None)  # Customize delimiter if needed
+        # remove lines with star indicating processing problems
+        if np.isnan( data ).any():
+            WARNING("Nan found in: %s" % pride_file )
+            WARNING("Removing lines: " , np.argwhere(np.isnan(data))[:,0].flatten())
+            data = data[~np.isnan(data).any(axis=1)]
     
-    # check duplicate or non-ordered entries
-    #if self.data.shape[0]>1:
-    #    if np.min(np.diff(self.data[:,0])) <=0:
-    #        print("!!! time series not properly ordered by dates or dates duplicated ")
-    #        self.reorder()
+        # fill future .data_xyz
+        data_mod = np.zeros((data.shape[0],10))
+        data_mod[:,4:7] = 1.E-3
+        data_mod[:,0] = pyacs.lib.astrotime.mjd2decyear( data[:,0] + data[:,1] / (60 * 60 * 24. ) )
+        data_mod[:,1:4] = data[:,2:]
 
-    # force clean
+        if self.data_xyz is None:
+            self.data_xyz = data_mod
+        else:
+            self.data_xyz = np.vstack((self.data_xyz,data_mod))
+    
+        self.xyz2neu( corr=False , verbose=verbose )
 
-    self.offsets_dates=[]
-    self.offsets_values=None
-    self.outliers=[]
-    self.annual=None
-    self.semi_annual=None
-    self.velocity=None
 
-    return(self)
+        # fill t0
+        self.t0=self.data[0,0]
+
+        # X0,Y0,Z0
+        self.X0,self.Y0,self.Z0 = self.data_xyz[0,2:5]
+
+        # fill lon, lat
+        lon_radian,lat_radian,self.h=pyacs.lib.coordinates.xyz2geo(self.X0,self.Y0,self.Z0)
+        self.lon=np.degrees(lon_radian)
+        self.lat=np.degrees(lat_radian)
+        
+        # check duplicate or non-ordered entries
+        #if self.data.shape[0]>1:
+        #    if np.min(np.diff(self.data[:,0])) <=0:
+        #        print("!!! time series not properly ordered by dates or dates duplicated ")
+        #        self.reorder()
+
+        # force clean
+
+        self.offsets_dates=[]
+        self.offsets_values=None
+        self.outliers=[]
+        self.annual=None
+        self.semi_annual=None
+        self.velocity=None
+
+        return(self)
+
+
+    # name of the file to be read - if not provided, tries to guess
+
+    # READ DIR OF USER SPECIFIED FILE     
+    if (tsfile is None):
+        if (self.code is not None):
+            try:
+                l_pride_file=glob( tsdir+'/kin_*'+self.code.lower() )
+            except:
+                ERROR(f"Could not find any time series file for code {self.code}")
+                return()
+        else:
+            ERROR("no code or file provided.")
+
+    else:
+        l_pride_file = [ tsfile]
+
+    for pride_file in sorted( l_pride_file ):
+        VERBOSE("reading: %s " % pride_file)
+        try:
+            read_new_format(pride_file)
+        except:
+            try:
+                read_old_format(pride_file)
+            except:
+                ERROR(f"Error reading {pride_file}. Returning None.")
+                return(None)
+
+
 
 ###############################################################################
 def read_pride_pos(self,tsdir='.',tsfile=None, verbose=False):
 ###############################################################################
-    """
-    Read PRIDE-PPPAR static result file
-    
-    :param tsdir: directory of pride-pppar pos static files
-    :param tsfile: pride-pppar pos static file to be loaded
-    :param verbose: verbose mode
-    :note:If file=None, then read_pride will look for a files named pos_*code
+    """Read PRIDE-PPPAR static result file(s).
 
+    Parameters
+    ----------
+    tsdir : str, optional
+        Directory containing pride-pppar pos static files. Default '.'.
+    tsfile : str, optional
+        Specific file to load. If None, searches for pos_*code in tsdir.
+    verbose : bool, optional
+        If True, enable verbose output.
+
+    Notes
+    -----
+    If tsfile is None, looks for files named pos_*<code> in tsdir.
     """
 
     # import

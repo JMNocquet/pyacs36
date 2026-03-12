@@ -1,0 +1,238 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.gts.lib.noise package &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries.html">core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">pyacs.gts.lib.noise package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/pyacs.gts.lib.noise.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pyacs-gts-lib-noise-package">
+<h1>pyacs.gts.lib.noise package<a class="headerlink" href="#pyacs-gts-lib-noise-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.gts.lib.noise.add_vel_sigma.html">pyacs.gts.lib.noise.add_vel_sigma module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.lib.noise.add_vel_sigma.html#pyacs.gts.lib.noise.add_vel_sigma.add_vel_sigma"><code class="docutils literal notranslate"><span class="pre">add_vel_sigma()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="module-pyacs.gts.lib.noise">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyacs.gts.lib.noise" title="Link to this heading"></a></h2>
+<p>Pyacs noise package: wrappers for realistic uncertainties (tsfit, CATS, add_vel_sigma).</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.noise.add_vel_sigma">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.noise.</span></span><span class="sig-name descname"><span class="pre">add_vel_sigma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b_fn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/noise/add_vel_sigma.html#add_vel_sigma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.noise.add_vel_sigma" title="Link to this definition"></a></dt>
+<dd><p>Estimate velocity uncertainties from residuals (white + flicker noise).</p>
+<p>Velocity and residual time series must exist: run detrend(), detrend_annual(),
+or detrend_seasonal() first. Uncertainty on velocity components (N, E, U) is
+computed using white noise from the residual scatter and flicker noise
+(Williams, 2003, eq. 19 and 23). Returns a new Gts with velocity sigmas set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>b_fn</strong> (<em>float</em><em>, </em><em>optional</em>) – Flicker noise parameter in mm/yr^0.25. Default is 4.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, print flicker noise variance. Default is True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New Gts with velocity uncertainties set in <code class="docutils literal notranslate"><span class="pre">velocity[3:6]</span></code> (m/yr),
+or None if <code class="docutils literal notranslate"><span class="pre">self.velocity</span></code> is not set.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.Gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a> or None</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>White noise is estimated from the first differences of the residual time
+series. The combined white + flicker sigma is scaled by component RMS so
+that the minimum component (N, E, or U) keeps the nominal flicker level.</p>
+<p class="rubric">References</p>
+<p>Williams, S. D. P. (2003). The effect of coloured noise on the uncertainties
+of rates from geodetic time series. Journal of Geodesy, 76(9-10), 483-494.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.noise.get_spectral_index">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.noise.</span></span><span class="sig-name descname"><span class="pre">get_spectral_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cats_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/noise/_noise.html#get_spectral_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.noise.get_spectral_index" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.noise.get_vel_and_sigma">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.noise.</span></span><span class="sig-name descname"><span class="pre">get_vel_and_sigma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cats_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/noise/_noise.html#get_vel_and_sigma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.noise.get_vel_and_sigma" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.noise.realistic_sigma">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.noise.</span></span><span class="sig-name descname"><span class="pre">realistic_sigma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tsfit'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/noise/_noise.html#realistic_sigma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.noise.realistic_sigma" title="Link to this definition"></a></dt>
+<dd><p>Calculate realistic velocity uncertainties (GLOBK tsfit or CATS).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>option</strong> (<em>str</em><em>, </em><em>optional</em>) – ‘tsfit’: GLOBK T. Herring realistic sigma;
+‘cats_pl’: CATS with noise type (–model=pl:);
+‘cats_seasonal_pl’: CATS with seasonal (–model=pl: –sinusoid=1y1);
+‘cats_flicker’: CATS flicker (–model=pl:k-1);
+‘cats_seasonal_flicker’: CATS seasonal + flicker.</p></li>
+<li><p><strong>in_place</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, update Gts in place.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbose mode.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>self (possibly with updated velocity uncertainties) or result of CATS/tsfit.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.Gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.noise.sigma_cats">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.noise.</span></span><span class="sig-name descname"><span class="pre">sigma_cats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'k-1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seasonal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/noise/_noise.html#sigma_cats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.noise.sigma_cats" title="Link to this definition"></a></dt>
+<dd><p>Run CATS to obtain realistic velocity uncertainties.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>in_place</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, update Gts in place.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbose mode.</p></li>
+<li><p><strong>k</strong> (<em>str</em><em>, </em><em>optional</em>) – CATS noise model (e.g. ‘k-1’ for flicker).</p></li>
+<li><p><strong>seasonal</strong> (<em>str</em><em>, </em><em>optional</em>) – Seasonal option for CATS.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>self or result from CATS run.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.Gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.noise.sigma_vel_tsfit">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.noise.</span></span><span class="sig-name descname"><span class="pre">sigma_vel_tsfit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/noise/_noise.html#sigma_vel_tsfit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.noise.sigma_vel_tsfit" title="Link to this definition"></a></dt>
+<dd><p>runs tsfit for getting realistic sigma</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.noise.wrms">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.noise.</span></span><span class="sig-name descname"><span class="pre">wrms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/noise/_noise.html#wrms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.noise.wrms" title="Link to this definition"></a></dt>
+<dd><p>Return the weighted RMS of the time series (NEU).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.array([wrms_n, wrms_e, wrms_up]).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

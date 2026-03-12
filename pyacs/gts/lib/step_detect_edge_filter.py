@@ -5,8 +5,7 @@ def find_offsets_edge_filter( self, threshold=0.6, search_lbda=[ 3,5,7,10,20,50,
 ###############################################################################
     
     # import
-    
-    from pyacs.gts.lib.filters.total_variation import edge
+
     import numpy as np
     import pyacs.lib.astrotime as at
     import pyacs.lib.units

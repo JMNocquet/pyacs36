@@ -1,0 +1,141 @@
+pyacs.gts.lib.filters package
+=============================
+
+Submodules
+----------
+
+pyacs.gts.lib.filters.disp2vel module
+-------------------------------------
+
+.. automodule:: pyacs.gts.lib.filters.disp2vel
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.filters.edge\_filter module
+-----------------------------------------
+
+.. automodule:: pyacs.gts.lib.filters.edge_filter
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.filters.el1\_trend module
+---------------------------------------
+
+.. automodule:: pyacs.gts.lib.filters.el1_trend
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.filters.ivel module
+---------------------------------
+
+.. automodule:: pyacs.gts.lib.filters.ivel
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.filters.l1trend module
+------------------------------------
+
+.. automodule:: pyacs.gts.lib.filters.l1trend
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.filters.l1trendi module
+-------------------------------------
+
+.. automodule:: pyacs.gts.lib.filters.l1trendi
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.filters.median module
+-----------------------------------
+
+.. automodule:: pyacs.gts.lib.filters.median
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.filters.minimum\_component module
+-----------------------------------------------
+
+.. automodule:: pyacs.gts.lib.filters.minimum_component
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.filters.piecewise\_linear module
+----------------------------------------------
+
+.. automodule:: pyacs.gts.lib.filters.piecewise_linear
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.filters.refine\_l1trend module
+--------------------------------------------
+
+.. automodule:: pyacs.gts.lib.filters.refine_l1trend
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.filters.savitzky\_golay module
+--------------------------------------------
+
+.. automodule:: pyacs.gts.lib.filters.savitzky_golay
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.filters.smooth module
+-----------------------------------
+
+.. automodule:: pyacs.gts.lib.filters.smooth
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.filters.spline module
+-----------------------------------
+
+.. automodule:: pyacs.gts.lib.filters.spline
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.filters.total\_variation module
+---------------------------------------------
+
+.. automodule:: pyacs.gts.lib.filters.total_variation
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.filters.vondrak module
+------------------------------------
+
+.. automodule:: pyacs.gts.lib.filters.vondrak
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.filters.wiener module
+-----------------------------------
+
+.. automodule:: pyacs.gts.lib.filters.wiener
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: pyacs.gts.lib.filters
+   :members:
+   :show-inheritance:
+   :undoc-members:

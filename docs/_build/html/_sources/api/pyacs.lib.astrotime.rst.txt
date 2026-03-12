@@ -1,0 +1,357 @@
+pyacs.lib.astrotime package
+===========================
+
+Submodules
+----------
+
+pyacs.lib.astrotime.cal2datetime module
+---------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.cal2datetime
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.cal2dayno module
+------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.cal2dayno
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.cal2decyear module
+--------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.cal2decyear
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.cal2mjd module
+----------------------------------
+
+.. automodule:: pyacs.lib.astrotime.cal2mjd
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.datetime2cal module
+---------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.datetime2cal
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.datetime2dayno module
+-----------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.datetime2dayno
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.datetime2decyear module
+-------------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.datetime2decyear
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.datetime2mjd module
+---------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.datetime2mjd
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.datetime2seconds module
+-------------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.datetime2seconds
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.datetime\_from\_calarray module
+---------------------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.datetime_from_calarray
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.datetime\_round\_second module
+--------------------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.datetime_round_second
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.day\_since\_decyear module
+----------------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.day_since_decyear
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.dayno2cal module
+------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.dayno2cal
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.dayno2datetime module
+-----------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.dayno2datetime
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.dayno2decyear module
+----------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.dayno2decyear
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.dayno2mjd module
+------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.dayno2mjd
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.decyear2cal module
+--------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.decyear2cal
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.decyear2datetime module
+-------------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.decyear2datetime
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.decyear2dayno module
+----------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.decyear2dayno
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.decyear2epoch module
+----------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.decyear2epoch
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.decyear2mjd module
+--------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.decyear2mjd
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.decyear2seconds module
+------------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.decyear2seconds
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.epoch2decyear module
+----------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.epoch2decyear
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.gpsweek2mjd module
+--------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.gpsweek2mjd
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.guess\_date module
+--------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.guess_date
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.hmsmicros2ut module
+---------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.hmsmicros2ut
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.hmsmicros2uts module
+----------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.hmsmicros2uts
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.jd2mjd module
+---------------------------------
+
+.. automodule:: pyacs.lib.astrotime.jd2mjd
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.jpldate\_2\_datetime module
+-----------------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.jpldate_2_datetime
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.jpldate\_2\_decyear module
+----------------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.jpldate_2_decyear
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.leap\_year module
+-------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.leap_year
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.mjd2cal module
+----------------------------------
+
+.. automodule:: pyacs.lib.astrotime.mjd2cal
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.mjd2datetime module
+---------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.mjd2datetime
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.mjd2dayno module
+------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.mjd2dayno
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.mjd2decyear module
+--------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.mjd2decyear
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.mjd2gpsweek module
+--------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.mjd2gpsweek
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.mjd2jd module
+---------------------------------
+
+.. automodule:: pyacs.lib.astrotime.mjd2jd
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.seconds2datetime module
+-------------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.seconds2datetime
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.ut2uts module
+---------------------------------
+
+.. automodule:: pyacs.lib.astrotime.ut2uts
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.uts2hmsmicros module
+----------------------------------------
+
+.. automodule:: pyacs.lib.astrotime.uts2hmsmicros
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.uts2ut module
+---------------------------------
+
+.. automodule:: pyacs.lib.astrotime.uts2ut
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.year2yr module
+----------------------------------
+
+.. automodule:: pyacs.lib.astrotime.year2yr
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.astrotime.yr2year module
+----------------------------------
+
+.. automodule:: pyacs.lib.astrotime.yr2year
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: pyacs.lib.astrotime
+   :members:
+   :show-inheritance:
+   :undoc-members:

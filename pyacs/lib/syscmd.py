@@ -11,8 +11,21 @@ class ReturnedCodeError(Exception):
     pass
 
 
-def getstatusoutput( cmd , verbose=False ):
+def getstatusoutput(cmd, verbose=False):
+    """Run a shell command and raise if return code is non-zero.
 
+    Parameters
+    ----------
+    cmd : str
+        Shell command string.
+    verbose : bool, optional
+        If True, print command and stdout. Default is False.
+
+    Raises
+    ------
+    ReturnedCodeError
+        If the command returns a non-zero exit code.
+    """
 #     if verbose:
 #         return ( run_command_verbose(cmd) )
 # 
@@ -58,7 +71,18 @@ def getstatusoutput( cmd , verbose=False ):
 ############################################################################
 
 def run_command_verbose(command):
-    
+    """Run a command and stream stdout line by line.
+
+    Parameters
+    ----------
+    command : str
+        Shell command string.
+
+    Returns
+    -------
+    int
+        Return code of the process.
+    """
     import subprocess
     import shlex
     

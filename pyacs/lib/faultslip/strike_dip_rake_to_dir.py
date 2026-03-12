@@ -1,10 +1,21 @@
 ###############################################################################
 def strike_dip_rake_to_dir(strike,dip,rake):
 ###############################################################################
-    """
-    for a given (strike,dip,rake)  returns the azimuth of the horizontal motion
-    :param strike,dip,rake: in decimal degrees
-    :returns: direction: slip direction (modulo 180 degrees)
+    """Return azimuth of horizontal motion for given (strike, dip, rake).
+
+    Parameters
+    ----------
+    strike : float or numpy.ndarray
+        Fault strike in decimal degrees.
+    dip : float or numpy.ndarray
+        Fault dip in decimal degrees.
+    rake : float or numpy.ndarray
+        Rake in decimal degrees.
+
+    Returns
+    -------
+    float or numpy.ndarray
+        Slip direction in decimal degrees (modulo 180).
     """
 
 

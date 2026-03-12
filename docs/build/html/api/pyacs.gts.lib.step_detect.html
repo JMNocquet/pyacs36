@@ -1,0 +1,222 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.gts.lib.step_detect module &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries.html">core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">pyacs.gts.lib.step_detect module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/pyacs.gts.lib.step_detect.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pyacs.gts.lib.step_detect">
+<span id="pyacs-gts-lib-step-detect-module"></span><h1>pyacs.gts.lib.step_detect module<a class="headerlink" href="#module-pyacs.gts.lib.step_detect" title="Link to this heading"></a></h1>
+<p>Thomas Kahn
+<a class="reference external" href="mailto:thomas&#46;b&#46;kahn&#37;&#52;&#48;gmail&#46;com">thomas<span>&#46;</span>b<span>&#46;</span>kahn<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.step_detect.find_steps">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.step_detect.</span></span><span class="sig-name descname"><span class="pre">find_steps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/step_detect.html#find_steps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.step_detect.find_steps" title="Link to this definition"></a></dt>
+<dd><p>Finds local maxima by segmenting array based on positions at which
+the threshold value is crossed. Note that this thresholding is
+applied after the absolute value of the array is taken. Thus,
+the distinction between upward and downward steps is lost. However,
+get_step_sizes can be used to determine directionality after the
+fact.
+:param array: 1 dimensional array that represents time series of data points
+:type array: numpy array
+:param threshold: Threshold value that defines a step
+:type threshold: int / float</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>steps</strong> – List of indices of the detected steps</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.step_detect.get_step_sizes">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.step_detect.</span></span><span class="sig-name descname"><span class="pre">get_step_sizes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/step_detect.html#get_step_sizes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.step_detect.get_step_sizes" title="Link to this definition"></a></dt>
+<dd><p>Calculates step size for each index within the supplied list. Step
+size is determined by averaging over a range of points (specified
+by the window parameter) before and after the index of step
+occurrence. The directionality of the step is reflected by the sign
+of the step size (i.e. a positive value indicates an upward step,
+and a negative value indicates a downward step). The combined
+standard deviation of both measurements (as a measure of uncertainty
+in step calculation) is also provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>array</strong> (<em>numpy array</em>) – 1 dimensional array that represents time series of data points</p></li>
+<li><p><strong>indices</strong> (<em>list</em>) – List of indices of the detected steps (as provided by
+find_steps, for example)</p></li>
+<li><p><strong>window</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of points to average over to determine baseline levels
+before and after step.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>step_sizes</strong> (<em>list</em>) – List of the calculated sizes of each step</p></li>
+<li><p><strong>step_error</strong> (<em>list</em>)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.step_detect.mz_fwt">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.step_detect.</span></span><span class="sig-name descname"><span class="pre">mz_fwt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/step_detect.html#mz_fwt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.step_detect.mz_fwt" title="Link to this definition"></a></dt>
+<dd><p>Computes the multiscale product of the Mallat-Zhong discrete forward
+wavelet transform up to and including scale n for the input data x.
+If n is even, the spikes in the signal will be positive. If n is odd
+the spikes will match the polarity of the step (positive for steps
+up, negative for steps down).
+This function is essentially a direct translation of the MATLAB code
+provided by Sadler and Swami in section A.4 of the following:
+<a class="reference external" href="http://www.dtic.mil/dtic/tr/fulltext/u2/a351960.pdf">http://www.dtic.mil/dtic/tr/fulltext/u2/a351960.pdf</a>
+:param x: 1 dimensional array that represents time series of data points
+:type x: numpy array
+:param n: Highest scale to multiply to
+:type n: int</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prod</strong> – The multiscale product for x</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>numpy array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.step_detect.t_scan">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.step_detect.</span></span><span class="sig-name descname"><span class="pre">t_scan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/step_detect.html#t_scan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.step_detect.t_scan" title="Link to this definition"></a></dt>
+<dd><p>Compute t statistic for sliding windows along a 1D time series.</p>
+<p>For each index i, compares the segment [i, i+window) with [i-window, i)
+using a t statistic. Uses multiple processes; the array is decomposed
+into frames (points spaced at window intervals) so mean and variance
+are computed once per segment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>L</strong> (<em>array_like</em><em>, </em><em>shape</em><em> (</em><a class="reference internal" href="pyacs.lib.euclid.html#pyacs.lib.euclid.Matrix4.n" title="pyacs.lib.euclid.Matrix4.n"><em>n</em></a><em>,</em><em>)</em>) – One-dimensional time series of data points.</p></li>
+<li><p><strong>window</strong> (<em>int</em><em> or </em><em>float</em><em>, </em><em>optional</em>) – Number of points in each half-window. Default 1000.</p></li>
+<li><p><strong>num_workers</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of worker processes for parallel computation. If -1, uses
+<code class="docutils literal notranslate"><span class="pre">cpu_count()</span> <span class="pre">-</span> <span class="pre">1</span></code>. Default -1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>t_stat</strong> – t statistic at each point. The first and last <code class="docutils literal notranslate"><span class="pre">window</span></code> points
+are zero (calculation not defined there).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray, shape (<a class="reference internal" href="pyacs.lib.euclid.html#pyacs.lib.euclid.Matrix4.n" title="pyacs.lib.euclid.Matrix4.n">n</a>,)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

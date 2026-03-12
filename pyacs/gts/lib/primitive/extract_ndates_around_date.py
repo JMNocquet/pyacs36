@@ -3,15 +3,22 @@
 def extract_ndates_around_date(self,date,n):
 ###################################################################
     """
-    Extract n values before and n values after a given date
-    If n values are not available, returns all available values
-    .data is set to None if no value at all is available
+    Extract n values before and n values after a given date.
 
-    :param date: date in decimal year
-    :param n: number of observations to be extracted
-    
-    :return: a new Gts
+    If n values are not available, returns all available values.
+    .data is set to None if no value at all is available.
 
+    Parameters
+    ----------
+    date : float
+        Date in decimal year.
+    n : int
+        Number of observations to extract on each side.
+
+    Returns
+    -------
+    Gts
+        New Gts with at most n observations before and n after the given date.
     """
 
     # import 

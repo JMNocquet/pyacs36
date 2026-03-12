@@ -6,16 +6,28 @@ import numpy as np
 ###################################################################
 
 def least_square(A,L,P=None):
-    """ 
-    Least squares estimation for system equation AX + L = 0, P
-    input: A: design matrix;L observation vector L; P: weight matrix for L
-    (P defaut is the identity matrix)
-    output: unknown matrix  : X
-    residuals matrix: V
-    standard deviation sigma_0: std
-    unknown parameters variance: s_X
-    residuals variance: s_V
-    model S:S = A*X
+    """
+    Least-squares estimation for AX + L = 0 with optional weight matrix P.
+
+    Parameters
+    ----------
+    A : ndarray
+        Design matrix.
+    L : ndarray
+        Observation vector.
+    P : ndarray, optional
+        Weight matrix for L (default identity).
+
+    Returns
+    -------
+    tuple
+        X (unknowns), s_X (parameter std), V (residuals), s_V (residual std),
+        std (sigma_0), S (model A*X).
+
+    Raises
+    ------
+    ValueError
+        If N is singular or has negative diagonal in Q.
     """
     if isinstance(P,np.ndarray):
         if len(P.shape)==2:

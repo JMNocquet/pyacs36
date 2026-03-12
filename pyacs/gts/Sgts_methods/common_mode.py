@@ -1,17 +1,32 @@
 ###################################################################
 def common_mode(self, lref=[] , detrend_method='detrend_median', method='median' , center=True, verbose=True):
 ###################################################################
+    """Compute and remove common mode from time series.
+
+    Parameters
+    ----------
+    lref : list, optional
+        Site codes for reference (common mode). Default is [].
+    detrend_method : str, optional
+        'detrend_median' or 'detrend' for reference series. Default is 'detrend_median'.
+    method : str, optional
+        'median' or 'mean' for common mode. Default is 'median'.
+    center : bool, optional
+        If True, center the stack. Default is True.
+    verbose : bool, optional
+        Verbose mode. Default is True.
+
+    Returns
+    -------
+    Sgts
+        New Sgts with filtered series and _CMM for the common mode.
+
+    Notes
+    -----
+    Assumes daily time series.
     """
-    calculates a common mode
-    
-    :param lref: liste of site codes used to calculate the common mode
-    :param detrend_method: 'detrend_median' or 'detrend', method used to detrend the reference sites time series
-    :param method: method to calculate the common mode 'median' or 'mean'
-    
-    :return: a Sgts instance with filtered time series. This new instance has a _CMM time series for the common mode
-    :note: time series are assumed to be daily time series
-    """
-    
+
+
     # import  
     import pyacs.gts.lib.tensor_ts.sgts2obs_tensor
     import pyacs.gts.lib.tensor_ts.obs_tensor2sgts
@@ -20,35 +35,60 @@ def common_mode(self, lref=[] , detrend_method='detrend_median', method='median'
     import pyacs.lib.astrotime as at
     import pyacs.lib.coordinates as coor
 
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
+
+    import inspect
+
+    from icecream import ic
+
+    VERBOSE("Running Sgts.%s" % inspect.currentframe().f_code.co_name)
+
+    # check lref
+    if lref==[]:
+        ERROR("lref argument must include at least one site.", exit=True)
+
     # detrend for the reference sites
+
+    VERBOSE("detrending using method %s" % detrend_method)
     if detrend_method is not None:
-        dts = self.gts( detrend_method )
+        dts = self.sub(linclude=lref).gts( detrend_method )
     else:
-        dts = self.copy()
+        dts = self.sub(linclude=lref).copy()
+
+    # filter out None
+    ndts = dts.delnone()
 
     # creates an obs_tensor instance from the detrend time series
-    
-    T_OBS_RAW , np_names_t_obs, np_obs_date_s = pyacs.gts.lib.tensor_ts.sgts2obs_tensor.sgts2tensor( dts, rounding='day' , verbose=verbose )
+    VERBOSE("Converting to obs tensor")
+    T_OBS_RAW_REF , np_names_t_obs_ref, np_obs_date_s_ref = pyacs.gts.lib.tensor_ts.sgts2obs_tensor.sgts2tensor( ndts, rounding='day' , verbose=verbose )
     
     # center time series
+    VERBOSE("Centering time series")
     if center:
-        T_OBS_RAW[:,:,0] = T_OBS_RAW[:,:,0] - np.nanmedian( T_OBS_RAW[:,:,0] , axis=0 )
-        T_OBS_RAW[:,:,1] = T_OBS_RAW[:,:,1] - np.nanmedian( T_OBS_RAW[:,:,1] , axis=0 )
-        T_OBS_RAW[:,:,2] = T_OBS_RAW[:,:,2] - np.nanmedian( T_OBS_RAW[:,:,2] , axis=0)
+        T_OBS_RAW_REF[:,:,0] = T_OBS_RAW_REF[:,:,0] - np.nanmedian( T_OBS_RAW_REF[:,:,0] , axis=0 )
+        T_OBS_RAW_REF[:,:,1] = T_OBS_RAW_REF[:,:,1] - np.nanmedian( T_OBS_RAW_REF[:,:,1] , axis=0 )
+        T_OBS_RAW_REF[:,:,2] = T_OBS_RAW_REF[:,:,2] - np.nanmedian( T_OBS_RAW_REF[:,:,2] , axis=0)
     
     # get the index of sites used for the common mode
     
-    lidx_code = []
+    #lidx_code = []
     
-    for i in np.arange(np_names_t_obs.shape[0]):
-        if np_names_t_obs[i] in lref:
-            lidx_code.append(i)
+    #for i in np.arange(np_names_t_obs.shape[0]):
+    #    if np_names_t_obs[i] in lref:
+    #         lidx_code.append(i)
     
-    np_idx_code = np.array( sorted( lidx_code ) )
+    #np_idx_code = np.array( sorted( lidx_code ) )
     
     # compute common mode
-    
-    T_OBS_RAW_REF = T_OBS_RAW[:, np_idx_code, :] 
+
+    VERBOSE("Computing common mode")
+
+    #T_OBS_RAW_REF = T_OBS_RAW[:, np_idx_code, :]
     
     if method == 'median':
         CMM = np.nanmedian(T_OBS_RAW_REF,axis=1)
@@ -59,7 +99,16 @@ def common_mode(self, lref=[] , detrend_method='detrend_median', method='median'
     
     T_OBS_RAW , np_names_t_obs, np_obs_date_s = pyacs.gts.lib.tensor_ts.sgts2obs_tensor.sgts2tensor( self, rounding='day' , verbose=verbose )
     
+    # check that dates are the same
+    if not np.all( np_obs_date_s == np_obs_date_s_ref ):
+        WARNING("The list of reference sites for common mode does not provide a common mode estimate at every date")
+        ERROR("Try interpolation", exit=True)
+
+    
     # remove common mode
+
+
+    VERBOSE("Removing common mode")
 
     T_OBS_RAW[:,:,0] = T_OBS_RAW[:,:,0] - CMM[:,0].reshape(-1,1)
     T_OBS_RAW[:,:,1] = T_OBS_RAW[:,:,1] - CMM[:,1].reshape(-1,1)
@@ -70,7 +119,10 @@ def common_mode(self, lref=[] , detrend_method='detrend_median', method='median'
     
     
     # converts obs_tensor object to Sgts
-    
+
+
+    VERBOSE("Creating filtered Sgts")
+
     filtered_sgts = pyacs.gts.lib.tensor_ts.obs_tensor2sgts.obs_tensor2sgts( T_OBS_RAW , np_names_t_obs, np_obs_date_s , verbose=verbose)
     
     # adds the common mode time series

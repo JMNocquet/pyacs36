@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyacs.gts.lib.offsets.find_offsets_ivel &#8212; PYACS 0.66.18 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../../../_static/documentation_options.js?v=2262e354"></script>
+    <script src="../../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pyacs.gts.lib.offsets.find_offsets_ivel</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="find_offsets_ivel">
+<a class="viewcode-back" href="../../../../../api/pyacs.gts.lib.offsets.html#pyacs.gts.lib.offsets.find_offsets_ivel.find_offsets_ivel">[docs]</a>
+<span></span><span class="k">def</span><span class="w"> </span><span class="nf">find_offsets_ivel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                      <span class="n">ivelts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">lcomponent</span><span class="o">=</span><span class="s1">&#39;EN&#39;</span><span class="p">,</span>
+                      <span class="n">threshold_offset</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                      <span class="n">offsets_file</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find offsets using l1trend filtering and instantaneous velocity</span>
+
+<span class="sd">    parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    ivelts: Sgts</span>
+<span class="sd">        ivel time series</span>
+<span class="sd">    lcomponent: string</span>
+<span class="sd">        component to use for the analysis</span>
+<span class="sd">    threshold_offset: float</span>
+<span class="sd">        threshold for the offset in mm/yr</span>
+<span class="sd">    offsets_file: string</span>
+<span class="sd">        name of the file to append the offsets. If None, no file is written</span>
+
+<span class="sd">    notes:</span>
+<span class="sd">    ------</span>
+<span class="sd">    The function uses the l1trend of the time series. It then detects large ivel values and check whether they last for more than one day.</span>
+<span class="sd">    If so, an offset is estimated by integrating ivel over two successive dates and offset is applied to the time series.</span>
+<span class="sd">    Format of offsets_file is:</span>
+<span class="sd">    code date (datetime.isoformat()) lon lat offset_e offset_n offset_u std_offset_e std_offset_n std_offset_u comment</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># import</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">at</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.debug</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.verbose</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">icecream</span><span class="w"> </span><span class="kn">import</span> <span class="n">ic</span>
+
+    <span class="c1"># offset file format</span>
+    <span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> </span><span class="si">%10.5lf</span><span class="s2"> </span><span class="si">%10.5lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># new_ts</span>
+    <span class="n">new_ts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="c1"># detrend</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">dts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detrend_median</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">WARNING</span><span class="p">(</span><span class="s1">&#39;Using detrend instead of detrend_median&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">dts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detrend</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">ERROR</span><span class="p">(</span><span class="s1">&#39;Error in detrend for site </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="c1"># compute l1trend</span>
+    <span class="n">pyacs</span><span class="o">.</span><span class="n">verbose</span><span class="p">(</span><span class="s1">&#39;ERROR&#39;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">l1ts</span> <span class="o">=</span> <span class="n">dts</span><span class="o">.</span><span class="n">l1trend</span><span class="p">(</span><span class="n">lcomponent</span><span class="o">=</span><span class="n">lcomponent</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">ERROR</span><span class="p">(</span><span class="s1">&#39;Error in l1trend for site </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">pyacs</span><span class="o">.</span><span class="n">verbose</span><span class="p">()</span>
+
+    <span class="c1"># compute residual time series</span>
+    <span class="c1"># rests =</span>
+
+    <span class="c1"># compute ivel</span>
+    <span class="n">ivelts</span> <span class="o">=</span> <span class="n">l1ts</span><span class="o">.</span><span class="n">ivel</span><span class="p">()</span>
+
+    <span class="c1"># compute max ivel</span>
+
+    <span class="n">norm_ivel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ivelts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">ivelts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E3</span>
+
+    <span class="n">lidx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">norm_ivel</span> <span class="o">&gt;</span> <span class="n">threshold_offset</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;dates to be checked &#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">lidx</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">ivelts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span>
+
+    <span class="n">l3dates</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">lidx</span><span class="p">:</span>
+
+        <span class="c1"># check whether max_vel is only one date</span>
+        <span class="n">single_date</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="n">ivelts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">single_date</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">single_date</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="n">component</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">ivelts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]))</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">ivelts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">component</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mf">0.99</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">ivelts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="n">component</span><span class="p">])</span> <span class="ow">and</span> \
+                <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">ivelts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">component</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mf">0.99</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">ivelts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="n">component</span><span class="p">]):</span>
+            <span class="n">single_date</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="n">single_date</span><span class="p">:</span>
+            <span class="c1"># apply offset</span>
+            <span class="n">delta_date_year</span> <span class="o">=</span> <span class="n">ivelts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">ivelts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="n">offset_date</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">ivelts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.25</span> <span class="o">/</span> <span class="mf">365.25</span><span class="p">,</span> <span class="o">-</span><span class="n">ivelts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">delta_date_year</span><span class="p">,</span>
+                                     <span class="o">-</span><span class="n">ivelts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">delta_date_year</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+            <span class="n">str_date</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">ivelts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
+            <span class="n">VERBOSE</span><span class="p">(</span><span class="s1">&#39;Correcting offset at </span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1"> </span><span class="si">%.1lf</span><span class="s1"> </span><span class="si">%.1lf</span><span class="s1"> mm&#39;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">str_date</span><span class="p">,</span> <span class="n">offset_date</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.E3</span><span class="p">,</span> <span class="n">offset_date</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.E3</span><span class="p">))</span>
+            <span class="n">new_ts</span> <span class="o">=</span> <span class="n">new_ts</span><span class="o">.</span><span class="n">apply_offsets</span><span class="p">(</span><span class="n">offset_date</span><span class="p">)</span>
+            <span class="c1"># write offset to file</span>
+            <span class="k">if</span> <span class="n">offsets_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">str_date</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">ivelts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+                <span class="n">lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+
+                <span class="k">with</span> <span class="n">lock</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">offsets_file</span><span class="p">,</span> <span class="s1">&#39;a+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> </span><span class="si">%10.5lf</span><span class="s2"> </span><span class="si">%10.5lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span>
+                                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">str_date</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">offset_date</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.E3</span><span class="p">,</span>
+                                 <span class="n">offset_date</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.E3</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="s1">&#39;automated from PYACS&#39;</span><span class="p">))</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># check duration of high velocity</span>
+            <span class="c1"># forward in time</span>
+            <span class="n">VERBOSE</span><span class="p">(</span><span class="s1">&#39;Max ivel for site </span><span class="si">%s</span><span class="s1"> is several days indicating a transient at </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span><span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">ivelts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()[:</span><span class="mi">10</span><span class="p">])</span> <span class="p">)</span>
+            <span class="n">idx_ref</span> <span class="o">=</span> <span class="n">idx</span>
+            <span class="n">ldix_large_ivel</span> <span class="o">=</span> <span class="p">[</span><span class="n">idx_ref</span><span class="p">]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">ivelts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">component</span><span class="p">])</span><span class="o">*</span><span class="mf">1E3</span> <span class="p">,</span> <span class="n">threshold_offset</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span>
+            <span class="k">while</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">ivelts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">component</span><span class="p">])</span><span class="o">*</span><span class="mf">1E3</span> <span class="o">&gt;</span> <span class="n">threshold_offset</span> <span class="o">/</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">ldix_large_ivel</span><span class="p">)</span>
+                <span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="n">ivelts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="k">break</span>
+                <span class="n">ldix_large_ivel</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">idx_ref</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">ivelts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">component</span><span class="p">])</span><span class="o">*</span><span class="mf">1E3</span> <span class="p">,</span> <span class="n">threshold_offset</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span>
+            <span class="k">while</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">ivelts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">component</span><span class="p">])</span><span class="o">*</span><span class="mf">1E3</span> <span class="o">&gt;</span> <span class="n">threshold_offset</span> <span class="o">/</span> <span class="mi">4</span> <span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">ldix_large_ivel</span><span class="p">)</span>
+                <span class="n">idx</span> <span class="o">-=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="n">ldix_large_ivel</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+            <span class="n">VERBOSE</span><span class="p">(</span><span class="s1">&#39;Duration of high ivel is </span><span class="si">%d</span><span class="s1"> days&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">ldix_large_ivel</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">ldix_large_ivel</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ldix_large_ivel</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">l3dates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">ldix_large_ivel</span><span class="p">))</span>
+
+    <span class="c1"># handle the case of 3 consecutive days of large velocity</span>
+    <span class="c1"># makes unique</span>
+    <span class="n">ul3dates</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">l3dates</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">period</span> <span class="ow">in</span> <span class="n">ul3dates</span><span class="p">:</span>
+        <span class="c1"># check if an offset is hidden in 3 days high velocity</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">period</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">ivelts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">period</span><span class="p">,</span> <span class="mi">0</span><span class="p">])])</span>
+
+        <span class="n">idx_ref</span> <span class="o">=</span> <span class="n">period</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">idx_ref</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">dts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.E3</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">l1ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.E3</span><span class="p">)</span>
+        <span class="n">new_segmentation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+        <span class="n">new_segmentation</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">l1ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.E3</span>
+        <span class="n">new_segmentation</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">l1ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.E3</span>
+        <span class="n">ivb</span> <span class="o">=</span> <span class="p">(</span><span class="n">new_segmentation</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">new_segmentation</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">l1ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">l1ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="n">new_segmentation</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_segmentation</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">ivb</span> <span class="o">*</span> <span class="p">(</span><span class="n">l1ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">l1ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="n">new_segmentation</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">l1ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.E3</span>
+        <span class="n">new_segmentation</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">l1ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.E3</span>
+        <span class="n">iva</span> <span class="o">=</span> <span class="p">(</span><span class="n">new_segmentation</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">-</span> <span class="n">new_segmentation</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">l1ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">l1ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="n">new_segmentation</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_segmentation</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">-</span> <span class="n">iva</span> <span class="o">*</span> <span class="p">(</span><span class="n">l1ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">l1ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">new_segmentation</span><span class="p">)</span>
+
+        <span class="n">chi2_orig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="p">(</span><span class="n">dts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.E3</span> <span class="o">-</span> <span class="n">l1ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.E3</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;chi2 original &#39;</span><span class="p">,</span> <span class="n">chi2_orig</span><span class="p">)</span>
+        <span class="n">chi2_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">dts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.E3</span> <span class="o">-</span> <span class="n">new_segmentation</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;chi2 new      &#39;</span><span class="p">,</span> <span class="n">chi2_new</span><span class="p">)</span>
+
+
+
+
+
+
+    <span class="k">return</span> <span class="n">new_ts</span></div>
+
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../index.html">PYACS</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Jean-Mathieu NOCQUET.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

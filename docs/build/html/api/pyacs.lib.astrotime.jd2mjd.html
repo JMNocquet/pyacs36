@@ -1,0 +1,205 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.lib.astrotime.jd2mjd &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyacs.lib.astrotime.jpldate_2_datetime" href="pyacs.lib.astrotime.jpldate_2_datetime.html" />
+    <link rel="prev" title="pyacs.lib.astrotime.hmsmicros2uts" href="pyacs.lib.astrotime.hmsmicros2uts.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../libraries.html">core libraries</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pyacs.lib.astrotime.html">pyacs.lib.astrotime</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.cal2datetime.html">pyacs.lib.astrotime.cal2datetime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.cal2dayno.html">pyacs.lib.astrotime.cal2dayno</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.cal2decyear.html">pyacs.lib.astrotime.cal2decyear</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.cal2mjd.html">pyacs.lib.astrotime.cal2mjd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.datetime2cal.html">pyacs.lib.astrotime.datetime2cal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.datetime2dayno.html">pyacs.lib.astrotime.datetime2dayno</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.datetime2decyear.html">pyacs.lib.astrotime.datetime2decyear</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.datetime2mjd.html">pyacs.lib.astrotime.datetime2mjd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.datetime2seconds.html">pyacs.lib.astrotime.datetime2seconds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.datetime_from_calarray.html">pyacs.lib.astrotime.datetime_from_calarray</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.datetime_round_second.html">pyacs.lib.astrotime.datetime_round_second</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.day_since_decyear.html">pyacs.lib.astrotime.day_since_decyear</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.dayno2cal.html">pyacs.lib.astrotime.dayno2cal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.dayno2datetime.html">pyacs.lib.astrotime.dayno2datetime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.dayno2decyear.html">pyacs.lib.astrotime.dayno2decyear</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.dayno2mjd.html">pyacs.lib.astrotime.dayno2mjd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.decyear2cal.html">pyacs.lib.astrotime.decyear2cal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.decyear2datetime.html">pyacs.lib.astrotime.decyear2datetime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.decyear2dayno.html">pyacs.lib.astrotime.decyear2dayno</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.decyear2epoch.html">pyacs.lib.astrotime.decyear2epoch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.decyear2mjd.html">pyacs.lib.astrotime.decyear2mjd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.decyear2seconds.html">pyacs.lib.astrotime.decyear2seconds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.epoch2decyear.html">pyacs.lib.astrotime.epoch2decyear</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.gpsweek2mjd.html">pyacs.lib.astrotime.gpsweek2mjd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.guess_date.html">pyacs.lib.astrotime.guess_date</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.hmsmicros2ut.html">pyacs.lib.astrotime.hmsmicros2ut</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.hmsmicros2uts.html">pyacs.lib.astrotime.hmsmicros2uts</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pyacs.lib.astrotime.jd2mjd</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyacs.lib.astrotime.jd2mjd.jd2mjd"><code class="docutils literal notranslate"><span class="pre">jd2mjd()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.jpldate_2_datetime.html">pyacs.lib.astrotime.jpldate_2_datetime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.jpldate_2_decyear.html">pyacs.lib.astrotime.jpldate_2_decyear</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.leap_year.html">pyacs.lib.astrotime.leap_year</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.mjd2cal.html">pyacs.lib.astrotime.mjd2cal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.mjd2datetime.html">pyacs.lib.astrotime.mjd2datetime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.mjd2dayno.html">pyacs.lib.astrotime.mjd2dayno</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.mjd2decyear.html">pyacs.lib.astrotime.mjd2decyear</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.mjd2gpsweek.html">pyacs.lib.astrotime.mjd2gpsweek</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.mjd2jd.html">pyacs.lib.astrotime.mjd2jd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.seconds2datetime.html">pyacs.lib.astrotime.seconds2datetime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.ut2uts.html">pyacs.lib.astrotime.ut2uts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.uts2hmsmicros.html">pyacs.lib.astrotime.uts2hmsmicros</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.uts2ut.html">pyacs.lib.astrotime.uts2ut</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.year2yr.html">pyacs.lib.astrotime.year2yr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.yr2year.html">pyacs.lib.astrotime.yr2year</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.coordinates.html">pyacs.lib.coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.errors.html">pyacs.lib.errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.euclid.html">pyacs.lib.euclid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.euler.html">pyacs.lib.euler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.faultslip.html">pyacs.lib.faultslip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.glinalg.html">pyacs.lib.glinalg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.gmtpoint.html">pyacs.lib.gmtpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.gpstime.html">pyacs.lib.gpstime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.icosahedron.html">pyacs.lib.icosahedron</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.robustestimators.html">pyacs.lib.robustestimators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.shapefile.html">pyacs.lib.shapefile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.syscmd.html">pyacs.lib.syscmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.timeperiod.html">pyacs.lib.timeperiod</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.units.html">pyacs.lib.units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.utils.html">pyacs.lib.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../libraries.html">PYACS core libraries</a></li>
+          <li class="breadcrumb-item"><a href="pyacs.lib.astrotime.html">pyacs.lib.astrotime</a></li>
+      <li class="breadcrumb-item active">pyacs.lib.astrotime.jd2mjd</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/pyacs.lib.astrotime.jd2mjd.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pyacs.lib.astrotime.jd2mjd">
+<span id="pyacs-lib-astrotime-jd2mjd"></span><h1>pyacs.lib.astrotime.jd2mjd<a class="headerlink" href="#module-pyacs.lib.astrotime.jd2mjd" title="Link to this heading"></a></h1>
+<p>Convert Julian day to modified Julian day.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.astrotime.jd2mjd.jd2mjd">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.astrotime.jd2mjd.</span></span><span class="sig-name descname"><span class="pre">jd2mjd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jd</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/astrotime/jd2mjd.html#jd2mjd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.astrotime.jd2mjd.jd2mjd" title="Link to this definition"></a></dt>
+<dd><p>Convert Julian day to modified Julian day.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>jd</strong> (<em>float</em>) – Julian day.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>jd - 2400000.5.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pyacs.lib.astrotime.hmsmicros2uts.html" class="btn btn-neutral float-left" title="pyacs.lib.astrotime.hmsmicros2uts" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pyacs.lib.astrotime.jpldate_2_datetime.html" class="btn btn-neutral float-right" title="pyacs.lib.astrotime.jpldate_2_datetime" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

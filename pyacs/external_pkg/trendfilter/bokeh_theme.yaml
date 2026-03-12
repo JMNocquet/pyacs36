@@ -1,0 +1,10 @@
+attrs:
+    Axis:
+        major_label_text_font_size: '12pt'
+        axis_label_text_font_size: '14pt'
+    Line:
+        line_width: 3
+    Title:
+        text_font_size: '12pt'
+    Legend:
+        background_fill_alpha: 0.8

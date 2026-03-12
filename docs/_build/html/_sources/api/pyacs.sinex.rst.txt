@@ -1,0 +1,61 @@
+pyacs.sinex package
+===================
+
+Submodules
+----------
+
+pyacs.sinex.constants module
+----------------------------
+
+.. automodule:: pyacs.sinex.constants
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.sinex.date module
+-----------------------
+
+.. automodule:: pyacs.sinex.date
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.sinex.mathutils module
+----------------------------
+
+.. automodule:: pyacs.sinex.mathutils
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.sinex.sinex module
+------------------------
+
+.. automodule:: pyacs.sinex.sinex
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.sinex.snxutils module
+---------------------------
+
+.. automodule:: pyacs.sinex.snxutils
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.sinex.utils module
+------------------------
+
+.. automodule:: pyacs.sinex.utils
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: pyacs.sinex
+   :members:
+   :show-inheritance:
+   :undoc-members:

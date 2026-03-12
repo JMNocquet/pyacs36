@@ -1,5 +1,5 @@
 """
-Vondrak filter
+Vondrak filter for Gts.
 """
 
 
@@ -7,33 +7,49 @@ Vondrak filter
 def vondrak(self , fc , in_place=False , verbose=True, component='NEU'):
 ###############################################################################
     """
-    returned a filtered Gts using a Vondrak filter
-    
-    :param fc: cutoff frequence in cycle per year
-    :param in_place: if True then replace the current time series
-    :param verbose: boolean, verbose mode
-    :return: the filtered time series
-    
+    Return a filtered Gts using a Vondrak filter.
+
+    Parameters
+    ----------
+    fc : float
+        Cutoff frequency in cycles per year.
+    in_place : bool, optional
+        If True, replace the current time series; otherwise return a new Gts.
+    verbose : bool, optional
+        Verbose mode.
+    component : str, optional
+        Components to filter ('NEU' or subset).
+
+    Returns
+    -------
+    Gts
+        Filtered time series.
     """
-    
+
+
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
+    import pyacs.debug
+
     ### copy
     new_gts=self.copy( data_xyz=None )
 
     ### filter      
     if 'N' in component:
-        if verbose:
-            print('-- Computing Vondrak filter for component North')
+        VERBOSE('Computing Vondrak filter for component North')
         new_gts.data[:,1] = __vondrak(self.data[:,0], self.data[:,1], fc, return_partials=False)
     
     
     if 'E' in component:
-        if verbose:
-            print('-- Computing Vondrak filter for component East')
+        VERBOSE('Computing Vondrak filter for component East')
         new_gts.data[:,2] = __vondrak(self.data[:,0], self.data[:,2], fc, return_partials=False)
 
     if 'U' in component:
-        if verbose:
-            print('-- Computing Vondrak filter for component Up')
+        VERBOSE('Computing Vondrak filter for component Up')
         new_gts.data[:,3] = __vondrak(self.data[:,0], self.data[:,3], fc, return_partials=False)
 
 
@@ -47,21 +63,25 @@ def vondrak(self , fc , in_place=False , verbose=True, component='NEU'):
 
 ###############################################################################
 def __vondrak(t, x, fc, return_partials=False):
-    #-------------------------------------------------------------------------------
-    # Routine : vondrak
-    # Purpose : Pass a Vondrak filter through a time series
-    # Author  : P. Rebischung
-    # Created : 17-Dec-2011
-    #
-    # Changes :
-    #
-    # Input   : - t               : Dates
-    #           - x               : Time series
-    #           - fc              : Cutoff frequency
-    #           - return_partials : True if the partial derivatives dd/dy should be
-    #                               returned. Default is False.
-    # Output  : - xs              : Filtered time series
-    #-------------------------------------------------------------------------------
+    """
+    Pass a Vondrak filter through a 1D time series (internal routine).
+
+    Parameters
+    ----------
+    t : ndarray
+        Dates.
+    x : ndarray
+        Time series values.
+    fc : float
+        Cutoff frequency.
+    return_partials : bool, optional
+        If True, return partial derivatives dd/dy. Default is False.
+
+    Returns
+    -------
+    ndarray or tuple
+        Filtered time series xs; or (xs, partials) if return_partials.
+    """
 
     import numpy
     import scipy.linalg as linalg

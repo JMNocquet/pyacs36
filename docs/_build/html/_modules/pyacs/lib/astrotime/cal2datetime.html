@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyacs.lib.astrotime.cal2datetime &#8212; PYACS 0.66.18 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../../_static/documentation_options.js?v=2262e354"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pyacs.lib.astrotime.cal2datetime</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Convert a calendar date to a Python datetime instance.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="cal2datetime">
+<a class="viewcode-back" href="../../../../api/pyacs.lib.astrotime.html#pyacs.lib.astrotime.cal2datetime">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">cal2datetime</span><span class="p">(</span><span class="n">day</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">ut</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a calendar date to a Python datetime instance.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    day : int or array-like</span>
+<span class="sd">        Day of month.</span>
+<span class="sd">    month : int or array-like</span>
+<span class="sd">        Month (1-12).</span>
+<span class="sd">    year : int or array-like</span>
+<span class="sd">        Year.</span>
+<span class="sd">    ut : float, optional</span>
+<span class="sd">        Day fraction in [0., 1.[. Default 0.5.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    datetime or ndarray of datetime</span>
+<span class="sd">        Datetime instance(s). At 12:00 (ut=0.5) by default.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">from</span><span class="w"> </span><span class="nn">._common</span><span class="w"> </span><span class="kn">import</span> <span class="n">__monthOK</span><span class="p">,</span> <span class="n">__dayOK</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.cal2dayno</span><span class="w"> </span><span class="kn">import</span> <span class="n">cal2dayno</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.dayno2datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">dayno2datetime</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">day</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">day</span><span class="p">)</span>
+        <span class="n">month</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">month</span><span class="p">)</span>
+        <span class="n">year</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+
+    
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ut</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span><span class="n">ut</span><span class="o">=</span><span class="n">day</span><span class="o">*</span><span class="mf">0.0</span><span class="o">+</span><span class="n">ut</span>
+        <span class="n">return_datetime</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">cal2datetime</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">ut</span><span class="p">)))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+    
+        <span class="c1"># check arguments and raise an Error if not OK</span>
+        <span class="n">__monthOK</span><span class="p">(</span><span class="n">month</span><span class="p">)</span>
+        <span class="n">__dayOK</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span> 
+
+        <span class="n">dayno</span><span class="o">=</span><span class="n">cal2dayno</span><span class="p">(</span><span class="n">day</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">year</span><span class="p">)</span>
+        <span class="n">return_datetime</span><span class="o">=</span><span class="n">dayno2datetime</span><span class="p">(</span><span class="n">dayno</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">ut</span><span class="o">=</span><span class="n">ut</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">return_datetime</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">PYACS</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Jean-Mathieu NOCQUET.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

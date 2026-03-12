@@ -7,9 +7,6 @@
 # 'filters.savitzky_golay' ,
 # 'filters.wiener' ,
 # 'filters.spline' ,
-# 'filters.total_variation' ,
-# 'filters.piecewise_linear' ,
-# 'filters.el1_trend' ,
 # 'filters.minimum_component' ,
 # 'filters.l1_trend' ,
 # 'filters.median' ,
@@ -63,7 +60,7 @@
 # 'model.detrend_seasonal_median' ,
 # 'model.frame' ,
 # 'model.detrend_median' ,
-# 'model.add_vel_sigma' ,
+# 'noise.add_vel_sigma' ,
 # # FORMAT
 # 'format.pos' ,
 # 'format.mb_file' ,

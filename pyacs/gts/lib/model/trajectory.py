@@ -1,5 +1,5 @@
 """
-Non linear trajectory models for Geodetic Time Series
+Non-linear trajectory models for geodetic time series.
 """
 
 
@@ -15,69 +15,51 @@ def trajectory(self,
                verbose=False):
 ###############################################################################
     """
-    Calculates the parameters of a (non-linear) trajectory model for a Geodetic Time Series.
-    The trajectory model is:
+    Estimate parameters of a (non-linear) trajectory model for the time series.
 
-    y(t) =
+    Model: y(t) = trend + annual + semi-annual + offsets + post-seismic (psd_log).
 
-    trend : trend_cst + trend * ( t - t0 ) +
+    Parameters
+    ----------
+    model_type : str
+        String of key-word parameters to estimate: 'trend', 'annual', 'semi-annual',
+        'seasonal', 'offset', 'psd_log'. E.g. 'trend-seasonal-offset-psd_log' for full model.
+    offset_dates : list, optional
+        List of offset dates in decimal year.
+    eq_dates : list, optional
+        List of earthquake dates for post-seismic (psd_log) estimation.
+    H_fix : dict, optional
+        Parameters to fix, e.g. {'psd_log_offset_00': [10., 15., 0.], 'psd_log_tau_00': [100., 100., 100.]}.
+    H_constraints : dict, optional
+        Parameters to constrain (center, sigma), e.g. {'psd_log_tau_01': [[500., 50], [500., 50], [500., 50]]}.
+    H_bounds : dict, optional
+        Bounds, e.g. {'psd_log_tau_02': [[2*365., 3*365.], ...]}.
+    component : str, optional
+        Components to estimate ('NEU' or subset).
+    verbose : bool, optional
+        Verbose mode.
 
-    annual: a_annual * cos( 2*pi + phi_annual ) +
-
-    semi-annual: a_semi_annual * cos( 2*pi + phi_semi_annual ) +
-
-    offset : Heaviside( t - t_offset_i ) * offset_i +
-
-    post-seismic_deformation as decaying log (psd_log):   psd_eq_i * np.log( 1 + Heaviside( t - eq_i )/tau_i )
-
-    :param model_type: string made of the key-word the parameters to be estimated.
-
-    Key-word parameters are
-
-    'trend','annual','semi-annual','seasonal','offset','psd_log'.
-
-    'trend-seasonal-offset-psd_log' will do the full trajectory model.
-
-    :param offset_dates: a list of offset_dates in decimal year
-
-    :param eq_dates: a list of earthquake dates for which post-seismic deformation (psd_log) will be estimated
-
-    :param H_fix: a dictionary including the name of the parameter to be hold fixed and the value.
-
-    For instance to impose the co-seismic offset (North-East-Up) and relaxation time of 100 days for the
-    first earthquake use:
-
-    H_fix = { 'psd_log_offset_00':[10., 15., 0.] , 'psd_log_tau_00':[100., 100., 100.]}
-
-    :param H_constraints: a dictionary including the name of the parameter to be constrained.
-
-    For instance to impose a 50 days constraints around 500 days
-    on the relaxation time of the second earthquake for all NEU components use: H_fix = { 'psd_log_tau_01':[[500.,50],
-    [500.,50] , [500.,50]]}
-
-    :param H_bounds: a dictionary including the bounds.
-
-    For instance to impose a relaxation time for the third earthquake to be in the range
-    of 2 to 3 years, for all NEU components use: H_bounds = { 'psd_log_tau_02':[[2*365.,3*365.], [[2*365.,3*365.] ,
-    [[2*365.,3*365.]]}
-
-    :param component: string , component for which the trajectory model will be estimated.
-
-    :param verbose: verbose mode
-
-    :note: Unlike most pyacs.gts functions, trajectory returns 4 elements: the results as a dictionary, the model Gts,
-    the residual Gts and a Gts with model predictions at every day.
-
+    Returns
+    -------
+    tuple
+        (results_dict, model_Gts, residual_Gts, daily_predictions_Gts). Unlike most pyacs.gts
+        functions, trajectory returns these 4 elements.
     """
 
     # import
 
     import numpy as np
     import pyacs.lib.astrotime as at
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
 
 
     # after this method .data  and .data_xyz are not consistent so .data_xyz is set to None
-    self.data_xyz = None
+    #self.data_xyz = None
 
 # fills the H_fix, H_constraints & H_bounds for the components
 
@@ -163,8 +145,7 @@ def trajectory(self,
 
     # North
     if 'N' in component:
-        if verbose:
-            print("-- Running trajectory model for site %s component North" % self.code)
+        VERBOSE("Running trajectory model for site %s component North: %s" % (self.code, 'N'))
         i = 1
         (H_res_N, model_N, residuals_N, model_ed_N) = nl_gts_fit(self.data[:, 0], self.data[:, i], self.data[:, i + 3], \
                                                                  model_type, offset_dates=offset_dates,
@@ -179,8 +160,7 @@ def trajectory(self,
 
     # East
     if 'E' in component:
-        if verbose:
-            print("-- Running trajectory model for site %s component East" % self.code)
+        VERBOSE("Running trajectory model for site %s component East: %s" % (self.code, 'E'))
         i = 2
         (H_res_E, model_E, residuals_E, model_ed_E) = nl_gts_fit(self.data[:, 0], self.data[:, i], self.data[:, i + 3], \
                                                                  model_type, offset_dates=offset_dates,
@@ -195,8 +175,7 @@ def trajectory(self,
 
     # Up
     if 'U' in component:
-        if verbose:
-            print("-- Running trajectory model for site %s component Up" % self.code)
+        VERBOSE("Running trajectory model for site %s component Up: %s" % (self.code, 'U'))
         i = 3
         (H_res_U, model_U, residuals_U, model_ed_U) = nl_gts_fit(self.data[:, 0], self.data[:, i], self.data[:, i + 3], \
                                                                  model_type, offset_dates=offset_dates,

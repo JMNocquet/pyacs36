@@ -1,17 +1,29 @@
 ###################################################################
 def rake_from_slip_az(strike, dip, slipdir , motion_type ):
 ###################################################################
-    """
-    predicts rake for a given fault from the horizontal slip direction and motion style
-    input parameters can be single float or 1D numpy array
+    """Predict rake from horizontal slip direction and motion style.
 
-    :param longitude,latitude: in decimal degrees
-    :param strike: fault strike from north in decimal degrees
-    :param dip: fault dip from north in decimal degrees
-    :param euler: Euler pole as a string '/long/lat/w/style' (style among 'inverse', 'normal', 'leftlateral','rightlateral')
+    Input parameters can be single float or 1D numpy array.
 
-    :return rake: in decimal degrees
-    :note: style needs to be provided to ensure the correct sense of slip.
+    Parameters
+    ----------
+    strike : float or numpy.ndarray
+        Fault strike from north in decimal degrees.
+    dip : float or numpy.ndarray
+        Fault dip from north in decimal degrees.
+    slipdir : float or numpy.ndarray
+        Slip direction (azimuth) in decimal degrees.
+    motion_type : str
+        Motion style (e.g. 'inverse', 'normal', 'leftlateral', 'rightlateral').
+
+    Returns
+    -------
+    float or numpy.ndarray
+        Rake in decimal degrees.
+
+    Notes
+    -----
+    Style needs to be provided to ensure the correct sense of slip.
     """
 
     import pyacs.lib.gmtpoint

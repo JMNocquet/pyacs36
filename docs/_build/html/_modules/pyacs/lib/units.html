@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyacs.lib.units &#8212; PYACS 0.66.18 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../_static/documentation_options.js?v=2262e354"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pyacs.lib.units</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Various routines dealing with units conversion.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="mas2rad">
+<a class="viewcode-back" href="../../../api/pyacs.lib.html#pyacs.lib.units.mas2rad">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">mas2rad</span><span class="p">(</span><span class="n">mas</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert milliarcseconds to radians.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mas : float or array_like</span>
+<span class="sd">        Angle(s) in milliarcseconds.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float or numpy.ndarray</span>
+<span class="sd">        Angle(s) in radians.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import pyacs</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.mas2rad(1.)</span>
+<span class="sd">    4.84813681109536e-09</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.mas2rad(np.array([1.0, 2.0]))</span>
+<span class="sd">    array([  4.84813681e-09,   9.69627362e-09])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mas</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">np_mas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">mas</span> <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">np_mas</span> <span class="o">=</span> <span class="n">mas</span>
+    
+    <span class="k">return</span><span class="p">(</span> <span class="n">np_mas</span><span class="o">*</span><span class="mf">2.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">360.</span><span class="o">/</span><span class="mf">60.</span><span class="o">/</span><span class="mf">60.</span><span class="o">/</span><span class="mf">1000.</span><span class="p">)</span></div>
+
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="rad2mas">
+<a class="viewcode-back" href="../../../api/pyacs.lib.html#pyacs.lib.units.rad2mas">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">rad2mas</span><span class="p">(</span><span class="n">rad</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert radians to milliarcseconds.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rad : float or array_like</span>
+<span class="sd">        Angle(s) in radians.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float or numpy.ndarray</span>
+<span class="sd">        Angle(s) in milliarcseconds.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">rad</span><span class="o">/</span><span class="mf">2.</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="mf">360.</span><span class="o">*</span><span class="mf">60.</span><span class="o">*</span><span class="mf">60.</span><span class="o">*</span><span class="mf">1000.</span><span class="p">)</span></div>
+
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="radians2deg_mn_sec">
+<a class="viewcode-back" href="../../../api/pyacs.lib.html#pyacs.lib.units.radians2deg_mn_sec">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">radians2deg_mn_sec</span><span class="p">(</span><span class="n">rad</span><span class="p">,</span><span class="n">angle_range</span><span class="o">=</span><span class="s1">&#39;-180-180&#39;</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert an angle from radians to degrees, minutes, seconds.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rad : float</span>
+<span class="sd">        Angle in radians.</span>
+<span class="sd">    angle_range : str, optional</span>
+<span class="sd">        &#39;0-360&#39; or &#39;-180-180&#39;. Default is &#39;-180-180&#39;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    deg : int</span>
+<span class="sd">        Degrees (signed if angle_range is &#39;-180-180&#39;).</span>
+<span class="sd">    minutes : int</span>
+<span class="sd">        Minutes.</span>
+<span class="sd">    seconds : float</span>
+<span class="sd">        Seconds.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+    
+    <span class="c1"># to degrees</span>
+    <span class="n">decimal_degrees</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">rad</span><span class="p">)</span>
+    <span class="c1"># within 0-360</span>
+    <span class="n">decimal_degrees</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">remainder</span><span class="p">(</span><span class="n">decimal_degrees</span><span class="p">,</span><span class="mf">360.</span><span class="p">)</span>
+    <span class="c1"># -180 - 180 if asked</span>
+    <span class="k">if</span> <span class="n">angle_range</span><span class="o">==</span><span class="s1">&#39;-180-180&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">decimal_degrees</span><span class="o">&gt;</span><span class="mf">180.</span><span class="p">:</span>
+            <span class="n">decimal_degrees</span> <span class="o">=</span> <span class="n">decimal_degrees</span> <span class="o">-</span> <span class="mf">360.</span>
+    
+    <span class="n">angle_sign</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">decimal_degrees</span><span class="p">)</span>
+
+    <span class="c1"># we work only with positive angles</span>
+    <span class="n">decimal_degrees</span><span class="o">=</span><span class="n">decimal_degrees</span> <span class="o">*</span> <span class="n">angle_sign</span>
+    
+            
+    <span class="n">deg</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">decimal_degrees</span><span class="p">)</span>
+    
+    <span class="n">deg_frac</span><span class="o">=</span><span class="n">decimal_degrees</span><span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="n">deg</span><span class="p">)</span>
+    
+    <span class="n">minutes</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">deg_frac</span><span class="o">*</span><span class="mf">60.</span><span class="p">)</span>
+    
+    <span class="n">minutes_frac</span><span class="o">=</span><span class="n">deg_frac</span><span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="n">minutes</span><span class="p">)</span><span class="o">/</span><span class="mf">60.</span>
+    
+    <span class="n">seconds</span><span class="o">=</span><span class="n">minutes_frac</span><span class="o">*</span><span class="mf">3600.</span>
+    
+    <span class="k">return</span><span class="p">(</span><span class="n">angle_sign</span><span class="o">*</span><span class="n">deg</span><span class="p">,</span><span class="n">minutes</span><span class="p">,</span><span class="n">seconds</span><span class="p">)</span></div>
+
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="moment_to_magnitude">
+<a class="viewcode-back" href="../../../api/pyacs.lib.html#pyacs.lib.units.moment_to_magnitude">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">moment_to_magnitude</span><span class="p">(</span><span class="n">moment</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert seismic moment (N.m) to moment magnitude Mw.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    moment : float or array_like</span>
+<span class="sd">        Seismic moment in N.m.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float or numpy.ndarray</span>
+<span class="sd">        Moment magnitude Mw (2/3 * (log10(M0) - 9.05)).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="n">magnitude</span><span class="o">=</span><span class="mf">2.</span><span class="o">/</span><span class="mf">3.</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">moment</span><span class="p">)</span><span class="o">-</span><span class="mf">9.05</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span> <span class="n">magnitude</span> <span class="p">)</span></div>
+
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="magnitude_to_moment">
+<a class="viewcode-back" href="../../../api/pyacs.lib.html#pyacs.lib.units.magnitude_to_moment">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">magnitude_to_moment</span><span class="p">(</span><span class="n">magnitude</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert moment magnitude Mw to seismic moment in N.m.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    magnitude : float or array_like</span>
+<span class="sd">        Moment magnitude Mw.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float or numpy.ndarray</span>
+<span class="sd">        Seismic moment in N.m (10^(1.5*Mw + 9.05)).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="n">moment</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="mi">10</span><span class="p">,(</span><span class="mf">1.5</span><span class="o">*</span><span class="n">magnitude</span><span class="o">+</span><span class="mf">9.05</span><span class="p">))</span>
+    <span class="k">return</span><span class="p">(</span> <span class="n">moment</span> <span class="p">)</span></div>
+
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">PYACS</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Jean-Mathieu NOCQUET.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

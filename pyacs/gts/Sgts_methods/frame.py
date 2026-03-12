@@ -1,36 +1,52 @@
 ###################################################################
 def frame(self,frame=None,euler=None,w=None,verbose=False):
 ###################################################################
+    """Rotate time series according to an Euler pole.
+
+    Provide exactly one of: frame, euler, or w.
+
+    Parameters
+    ----------
+    frame : str, optional
+        Named frame: 'soam', 'nas', 'nazca', 'inca', 'nas_wrt_soam', 'inca_wrt_soam'.
+    euler : str or list or numpy.ndarray, optional
+        Euler pole: string 'lon/lat/w', list [lon,lat,w], or 1D array.
+    w : str or list or numpy.ndarray, optional
+        Rotation rate (rad/yr): string 'wx/wy/wz', list [wx,wy,wz], or 1D array.
+
+    Returns
+    -------
+    Sgts
+        New Sgts in the chosen frame.
+
+    Notes
+    -----
+    Frame values from Nocquet et al., Nat. Geosci., 2014.
     """
-    Rotates the time series according to an Euler pole.
-    User must provide either frame, euler or w.
-     
-     
-    :param frame: str, implemented values are 'soam','nas','nazca','inca','nas_wrt_soam','inca_wrt_soam'.
-    :param euler: Euler values provided either as a \
-    string 'euler_lon/euler_lat/euler_w', a list [euler_lon,euler_lat,euler_w] or \
-    a 1D numpy array np.array([euler_lon,euler_lat,euler_w])
-    :param w: rotation rate vector in rad/yr, provided either as a \
-    string 'wx/wy/wz', a list [wx,wy,wz] or \
-    a 1D numpy array np.array([wx,wy,wz])  
-    
-    :return: the new Sgts instance in new frame
-    
-    :ref: All values for frames are from Nocquet et al., Nat Geosc., 2014.
-    
-    """
-    
+
+
     # import
     import numpy as np
     import pyacs.lib.euler
     from pyacs.gts.Sgts import Sgts
     from pyacs.gts.Gts import Gts
 
-     
+    from icecream import ic
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
+
+
+    import inspect
+    VERBOSE("Running Sgts.%s" % inspect.currentframe().f_code.co_name)
+
     # check arguments are OK
      
     if [frame,euler,w].count(None) != 2:
-        print('!!! ERROR: define either argument frame, euler or w ')
+        ERROR("argument frame must be euler or w ")
         return(None)
      
     # Euler poles taken from pygvel_pole_info.py
@@ -48,8 +64,8 @@ def frame(self,frame=None,euler=None,w=None,verbose=False):
      
     # check frame case is OK
     if ( frame not in list(lEuler.keys())) and ( frame is not None):
-        print("!!! ERROR: requested frame ",frame," not known")
-        print("!!! ERROR: available frames are: ", list(lEuler.keys()))
+        ERROR("requested frame %s not known" % frame)
+        WARNING("available frames are: %s" % " ".join(list(lEuler.keys())))
         return(None)
      
     # initialize new gts
@@ -72,10 +88,10 @@ def frame(self,frame=None,euler=None,w=None,verbose=False):
             w=np.array(w)
          
         if not isinstance(w,np.ndarray):
-            print('!!! ERROR: argument w not understood: ',w)
+            ERROR("argument w not understood: %s" % str(w))
             return(None) 
          
-        euler_vector=np.array(pyacs.lib.euler.rot2euler([w[0],w[1],w[2]]))
+        euler_vector=np.array(pyacs.lib.euler.rot2euler(w[0],w[1],w[2]))
     
     # case euler vector
     if euler is not None:
@@ -87,7 +103,7 @@ def frame(self,frame=None,euler=None,w=None,verbose=False):
             euler=np.array(euler)
          
         if not isinstance(euler,np.ndarray):
-            print('!!! ERROR: argument euler not understood: ',euler)
+            ERROR("argument euler not understood: %s" % str(euler))
             return(None) 
          
         euler_vector=np.array(euler)
@@ -95,15 +111,16 @@ def frame(self,frame=None,euler=None,w=None,verbose=False):
     # converts the gts
      
     for gts in self.lGts():
-        if verbose:print("-- Processing ",gts.code)
+        VERBOSE("Processing %s"% gts.code)
+
         try:
-            new_gts=gts.remove_pole(euler_vector,pole_type='euler',in_place=False, verbose=verbose)
+            new_gts=gts.remove_pole(euler_vector,pole_type='euler', verbose=verbose)
         except (RuntimeError, TypeError, NameError):
-            print("!!! Error processing ",gts.code)
+            ERROR("processing %s "% gts.code)
             continue
         if isinstance(new_gts,Gts):
             New_Sgts.append(new_gts)
         else:
-            print("!!! Error processing ",gts.code, "!!! No time series created.")
-    
+            ERROR("processing %s. No time series created." % gts.code)
+
     return(New_Sgts)

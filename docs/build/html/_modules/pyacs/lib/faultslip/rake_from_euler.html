@@ -1,0 +1,181 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.lib.faultslip.rake_from_euler &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../libraries.html">core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyacs.lib.faultslip.rake_from_euler</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyacs.lib.faultslip.rake_from_euler</h1><div class="highlight"><pre>
+<span></span><span class="c1">###################################################################</span>
+<div class="viewcode-block" id="rake_from_euler">
+<a class="viewcode-back" href="../../../../api/pyacs.lib.faultslip.rake_from_euler.rake_from_euler.html#pyacs.lib.faultslip.rake_from_euler">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">rake_from_euler</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">dip</span><span class="p">,</span> <span class="n">euler</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Predict rake for a fault from Euler pole, position and fault strike/dip.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    longitude : float or numpy.ndarray</span>
+<span class="sd">        Longitude in decimal degrees.</span>
+<span class="sd">    latitude : float or numpy.ndarray</span>
+<span class="sd">        Latitude in decimal degrees.</span>
+<span class="sd">    strike : float or numpy.ndarray</span>
+<span class="sd">        Fault strike from north in decimal degrees.</span>
+<span class="sd">    dip : float or numpy.ndarray</span>
+<span class="sd">        Fault dip from north in decimal degrees.</span>
+<span class="sd">    euler : str</span>
+<span class="sd">        Euler pole as &#39;/long/lat/w/style&#39; (style: &#39;inverse&#39;, &#39;normal&#39;, &#39;leftlateral&#39;, &#39;rightlateral&#39;).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float or numpy.ndarray</span>
+<span class="sd">        Rake in decimal degrees.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Style needs to be provided to ensure the correct sense of slip.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># IMPORT</span>
+    <span class="c1">###########################################################################</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.gmtpoint</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.faultslip</span>
+
+
+    <span class="c1">###############################################################################</span>
+    <span class="c1"># INPUT AS 1D NUMPY ARRAY</span>
+    <span class="c1">###############################################################################</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span> <span class="n">longitude</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">rake</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">longitude</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">longitude</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">rake</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">faultslip</span><span class="o">.</span><span class="n">rake_from_euler</span><span class="p">(</span><span class="n">longitude</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">latitude</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">strike</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">dip</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">euler</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+    <span class="c1">###############################################################################</span>
+    <span class="c1"># INPUT AS FLOAT</span>
+    <span class="c1">###############################################################################</span>
+
+        <span class="n">M</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">gmtpoint</span><span class="o">.</span><span class="n">GMT_Point</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s1">&#39;XXXX&#39;</span><span class="p">,</span> <span class="n">lon</span><span class="o">=</span><span class="n">longitude</span><span class="p">,</span> <span class="n">lat</span><span class="o">=</span><span class="n">latitude</span><span class="p">,</span> <span class="n">he</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">Ve</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">Vn</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">Vu</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> \
+                                         <span class="n">SVe</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">SVn</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">SVu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">SVen</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> \
+                                         <span class="n">Cv_xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Cv_enu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+        <span class="n">_tmp</span><span class="p">,</span> <span class="n">elon</span><span class="p">,</span> <span class="n">elat</span><span class="p">,</span> <span class="n">ew</span><span class="p">,</span> <span class="n">motion_type</span> <span class="o">=</span> <span class="n">euler</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+
+        <span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="p">[</span><span class="n">elon</span><span class="p">,</span> <span class="n">elat</span><span class="p">,</span> <span class="n">ew</span><span class="p">])))</span>
+
+        <span class="n">N</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">pole</span><span class="p">(</span><span class="n">W</span><span class="o">=</span><span class="n">W</span><span class="p">,</span> <span class="n">type_euler</span><span class="o">=</span><span class="s1">&#39;euler&#39;</span><span class="p">,</span> <span class="n">option</span><span class="o">=</span><span class="s1">&#39;predict&#39;</span><span class="p">)</span>
+
+        <span class="p">(</span><span class="n">ve</span><span class="p">,</span> <span class="n">vn</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">Ve</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">Vn</span><span class="p">)</span>
+
+        <span class="n">rake</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">faultslip</span><span class="o">.</span><span class="n">v_to_rake</span><span class="p">(</span><span class="n">ve</span><span class="p">,</span> <span class="n">vn</span><span class="p">,</span> <span class="n">strike</span><span class="p">,</span> <span class="n">dip</span><span class="p">,</span> <span class="n">motion_type</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">rake</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

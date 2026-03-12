@@ -1,0 +1,307 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Velocity field &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=aca1a097"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pyacs.vel_field" href="api/pyacs.vel_field.html" />
+    <link rel="prev" title="Gts.xyz2neu" href="gts_methods/xyz2neu.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="libraries.html">core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gts.html">Time series library</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">velocity field</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#velocity-field-class-api">Velocity_Field class API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#summary-of-available-methods">Summary of available methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#i-o">I/O</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#info-and-accessors">Info and accessors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#subset-and-transform">Subset and transform</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#euler-pole">Euler pole</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#common-sites-and-profile">Common sites and profile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#strain">Strain</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api-reference">API reference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/pyacs.vel_field.html">pyacs.vel_field</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Velocity field</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/vel_field.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="velocity-field">
+<h1>Velocity field<a class="headerlink" href="#velocity-field" title="Link to this heading"></a></h1>
+<p>The <strong>pyacs.vel_field</strong> package provides the <a class="reference internal" href="api/pyacs.vel_field.html#pyacs.vel_field.Velocity_Field" title="pyacs.vel_field.Velocity_Field"><code class="xref py py-class docutils literal notranslate"><span class="pre">Velocity_Field</span></code></a> class to read, manipulate, and write velocity fields in GMT psvelo format. Each site is represented as a <code class="xref py py-class docutils literal notranslate"><span class="pre">GMT_Point</span></code> with position, velocity components (e.g. Ve, Vn), and uncertainties.</p>
+<p><strong>Full API reference:</strong> <a class="reference internal" href="api/pyacs.vel_field.html"><span class="doc">pyacs.vel_field</span></a></p>
+<p><strong>Backward compatibility:</strong> <a class="reference internal" href="api/pyacs.vel_field.html#pyacs.vel_field.Velocity_Field" title="pyacs.vel_field.Velocity_Field"><code class="xref py py-class docutils literal notranslate"><span class="pre">Velocity_Field</span></code></a> is also available as <code class="xref py py-class docutils literal notranslate"><span class="pre">Velocity_Field</span></code> (<code class="docutils literal notranslate"><span class="pre">pyacs.lib.vel_field</span></code> is a thin wrapper that imports from <code class="docutils literal notranslate"><span class="pre">pyacs.vel_field</span></code>).</p>
+<section id="velocity-field-class-api">
+<h2>Velocity_Field class API<a class="headerlink" href="#velocity-field-class-api" title="Link to this heading"></a></h2>
+<p>Full reference: <a class="reference internal" href="api/pyacs.vel_field.html#pyacs.vel_field.Velocity_Field" title="pyacs.vel_field.Velocity_Field"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyacs.vel_field.Velocity_Field</span></code></a></p>
+<p>The <strong>Velocity_Field</strong> class holds a collection of GMT_Point sites (lon, lat, Ve, Vn, uncertainties) and provides methods to read/write GMT psvelo files, subset sites, compute Euler poles, remove pole predictions, project along profiles, and estimate strain rates.</p>
+<section id="summary-of-available-methods">
+<h3>Summary of available methods<a class="headerlink" href="#summary-of-available-methods" title="Link to this heading"></a></h3>
+<section id="i-o">
+<h4>I/O<a class="headerlink" href="#i-o" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pyacs.vel_field.html#pyacs.vel_field.Velocity_Field.read" title="pyacs.vel_field.Velocity_Field.read"><code class="xref py py-meth docutils literal notranslate"><span class="pre">read()</span></code></a></p></td>
+<td><p>Read a velocity field from a GMT psvelo file (class method).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pyacs.vel_field.html#pyacs.vel_field.Velocity_Field.write" title="pyacs.vel_field.Velocity_Field.write"><code class="xref py py-meth docutils literal notranslate"><span class="pre">write()</span></code></a></p></td>
+<td><p>Write the velocity field to a GMT psvelo file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pyacs.vel_field.html#pyacs.vel_field.Velocity_Field.add_point" title="pyacs.vel_field.Velocity_Field.add_point"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_point()</span></code></a></p></td>
+<td><p>Append a GMT_Point to the field.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pyacs.vel_field.html#pyacs.vel_field.Velocity_Field.remove_point" title="pyacs.vel_field.Velocity_Field.remove_point"><code class="xref py py-meth docutils literal notranslate"><span class="pre">remove_point()</span></code></a></p></td>
+<td><p>Remove a site by code.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="info-and-accessors">
+<h4>Info and accessors<a class="headerlink" href="#info-and-accessors" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pyacs.vel_field.html#pyacs.vel_field.Velocity_Field.info" title="pyacs.vel_field.Velocity_Field.info"><code class="xref py py-meth docutils literal notranslate"><span class="pre">info()</span></code></a></p></td>
+<td><p>Print basic information about the velocity field.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pyacs.vel_field.html#pyacs.vel_field.Velocity_Field.print_info_site" title="pyacs.vel_field.Velocity_Field.print_info_site"><code class="xref py py-meth docutils literal notranslate"><span class="pre">print_info_site()</span></code></a></p></td>
+<td><p>Print information for one site by code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pyacs.vel_field.html#pyacs.vel_field.Velocity_Field.nsites" title="pyacs.vel_field.Velocity_Field.nsites"><code class="xref py py-meth docutils literal notranslate"><span class="pre">nsites()</span></code></a></p></td>
+<td><p>Return the number of sites.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pyacs.vel_field.html#pyacs.vel_field.Velocity_Field.lcode" title="pyacs.vel_field.Velocity_Field.lcode"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lcode()</span></code></a></p></td>
+<td><p>Return list of site codes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pyacs.vel_field.html#pyacs.vel_field.Velocity_Field.site" title="pyacs.vel_field.Velocity_Field.site"><code class="xref py py-meth docutils literal notranslate"><span class="pre">site()</span></code></a></p></td>
+<td><p>Return a GMT_Point by code.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pyacs.vel_field.html#pyacs.vel_field.Velocity_Field.l_GMT_Point" title="pyacs.vel_field.Velocity_Field.l_GMT_Point"><code class="xref py py-meth docutils literal notranslate"><span class="pre">l_GMT_Point()</span></code></a></p></td>
+<td><p>Return the field as a list of GMT_Point instances.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="subset-and-transform">
+<h4>Subset and transform<a class="headerlink" href="#subset-and-transform" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pyacs.vel_field.html#pyacs.vel_field.Velocity_Field.subset" title="pyacs.vel_field.Velocity_Field.subset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">subset()</span></code></a></p></td>
+<td><p>Return a new velocity field with a subset of sites (lonly / lexclude).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pyacs.vel_field.html#pyacs.vel_field.Velocity_Field.radial" title="pyacs.vel_field.Velocity_Field.radial"><code class="xref py py-meth docutils literal notranslate"><span class="pre">radial()</span></code></a></p></td>
+<td><p>Return a field with radial and tangential components about a center.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="euler-pole">
+<h4>Euler pole<a class="headerlink" href="#euler-pole" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pyacs.vel_field.html#pyacs.vel_field.Velocity_Field.pole" title="pyacs.vel_field.Velocity_Field.pole"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pole()</span></code></a></p></td>
+<td><p>Compute Euler pole from the velocity field (WLS or L1).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pyacs.vel_field.html#pyacs.vel_field.Velocity_Field.calc_pole" title="pyacs.vel_field.Velocity_Field.calc_pole"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calc_pole()</span></code></a></p></td>
+<td><p>Euler pole calculation for multiple plates; writes euler_sum.dat and per-plate outputs.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pyacs.vel_field.html#pyacs.vel_field.Velocity_Field.substract_pole" title="pyacs.vel_field.Velocity_Field.substract_pole"><code class="xref py py-meth docutils literal notranslate"><span class="pre">substract_pole()</span></code></a></p></td>
+<td><p>Subtract (or add) the prediction of an Euler pole from the field.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="common-sites-and-profile">
+<h4>Common sites and profile<a class="headerlink" href="#common-sites-and-profile" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pyacs.vel_field.html#pyacs.vel_field.Velocity_Field.common" title="pyacs.vel_field.Velocity_Field.common"><code class="xref py py-meth docutils literal notranslate"><span class="pre">common()</span></code></a></p></td>
+<td><p>Return sites common to this field and a list of GMT_Points (e.g. from SINEX).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pyacs.vel_field.html#pyacs.vel_field.Velocity_Field.proj_profile" title="pyacs.vel_field.Velocity_Field.proj_profile"><code class="xref py py-meth docutils literal notranslate"><span class="pre">proj_profile()</span></code></a></p></td>
+<td><p>Project velocity components along a great-circle profile.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="strain">
+<h4>Strain<a class="headerlink" href="#strain" title="Link to this heading"></a></h4>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pyacs.vel_field.html#pyacs.vel_field.Velocity_Field.strain" title="pyacs.vel_field.Velocity_Field.strain"><code class="xref py py-meth docutils literal notranslate"><span class="pre">strain()</span></code></a></p></td>
+<td><p>Calculate strain rate from a list of site codes (velocity gradient tensor, principal axes, rotation).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="api-reference">
+<h3>API reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h3>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Velocity field API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/pyacs.vel_field.html">pyacs.vel_field</a></li>
+</ul>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gts_methods/xyz2neu.html" class="btn btn-neutral float-left" title="Gts.xyz2neu" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api/pyacs.vel_field.html" class="btn btn-neutral float-right" title="pyacs.vel_field" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

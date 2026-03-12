@@ -1,0 +1,401 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.lib.gpstime &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyacs.lib.icosahedron" href="pyacs.lib.icosahedron.html" />
+    <link rel="prev" title="pyacs.lib.gmtpoint.spherical_distance" href="pyacs.lib.gmtpoint.spherical_distance.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../libraries.html">core libraries</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.astrotime.html">pyacs.lib.astrotime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.coordinates.html">pyacs.lib.coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.errors.html">pyacs.lib.errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.euclid.html">pyacs.lib.euclid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.euler.html">pyacs.lib.euler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.faultslip.html">pyacs.lib.faultslip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.glinalg.html">pyacs.lib.glinalg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.gmtpoint.html">pyacs.lib.gmtpoint</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pyacs.lib.gpstime</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pyacs.lib.gpstime.GpsSecondsFromPyUTC"><code class="docutils literal notranslate"><span class="pre">GpsSecondsFromPyUTC()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyacs.lib.gpstime.UTCFromGps"><code class="docutils literal notranslate"><span class="pre">UTCFromGps()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyacs.lib.gpstime.dayOfWeek"><code class="docutils literal notranslate"><span class="pre">dayOfWeek()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyacs.lib.gpstime.gpsFromUTC"><code class="docutils literal notranslate"><span class="pre">gpsFromUTC()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyacs.lib.gpstime.gpsWeek"><code class="docutils literal notranslate"><span class="pre">gpsWeek()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyacs.lib.gpstime.julianDay"><code class="docutils literal notranslate"><span class="pre">julianDay()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyacs.lib.gpstime.mkUTC"><code class="docutils literal notranslate"><span class="pre">mkUTC()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyacs.lib.gpstime.testDayOfWeek"><code class="docutils literal notranslate"><span class="pre">testDayOfWeek()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyacs.lib.gpstime.testGpsWeek"><code class="docutils literal notranslate"><span class="pre">testGpsWeek()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyacs.lib.gpstime.testJulD"><code class="docutils literal notranslate"><span class="pre">testJulD()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyacs.lib.gpstime.testPyUtilties"><code class="docutils literal notranslate"><span class="pre">testPyUtilties()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyacs.lib.gpstime.testTimeStuff"><code class="docutils literal notranslate"><span class="pre">testTimeStuff()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyacs.lib.gpstime.wtFromUTCpy"><code class="docutils literal notranslate"><span class="pre">wtFromUTCpy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyacs.lib.gpstime.ymdhmsFromPyUTC"><code class="docutils literal notranslate"><span class="pre">ymdhmsFromPyUTC()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.icosahedron.html">pyacs.lib.icosahedron</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.robustestimators.html">pyacs.lib.robustestimators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.shapefile.html">pyacs.lib.shapefile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.syscmd.html">pyacs.lib.syscmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.timeperiod.html">pyacs.lib.timeperiod</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.units.html">pyacs.lib.units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.utils.html">pyacs.lib.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../libraries.html">PYACS core libraries</a></li>
+      <li class="breadcrumb-item active">pyacs.lib.gpstime</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/pyacs.lib.gpstime.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pyacs.lib.gpstime">
+<span id="pyacs-lib-gpstime"></span><h1>pyacs.lib.gpstime<a class="headerlink" href="#module-pyacs.lib.gpstime" title="Link to this heading"></a></h1>
+<p>Note: Leap seconds still needs to be checked an improve
+A Python implementation of GPS related time conversions.</p>
+<p>Copyright 2002 by Bud P. Bruegger, Sistema, Italy
+<a class="reference external" href="mailto:bud&#37;&#52;&#48;sistema&#46;it">mailto:bud<span>&#64;</span>sistema<span>&#46;</span>it</a>
+<a class="reference external" href="http://www.sistema.it">http://www.sistema.it</a></p>
+<p>Modifications for GPS seconds by Duncan Brown</p>
+<p>PyUTCFromGpsSeconds added by Ben Johnson</p>
+<p>This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License as published by the Free
+Software Foundation; either version 2 of the License, or (at your option) any
+later version.</p>
+<p>This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+details.</p>
+<p>You should have received a copy of the GNU Lesser General Public License along
+with this program; if not, write to the Free Software Foundation, Inc., 59
+Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
+<p>GPS Time Utility functions</p>
+<p>This file contains a Python implementation of GPS related time conversions.</p>
+<p>The two main functions convert between UTC and GPS time (GPS-week, time of
+week in seconds, GPS-day, time of day in seconds).  The other functions are
+convenience wrappers around these base functions.</p>
+<p>A good reference for GPS time issues is:
+<a class="reference external" href="http://www.oc.nps.navy.mil/~jclynch/timsys.html">http://www.oc.nps.navy.mil/~jclynch/timsys.html</a></p>
+<p>Note that python time types are represented in seconds since (a platform
+dependent Python) Epoch.  This makes implementation quite straight forward
+as compared to some algorigthms found in the literature and on the web.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.gpstime.GpsSecondsFromPyUTC">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.gpstime.</span></span><span class="sig-name descname"><span class="pre">GpsSecondsFromPyUTC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pyUTC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_leapSecs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">14</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/gpstime.html#GpsSecondsFromPyUTC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.gpstime.GpsSecondsFromPyUTC" title="Link to this definition"></a></dt>
+<dd><p>Convert Python epoch time to GPS seconds (since GPS epoch).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pyUTC</strong> (<em>float</em>) – Seconds since Python epoch (e.g. time.time()).</p></li>
+<li><p><strong>_leapSecs</strong> (<em>int</em><em>, </em><em>optional</em>) – Unused; kept for API compatibility.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>GPS seconds since 1980-01-06 00:00:00.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.gpstime.UTCFromGps">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.gpstime.</span></span><span class="sig-name descname"><span class="pre">UTCFromGps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gpsWeek</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SOW</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leapSecs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">14</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/gpstime.html#UTCFromGps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.gpstime.UTCFromGps" title="Link to this definition"></a></dt>
+<dd><p>Convert GPS week and seconds of week to UTC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gpsWeek</strong> (<em>int</em>) – Full GPS week number (not modulo 1024).</p></li>
+<li><p><strong>SOW</strong> (<em>float</em>) – Seconds of week.</p></li>
+<li><p><strong>leapSecs</strong> (<em>int</em><em>, </em><em>optional</em>) – Leap seconds (GPS - UTC). Default is 14.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(year, month, day, hour, minute, sec).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.gpstime.dayOfWeek">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.gpstime.</span></span><span class="sig-name descname"><span class="pre">dayOfWeek</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">month</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">day</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/gpstime.html#dayOfWeek"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.gpstime.dayOfWeek" title="Link to this definition"></a></dt>
+<dd><p>Return GPS day of week: 0=Sun, 1=Mon, …, 6=Sat.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>year</strong> (<em>int</em>) – Date components.</p></li>
+<li><p><strong>month</strong> (<em>int</em>) – Date components.</p></li>
+<li><p><strong>day</strong> (<em>int</em>) – Date components.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Day of week (0-6).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.gpstime.gpsFromUTC">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.gpstime.</span></span><span class="sig-name descname"><span class="pre">gpsFromUTC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">month</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">day</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minute</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ssec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leapSecs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/gpstime.html#gpsFromUTC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.gpstime.gpsFromUTC" title="Link to this definition"></a></dt>
+<dd><p>Convert UTC to GPS week, seconds of week, GPS day, seconds of day.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>year</strong> (<em>int</em>) – UTC date/time components.</p></li>
+<li><p><strong>month</strong> (<em>int</em>) – UTC date/time components.</p></li>
+<li><p><strong>day</strong> (<em>int</em>) – UTC date/time components.</p></li>
+<li><p><strong>hour</strong> (<em>int</em>) – UTC date/time components.</p></li>
+<li><p><strong>minute</strong> (<em>int</em>) – UTC date/time components.</p></li>
+<li><p><strong>ssec</strong> (<em>float</em>) – Seconds (and fraction).</p></li>
+<li><p><strong>leapSecs</strong> (<em>int</em><em>, </em><em>optional</em>) – Leap seconds (GPS - UTC). Default is 30; update as leap seconds change.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(gpsWeek, secsOfWeek, gpsDay, secsOfDay).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>GPS time is seconds since 1980-01-06 00:00:00. Week starts Saturday midnight.
+See <a class="reference external" href="http://www.oc.nps.navy.mil/~jclynch/timsys.html">http://www.oc.nps.navy.mil/~jclynch/timsys.html</a>. Python uses integer
+seconds; fractional seconds in ssec are preserved in the return value.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.gpstime.gpsWeek">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.gpstime.</span></span><span class="sig-name descname"><span class="pre">gpsWeek</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">month</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">day</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/gpstime.html#gpsWeek"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.gpstime.gpsWeek" title="Link to this definition"></a></dt>
+<dd><p>Return full GPS week number for given UTC date.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>year</strong> (<em>int</em>) – UTC date.</p></li>
+<li><p><strong>month</strong> (<em>int</em>) – UTC date.</p></li>
+<li><p><strong>day</strong> (<em>int</em>) – UTC date.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>GPS week number.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.gpstime.julianDay">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.gpstime.</span></span><span class="sig-name descname"><span class="pre">julianDay</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">month</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">day</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/gpstime.html#julianDay"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.gpstime.julianDay" title="Link to this definition"></a></dt>
+<dd><p>Return day of year (1-366) for given date.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>year</strong> (<em>int</em>) – Date components.</p></li>
+<li><p><strong>month</strong> (<em>int</em>) – Date components.</p></li>
+<li><p><strong>day</strong> (<em>int</em>) – Date components.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Day since Jan 1 of year.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.gpstime.mkUTC">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.gpstime.</span></span><span class="sig-name descname"><span class="pre">mkUTC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">month</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">day</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minute</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/gpstime.html#mkUTC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.gpstime.mkUTC" title="Link to this definition"></a></dt>
+<dd><p>Convert UTC date/time to seconds since epoch (like mktime but for UTC).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>year</strong> (<em>int</em><em> or </em><em>float</em>) – UTC components.</p></li>
+<li><p><strong>month</strong> (<em>int</em><em> or </em><em>float</em>) – UTC components.</p></li>
+<li><p><strong>day</strong> (<em>int</em><em> or </em><em>float</em>) – UTC components.</p></li>
+<li><p><strong>hour</strong> (<em>int</em><em> or </em><em>float</em>) – UTC components.</p></li>
+<li><p><strong>minute</strong> (<em>int</em><em> or </em><em>float</em>) – UTC components.</p></li>
+<li><p><strong>sec</strong> (<em>int</em><em> or </em><em>float</em>) – UTC components.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Seconds since epoch.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.gpstime.testDayOfWeek">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.gpstime.</span></span><span class="sig-name descname"><span class="pre">testDayOfWeek</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/gpstime.html#testDayOfWeek"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.gpstime.testDayOfWeek" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.gpstime.testGpsWeek">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.gpstime.</span></span><span class="sig-name descname"><span class="pre">testGpsWeek</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/gpstime.html#testGpsWeek"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.gpstime.testGpsWeek" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.gpstime.testJulD">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.gpstime.</span></span><span class="sig-name descname"><span class="pre">testJulD</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/gpstime.html#testJulD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.gpstime.testJulD" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.gpstime.testPyUtilties">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.gpstime.</span></span><span class="sig-name descname"><span class="pre">testPyUtilties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/gpstime.html#testPyUtilties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.gpstime.testPyUtilties" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.gpstime.testTimeStuff">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.gpstime.</span></span><span class="sig-name descname"><span class="pre">testTimeStuff</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/gpstime.html#testTimeStuff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.gpstime.testTimeStuff" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.gpstime.wtFromUTCpy">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.gpstime.</span></span><span class="sig-name descname"><span class="pre">wtFromUTCpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pyUTC</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">leapSecs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">14</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/gpstime.html#wtFromUTCpy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.gpstime.wtFromUTCpy" title="Link to this definition"></a></dt>
+<dd><p>Convert Python UTC time to GPS week and time of week.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pyUTC</strong> (<em>float</em>) – Seconds since epoch (UTC).</p></li>
+<li><p><strong>leapSecs</strong> (<em>int</em><em>, </em><em>optional</em>) – Leap seconds offset. Default is 14.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(gpsWeek, secsOfWeek).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.gpstime.ymdhmsFromPyUTC">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.gpstime.</span></span><span class="sig-name descname"><span class="pre">ymdhmsFromPyUTC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pyUTC</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/gpstime.html#ymdhmsFromPyUTC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.gpstime.ymdhmsFromPyUTC" title="Link to this definition"></a></dt>
+<dd><p>Return (year, month, day, hour, minute, sec) from Python UTC time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pyUTC</strong> (<em>float</em>) – Seconds since epoch (e.g. from time.time()).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(year, month, day, hour, minute, sec).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pyacs.lib.gmtpoint.spherical_distance.html" class="btn btn-neutral float-left" title="pyacs.lib.gmtpoint.spherical_distance" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pyacs.lib.icosahedron.html" class="btn btn-neutral float-right" title="pyacs.lib.icosahedron" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,254 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installation &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=aca1a097"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="PYACS core libraries" href="libraries.html" />
+    <link rel="prev" title="What is PYACS?" href="foreword.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#recommended-setup-using-mamba">Recommended setup using mamba</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-from-an-existing-anaconda-environment">Installation from an existing Anaconda environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#note">Note</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-pyacs">Getting PYACS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#development-installation">Development installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Note</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-tests">Running tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#interactive-use">Interactive use</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#working-with-jupyter-notebooks">Working with Jupyter notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-a-pyacs-distribution">Building a PYACS distribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="libraries.html">core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Installation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
+<p>It is recommended to install <strong>PYACS</strong> in a dedicated Python environment.</p>
+<section id="recommended-setup-using-mamba">
+<h2>Recommended setup using mamba<a class="headerlink" href="#recommended-setup-using-mamba" title="Link to this heading"></a></h2>
+<p>The recommended environment manager is <strong>mamba</strong>, which provides a faster
+dependency resolver than conda.</p>
+<p>Install Miniforge / mamba:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>curl -L -O https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh
+bash Miniforge3-$(uname)-$(uname -m).sh
+</pre></div>
+</div>
+<p>Open a new terminal after installation.</p>
+<p>Download the environment configuration file from:</p>
+<p><a class="reference external" href="https://github.com/JMNocquet/pyacs36/tree/master/environment.yaml">https://github.com/JMNocquet/pyacs36/tree/master/environment.yaml</a></p>
+<p>Create the PYACS environment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mamba</span> <span class="n">env</span> <span class="n">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">environment</span><span class="o">.</span><span class="n">yaml</span>
+<span class="n">mamba</span> <span class="n">activate</span> <span class="n">pyacs</span>
+</pre></div>
+</div>
+</section>
+<section id="installation-from-an-existing-anaconda-environment">
+<h2>Installation from an existing Anaconda environment<a class="headerlink" href="#installation-from-an-existing-anaconda-environment" title="Link to this heading"></a></h2>
+<p>If you already use <strong>Anaconda</strong> or <strong>Miniconda</strong>, you can install mamba
+in the base environment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">n</span> <span class="n">base</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">mamba</span>
+<span class="n">mamba</span> <span class="n">env</span> <span class="n">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">environment</span><span class="o">.</span><span class="n">yaml</span>
+</pre></div>
+</div>
+<p>Download the environment configuration file from:</p>
+<p><a class="reference external" href="https://github.com/JMNocquet/pyacs36/tree/master/environment.yaml">https://github.com/JMNocquet/pyacs36/tree/master/environment.yaml</a></p>
+</section>
+<section id="note">
+<h2>Note<a class="headerlink" href="#note" title="Link to this heading"></a></h2>
+<p>The standard <strong>conda</strong> dependency solver may be significantly slower
+than <strong>mamba</strong>.</p>
+</section>
+<section id="getting-pyacs">
+<h2>Getting PYACS<a class="headerlink" href="#getting-pyacs" title="Link to this heading"></a></h2>
+<p>Download the latest stable version from:</p>
+<p><a class="reference external" href="https://github.com/JMNocquet/pyacs36/tree/master/dist">https://github.com/JMNocquet/pyacs36/tree/master/dist</a></p>
+<p>Install using pip:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pyacs</span><span class="o">-</span><span class="n">X</span><span class="o">.</span><span class="n">XX</span><span class="o">.</span><span class="n">XX</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
+</section>
+<section id="development-installation">
+<h2>Development installation<a class="headerlink" href="#development-installation" title="Link to this heading"></a></h2>
+<p>If you plan to modify the code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tar</span> <span class="n">xvfz</span> <span class="n">pyacs</span><span class="o">-</span><span class="n">X</span><span class="o">.</span><span class="n">XX</span><span class="o">.</span><span class="n">XX</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">cd</span> <span class="n">pyacs</span><span class="o">-</span><span class="n">X</span><span class="o">.</span><span class="n">XX</span><span class="o">.</span><span class="n">XX</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">.</span>
+</pre></div>
+</div>
+<p>Alternatively, clone the full repository:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">JMNocquet</span><span class="o">/</span><span class="n">pyacs36</span><span class="o">.</span><span class="n">git</span>
+<span class="n">cd</span> <span class="n">pyacs36</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">.</span>
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h2>Note<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>The latest development version of the repository may include experimental
+changes. Tagged releases are expected to be more stable.</p>
+</section>
+<section id="running-tests">
+<h2>Running tests<a class="headerlink" href="#running-tests" title="Link to this heading"></a></h2>
+<p>From the directory containing the <code class="docutils literal notranslate"><span class="pre">pyacs</span></code> package:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pytest</span> <span class="n">pyacs</span><span class="o">/</span><span class="n">tests</span>
+</pre></div>
+</div>
+</section>
+<section id="interactive-use">
+<h2>Interactive use<a class="headerlink" href="#interactive-use" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">ipyacs.py</span></code> is a convenient script that loads the main PYACS libraries and
+automatically loads time series located in the current directory (if available).
+It allows interactive time-series visualization and analysis using IPython.</p>
+<p>You may define a shell alias:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">alias</span> <span class="n">ipyacs</span><span class="o">=</span><span class="s1">&#39;mamba activate pyacs &amp;&amp; ipython $(which ipyacs.py) -i&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="working-with-jupyter-notebooks">
+<h2>Working with Jupyter notebooks<a class="headerlink" href="#working-with-jupyter-notebooks" title="Link to this heading"></a></h2>
+<p>Time-series analysis is often conveniently performed using a Jupyter notebook.</p>
+<p>Start a notebook, select the kernel corresponding to your PYACS environment,
+and run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pyacs</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pyacs</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.gts.Sgts</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sgts</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">at</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="n">pyacs</span><span class="o">.</span><span class="n">verbose</span><span class="p">(</span><span class="s2">&quot;SILENT&quot;</span><span class="p">)</span>
+
+<span class="c1"># data directory containing time series</span>
+<span class="n">ts_dir</span> <span class="o">=</span> <span class="s2">&quot;your_time_series_path_directory&quot;</span>
+
+<span class="n">ts</span> <span class="o">=</span> <span class="n">Sgts</span><span class="p">(</span><span class="n">ts_dir</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ts</span><span class="o">.</span><span class="n">n</span><span class="p">()</span><span class="si">}</span><span class="s2"> time series loaded&quot;</span><span class="p">)</span>
+<span class="n">ts</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="building-a-pyacs-distribution">
+<h2>Building a PYACS distribution<a class="headerlink" href="#building-a-pyacs-distribution" title="Link to this heading"></a></h2>
+<p>Advanced users can build their own distribution using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">build</span>
+</pre></div>
+</div>
+<p>The source and wheel distributions will be generated in the <code class="docutils literal notranslate"><span class="pre">dist/</span></code> directory.</p>
+</section>
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading"></a></h2>
+<p>An HTML documentation is available online:</p>
+<p><a class="reference external" href="https://jmnocquet.github.io/pyacs_docs/pyacs">https://jmnocquet.github.io/pyacs_docs/pyacs</a></p>
+<p>Alternatively, the documentation can be generated locally:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">make_pyacs_doc_html_sphinx</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="foreword.html" class="btn btn-neutral float-left" title="What is PYACS?" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="libraries.html" class="btn btn-neutral float-right" title="PYACS core libraries" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -2,12 +2,23 @@
 def lscov(G,d,cov,method='chol'):
 ###############################################################################
     """
-    Solve the least-squares (LS) problem with data covariance
+    Solve the least-squares problem with data covariance matrix.
 
-    :param G: m x n model matrix as 2D numpy array
-    :param d: m 1D numpy observation vector
-    :param cov: covariance matrix for d
+    Parameters
+    ----------
+    G : ndarray
+        m x n model matrix (2D).
+    d : ndarray
+        m observation vector (1D).
+    cov : ndarray
+        m x m covariance matrix for d.
+    method : str, optional
+        'chol' for Cholesky (default).
 
+    Returns
+    -------
+    ndarray
+        Solution (same as ls on whitened system).
     """
     
     import numpy as np

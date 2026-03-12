@@ -2,13 +2,21 @@
 def substract_ts(self,ts,tol=0.05,verbose=True):
 ###################################################################
     """
-    substract the ts provided as argument to the current time series
-    
-    :param ts: time series to be substracted as a Gts instance
-    :param tol: date tolerance to decide whether two dates are identical in both time series. default = 1/4 day
-    :param verbose: verbose mode
-    :return : new Gts
-    
+    Subtract the provided time series from the current one (at common dates).
+
+    Parameters
+    ----------
+    ts : Gts
+        Time series to subtract (Gts instance).
+    tol : float, optional
+        Date tolerance in days to consider two dates identical (default 0.05 day).
+    verbose : bool, optional
+        Verbose mode.
+
+    Returns
+    -------
+    Gts
+        New Gts with code self.code+'_'+ts.code; .data_xyz set to None.
     """
 
     # import 

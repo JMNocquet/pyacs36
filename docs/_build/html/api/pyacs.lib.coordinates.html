@@ -1,0 +1,884 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.lib.coordinates package &mdash; PYACS 0.66.18 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2262e354"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PYACS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">pyacs.lib.coordinates package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pyacs.lib.coordinates.azimuth_to_en">pyacs.lib.coordinates.azimuth_to_en module</a><ul>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.azimuth_to_en.azimuth_to_en"><code class="docutils literal notranslate"><span class="pre">azimuth_to_en()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.lib.coordinates.denu_at_x0y0z0_to_xyz">pyacs.lib.coordinates.denu_at_x0y0z0_to_xyz module</a><ul>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.denu_at_x0y0z0_to_xyz.denu_at_x0y0z0_to_xyz"><code class="docutils literal notranslate"><span class="pre">denu_at_x0y0z0_to_xyz()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.lib.coordinates.flat_earth2geo">pyacs.lib.coordinates.flat_earth2geo module</a><ul>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.flat_earth2geo.flat_earth2geo"><code class="docutils literal notranslate"><span class="pre">flat_earth2geo()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.lib.coordinates.geo2flat_earth">pyacs.lib.coordinates.geo2flat_earth module</a><ul>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.geo2flat_earth.geo2flat_earth"><code class="docutils literal notranslate"><span class="pre">geo2flat_earth()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.lib.coordinates.geo2xyz">pyacs.lib.coordinates.geo2xyz module</a><ul>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.geo2xyz.geo2xyz"><code class="docutils literal notranslate"><span class="pre">geo2xyz()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.lib.coordinates.geo_spherical_distance">pyacs.lib.coordinates.geo_spherical_distance module</a><ul>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.geo_spherical_distance.geo_spherical_distance"><code class="docutils literal notranslate"><span class="pre">geo_spherical_distance()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.lib.coordinates.mat_rot_general_to_local">pyacs.lib.coordinates.mat_rot_general_to_local module</a><ul>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.mat_rot_general_to_local.mat_rot_general_to_local"><code class="docutils literal notranslate"><span class="pre">mat_rot_general_to_local()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.lib.coordinates.mat_rot_local_to_general">pyacs.lib.coordinates.mat_rot_local_to_general module</a><ul>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.mat_rot_local_to_general.mat_rot_local_to_general"><code class="docutils literal notranslate"><span class="pre">mat_rot_local_to_general()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.lib.coordinates.spherical_baseline_length_rate">pyacs.lib.coordinates.spherical_baseline_length_rate module</a><ul>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.spherical_baseline_length_rate.spherical_baseline_length_rate"><code class="docutils literal notranslate"><span class="pre">spherical_baseline_length_rate()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.lib.coordinates.vel_xyz_to_enu">pyacs.lib.coordinates.vel_xyz_to_enu module</a><ul>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.vel_xyz_to_enu.vel_xyz_to_enu"><code class="docutils literal notranslate"><span class="pre">vel_xyz_to_enu()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.lib.coordinates.wnorm">pyacs.lib.coordinates.wnorm module</a><ul>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.wnorm.wnorm"><code class="docutils literal notranslate"><span class="pre">wnorm()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.lib.coordinates.xyz2geo">pyacs.lib.coordinates.xyz2geo module</a><ul>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.xyz2geo.xyz2geo"><code class="docutils literal notranslate"><span class="pre">xyz2geo()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.lib.coordinates.xyz2geospheric">pyacs.lib.coordinates.xyz2geospheric module</a><ul>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.xyz2geospheric.xyz2geospheric"><code class="docutils literal notranslate"><span class="pre">xyz2geospheric()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.lib.coordinates.xyz_spherical_distance">pyacs.lib.coordinates.xyz_spherical_distance module</a><ul>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.xyz_spherical_distance.xyz_spherical_distance"><code class="docutils literal notranslate"><span class="pre">xyz_spherical_distance()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.lib.coordinates">Module contents</a><ul>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.azimuth_to_en"><code class="docutils literal notranslate"><span class="pre">azimuth_to_en()</span></code></a></li>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.denu_at_x0y0z0_to_xyz"><code class="docutils literal notranslate"><span class="pre">denu_at_x0y0z0_to_xyz()</span></code></a></li>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.flat_earth2geo"><code class="docutils literal notranslate"><span class="pre">flat_earth2geo()</span></code></a></li>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.geo2flat_earth"><code class="docutils literal notranslate"><span class="pre">geo2flat_earth()</span></code></a></li>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.geo2xyz"><code class="docutils literal notranslate"><span class="pre">geo2xyz()</span></code></a></li>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.geo_spherical_distance"><code class="docutils literal notranslate"><span class="pre">geo_spherical_distance()</span></code></a></li>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.mat_rot_general_to_local"><code class="docutils literal notranslate"><span class="pre">mat_rot_general_to_local()</span></code></a></li>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.mat_rot_local_to_general"><code class="docutils literal notranslate"><span class="pre">mat_rot_local_to_general()</span></code></a></li>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.spherical_baseline_length_rate"><code class="docutils literal notranslate"><span class="pre">spherical_baseline_length_rate()</span></code></a></li>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.wnorm"><code class="docutils literal notranslate"><span class="pre">wnorm()</span></code></a></li>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.xyz2geo"><code class="docutils literal notranslate"><span class="pre">xyz2geo()</span></code></a></li>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.xyz2geospheric"><code class="docutils literal notranslate"><span class="pre">xyz2geospheric()</span></code></a></li>
+<li><a class="reference internal" href="#pyacs.lib.coordinates.xyz_spherical_distance"><code class="docutils literal notranslate"><span class="pre">xyz_spherical_distance()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PYACS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">pyacs.lib.coordinates package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/pyacs.lib.coordinates.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pyacs-lib-coordinates-package">
+<h1>pyacs.lib.coordinates package<a class="headerlink" href="#pyacs-lib-coordinates-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-pyacs.lib.coordinates.azimuth_to_en">
+<span id="pyacs-lib-coordinates-azimuth-to-en-module"></span><h2>pyacs.lib.coordinates.azimuth_to_en module<a class="headerlink" href="#module-pyacs.lib.coordinates.azimuth_to_en" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.azimuth_to_en.azimuth_to_en">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.azimuth_to_en.</span></span><span class="sig-name descname"><span class="pre">azimuth_to_en</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">azimuth</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/azimuth_to_en.html#azimuth_to_en"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.azimuth_to_en.azimuth_to_en" title="Link to this definition"></a></dt>
+<dd><p>Convert azimuth (clockwise from north) to east and north unit vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>azimuth</strong> (<em>float</em>) – Azimuth in decimal degrees.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>east</strong> (<em>float</em>) – East component of unit vector.</p></li>
+<li><p><strong>north</strong> (<em>float</em>) – North component of unit vector.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Calculation uses a spherical approximation.</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.lib.coordinates.denu_at_x0y0z0_to_xyz">
+<span id="pyacs-lib-coordinates-denu-at-x0y0z0-to-xyz-module"></span><h2>pyacs.lib.coordinates.denu_at_x0y0z0_to_xyz module<a class="headerlink" href="#module-pyacs.lib.coordinates.denu_at_x0y0z0_to_xyz" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.denu_at_x0y0z0_to_xyz.denu_at_x0y0z0_to_xyz">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.denu_at_x0y0z0_to_xyz.</span></span><span class="sig-name descname"><span class="pre">denu_at_x0y0z0_to_xyz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">de</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">du</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/denu_at_x0y0z0_to_xyz.html#denu_at_x0y0z0_to_xyz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.denu_at_x0y0z0_to_xyz.denu_at_x0y0z0_to_xyz" title="Link to this definition"></a></dt>
+<dd><p>Convert local vector (dE, dN, dU) at a reference point to geocentric XYZ.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>de</strong> (<em>float</em><em> or </em><em>array_like</em>) – East component of local vector, meters.</p></li>
+<li><p><strong>dn</strong> (<em>float</em><em> or </em><em>array_like</em>) – North component of local vector, meters.</p></li>
+<li><p><strong>du</strong> (<em>float</em><em> or </em><em>array_like</em>) – Up component of local vector, meters.</p></li>
+<li><p><strong>x0</strong> (<em>float</em>) – X of reference point in geocentric cartesian, meters.</p></li>
+<li><p><strong>y0</strong> (<em>float</em>) – Y of reference point in geocentric cartesian, meters.</p></li>
+<li><p><strong>z0</strong> (<em>float</em>) – Z of reference point in geocentric cartesian, meters.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>x, y, z</strong> – Resulting point in geocentric cartesian coordinates, meters.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float or ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.lib.coordinates.flat_earth2geo">
+<span id="pyacs-lib-coordinates-flat-earth2geo-module"></span><h2>pyacs.lib.coordinates.flat_earth2geo module<a class="headerlink" href="#module-pyacs.lib.coordinates.flat_earth2geo" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.flat_earth2geo.flat_earth2geo">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.flat_earth2geo.</span></span><span class="sig-name descname"><span class="pre">flat_earth2geo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/flat_earth2geo.html#flat_earth2geo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.flat_earth2geo.flat_earth2geo" title="Link to this definition"></a></dt>
+<dd><p>Convert web Mercator coordinates (km) to geographical coordinates.</p>
+<p>Uses pyproj with EPSG:3857 (Web Mercator) to EPSG:4326 (WGS84).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em><em> or </em><em>array_like</em>) – Easting in km (Web Mercator).</p></li>
+<li><p><strong>y</strong> (<em>float</em><em> or </em><em>array_like</em>) – Northing in km (Web Mercator).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>lon</strong> (<em>ndarray</em>) – Longitude in decimal degrees.</p></li>
+<li><p><strong>lat</strong> (<em>ndarray</em>) – Latitude in decimal degrees.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.lib.coordinates.geo2flat_earth">
+<span id="pyacs-lib-coordinates-geo2flat-earth-module"></span><h2>pyacs.lib.coordinates.geo2flat_earth module<a class="headerlink" href="#module-pyacs.lib.coordinates.geo2flat_earth" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.geo2flat_earth.geo2flat_earth">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.geo2flat_earth.</span></span><span class="sig-name descname"><span class="pre">geo2flat_earth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">longitude</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latitude</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/geo2flat_earth.html#geo2flat_earth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.geo2flat_earth.geo2flat_earth" title="Link to this definition"></a></dt>
+<dd><p>Convert geographical coordinates to Web Mercator (flat earth).</p>
+<p>Uses pyproj with EPSG:4326 (WGS84) to EPSG:3857 (Web Mercator).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>longitude</strong> (<em>float</em><em> or </em><em>array_like</em>) – Longitude in decimal degrees.</p></li>
+<li><p><strong>latitude</strong> (<em>float</em><em> or </em><em>array_like</em>) – Latitude in decimal degrees.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>x</strong> (<em>ndarray</em>) – Easting in km.</p></li>
+<li><p><strong>y</strong> (<em>ndarray</em>) – Northing in km.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.lib.coordinates.geo2xyz">
+<span id="pyacs-lib-coordinates-geo2xyz-module"></span><h2>pyacs.lib.coordinates.geo2xyz module<a class="headerlink" href="#module-pyacs.lib.coordinates.geo2xyz" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.geo2xyz.geo2xyz">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.geo2xyz.</span></span><span class="sig-name descname"><span class="pre">geo2xyz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">llambda</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">he</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'radians'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6378137.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.006694380022903</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/geo2xyz.html#geo2xyz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.geo2xyz.geo2xyz" title="Link to this definition"></a></dt>
+<dd><p>Convert geodetic coordinates (lon, lat, h) to geocentric XYZ.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>llambda</strong> (<em>float</em><em> or </em><em>array_like</em>) – Longitude.</p></li>
+<li><p><strong>phi</strong> (<em>float</em><em> or </em><em>array_like</em>) – Latitude.</p></li>
+<li><p><strong>he</strong> (<em>float</em><em> or </em><em>array_like</em>) – Ellipsoidal height in meters.</p></li>
+<li><p><strong>unit</strong> (<em>{'radians'</em><em>, </em><em>'dec_deg'}</em><em>, </em><em>optional</em>) – Units for longitude and latitude. Default is ‘radians’.</p></li>
+<li><p><strong>A</strong> (<em>float</em><em>, </em><em>optional</em>) – Semi-major axis (equatorial radius), meters. Default 6378137.0 (GRS80).</p></li>
+<li><p><strong>E2</strong> (<em>float</em><em>, </em><em>optional</em>) – Squared eccentricity. Default 0.006694380022903 (GRS80).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>x, y, z</strong> – Geocentric cartesian coordinates in meters.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float or ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Default ellipsoid is GRS80 (WGS84): A=6378137 m, E2=0.006694380022903,
+flattening F = 1 - sqrt(1-E2).</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.lib.coordinates.geo_spherical_distance">
+<span id="pyacs-lib-coordinates-geo-spherical-distance-module"></span><h2>pyacs.lib.coordinates.geo_spherical_distance module<a class="headerlink" href="#module-pyacs.lib.coordinates.geo_spherical_distance" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.geo_spherical_distance.geo_spherical_distance">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.geo_spherical_distance.</span></span><span class="sig-name descname"><span class="pre">geo_spherical_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lon1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'radians'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6371000.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/geo_spherical_distance.html#geo_spherical_distance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.geo_spherical_distance.geo_spherical_distance" title="Link to this definition"></a></dt>
+<dd><p>Spherical distance between two points given in geodetic coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lon1</strong> (<em>float</em><em> or </em><em>array_like</em>) – Longitude of first point.</p></li>
+<li><p><strong>lat1</strong> (<em>float</em><em> or </em><em>array_like</em>) – Latitude of first point.</p></li>
+<li><p><strong>h1</strong> (<em>float</em><em> or </em><em>array_like</em>) – Height of first point (used with geo2xyz; radius implied).</p></li>
+<li><p><strong>lon2</strong> (<em>float</em><em> or </em><em>array_like</em>) – Longitude of second point.</p></li>
+<li><p><strong>lat2</strong> (<em>float</em><em> or </em><em>array_like</em>) – Latitude of second point.</p></li>
+<li><p><strong>h2</strong> (<em>float</em><em> or </em><em>array_like</em>) – Height of second point.</p></li>
+<li><p><strong>unit</strong> (<em>{'radians'</em><em>, </em><em>'dec_deg'}</em><em>, </em><em>optional</em>) – Units for longitude and latitude. Default is ‘radians’.</p></li>
+<li><p><strong>Rt</strong> (<em>float</em><em>, </em><em>optional</em>) – Mean Earth radius in meters. Default 6.371e6.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Distance in meters.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float or ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.lib.coordinates.mat_rot_general_to_local">
+<span id="pyacs-lib-coordinates-mat-rot-general-to-local-module"></span><h2>pyacs.lib.coordinates.mat_rot_general_to_local module<a class="headerlink" href="#module-pyacs.lib.coordinates.mat_rot_general_to_local" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.mat_rot_general_to_local.mat_rot_general_to_local">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.mat_rot_general_to_local.</span></span><span class="sig-name descname"><span class="pre">mat_rot_general_to_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'radians'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/mat_rot_general_to_local.html#mat_rot_general_to_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.mat_rot_general_to_local.mat_rot_general_to_local" title="Link to this definition"></a></dt>
+<dd><p>Rotation matrix from geocentric (XYZ) to local (ENU).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lam</strong> (<em>float</em>) – Longitude.</p></li>
+<li><p><strong>phi</strong> (<em>float</em>) – Latitude.</p></li>
+<li><p><strong>unit</strong> (<em>{'radians'</em><em>, </em><em>'dec_deg'}</em><em>, </em><em>optional</em>) – Units for lam and phi. Default is ‘radians’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>R</strong> – Rotation matrix. R = [[-sin(lam), cos(lam), 0],
+[-sin(phi)*cos(lam), -sin(phi)*sin(lam), cos(phi)],
+[cos(phi)*cos(lam), cos(phi)*sin(lam), sin(phi)]].</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray, shape (3, 3)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.lib.coordinates.mat_rot_local_to_general">
+<span id="pyacs-lib-coordinates-mat-rot-local-to-general-module"></span><h2>pyacs.lib.coordinates.mat_rot_local_to_general module<a class="headerlink" href="#module-pyacs.lib.coordinates.mat_rot_local_to_general" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.mat_rot_local_to_general.mat_rot_local_to_general">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.mat_rot_local_to_general.</span></span><span class="sig-name descname"><span class="pre">mat_rot_local_to_general</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'radians'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/mat_rot_local_to_general.html#mat_rot_local_to_general"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.mat_rot_local_to_general.mat_rot_local_to_general" title="Link to this definition"></a></dt>
+<dd><p>Rotation matrix from local (ENU) to geocentric (XYZ).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lam</strong> (<em>float</em>) – Longitude.</p></li>
+<li><p><strong>phi</strong> (<em>float</em>) – Latitude.</p></li>
+<li><p><strong>unit</strong> (<em>{'radians'</em><em>, </em><em>'dec_deg'}</em><em>, </em><em>optional</em>) – Units for lam and phi. Default is ‘radians’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>R</strong> – Rotation matrix. R is orthogonal; inverse equals transpose (same as
+mat_rot_general_to_local transposed).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray, shape (3, 3)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.lib.coordinates.spherical_baseline_length_rate">
+<span id="pyacs-lib-coordinates-spherical-baseline-length-rate-module"></span><h2>pyacs.lib.coordinates.spherical_baseline_length_rate module<a class="headerlink" href="#module-pyacs.lib.coordinates.spherical_baseline_length_rate" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.spherical_baseline_length_rate.spherical_baseline_length_rate">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.spherical_baseline_length_rate.</span></span><span class="sig-name descname"><span class="pre">spherical_baseline_length_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sve</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eve</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/spherical_baseline_length_rate.html#spherical_baseline_length_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.spherical_baseline_length_rate.spherical_baseline_length_rate" title="Link to this definition"></a></dt>
+<dd><p>Baseline (great circle) length rate between two points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>slon</strong> (<em>float</em>) – Longitude of profile start point, decimal degrees.</p></li>
+<li><p><strong>slat</strong> (<em>float</em>) – Latitude of profile start point, decimal degrees.</p></li>
+<li><p><strong>sve</strong> (<em>float</em>) – East velocity at start point, mm/yr.</p></li>
+<li><p><strong>svn</strong> (<em>float</em>) – North velocity at start point, mm/yr.</p></li>
+<li><p><strong>elon</strong> (<em>float</em>) – Longitude of profile end point, decimal degrees.</p></li>
+<li><p><strong>elat</strong> (<em>float</em>) – Latitude of profile end point, decimal degrees.</p></li>
+<li><p><strong>eve</strong> (<em>float</em>) – East velocity at end point, mm/yr.</p></li>
+<li><p><strong>evn</strong> (<em>float</em>) – North velocity at end point, mm/yr.</p></li>
+<li><p><strong>sigma</strong> (<em>array_like</em><em>, </em><em>optional</em>) – Velocity uncertainties [sig_sve, sig_svn, corr_sven, sig_eve, sig_evn, corr_even].</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, enable verbose output.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>length_arc</strong> (<em>float</em>) – Great circle arc length in meters.</p></li>
+<li><p><strong>length_rate</strong> (<em>float</em>) – Lengthening rate in mm/yr.</p></li>
+<li><p><strong>strain_rate</strong> (<em>float</em>) – 1D strain rate in 1/yr.</p></li>
+<li><p><em>If sigma is provided, also returns sig_v, sig_strain_rate.</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.lib.coordinates.vel_xyz_to_enu">
+<span id="pyacs-lib-coordinates-vel-xyz-to-enu-module"></span><h2>pyacs.lib.coordinates.vel_xyz_to_enu module<a class="headerlink" href="#module-pyacs.lib.coordinates.vel_xyz_to_enu" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.vel_xyz_to_enu.vel_xyz_to_enu">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.vel_xyz_to_enu.</span></span><span class="sig-name descname"><span class="pre">vel_xyz_to_enu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vel_xyz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">approx_xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">approx_lon_lat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/vel_xyz_to_enu.html#vel_xyz_to_enu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.vel_xyz_to_enu.vel_xyz_to_enu" title="Link to this definition"></a></dt>
+<dd><p>Converts a velocity expressed in geocentric cartesian coordinates (X, Y, Z)
+into local North, East, Up components (dN, dE, dU) at a reference point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vel_xyz</strong> – velocity in geocentric cartesian coordinates (meters)</p></li>
+<li><p><strong>approx_xyz</strong> – reference point for the local frame in geocentric cartesian coordinates</p></li>
+<li><p><strong>approx_lon_lat</strong> – reference point for the local frame in geographical coordinates (decimal degree)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Venu</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.lib.coordinates.wnorm">
+<span id="pyacs-lib-coordinates-wnorm-module"></span><h2>pyacs.lib.coordinates.wnorm module<a class="headerlink" href="#module-pyacs.lib.coordinates.wnorm" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.wnorm.wnorm">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.wnorm.</span></span><span class="sig-name descname"><span class="pre">wnorm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6378137.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.006694380022903</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/wnorm.html#wnorm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.wnorm.wnorm" title="Link to this definition"></a></dt>
+<dd><p>Calculate the geodetic radius of curvature normal to the ellipsoid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>phi</strong> (<em>float</em><em> or </em><em>ndarray</em>) – Geodetic latitude in radians.</p></li>
+<li><p><strong>A</strong> (<em>float</em><em>, </em><em>optional</em>) – Semi-major axis of the ellipsoid (default WGS84 in m).</p></li>
+<li><p><strong>E2</strong> (<em>float</em><em>, </em><em>optional</em>) – First eccentricity squared (default WGS84).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Radius of curvature (m).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float or ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.lib.coordinates.xyz2geo">
+<span id="pyacs-lib-coordinates-xyz2geo-module"></span><h2>pyacs.lib.coordinates.xyz2geo module<a class="headerlink" href="#module-pyacs.lib.coordinates.xyz2geo" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.xyz2geo.xyz2geo">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.xyz2geo.</span></span><span class="sig-name descname"><span class="pre">xyz2geo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6378137.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.006694380022903</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'radians'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/xyz2geo.html#xyz2geo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.xyz2geo.xyz2geo" title="Link to this definition"></a></dt>
+<dd><p>Convert geocentric cartesian (XYZ) to geodetic coordinates (lon, lat, h).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em><em> or </em><em>array_like</em>) – X coordinate(s) in meters.</p></li>
+<li><p><strong>y</strong> (<em>float</em><em> or </em><em>array_like</em>) – Y coordinate(s) in meters.</p></li>
+<li><p><strong>z</strong> (<em>float</em><em> or </em><em>array_like</em>) – Z coordinate(s) in meters.</p></li>
+<li><p><strong>A</strong> (<em>float</em><em>, </em><em>optional</em>) – Semi-major axis (equatorial radius), meters. Default 6378137.0 (GRS80).</p></li>
+<li><p><strong>E2</strong> (<em>float</em><em>, </em><em>optional</em>) – Squared eccentricity. Default 0.006694380022903 (GRS80).</p></li>
+<li><p><strong>unit</strong> (<em>{'radians'</em><em>, </em><em>'dec_deg'}</em><em>, </em><em>optional</em>) – Output units for longitude and latitude. Default is ‘radians’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>long</strong> (<em>float or ndarray</em>) – Longitude in requested unit.</p></li>
+<li><p><strong>lat</strong> (<em>float or ndarray</em>) – Latitude in requested unit.</p></li>
+<li><p><strong>he</strong> (<em>float or ndarray</em>) – Height above ellipsoid in meters.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Default ellipsoid is GRS80 (WGS84): A=6378137 m, E2=0.006694380022903,
+flattening F = 1 - sqrt(1-E2). Reference: Bowring (1985), Survey Review.</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.lib.coordinates.xyz2geospheric">
+<span id="pyacs-lib-coordinates-xyz2geospheric-module"></span><h2>pyacs.lib.coordinates.xyz2geospheric module<a class="headerlink" href="#module-pyacs.lib.coordinates.xyz2geospheric" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.xyz2geospheric.xyz2geospheric">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.xyz2geospheric.</span></span><span class="sig-name descname"><span class="pre">xyz2geospheric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'radians'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/xyz2geospheric.html#xyz2geospheric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.xyz2geospheric.xyz2geospheric" title="Link to this definition"></a></dt>
+<dd><p>Convert geocentric XYZ to geo-spherical (longitude, latitude, radius).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em><em> or </em><em>array_like</em>) – X coordinate in meters.</p></li>
+<li><p><strong>y</strong> (<em>float</em><em> or </em><em>array_like</em>) – Y coordinate in meters.</p></li>
+<li><p><strong>z</strong> (<em>float</em><em> or </em><em>array_like</em>) – Z coordinate in meters.</p></li>
+<li><p><strong>unit</strong> (<em>{'radians'</em><em>, </em><em>'dec_deg'}</em><em>, </em><em>optional</em>) – Units for longitude and latitude. Default is ‘radians’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>longitude</strong> (<em>float or ndarray</em>) – Longitude in requested unit.</p></li>
+<li><p><strong>latitude</strong> (<em>float or ndarray</em>) – Latitude in requested unit (geocentric, not co-latitude).</p></li>
+<li><p><strong>R</strong> (<em>float or ndarray</em>) – Radius from Earth center in meters.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Latitude here is geocentric (angle from equatorial plane), not the usual
+spherical co-latitude.</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.lib.coordinates.xyz_spherical_distance">
+<span id="pyacs-lib-coordinates-xyz-spherical-distance-module"></span><h2>pyacs.lib.coordinates.xyz_spherical_distance module<a class="headerlink" href="#module-pyacs.lib.coordinates.xyz_spherical_distance" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.xyz_spherical_distance.xyz_spherical_distance">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.xyz_spherical_distance.</span></span><span class="sig-name descname"><span class="pre">xyz_spherical_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6371000.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/xyz_spherical_distance.html#xyz_spherical_distance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.xyz_spherical_distance.xyz_spherical_distance" title="Link to this definition"></a></dt>
+<dd><p>Spherical distance between two points in geocentric XYZ.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x1</strong> (<em>float</em>) – First point in geocentric cartesian coordinates, meters.</p></li>
+<li><p><strong>y1</strong> (<em>float</em>) – First point in geocentric cartesian coordinates, meters.</p></li>
+<li><p><strong>z1</strong> (<em>float</em>) – First point in geocentric cartesian coordinates, meters.</p></li>
+<li><p><strong>x2</strong> (<em>float</em>) – Second point in geocentric cartesian coordinates, meters.</p></li>
+<li><p><strong>y2</strong> (<em>float</em>) – Second point in geocentric cartesian coordinates, meters.</p></li>
+<li><p><strong>z2</strong> (<em>float</em>) – Second point in geocentric cartesian coordinates, meters.</p></li>
+<li><p><strong>Rt</strong> (<em>float</em><em>, </em><em>optional</em>) – Mean Earth radius in meters. Default 6.371e6.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Distance in meters.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.lib.coordinates">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyacs.lib.coordinates" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.azimuth_to_en">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.</span></span><span class="sig-name descname"><span class="pre">azimuth_to_en</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">azimuth</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/azimuth_to_en.html#azimuth_to_en"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.azimuth_to_en" title="Link to this definition"></a></dt>
+<dd><p>Convert azimuth (clockwise from north) to east and north unit vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>azimuth</strong> (<em>float</em>) – Azimuth in decimal degrees.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>east</strong> (<em>float</em>) – East component of unit vector.</p></li>
+<li><p><strong>north</strong> (<em>float</em>) – North component of unit vector.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Calculation uses a spherical approximation.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.denu_at_x0y0z0_to_xyz">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.</span></span><span class="sig-name descname"><span class="pre">denu_at_x0y0z0_to_xyz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">de</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">du</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/denu_at_x0y0z0_to_xyz.html#denu_at_x0y0z0_to_xyz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.denu_at_x0y0z0_to_xyz" title="Link to this definition"></a></dt>
+<dd><p>Convert local vector (dE, dN, dU) at a reference point to geocentric XYZ.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>de</strong> (<em>float</em><em> or </em><em>array_like</em>) – East component of local vector, meters.</p></li>
+<li><p><strong>dn</strong> (<em>float</em><em> or </em><em>array_like</em>) – North component of local vector, meters.</p></li>
+<li><p><strong>du</strong> (<em>float</em><em> or </em><em>array_like</em>) – Up component of local vector, meters.</p></li>
+<li><p><strong>x0</strong> (<em>float</em>) – X of reference point in geocentric cartesian, meters.</p></li>
+<li><p><strong>y0</strong> (<em>float</em>) – Y of reference point in geocentric cartesian, meters.</p></li>
+<li><p><strong>z0</strong> (<em>float</em>) – Z of reference point in geocentric cartesian, meters.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>x, y, z</strong> – Resulting point in geocentric cartesian coordinates, meters.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float or ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.flat_earth2geo">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.</span></span><span class="sig-name descname"><span class="pre">flat_earth2geo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/flat_earth2geo.html#flat_earth2geo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.flat_earth2geo" title="Link to this definition"></a></dt>
+<dd><p>Convert web Mercator coordinates (km) to geographical coordinates.</p>
+<p>Uses pyproj with EPSG:3857 (Web Mercator) to EPSG:4326 (WGS84).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em><em> or </em><em>array_like</em>) – Easting in km (Web Mercator).</p></li>
+<li><p><strong>y</strong> (<em>float</em><em> or </em><em>array_like</em>) – Northing in km (Web Mercator).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>lon</strong> (<em>ndarray</em>) – Longitude in decimal degrees.</p></li>
+<li><p><strong>lat</strong> (<em>ndarray</em>) – Latitude in decimal degrees.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.geo2flat_earth">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.</span></span><span class="sig-name descname"><span class="pre">geo2flat_earth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">longitude</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latitude</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/geo2flat_earth.html#geo2flat_earth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.geo2flat_earth" title="Link to this definition"></a></dt>
+<dd><p>Convert geographical coordinates to Web Mercator (flat earth).</p>
+<p>Uses pyproj with EPSG:4326 (WGS84) to EPSG:3857 (Web Mercator).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>longitude</strong> (<em>float</em><em> or </em><em>array_like</em>) – Longitude in decimal degrees.</p></li>
+<li><p><strong>latitude</strong> (<em>float</em><em> or </em><em>array_like</em>) – Latitude in decimal degrees.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>x</strong> (<em>ndarray</em>) – Easting in km.</p></li>
+<li><p><strong>y</strong> (<em>ndarray</em>) – Northing in km.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.geo2xyz">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.</span></span><span class="sig-name descname"><span class="pre">geo2xyz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">llambda</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">he</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'radians'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6378137.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.006694380022903</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/geo2xyz.html#geo2xyz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.geo2xyz" title="Link to this definition"></a></dt>
+<dd><p>Convert geodetic coordinates (lon, lat, h) to geocentric XYZ.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>llambda</strong> (<em>float</em><em> or </em><em>array_like</em>) – Longitude.</p></li>
+<li><p><strong>phi</strong> (<em>float</em><em> or </em><em>array_like</em>) – Latitude.</p></li>
+<li><p><strong>he</strong> (<em>float</em><em> or </em><em>array_like</em>) – Ellipsoidal height in meters.</p></li>
+<li><p><strong>unit</strong> (<em>{'radians'</em><em>, </em><em>'dec_deg'}</em><em>, </em><em>optional</em>) – Units for longitude and latitude. Default is ‘radians’.</p></li>
+<li><p><strong>A</strong> (<em>float</em><em>, </em><em>optional</em>) – Semi-major axis (equatorial radius), meters. Default 6378137.0 (GRS80).</p></li>
+<li><p><strong>E2</strong> (<em>float</em><em>, </em><em>optional</em>) – Squared eccentricity. Default 0.006694380022903 (GRS80).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>x, y, z</strong> – Geocentric cartesian coordinates in meters.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float or ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Default ellipsoid is GRS80 (WGS84): A=6378137 m, E2=0.006694380022903,
+flattening F = 1 - sqrt(1-E2).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.geo_spherical_distance">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.</span></span><span class="sig-name descname"><span class="pre">geo_spherical_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lon1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'radians'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6371000.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/geo_spherical_distance.html#geo_spherical_distance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.geo_spherical_distance" title="Link to this definition"></a></dt>
+<dd><p>Spherical distance between two points given in geodetic coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lon1</strong> (<em>float</em><em> or </em><em>array_like</em>) – Longitude of first point.</p></li>
+<li><p><strong>lat1</strong> (<em>float</em><em> or </em><em>array_like</em>) – Latitude of first point.</p></li>
+<li><p><strong>h1</strong> (<em>float</em><em> or </em><em>array_like</em>) – Height of first point (used with geo2xyz; radius implied).</p></li>
+<li><p><strong>lon2</strong> (<em>float</em><em> or </em><em>array_like</em>) – Longitude of second point.</p></li>
+<li><p><strong>lat2</strong> (<em>float</em><em> or </em><em>array_like</em>) – Latitude of second point.</p></li>
+<li><p><strong>h2</strong> (<em>float</em><em> or </em><em>array_like</em>) – Height of second point.</p></li>
+<li><p><strong>unit</strong> (<em>{'radians'</em><em>, </em><em>'dec_deg'}</em><em>, </em><em>optional</em>) – Units for longitude and latitude. Default is ‘radians’.</p></li>
+<li><p><strong>Rt</strong> (<em>float</em><em>, </em><em>optional</em>) – Mean Earth radius in meters. Default 6.371e6.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Distance in meters.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float or ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.mat_rot_general_to_local">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.</span></span><span class="sig-name descname"><span class="pre">mat_rot_general_to_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'radians'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/mat_rot_general_to_local.html#mat_rot_general_to_local"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.mat_rot_general_to_local" title="Link to this definition"></a></dt>
+<dd><p>Rotation matrix from geocentric (XYZ) to local (ENU).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lam</strong> (<em>float</em>) – Longitude.</p></li>
+<li><p><strong>phi</strong> (<em>float</em>) – Latitude.</p></li>
+<li><p><strong>unit</strong> (<em>{'radians'</em><em>, </em><em>'dec_deg'}</em><em>, </em><em>optional</em>) – Units for lam and phi. Default is ‘radians’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>R</strong> – Rotation matrix. R = [[-sin(lam), cos(lam), 0],
+[-sin(phi)*cos(lam), -sin(phi)*sin(lam), cos(phi)],
+[cos(phi)*cos(lam), cos(phi)*sin(lam), sin(phi)]].</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray, shape (3, 3)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.mat_rot_local_to_general">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.</span></span><span class="sig-name descname"><span class="pre">mat_rot_local_to_general</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lam</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'radians'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/mat_rot_local_to_general.html#mat_rot_local_to_general"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.mat_rot_local_to_general" title="Link to this definition"></a></dt>
+<dd><p>Rotation matrix from local (ENU) to geocentric (XYZ).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lam</strong> (<em>float</em>) – Longitude.</p></li>
+<li><p><strong>phi</strong> (<em>float</em>) – Latitude.</p></li>
+<li><p><strong>unit</strong> (<em>{'radians'</em><em>, </em><em>'dec_deg'}</em><em>, </em><em>optional</em>) – Units for lam and phi. Default is ‘radians’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>R</strong> – Rotation matrix. R is orthogonal; inverse equals transpose (same as
+mat_rot_general_to_local transposed).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray, shape (3, 3)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.spherical_baseline_length_rate">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.</span></span><span class="sig-name descname"><span class="pre">spherical_baseline_length_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sve</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eve</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/spherical_baseline_length_rate.html#spherical_baseline_length_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.spherical_baseline_length_rate" title="Link to this definition"></a></dt>
+<dd><p>Baseline (great circle) length rate between two points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>slon</strong> (<em>float</em>) – Longitude of profile start point, decimal degrees.</p></li>
+<li><p><strong>slat</strong> (<em>float</em>) – Latitude of profile start point, decimal degrees.</p></li>
+<li><p><strong>sve</strong> (<em>float</em>) – East velocity at start point, mm/yr.</p></li>
+<li><p><strong>svn</strong> (<em>float</em>) – North velocity at start point, mm/yr.</p></li>
+<li><p><strong>elon</strong> (<em>float</em>) – Longitude of profile end point, decimal degrees.</p></li>
+<li><p><strong>elat</strong> (<em>float</em>) – Latitude of profile end point, decimal degrees.</p></li>
+<li><p><strong>eve</strong> (<em>float</em>) – East velocity at end point, mm/yr.</p></li>
+<li><p><strong>evn</strong> (<em>float</em>) – North velocity at end point, mm/yr.</p></li>
+<li><p><strong>sigma</strong> (<em>array_like</em><em>, </em><em>optional</em>) – Velocity uncertainties [sig_sve, sig_svn, corr_sven, sig_eve, sig_evn, corr_even].</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, enable verbose output.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>length_arc</strong> (<em>float</em>) – Great circle arc length in meters.</p></li>
+<li><p><strong>length_rate</strong> (<em>float</em>) – Lengthening rate in mm/yr.</p></li>
+<li><p><strong>strain_rate</strong> (<em>float</em>) – 1D strain rate in 1/yr.</p></li>
+<li><p><em>If sigma is provided, also returns sig_v, sig_strain_rate.</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.wnorm">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.</span></span><span class="sig-name descname"><span class="pre">wnorm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6378137.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.006694380022903</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/wnorm.html#wnorm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.wnorm" title="Link to this definition"></a></dt>
+<dd><p>Calculate the geodetic radius of curvature normal to the ellipsoid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>phi</strong> (<em>float</em><em> or </em><em>ndarray</em>) – Geodetic latitude in radians.</p></li>
+<li><p><strong>A</strong> (<em>float</em><em>, </em><em>optional</em>) – Semi-major axis of the ellipsoid (default WGS84 in m).</p></li>
+<li><p><strong>E2</strong> (<em>float</em><em>, </em><em>optional</em>) – First eccentricity squared (default WGS84).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Radius of curvature (m).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float or ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.xyz2geo">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.</span></span><span class="sig-name descname"><span class="pre">xyz2geo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6378137.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.006694380022903</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'radians'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/xyz2geo.html#xyz2geo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.xyz2geo" title="Link to this definition"></a></dt>
+<dd><p>Convert geocentric cartesian (XYZ) to geodetic coordinates (lon, lat, h).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em><em> or </em><em>array_like</em>) – X coordinate(s) in meters.</p></li>
+<li><p><strong>y</strong> (<em>float</em><em> or </em><em>array_like</em>) – Y coordinate(s) in meters.</p></li>
+<li><p><strong>z</strong> (<em>float</em><em> or </em><em>array_like</em>) – Z coordinate(s) in meters.</p></li>
+<li><p><strong>A</strong> (<em>float</em><em>, </em><em>optional</em>) – Semi-major axis (equatorial radius), meters. Default 6378137.0 (GRS80).</p></li>
+<li><p><strong>E2</strong> (<em>float</em><em>, </em><em>optional</em>) – Squared eccentricity. Default 0.006694380022903 (GRS80).</p></li>
+<li><p><strong>unit</strong> (<em>{'radians'</em><em>, </em><em>'dec_deg'}</em><em>, </em><em>optional</em>) – Output units for longitude and latitude. Default is ‘radians’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>long</strong> (<em>float or ndarray</em>) – Longitude in requested unit.</p></li>
+<li><p><strong>lat</strong> (<em>float or ndarray</em>) – Latitude in requested unit.</p></li>
+<li><p><strong>he</strong> (<em>float or ndarray</em>) – Height above ellipsoid in meters.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Default ellipsoid is GRS80 (WGS84): A=6378137 m, E2=0.006694380022903,
+flattening F = 1 - sqrt(1-E2). Reference: Bowring (1985), Survey Review.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.xyz2geospheric">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.</span></span><span class="sig-name descname"><span class="pre">xyz2geospheric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'radians'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/xyz2geospheric.html#xyz2geospheric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.xyz2geospheric" title="Link to this definition"></a></dt>
+<dd><p>Convert geocentric XYZ to geo-spherical (longitude, latitude, radius).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em><em> or </em><em>array_like</em>) – X coordinate in meters.</p></li>
+<li><p><strong>y</strong> (<em>float</em><em> or </em><em>array_like</em>) – Y coordinate in meters.</p></li>
+<li><p><strong>z</strong> (<em>float</em><em> or </em><em>array_like</em>) – Z coordinate in meters.</p></li>
+<li><p><strong>unit</strong> (<em>{'radians'</em><em>, </em><em>'dec_deg'}</em><em>, </em><em>optional</em>) – Units for longitude and latitude. Default is ‘radians’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>longitude</strong> (<em>float or ndarray</em>) – Longitude in requested unit.</p></li>
+<li><p><strong>latitude</strong> (<em>float or ndarray</em>) – Latitude in requested unit (geocentric, not co-latitude).</p></li>
+<li><p><strong>R</strong> (<em>float or ndarray</em>) – Radius from Earth center in meters.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Latitude here is geocentric (angle from equatorial plane), not the usual
+spherical co-latitude.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.lib.coordinates.xyz_spherical_distance">
+<span class="sig-prename descclassname"><span class="pre">pyacs.lib.coordinates.</span></span><span class="sig-name descname"><span class="pre">xyz_spherical_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6371000.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/coordinates/xyz_spherical_distance.html#xyz_spherical_distance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.coordinates.xyz_spherical_distance" title="Link to this definition"></a></dt>
+<dd><p>Spherical distance between two points in geocentric XYZ.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x1</strong> (<em>float</em>) – First point in geocentric cartesian coordinates, meters.</p></li>
+<li><p><strong>y1</strong> (<em>float</em>) – First point in geocentric cartesian coordinates, meters.</p></li>
+<li><p><strong>z1</strong> (<em>float</em>) – First point in geocentric cartesian coordinates, meters.</p></li>
+<li><p><strong>x2</strong> (<em>float</em>) – Second point in geocentric cartesian coordinates, meters.</p></li>
+<li><p><strong>y2</strong> (<em>float</em>) – Second point in geocentric cartesian coordinates, meters.</p></li>
+<li><p><strong>z2</strong> (<em>float</em>) – Second point in geocentric cartesian coordinates, meters.</p></li>
+<li><p><strong>Rt</strong> (<em>float</em><em>, </em><em>optional</em>) – Mean Earth radius in meters. Default 6.371e6.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Distance in meters.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

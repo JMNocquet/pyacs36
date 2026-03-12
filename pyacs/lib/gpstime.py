@@ -51,7 +51,18 @@ secsInDay = 86400
 gpsEpoch = (1980, 1, 6, 0, 0, 0)  # (year, month, day, hh, mm, ss)
 
 def dayOfWeek(year, month, day):
-    "returns day of week: 0=Sun, 1=Mon, .., 6=Sat"
+    """Return GPS day of week: 0=Sun, 1=Mon, ..., 6=Sat.
+
+    Parameters
+    ----------
+    year, month, day : int
+        Date components.
+
+    Returns
+    -------
+    int
+        Day of week (0-6).
+    """
     hr = 12  #make sure you fall into right day, middle is save
     t = time.mktime((year, month, day, hr, 0, 0.0, 0, 0, -1))
     pyDow = time.localtime(t)[6]
@@ -59,7 +70,18 @@ def dayOfWeek(year, month, day):
     return gpsDow
 
 def gpsWeek(year, month, day):
-    "returns (full) gpsWeek for given date (in UTC)"
+    """Return full GPS week number for given UTC date.
+
+    Parameters
+    ----------
+    year, month, day : int
+        UTC date.
+
+    Returns
+    -------
+    int
+        GPS week number.
+    """
     hr = 12  #make sure you fall into right day, middle is save
     #print "toto",year
     #return year
@@ -68,54 +90,97 @@ def gpsWeek(year, month, day):
 
 
 def julianDay(year, month, day):
-    "returns julian day=day since Jan 1 of year"
+    """Return day of year (1-366) for given date.
+
+    Parameters
+    ----------
+    year, month, day : int
+        Date components.
+
+    Returns
+    -------
+    int
+        Day since Jan 1 of year.
+    """
     hr = 12  #make sure you fall into right day, middle is save
     t = time.mktime((year, month, day, hr, 0, 0.0, 0, 0, -1))
     julDay = time.localtime(t)[7]
     return julDay
 
 def mkUTC(year, month, day, hour, minute, sec):
-    "similar to python's mktime but for utc"
+    """Convert UTC date/time to seconds since epoch (like mktime but for UTC).
+
+    Parameters
+    ----------
+    year, month, day, hour, minute, sec : int or float
+        UTC components.
+
+    Returns
+    -------
+    float
+        Seconds since epoch.
+    """
     spec = [year, month, day, hour, minute, sec] + [0, 0, 0]
     utc = time.mktime(spec) - time.timezone
     return utc
 
 def ymdhmsFromPyUTC(pyUTC):
-    "returns tuple from a python time value in UTC"
+    """Return (year, month, day, hour, minute, sec) from Python UTC time.
+
+    Parameters
+    ----------
+    pyUTC : float
+        Seconds since epoch (e.g. from time.time()).
+
+    Returns
+    -------
+    tuple
+        (year, month, day, hour, minute, sec).
+    """
     ymdhmsXXX = time.gmtime(pyUTC)
     return ymdhmsXXX[:-3]
 
 def wtFromUTCpy(pyUTC, leapSecs=14):
-    """convenience function:
-         allows to use python UTC times and
-         returns only week and tow"""
+    """Convert Python UTC time to GPS week and time of week.
+
+    Parameters
+    ----------
+    pyUTC : float
+        Seconds since epoch (UTC).
+    leapSecs : int, optional
+        Leap seconds offset. Default is 14.
+
+    Returns
+    -------
+    tuple
+        (gpsWeek, secsOfWeek).
+    """
     ymdhms = ymdhmsFromPyUTC(pyUTC)
     wSowDSoD = gpsFromUTC(*ymdhms + (leapSecs,))
     return wSowDSoD[0:2]
 
 def gpsFromUTC(year, month, day, hour, minute, ssec, leapSecs=30):
-    """converts UTC to: gpsWeek, secsOfWeek, gpsDay, secsOfDay
+    """Convert UTC to GPS week, seconds of week, GPS day, seconds of day.
 
-    a good reference is:  http://www.oc.nps.navy.mil/~jclynch/timsys.html
+    Parameters
+    ----------
+    year, month, day, hour, minute : int
+        UTC date/time components.
+    ssec : float
+        Seconds (and fraction).
+    leapSecs : int, optional
+        Leap seconds (GPS - UTC). Default is 30; update as leap seconds change.
 
-    This is based on the following facts (see reference above):
+    Returns
+    -------
+    tuple
+        (gpsWeek, secsOfWeek, gpsDay, secsOfDay).
 
-    GPS time is basically measured in (atomic) seconds since 
-    January 6, 1980, 00:00:00.0  (the GPS Epoch)
-    
-    The GPS week starts on Saturday midnight (Sunday morning), and runs
-    for 604800 seconds. 
-
-    Currently, GPS time is 13 seconds ahead of UTC (see above reference).
-    While GPS SVs transmit this difference and the date when another leap
-    second takes effect, the use of leap seconds cannot be predicted.  This
-    routine is precise until the next leap second is introduced and has to be
-    updated after that.  
-
-    SOW = Seconds of Week
-    SOD = Seconds of Day
-
-    Note:  Python represents time in integer seconds, fractions are lost!!!
+    Notes
+    -----
+    GPS time is seconds since 1980-01-06 00:00:00. Week starts Saturday midnight.
+    See http://www.oc.nps.navy.mil/~jclynch/timsys.html. Python uses integer
+    seconds; fractional seconds in ssec are preserved in the return value.
     """
     secFract = ssec % 1
     sec=int(math.floor(ssec))
@@ -138,12 +203,21 @@ def gpsFromUTC(year, month, day, hour, minute, ssec, leapSecs=30):
 
 
 def UTCFromGps(gpsWeek, SOW, leapSecs=14):
-    """converts gps week and seconds to UTC
+    """Convert GPS week and seconds of week to UTC.
 
-    see comments of inverse function!
+    Parameters
+    ----------
+    gpsWeek : int
+        Full GPS week number (not modulo 1024).
+    SOW : float
+        Seconds of week.
+    leapSecs : int, optional
+        Leap seconds (GPS - UTC). Default is 14.
 
-    SOW = seconds of week
-    gpsWeek is the full number (not modulo 1024)
+    Returns
+    -------
+    tuple
+        (year, month, day, hour, minute, sec).
     """
     secFract = SOW % 1
     epochTuple = gpsEpoch + (-1, -1, 0) 
@@ -154,10 +228,20 @@ def UTCFromGps(gpsWeek, SOW, leapSecs=14):
     #use gmtime since localtime does not allow to switch off daylighsavings correction!!!
     return (year, month, day, hh, mm, ss + secFract)
 
-def GpsSecondsFromPyUTC( pyUTC, _leapSecs=14 ):
-    """converts the python epoch to gps seconds
+def GpsSecondsFromPyUTC(pyUTC, _leapSecs=14):
+    """Convert Python epoch time to GPS seconds (since GPS epoch).
 
-    pyEpoch = the python epoch from time.time()
+    Parameters
+    ----------
+    pyUTC : float
+        Seconds since Python epoch (e.g. time.time()).
+    _leapSecs : int, optional
+        Unused; kept for API compatibility.
+
+    Returns
+    -------
+    int
+        GPS seconds since 1980-01-06 00:00:00.
     """
     t = gpsFromUTC(*ymdhmsFromPyUTC( pyUTC ))
     return int(t[0] * 60 * 60 * 24 * 7 + t[1])

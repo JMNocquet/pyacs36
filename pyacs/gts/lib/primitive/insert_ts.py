@@ -1,13 +1,22 @@
 def insert_ts(self, ts, rounding='day',data='xyz',overlap=True):
     """
+    Insert another Gts into this one (merge or overwrite over its period).
 
-    :param ts: Gts to be inserted
-    :param rounding: data rounding, used to decide whether an entry should be replaced.
-        Choose among ['second','minute','hour','day]
-    :param data: Gts attribute to be updated. 'xyz' for .data_xyz or None for .data
-    :param overlap: if True, update occurs only on dates. If False, then ts overwrites the current Gts over the ts period
-    :return: a new gts
-    :note: The returned gts will have .data or .data_xyz will be set to None according to data argument
+    Parameters
+    ----------
+    ts : Gts
+        Gts to be inserted.
+    rounding : str, optional
+        Date rounding for deciding whether an entry is replaced: 'second', 'minute', 'hour', 'day'.
+    data : str or None, optional
+        Attribute to update: 'xyz' for .data_xyz or None for .data.
+    overlap : bool, optional
+        If True, update only on matching dates; if False, ts overwrites current Gts over ts period.
+
+    Returns
+    -------
+    Gts
+        New Gts. .data or .data_xyz is set to None according to the data argument.
     """
 
     ###########################################################################

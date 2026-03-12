@@ -2,14 +2,25 @@
 def xyz2neu(self,corr=False,ref_xyz=None, verbose=False):
 ###################################################################
     """
-    populates neu (data) using xyz (data_xyz)
-    lon, lat and h will also be set.
-    
-    :param corr: if True, then standard deviation and correlations will also be calculated  
-    :param ref_xyz: [X,Y,Z] corresponding to the 0 of the local NEU frame. If not provided, the first position is used as a reference
-    :param verbose: verbose mode
-    
-    :note: this method is always in place
+    Populate .data (NEU) from .data_xyz (XYZ); lon, lat and h are also set.
+
+    Parameters
+    ----------
+    corr : bool, optional
+        If True, standard deviations and correlations are propagated to NEU.
+    ref_xyz : list or ndarray, optional
+        [X, Y, Z] for the origin of the local NEU frame. If not provided, first position is used.
+    verbose : bool, optional
+        Verbose mode.
+
+    Returns
+    -------
+    Gts
+        self (modified in place).
+
+    Notes
+    -----
+    This method always modifies in place.
     """
 
     import pyacs.lib.coordinates

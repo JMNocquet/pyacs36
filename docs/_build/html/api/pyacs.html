@@ -1,0 +1,1248 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs package &mdash; PYACS 0.66.18 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2262e354"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PYACS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">pyacs package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pyacs.debug">pyacs.debug module</a><ul>
+<li><a class="reference internal" href="#pyacs.debug.debug"><code class="docutils literal notranslate"><span class="pre">debug()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.verbose">pyacs.verbose module</a><ul>
+<li><a class="reference internal" href="#pyacs.verbose.verbose"><code class="docutils literal notranslate"><span class="pre">verbose()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PYACS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">pyacs package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/pyacs.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pyacs-package">
+<h1>pyacs package<a class="headerlink" href="#pyacs-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.glinalg.html">pyacs.glinalg package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.glinalg.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.glinalg.solve.html">pyacs.glinalg.solve package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.glinalg.solve.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.glinalg.solve.html#module-pyacs.glinalg.solve.ls">pyacs.glinalg.solve.ls module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.glinalg.solve.html#module-pyacs.glinalg.solve.lscov">pyacs.glinalg.solve.lscov module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.glinalg.solve.html#module-pyacs.glinalg.solve.lsw">pyacs.glinalg.solve.lsw module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.glinalg.solve.html#module-pyacs.glinalg.solve">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.glinalg.html#module-pyacs.glinalg">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.gts.html">pyacs.gts package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.Sgts_methods.html">pyacs.gts.Sgts_methods package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.add_offsets_dates">pyacs.gts.Sgts_methods.add_offsets_dates module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.append">pyacs.gts.Sgts_methods.append module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.apply_coseismic">pyacs.gts.Sgts_methods.apply_coseismic module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.common_mode">pyacs.gts.Sgts_methods.common_mode module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.compute_common_mode_l1trend">pyacs.gts.Sgts_methods.compute_common_mode_l1trend module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.copy">pyacs.gts.Sgts_methods.copy module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.correct_offsets_from_file">pyacs.gts.Sgts_methods.correct_offsets_from_file module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.dates">pyacs.gts.Sgts_methods.dates module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.delnone">pyacs.gts.Sgts_methods.delnone module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.delts">pyacs.gts.Sgts_methods.delts module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.frame">pyacs.gts.Sgts_methods.frame module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.get_dates">pyacs.gts.Sgts_methods.get_dates module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.get_unr">pyacs.gts.Sgts_methods.get_unr module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.gts">pyacs.gts.Sgts_methods.gts module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.gts_mp">pyacs.gts.Sgts_methods.gts_mp module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.gts_mp_ipyparallel">pyacs.gts.Sgts_methods.gts_mp_ipyparallel module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.has_ts">pyacs.gts.Sgts_methods.has_ts module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.info">pyacs.gts.Sgts_methods.info module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.lGts">pyacs.gts.Sgts_methods.lGts module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.lcode">pyacs.gts.Sgts_methods.lcode module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.make_distance_matrix_from_sgts">pyacs.gts.Sgts_methods.make_distance_matrix_from_sgts module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.medvel">pyacs.gts.Sgts_methods.medvel module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.n">pyacs.gts.Sgts_methods.n module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.nearest">pyacs.gts.Sgts_methods.nearest module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.plot_component">pyacs.gts.Sgts_methods.plot_component module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.plot_data_sum">pyacs.gts.Sgts_methods.plot_data_sum module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.read_gmt">pyacs.gts.Sgts_methods.read_gmt module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.read_gts_conf">pyacs.gts.Sgts_methods.read_gts_conf module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.read_soln">pyacs.gts.Sgts_methods.read_soln module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.read_ts">pyacs.gts.Sgts_methods.read_ts module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.remove_observations">pyacs.gts.Sgts_methods.remove_observations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.same_site">pyacs.gts.Sgts_methods.same_site module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.save_velocity">pyacs.gts.Sgts_methods.save_velocity module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.sel_from_grid">pyacs.gts.Sgts_methods.sel_from_grid module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.sel_period">pyacs.gts.Sgts_methods.sel_period module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.sel_radius">pyacs.gts.Sgts_methods.sel_radius module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.sel_radius_eq">pyacs.gts.Sgts_methods.sel_radius_eq module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.sel_rectangle">pyacs.gts.Sgts_methods.sel_rectangle module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.show_ivel_map_gmt">pyacs.gts.Sgts_methods.show_ivel_map_gmt module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.show_map">pyacs.gts.Sgts_methods.show_map module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.stat_site">pyacs.gts.Sgts_methods.stat_site module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.sub">pyacs.gts.Sgts_methods.sub module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.to_displacement">pyacs.gts.Sgts_methods.to_displacement module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.to_kml">pyacs.gts.Sgts_methods.to_kml module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.to_obs_tensor">pyacs.gts.Sgts_methods.to_obs_tensor module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.to_tsnpz">pyacs.gts.Sgts_methods.to_tsnpz module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.to_tspck">pyacs.gts.Sgts_methods.to_tspck module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods.write_pck">pyacs.gts.Sgts_methods.write_pck module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.Sgts_methods.html#module-pyacs.gts.Sgts_methods">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.lib.html">pyacs.gts.lib package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#module-pyacs.gts.lib.errors">pyacs.gts.lib.errors module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#module-pyacs.gts.lib.gts_dates">pyacs.gts.lib.gts_dates module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#module-pyacs.gts.lib.gts_estimators">pyacs.gts.lib.gts_estimators module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#module-pyacs.gts.lib.message">pyacs.gts.lib.message module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#module-pyacs.gts.lib.metadata">pyacs.gts.lib.metadata module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#module-pyacs.gts.lib.noise">pyacs.gts.lib.noise module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#module-pyacs.gts.lib.offset">pyacs.gts.lib.offset module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#module-pyacs.gts.lib.outliers_old">pyacs.gts.lib.outliers_old module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#module-pyacs.gts.lib.step_detect">pyacs.gts.lib.step_detect module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#module-pyacs.gts.lib.step_detect_edge_filter">pyacs.gts.lib.step_detect_edge_filter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.lib.html#module-pyacs.gts.lib">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.html#module-pyacs.gts.Gts">pyacs.gts.Gts module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts"><code class="docutils literal notranslate"><span class="pre">Gts</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.add_obs"><code class="docutils literal notranslate"><span class="pre">Gts.add_obs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.add_obs_xyz"><code class="docutils literal notranslate"><span class="pre">Gts.add_obs_xyz()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.add_offsets_dates"><code class="docutils literal notranslate"><span class="pre">Gts.add_offsets_dates()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.add_vel_sigma"><code class="docutils literal notranslate"><span class="pre">Gts.add_vel_sigma()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.apply_offsets"><code class="docutils literal notranslate"><span class="pre">Gts.apply_offsets()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.cdata"><code class="docutils literal notranslate"><span class="pre">Gts.cdata()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.check_l1_trend"><code class="docutils literal notranslate"><span class="pre">Gts.check_l1_trend()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.clean_l1trend"><code class="docutils literal notranslate"><span class="pre">Gts.clean_l1trend()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.copy"><code class="docutils literal notranslate"><span class="pre">Gts.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.correct_duplicated_dates"><code class="docutils literal notranslate"><span class="pre">Gts.correct_duplicated_dates()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.decimate"><code class="docutils literal notranslate"><span class="pre">Gts.decimate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.decyear2days"><code class="docutils literal notranslate"><span class="pre">Gts.decyear2days()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.delete_small_offsets"><code class="docutils literal notranslate"><span class="pre">Gts.delete_small_offsets()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.detrend"><code class="docutils literal notranslate"><span class="pre">Gts.detrend()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.detrend_annual"><code class="docutils literal notranslate"><span class="pre">Gts.detrend_annual()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.detrend_hectorp"><code class="docutils literal notranslate"><span class="pre">Gts.detrend_hectorp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.detrend_median"><code class="docutils literal notranslate"><span class="pre">Gts.detrend_median()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.detrend_pytrf"><code class="docutils literal notranslate"><span class="pre">Gts.detrend_pytrf()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.detrend_seasonal"><code class="docutils literal notranslate"><span class="pre">Gts.detrend_seasonal()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.detrend_seasonal_median"><code class="docutils literal notranslate"><span class="pre">Gts.detrend_seasonal_median()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.differentiate"><code class="docutils literal notranslate"><span class="pre">Gts.differentiate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.disp2vel"><code class="docutils literal notranslate"><span class="pre">Gts.disp2vel()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.displacement"><code class="docutils literal notranslate"><span class="pre">Gts.displacement()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.edge_filter"><code class="docutils literal notranslate"><span class="pre">Gts.edge_filter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.estimate_local_offset"><code class="docutils literal notranslate"><span class="pre">Gts.estimate_local_offset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.exclude_periods"><code class="docutils literal notranslate"><span class="pre">Gts.exclude_periods()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.extract_dates"><code class="docutils literal notranslate"><span class="pre">Gts.extract_dates()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.extract_ndates_after_date"><code class="docutils literal notranslate"><span class="pre">Gts.extract_ndates_after_date()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.extract_ndates_around_date"><code class="docutils literal notranslate"><span class="pre">Gts.extract_ndates_around_date()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.extract_ndates_before_date"><code class="docutils literal notranslate"><span class="pre">Gts.extract_ndates_before_date()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.extract_periods"><code class="docutils literal notranslate"><span class="pre">Gts.extract_periods()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.extrapolate"><code class="docutils literal notranslate"><span class="pre">Gts.extrapolate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.find_large_uncertainty"><code class="docutils literal notranslate"><span class="pre">Gts.find_large_uncertainty()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.find_offsets"><code class="docutils literal notranslate"><span class="pre">Gts.find_offsets()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.find_offsets_edge_filter"><code class="docutils literal notranslate"><span class="pre">Gts.find_offsets_edge_filter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.find_offsets_ivel"><code class="docutils literal notranslate"><span class="pre">Gts.find_offsets_ivel()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.find_offsets_t_scan"><code class="docutils literal notranslate"><span class="pre">Gts.find_offsets_t_scan()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.find_outlier_around_date"><code class="docutils literal notranslate"><span class="pre">Gts.find_outlier_around_date()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.find_outliers_l1trend"><code class="docutils literal notranslate"><span class="pre">Gts.find_outliers_l1trend()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.find_outliers_percentage"><code class="docutils literal notranslate"><span class="pre">Gts.find_outliers_percentage()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.find_outliers_simple"><code class="docutils literal notranslate"><span class="pre">Gts.find_outliers_simple()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.find_outliers_sliding_window"><code class="docutils literal notranslate"><span class="pre">Gts.find_outliers_sliding_window()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.find_outliers_vondrak"><code class="docutils literal notranslate"><span class="pre">Gts.find_outliers_vondrak()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.find_time_offsets"><code class="docutils literal notranslate"><span class="pre">Gts.find_time_offsets()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.flag_outliers_using_l1trend"><code class="docutils literal notranslate"><span class="pre">Gts.flag_outliers_using_l1trend()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.force_daily"><code class="docutils literal notranslate"><span class="pre">Gts.force_daily()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.frame"><code class="docutils literal notranslate"><span class="pre">Gts.frame()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.get_coseismic"><code class="docutils literal notranslate"><span class="pre">Gts.get_coseismic()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.get_coseismic_l1trend"><code class="docutils literal notranslate"><span class="pre">Gts.get_coseismic_l1trend()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.get_unr"><code class="docutils literal notranslate"><span class="pre">Gts.get_unr()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.get_unr_loading"><code class="docutils literal notranslate"><span class="pre">Gts.get_unr_loading()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.get_values_at_date"><code class="docutils literal notranslate"><span class="pre">Gts.get_values_at_date()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.info"><code class="docutils literal notranslate"><span class="pre">Gts.info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.insert_gts_data"><code class="docutils literal notranslate"><span class="pre">Gts.insert_gts_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.insert_ts"><code class="docutils literal notranslate"><span class="pre">Gts.insert_ts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.interpolate"><code class="docutils literal notranslate"><span class="pre">Gts.interpolate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.ivel"><code class="docutils literal notranslate"><span class="pre">Gts.ivel()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.l1trend"><code class="docutils literal notranslate"><span class="pre">Gts.l1trend()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.l1trend_optimal_workflow"><code class="docutils literal notranslate"><span class="pre">Gts.l1trend_optimal_workflow()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.l1trend_to_breakpoints"><code class="docutils literal notranslate"><span class="pre">Gts.l1trend_to_breakpoints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.l1trendi"><code class="docutils literal notranslate"><span class="pre">Gts.l1trendi()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.local_offset_robust"><code class="docutils literal notranslate"><span class="pre">Gts.local_offset_robust()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.make_dynamic_apr"><code class="docutils literal notranslate"><span class="pre">Gts.make_dynamic_apr()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.make_model"><code class="docutils literal notranslate"><span class="pre">Gts.make_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.median_filter"><code class="docutils literal notranslate"><span class="pre">Gts.median_filter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.minimum_component"><code class="docutils literal notranslate"><span class="pre">Gts.minimum_component()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.mmodel"><code class="docutils literal notranslate"><span class="pre">Gts.mmodel()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.n_obs"><code class="docutils literal notranslate"><span class="pre">Gts.n_obs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.neu2xyz"><code class="docutils literal notranslate"><span class="pre">Gts.neu2xyz()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.np_datetime_2_eq_time"><code class="docutils literal notranslate"><span class="pre">Gts.np_datetime_2_eq_time()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.np_yyyy_mm_dd_hh_mm_ss_2_datetime"><code class="docutils literal notranslate"><span class="pre">Gts.np_yyyy_mm_dd_hh_mm_ss_2_datetime()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.np_yyyy_mm_dd_hh_mm_ss_2_decyear"><code class="docutils literal notranslate"><span class="pre">Gts.np_yyyy_mm_dd_hh_mm_ss_2_decyear()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.plot"><code class="docutils literal notranslate"><span class="pre">Gts.plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.pwlf"><code class="docutils literal notranslate"><span class="pre">Gts.pwlf()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.read"><code class="docutils literal notranslate"><span class="pre">Gts.read()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.read_cats_file"><code class="docutils literal notranslate"><span class="pre">Gts.read_cats_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.read_eq_rename"><code class="docutils literal notranslate"><span class="pre">Gts.read_eq_rename()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.read_kenv"><code class="docutils literal notranslate"><span class="pre">Gts.read_kenv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.read_lon_lat"><code class="docutils literal notranslate"><span class="pre">Gts.read_lon_lat()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.read_mb_file"><code class="docutils literal notranslate"><span class="pre">Gts.read_mb_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.read_offset_dates"><code class="docutils literal notranslate"><span class="pre">Gts.read_offset_dates()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.read_pos"><code class="docutils literal notranslate"><span class="pre">Gts.read_pos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.read_pride"><code class="docutils literal notranslate"><span class="pre">Gts.read_pride()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.read_pride_pos"><code class="docutils literal notranslate"><span class="pre">Gts.read_pride_pos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.read_series"><code class="docutils literal notranslate"><span class="pre">Gts.read_series()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.read_sol"><code class="docutils literal notranslate"><span class="pre">Gts.read_sol()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.read_tdp"><code class="docutils literal notranslate"><span class="pre">Gts.read_tdp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.read_track_NEU"><code class="docutils literal notranslate"><span class="pre">Gts.read_track_NEU()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.realistic_sigma"><code class="docutils literal notranslate"><span class="pre">Gts.realistic_sigma()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.refine_l1trend"><code class="docutils literal notranslate"><span class="pre">Gts.refine_l1trend()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.remove_outliers"><code class="docutils literal notranslate"><span class="pre">Gts.remove_outliers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.remove_pole"><code class="docutils literal notranslate"><span class="pre">Gts.remove_pole()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.remove_velocity"><code class="docutils literal notranslate"><span class="pre">Gts.remove_velocity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.reorder"><code class="docutils literal notranslate"><span class="pre">Gts.reorder()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.rotate"><code class="docutils literal notranslate"><span class="pre">Gts.rotate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.save_apr"><code class="docutils literal notranslate"><span class="pre">Gts.save_apr()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.save_eq_rename"><code class="docutils literal notranslate"><span class="pre">Gts.save_eq_rename()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.save_offsets"><code class="docutils literal notranslate"><span class="pre">Gts.save_offsets()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.save_velocity"><code class="docutils literal notranslate"><span class="pre">Gts.save_velocity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.savitzky_golay"><code class="docutils literal notranslate"><span class="pre">Gts.savitzky_golay()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.set_zero_at_date"><code class="docutils literal notranslate"><span class="pre">Gts.set_zero_at_date()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.sigma_cats"><code class="docutils literal notranslate"><span class="pre">Gts.sigma_cats()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.sigma_vel_tsfit"><code class="docutils literal notranslate"><span class="pre">Gts.sigma_vel_tsfit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.simplify_l1trend"><code class="docutils literal notranslate"><span class="pre">Gts.simplify_l1trend()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.simplify_l1trend_with_fisher_test"><code class="docutils literal notranslate"><span class="pre">Gts.simplify_l1trend_with_fisher_test()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.smooth"><code class="docutils literal notranslate"><span class="pre">Gts.smooth()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.spline"><code class="docutils literal notranslate"><span class="pre">Gts.spline()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.split"><code class="docutils literal notranslate"><span class="pre">Gts.split()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.split_gap"><code class="docutils literal notranslate"><span class="pre">Gts.split_gap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.substract_ts"><code class="docutils literal notranslate"><span class="pre">Gts.substract_ts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.substract_ts_daily"><code class="docutils literal notranslate"><span class="pre">Gts.substract_ts_daily()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.sum_l1_trend"><code class="docutils literal notranslate"><span class="pre">Gts.sum_l1_trend()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.suspect_offsets"><code class="docutils literal notranslate"><span class="pre">Gts.suspect_offsets()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.suspect_offsets_mf"><code class="docutils literal notranslate"><span class="pre">Gts.suspect_offsets_mf()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.test_offset_significance"><code class="docutils literal notranslate"><span class="pre">Gts.test_offset_significance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.test_offsets"><code class="docutils literal notranslate"><span class="pre">Gts.test_offsets()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.to_pandas_df"><code class="docutils literal notranslate"><span class="pre">Gts.to_pandas_df()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.to_pytrf"><code class="docutils literal notranslate"><span class="pre">Gts.to_pytrf()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.trajectory"><code class="docutils literal notranslate"><span class="pre">Gts.trajectory()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.tv_l2_filter"><code class="docutils literal notranslate"><span class="pre">Gts.tv_l2_filter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.vondrak"><code class="docutils literal notranslate"><span class="pre">Gts.vondrak()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.wiener"><code class="docutils literal notranslate"><span class="pre">Gts.wiener()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.write_cats"><code class="docutils literal notranslate"><span class="pre">Gts.write_cats()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.write_mb_file"><code class="docutils literal notranslate"><span class="pre">Gts.write_mb_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.write_pos"><code class="docutils literal notranslate"><span class="pre">Gts.write_pos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.wrms"><code class="docutils literal notranslate"><span class="pre">Gts.wrms()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts.xyz2neu"><code class="docutils literal notranslate"><span class="pre">Gts.xyz2neu()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.get_index_from_dates"><code class="docutils literal notranslate"><span class="pre">get_index_from_dates()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.html#module-pyacs.gts.Sgts">pyacs.gts.Sgts module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts"><code class="docutils literal notranslate"><span class="pre">Sgts</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.append"><code class="docutils literal notranslate"><span class="pre">Sgts.append()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.apply_coseismic"><code class="docutils literal notranslate"><span class="pre">Sgts.apply_coseismic()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.common_mode"><code class="docutils literal notranslate"><span class="pre">Sgts.common_mode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.compute_common_mode_l1trend"><code class="docutils literal notranslate"><span class="pre">Sgts.compute_common_mode_l1trend()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.copy"><code class="docutils literal notranslate"><span class="pre">Sgts.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.correct_offsets_from_file"><code class="docutils literal notranslate"><span class="pre">Sgts.correct_offsets_from_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.dates"><code class="docutils literal notranslate"><span class="pre">Sgts.dates()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.delnone"><code class="docutils literal notranslate"><span class="pre">Sgts.delnone()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.delts"><code class="docutils literal notranslate"><span class="pre">Sgts.delts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.frame"><code class="docutils literal notranslate"><span class="pre">Sgts.frame()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.get_dates"><code class="docutils literal notranslate"><span class="pre">Sgts.get_dates()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.get_unr"><code class="docutils literal notranslate"><span class="pre">Sgts.get_unr()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.gts"><code class="docutils literal notranslate"><span class="pre">Sgts.gts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.gts_mp"><code class="docutils literal notranslate"><span class="pre">Sgts.gts_mp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.has_ts"><code class="docutils literal notranslate"><span class="pre">Sgts.has_ts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.info"><code class="docutils literal notranslate"><span class="pre">Sgts.info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.lGts"><code class="docutils literal notranslate"><span class="pre">Sgts.lGts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.lcode"><code class="docutils literal notranslate"><span class="pre">Sgts.lcode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.make_distance_matrix_from_sgts"><code class="docutils literal notranslate"><span class="pre">Sgts.make_distance_matrix_from_sgts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.medvel"><code class="docutils literal notranslate"><span class="pre">Sgts.medvel()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.n"><code class="docutils literal notranslate"><span class="pre">Sgts.n()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.nearest"><code class="docutils literal notranslate"><span class="pre">Sgts.nearest()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.plot_component"><code class="docutils literal notranslate"><span class="pre">Sgts.plot_component()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.plot_data_sum"><code class="docutils literal notranslate"><span class="pre">Sgts.plot_data_sum()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.read_gmt"><code class="docutils literal notranslate"><span class="pre">Sgts.read_gmt()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.read_gts_conf"><code class="docutils literal notranslate"><span class="pre">Sgts.read_gts_conf()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.read_soln"><code class="docutils literal notranslate"><span class="pre">Sgts.read_soln()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.read_ts"><code class="docutils literal notranslate"><span class="pre">Sgts.read_ts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.remove_observations"><code class="docutils literal notranslate"><span class="pre">Sgts.remove_observations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.same_site"><code class="docutils literal notranslate"><span class="pre">Sgts.same_site()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.save_velocity"><code class="docutils literal notranslate"><span class="pre">Sgts.save_velocity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.sel_from_grid"><code class="docutils literal notranslate"><span class="pre">Sgts.sel_from_grid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.sel_period"><code class="docutils literal notranslate"><span class="pre">Sgts.sel_period()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.sel_radius"><code class="docutils literal notranslate"><span class="pre">Sgts.sel_radius()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.sel_radius_eq"><code class="docutils literal notranslate"><span class="pre">Sgts.sel_radius_eq()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.sel_rectangle"><code class="docutils literal notranslate"><span class="pre">Sgts.sel_rectangle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.show_ivel_map_gmt"><code class="docutils literal notranslate"><span class="pre">Sgts.show_ivel_map_gmt()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.show_map"><code class="docutils literal notranslate"><span class="pre">Sgts.show_map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.stat_site"><code class="docutils literal notranslate"><span class="pre">Sgts.stat_site()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.sub"><code class="docutils literal notranslate"><span class="pre">Sgts.sub()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.to_displacement"><code class="docutils literal notranslate"><span class="pre">Sgts.to_displacement()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.to_kml"><code class="docutils literal notranslate"><span class="pre">Sgts.to_kml()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.to_obs_tensor"><code class="docutils literal notranslate"><span class="pre">Sgts.to_obs_tensor()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.to_tsnpz"><code class="docutils literal notranslate"><span class="pre">Sgts.to_tsnpz()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Sgts.Sgts.write_pck"><code class="docutils literal notranslate"><span class="pre">Sgts.write_pck()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.html#module-pyacs.gts.tsr">pyacs.gts.tsr module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.tsr.tsr"><code class="docutils literal notranslate"><span class="pre">tsr</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.gts.html#pyacs.gts.tsr.tsr.convert"><code class="docutils literal notranslate"><span class="pre">tsr.convert()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.gts.html#module-pyacs.gts">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.lib.html">pyacs.lib package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.astrotime.html">pyacs.lib.astrotime package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.cal2datetime">pyacs.lib.astrotime.cal2datetime module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.cal2dayno">pyacs.lib.astrotime.cal2dayno module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.cal2decyear">pyacs.lib.astrotime.cal2decyear module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.cal2mjd">pyacs.lib.astrotime.cal2mjd module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.datetime2cal">pyacs.lib.astrotime.datetime2cal module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.datetime2dayno">pyacs.lib.astrotime.datetime2dayno module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.datetime2decyear">pyacs.lib.astrotime.datetime2decyear module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.datetime2mjd">pyacs.lib.astrotime.datetime2mjd module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.datetime2seconds">pyacs.lib.astrotime.datetime2seconds module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.datetime_from_calarray">pyacs.lib.astrotime.datetime_from_calarray module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.datetime_round_second">pyacs.lib.astrotime.datetime_round_second module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.day_since_decyear">pyacs.lib.astrotime.day_since_decyear module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.dayno2cal">pyacs.lib.astrotime.dayno2cal module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.dayno2datetime">pyacs.lib.astrotime.dayno2datetime module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.dayno2decyear">pyacs.lib.astrotime.dayno2decyear module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.dayno2mjd">pyacs.lib.astrotime.dayno2mjd module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.decyear2cal">pyacs.lib.astrotime.decyear2cal module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.decyear2datetime">pyacs.lib.astrotime.decyear2datetime module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.decyear2dayno">pyacs.lib.astrotime.decyear2dayno module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.decyear2epoch">pyacs.lib.astrotime.decyear2epoch module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.decyear2mjd">pyacs.lib.astrotime.decyear2mjd module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.decyear2seconds">pyacs.lib.astrotime.decyear2seconds module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.epoch2decyear">pyacs.lib.astrotime.epoch2decyear module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.gpsweek2mjd">pyacs.lib.astrotime.gpsweek2mjd module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.guess_date">pyacs.lib.astrotime.guess_date module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.hmsmicros2ut">pyacs.lib.astrotime.hmsmicros2ut module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.hmsmicros2uts">pyacs.lib.astrotime.hmsmicros2uts module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.jd2mjd">pyacs.lib.astrotime.jd2mjd module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.jpldate_2_datetime">pyacs.lib.astrotime.jpldate_2_datetime module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.jpldate_2_decyear">pyacs.lib.astrotime.jpldate_2_decyear module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.leap_year">pyacs.lib.astrotime.leap_year module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.mjd2cal">pyacs.lib.astrotime.mjd2cal module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.mjd2datetime">pyacs.lib.astrotime.mjd2datetime module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.mjd2dayno">pyacs.lib.astrotime.mjd2dayno module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.mjd2decyear">pyacs.lib.astrotime.mjd2decyear module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.mjd2gpsweek">pyacs.lib.astrotime.mjd2gpsweek module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.mjd2jd">pyacs.lib.astrotime.mjd2jd module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.seconds2datetime">pyacs.lib.astrotime.seconds2datetime module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.ut2uts">pyacs.lib.astrotime.ut2uts module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.uts2hmsmicros">pyacs.lib.astrotime.uts2hmsmicros module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.uts2ut">pyacs.lib.astrotime.uts2ut module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.year2yr">pyacs.lib.astrotime.year2yr module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime.yr2year">pyacs.lib.astrotime.yr2year module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.astrotime.html#module-pyacs.lib.astrotime">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.coordinates.html">pyacs.lib.coordinates package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.coordinates.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.coordinates.html#module-pyacs.lib.coordinates.azimuth_to_en">pyacs.lib.coordinates.azimuth_to_en module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.coordinates.html#module-pyacs.lib.coordinates.denu_at_x0y0z0_to_xyz">pyacs.lib.coordinates.denu_at_x0y0z0_to_xyz module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.coordinates.html#module-pyacs.lib.coordinates.flat_earth2geo">pyacs.lib.coordinates.flat_earth2geo module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.coordinates.html#module-pyacs.lib.coordinates.geo2flat_earth">pyacs.lib.coordinates.geo2flat_earth module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.coordinates.html#module-pyacs.lib.coordinates.geo2xyz">pyacs.lib.coordinates.geo2xyz module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.coordinates.html#module-pyacs.lib.coordinates.geo_spherical_distance">pyacs.lib.coordinates.geo_spherical_distance module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.coordinates.html#module-pyacs.lib.coordinates.mat_rot_general_to_local">pyacs.lib.coordinates.mat_rot_general_to_local module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.coordinates.html#module-pyacs.lib.coordinates.mat_rot_local_to_general">pyacs.lib.coordinates.mat_rot_local_to_general module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.coordinates.html#module-pyacs.lib.coordinates.spherical_baseline_length_rate">pyacs.lib.coordinates.spherical_baseline_length_rate module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.coordinates.html#module-pyacs.lib.coordinates.vel_xyz_to_enu">pyacs.lib.coordinates.vel_xyz_to_enu module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.coordinates.html#module-pyacs.lib.coordinates.wnorm">pyacs.lib.coordinates.wnorm module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.coordinates.html#module-pyacs.lib.coordinates.xyz2geo">pyacs.lib.coordinates.xyz2geo module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.coordinates.html#module-pyacs.lib.coordinates.xyz2geospheric">pyacs.lib.coordinates.xyz2geospheric module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.coordinates.html#module-pyacs.lib.coordinates.xyz_spherical_distance">pyacs.lib.coordinates.xyz_spherical_distance module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.coordinates.html#module-pyacs.lib.coordinates">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.faultslip.html">pyacs.lib.faultslip package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.faultslip.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.faultslip.html#module-pyacs.lib.faultslip.fault_to_corners">pyacs.lib.faultslip.fault_to_corners module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.faultslip.html#module-pyacs.lib.faultslip.geo_to_strike">pyacs.lib.faultslip.geo_to_strike module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.faultslip.html#module-pyacs.lib.faultslip.rake_from_euler">pyacs.lib.faultslip.rake_from_euler module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.faultslip.html#module-pyacs.lib.faultslip.rake_from_slip_az">pyacs.lib.faultslip.rake_from_slip_az module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.faultslip.html#module-pyacs.lib.faultslip.slip_rake_2_ds_ss">pyacs.lib.faultslip.slip_rake_2_ds_ss module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.faultslip.html#module-pyacs.lib.faultslip.ss_ns_2_ve_vn">pyacs.lib.faultslip.ss_ns_2_ve_vn module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.faultslip.html#module-pyacs.lib.faultslip.strike_dip_rake_to_dir">pyacs.lib.faultslip.strike_dip_rake_to_dir module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.faultslip.html#module-pyacs.lib.faultslip.unit_normal">pyacs.lib.faultslip.unit_normal module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.faultslip.html#module-pyacs.lib.faultslip.unit_slip">pyacs.lib.faultslip.unit_slip module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.faultslip.html#module-pyacs.lib.faultslip.v_to_n_ss">pyacs.lib.faultslip.v_to_n_ss module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.faultslip.html#module-pyacs.lib.faultslip.v_to_rake">pyacs.lib.faultslip.v_to_rake module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.faultslip.html#module-pyacs.lib.faultslip">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.astrotime">pyacs.lib.astrotime module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.cal2datetime"><code class="docutils literal notranslate"><span class="pre">cal2datetime()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.cal2dayno"><code class="docutils literal notranslate"><span class="pre">cal2dayno()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.cal2decyear"><code class="docutils literal notranslate"><span class="pre">cal2decyear()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.cal2mjd"><code class="docutils literal notranslate"><span class="pre">cal2mjd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.datetime2cal"><code class="docutils literal notranslate"><span class="pre">datetime2cal()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.datetime2dayno"><code class="docutils literal notranslate"><span class="pre">datetime2dayno()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.datetime2decyear"><code class="docutils literal notranslate"><span class="pre">datetime2decyear()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.datetime2mjd"><code class="docutils literal notranslate"><span class="pre">datetime2mjd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.datetime2seconds"><code class="docutils literal notranslate"><span class="pre">datetime2seconds()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.datetime_from_calarray"><code class="docutils literal notranslate"><span class="pre">datetime_from_calarray()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.datetime_round_second"><code class="docutils literal notranslate"><span class="pre">datetime_round_second()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.day_since_decyear"><code class="docutils literal notranslate"><span class="pre">day_since_decyear()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.dayno2cal"><code class="docutils literal notranslate"><span class="pre">dayno2cal()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.dayno2datetime"><code class="docutils literal notranslate"><span class="pre">dayno2datetime()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.dayno2decyear"><code class="docutils literal notranslate"><span class="pre">dayno2decyear()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.dayno2mjd"><code class="docutils literal notranslate"><span class="pre">dayno2mjd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.decyear2cal"><code class="docutils literal notranslate"><span class="pre">decyear2cal()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.decyear2datetime"><code class="docutils literal notranslate"><span class="pre">decyear2datetime()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.decyear2dayno"><code class="docutils literal notranslate"><span class="pre">decyear2dayno()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.decyear2epoch"><code class="docutils literal notranslate"><span class="pre">decyear2epoch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.decyear2mjd"><code class="docutils literal notranslate"><span class="pre">decyear2mjd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.decyear2seconds"><code class="docutils literal notranslate"><span class="pre">decyear2seconds()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.epoch2decyear"><code class="docutils literal notranslate"><span class="pre">epoch2decyear()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.gpsweek2mjd"><code class="docutils literal notranslate"><span class="pre">gpsweek2mjd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.guess_date"><code class="docutils literal notranslate"><span class="pre">guess_date()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.hmsmicros2ut"><code class="docutils literal notranslate"><span class="pre">hmsmicros2ut()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.hmsmicros2uts"><code class="docutils literal notranslate"><span class="pre">hmsmicros2uts()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.jd2mjd"><code class="docutils literal notranslate"><span class="pre">jd2mjd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.jpldate_2_datetime"><code class="docutils literal notranslate"><span class="pre">jpldate_2_datetime()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.jpldate_2_decyear"><code class="docutils literal notranslate"><span class="pre">jpldate_2_decyear()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.leap_year"><code class="docutils literal notranslate"><span class="pre">leap_year()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.mjd2cal"><code class="docutils literal notranslate"><span class="pre">mjd2cal()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.mjd2datetime"><code class="docutils literal notranslate"><span class="pre">mjd2datetime()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.mjd2dayno"><code class="docutils literal notranslate"><span class="pre">mjd2dayno()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.mjd2decyear"><code class="docutils literal notranslate"><span class="pre">mjd2decyear()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.mjd2gpsweek"><code class="docutils literal notranslate"><span class="pre">mjd2gpsweek()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.mjd2jd"><code class="docutils literal notranslate"><span class="pre">mjd2jd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.seconds2datetime"><code class="docutils literal notranslate"><span class="pre">seconds2datetime()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.ut2uts"><code class="docutils literal notranslate"><span class="pre">ut2uts()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.uts2hmsmicros"><code class="docutils literal notranslate"><span class="pre">uts2hmsmicros()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.uts2ut"><code class="docutils literal notranslate"><span class="pre">uts2ut()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.year2yr"><code class="docutils literal notranslate"><span class="pre">year2yr()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.astrotime.yr2year"><code class="docutils literal notranslate"><span class="pre">yr2year()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.errors">pyacs.lib.errors module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.errors.BadOption"><code class="docutils literal notranslate"><span class="pre">BadOption</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.errors.OptionError"><code class="docutils literal notranslate"><span class="pre">OptionError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.errors.PyacsError"><code class="docutils literal notranslate"><span class="pre">PyacsError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.errors.ReadingFile"><code class="docutils literal notranslate"><span class="pre">ReadingFile</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.euclid">pyacs.lib.euclid module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Circle"><code class="docutils literal notranslate"><span class="pre">Circle</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Circle.c"><code class="docutils literal notranslate"><span class="pre">Circle.c</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Circle.connect"><code class="docutils literal notranslate"><span class="pre">Circle.connect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Circle.copy"><code class="docutils literal notranslate"><span class="pre">Circle.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Circle.intersect"><code class="docutils literal notranslate"><span class="pre">Circle.intersect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Circle.r"><code class="docutils literal notranslate"><span class="pre">Circle.r</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Circle.tangent_points"><code class="docutils literal notranslate"><span class="pre">Circle.tangent_points()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Geometry"><code class="docutils literal notranslate"><span class="pre">Geometry</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Geometry.connect"><code class="docutils literal notranslate"><span class="pre">Geometry.connect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Geometry.distance"><code class="docutils literal notranslate"><span class="pre">Geometry.distance()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Geometry.intersect"><code class="docutils literal notranslate"><span class="pre">Geometry.intersect()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Line2"><code class="docutils literal notranslate"><span class="pre">Line2</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Line2.connect"><code class="docutils literal notranslate"><span class="pre">Line2.connect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Line2.copy"><code class="docutils literal notranslate"><span class="pre">Line2.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Line2.intersect"><code class="docutils literal notranslate"><span class="pre">Line2.intersect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Line2.p"><code class="docutils literal notranslate"><span class="pre">Line2.p</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Line2.p1"><code class="docutils literal notranslate"><span class="pre">Line2.p1</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Line2.p2"><code class="docutils literal notranslate"><span class="pre">Line2.p2</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Line2.v"><code class="docutils literal notranslate"><span class="pre">Line2.v</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Line3"><code class="docutils literal notranslate"><span class="pre">Line3</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Line3.connect"><code class="docutils literal notranslate"><span class="pre">Line3.connect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Line3.copy"><code class="docutils literal notranslate"><span class="pre">Line3.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Line3.intersect"><code class="docutils literal notranslate"><span class="pre">Line3.intersect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Line3.p"><code class="docutils literal notranslate"><span class="pre">Line3.p</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Line3.p1"><code class="docutils literal notranslate"><span class="pre">Line3.p1</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Line3.p2"><code class="docutils literal notranslate"><span class="pre">Line3.p2</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Line3.v"><code class="docutils literal notranslate"><span class="pre">Line3.v</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.LineSegment2"><code class="docutils literal notranslate"><span class="pre">LineSegment2</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.LineSegment2.length"><code class="docutils literal notranslate"><span class="pre">LineSegment2.length</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.LineSegment2.magnitude_squared"><code class="docutils literal notranslate"><span class="pre">LineSegment2.magnitude_squared()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.LineSegment2.p"><code class="docutils literal notranslate"><span class="pre">LineSegment2.p</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.LineSegment2.v"><code class="docutils literal notranslate"><span class="pre">LineSegment2.v</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.LineSegment3"><code class="docutils literal notranslate"><span class="pre">LineSegment3</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.LineSegment3.length"><code class="docutils literal notranslate"><span class="pre">LineSegment3.length</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.LineSegment3.magnitude_squared"><code class="docutils literal notranslate"><span class="pre">LineSegment3.magnitude_squared()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.LineSegment3.p"><code class="docutils literal notranslate"><span class="pre">LineSegment3.p</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.LineSegment3.v"><code class="docutils literal notranslate"><span class="pre">LineSegment3.v</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix3"><code class="docutils literal notranslate"><span class="pre">Matrix3</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix3.a"><code class="docutils literal notranslate"><span class="pre">Matrix3.a</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix3.b"><code class="docutils literal notranslate"><span class="pre">Matrix3.b</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix3.c"><code class="docutils literal notranslate"><span class="pre">Matrix3.c</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix3.copy"><code class="docutils literal notranslate"><span class="pre">Matrix3.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix3.determinant"><code class="docutils literal notranslate"><span class="pre">Matrix3.determinant()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix3.e"><code class="docutils literal notranslate"><span class="pre">Matrix3.e</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix3.f"><code class="docutils literal notranslate"><span class="pre">Matrix3.f</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix3.g"><code class="docutils literal notranslate"><span class="pre">Matrix3.g</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix3.i"><code class="docutils literal notranslate"><span class="pre">Matrix3.i</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix3.identity"><code class="docutils literal notranslate"><span class="pre">Matrix3.identity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix3.inverse"><code class="docutils literal notranslate"><span class="pre">Matrix3.inverse()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix3.j"><code class="docutils literal notranslate"><span class="pre">Matrix3.j</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix3.k"><code class="docutils literal notranslate"><span class="pre">Matrix3.k</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix3.new_identity"><code class="docutils literal notranslate"><span class="pre">Matrix3.new_identity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix3.new_rotate"><code class="docutils literal notranslate"><span class="pre">Matrix3.new_rotate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix3.new_scale"><code class="docutils literal notranslate"><span class="pre">Matrix3.new_scale()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix3.new_translate"><code class="docutils literal notranslate"><span class="pre">Matrix3.new_translate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix3.rotate"><code class="docutils literal notranslate"><span class="pre">Matrix3.rotate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix3.scale"><code class="docutils literal notranslate"><span class="pre">Matrix3.scale()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix3.translate"><code class="docutils literal notranslate"><span class="pre">Matrix3.translate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4"><code class="docutils literal notranslate"><span class="pre">Matrix4</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.a"><code class="docutils literal notranslate"><span class="pre">Matrix4.a</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.b"><code class="docutils literal notranslate"><span class="pre">Matrix4.b</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.c"><code class="docutils literal notranslate"><span class="pre">Matrix4.c</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.copy"><code class="docutils literal notranslate"><span class="pre">Matrix4.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.d"><code class="docutils literal notranslate"><span class="pre">Matrix4.d</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.determinant"><code class="docutils literal notranslate"><span class="pre">Matrix4.determinant()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.e"><code class="docutils literal notranslate"><span class="pre">Matrix4.e</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.f"><code class="docutils literal notranslate"><span class="pre">Matrix4.f</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.g"><code class="docutils literal notranslate"><span class="pre">Matrix4.g</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.get_quaternion"><code class="docutils literal notranslate"><span class="pre">Matrix4.get_quaternion()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.h"><code class="docutils literal notranslate"><span class="pre">Matrix4.h</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.i"><code class="docutils literal notranslate"><span class="pre">Matrix4.i</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.identity"><code class="docutils literal notranslate"><span class="pre">Matrix4.identity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.inverse"><code class="docutils literal notranslate"><span class="pre">Matrix4.inverse()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.j"><code class="docutils literal notranslate"><span class="pre">Matrix4.j</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.k"><code class="docutils literal notranslate"><span class="pre">Matrix4.k</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.l"><code class="docutils literal notranslate"><span class="pre">Matrix4.l</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.m"><code class="docutils literal notranslate"><span class="pre">Matrix4.m</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.n"><code class="docutils literal notranslate"><span class="pre">Matrix4.n</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.new"><code class="docutils literal notranslate"><span class="pre">Matrix4.new()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.new_identity"><code class="docutils literal notranslate"><span class="pre">Matrix4.new_identity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.new_look_at"><code class="docutils literal notranslate"><span class="pre">Matrix4.new_look_at()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.new_perspective"><code class="docutils literal notranslate"><span class="pre">Matrix4.new_perspective()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.new_rotate_axis"><code class="docutils literal notranslate"><span class="pre">Matrix4.new_rotate_axis()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.new_rotate_euler"><code class="docutils literal notranslate"><span class="pre">Matrix4.new_rotate_euler()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.new_rotate_triple_axis"><code class="docutils literal notranslate"><span class="pre">Matrix4.new_rotate_triple_axis()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.new_rotatex"><code class="docutils literal notranslate"><span class="pre">Matrix4.new_rotatex()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.new_rotatey"><code class="docutils literal notranslate"><span class="pre">Matrix4.new_rotatey()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.new_rotatez"><code class="docutils literal notranslate"><span class="pre">Matrix4.new_rotatez()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.new_scale"><code class="docutils literal notranslate"><span class="pre">Matrix4.new_scale()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.new_translate"><code class="docutils literal notranslate"><span class="pre">Matrix4.new_translate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.o"><code class="docutils literal notranslate"><span class="pre">Matrix4.o</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.p"><code class="docutils literal notranslate"><span class="pre">Matrix4.p</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.rotate_axis"><code class="docutils literal notranslate"><span class="pre">Matrix4.rotate_axis()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.rotate_euler"><code class="docutils literal notranslate"><span class="pre">Matrix4.rotate_euler()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.rotate_triple_axis"><code class="docutils literal notranslate"><span class="pre">Matrix4.rotate_triple_axis()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.rotatex"><code class="docutils literal notranslate"><span class="pre">Matrix4.rotatex()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.rotatey"><code class="docutils literal notranslate"><span class="pre">Matrix4.rotatey()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.rotatez"><code class="docutils literal notranslate"><span class="pre">Matrix4.rotatez()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.scale"><code class="docutils literal notranslate"><span class="pre">Matrix4.scale()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.transform"><code class="docutils literal notranslate"><span class="pre">Matrix4.transform()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.translate"><code class="docutils literal notranslate"><span class="pre">Matrix4.translate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.transpose"><code class="docutils literal notranslate"><span class="pre">Matrix4.transpose()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Matrix4.transposed"><code class="docutils literal notranslate"><span class="pre">Matrix4.transposed()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Plane"><code class="docutils literal notranslate"><span class="pre">Plane</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Plane.connect"><code class="docutils literal notranslate"><span class="pre">Plane.connect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Plane.copy"><code class="docutils literal notranslate"><span class="pre">Plane.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Plane.intersect"><code class="docutils literal notranslate"><span class="pre">Plane.intersect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Plane.k"><code class="docutils literal notranslate"><span class="pre">Plane.k</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Plane.n"><code class="docutils literal notranslate"><span class="pre">Plane.n</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Point2"><code class="docutils literal notranslate"><span class="pre">Point2</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Point2.connect"><code class="docutils literal notranslate"><span class="pre">Point2.connect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Point2.intersect"><code class="docutils literal notranslate"><span class="pre">Point2.intersect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Point2.x"><code class="docutils literal notranslate"><span class="pre">Point2.x</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Point2.y"><code class="docutils literal notranslate"><span class="pre">Point2.y</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Point3"><code class="docutils literal notranslate"><span class="pre">Point3</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Point3.connect"><code class="docutils literal notranslate"><span class="pre">Point3.connect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Point3.intersect"><code class="docutils literal notranslate"><span class="pre">Point3.intersect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Point3.x"><code class="docutils literal notranslate"><span class="pre">Point3.x</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Point3.y"><code class="docutils literal notranslate"><span class="pre">Point3.y</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Point3.z"><code class="docutils literal notranslate"><span class="pre">Point3.z</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Quaternion"><code class="docutils literal notranslate"><span class="pre">Quaternion</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Quaternion.conjugated"><code class="docutils literal notranslate"><span class="pre">Quaternion.conjugated()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Quaternion.copy"><code class="docutils literal notranslate"><span class="pre">Quaternion.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Quaternion.get_angle_axis"><code class="docutils literal notranslate"><span class="pre">Quaternion.get_angle_axis()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Quaternion.get_euler"><code class="docutils literal notranslate"><span class="pre">Quaternion.get_euler()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Quaternion.get_matrix"><code class="docutils literal notranslate"><span class="pre">Quaternion.get_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Quaternion.identity"><code class="docutils literal notranslate"><span class="pre">Quaternion.identity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Quaternion.magnitude"><code class="docutils literal notranslate"><span class="pre">Quaternion.magnitude()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Quaternion.magnitude_squared"><code class="docutils literal notranslate"><span class="pre">Quaternion.magnitude_squared()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Quaternion.new_identity"><code class="docutils literal notranslate"><span class="pre">Quaternion.new_identity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Quaternion.new_interpolate"><code class="docutils literal notranslate"><span class="pre">Quaternion.new_interpolate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Quaternion.new_rotate_axis"><code class="docutils literal notranslate"><span class="pre">Quaternion.new_rotate_axis()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Quaternion.new_rotate_euler"><code class="docutils literal notranslate"><span class="pre">Quaternion.new_rotate_euler()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Quaternion.new_rotate_matrix"><code class="docutils literal notranslate"><span class="pre">Quaternion.new_rotate_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Quaternion.normalize"><code class="docutils literal notranslate"><span class="pre">Quaternion.normalize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Quaternion.normalized"><code class="docutils literal notranslate"><span class="pre">Quaternion.normalized()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Quaternion.rotate_axis"><code class="docutils literal notranslate"><span class="pre">Quaternion.rotate_axis()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Quaternion.rotate_euler"><code class="docutils literal notranslate"><span class="pre">Quaternion.rotate_euler()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Quaternion.rotate_matrix"><code class="docutils literal notranslate"><span class="pre">Quaternion.rotate_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Quaternion.w"><code class="docutils literal notranslate"><span class="pre">Quaternion.w</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Quaternion.x"><code class="docutils literal notranslate"><span class="pre">Quaternion.x</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Quaternion.y"><code class="docutils literal notranslate"><span class="pre">Quaternion.y</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Quaternion.z"><code class="docutils literal notranslate"><span class="pre">Quaternion.z</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Ray2"><code class="docutils literal notranslate"><span class="pre">Ray2</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Ray2.p"><code class="docutils literal notranslate"><span class="pre">Ray2.p</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Ray2.v"><code class="docutils literal notranslate"><span class="pre">Ray2.v</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Ray3"><code class="docutils literal notranslate"><span class="pre">Ray3</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Ray3.p"><code class="docutils literal notranslate"><span class="pre">Ray3.p</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Ray3.v"><code class="docutils literal notranslate"><span class="pre">Ray3.v</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Sphere"><code class="docutils literal notranslate"><span class="pre">Sphere</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Sphere.c"><code class="docutils literal notranslate"><span class="pre">Sphere.c</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Sphere.connect"><code class="docutils literal notranslate"><span class="pre">Sphere.connect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Sphere.copy"><code class="docutils literal notranslate"><span class="pre">Sphere.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Sphere.intersect"><code class="docutils literal notranslate"><span class="pre">Sphere.intersect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Sphere.r"><code class="docutils literal notranslate"><span class="pre">Sphere.r</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector2"><code class="docutils literal notranslate"><span class="pre">Vector2</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector2.angle"><code class="docutils literal notranslate"><span class="pre">Vector2.angle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector2.copy"><code class="docutils literal notranslate"><span class="pre">Vector2.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector2.cross"><code class="docutils literal notranslate"><span class="pre">Vector2.cross()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector2.dot"><code class="docutils literal notranslate"><span class="pre">Vector2.dot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector2.magnitude"><code class="docutils literal notranslate"><span class="pre">Vector2.magnitude()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector2.magnitude_squared"><code class="docutils literal notranslate"><span class="pre">Vector2.magnitude_squared()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector2.normalize"><code class="docutils literal notranslate"><span class="pre">Vector2.normalize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector2.normalized"><code class="docutils literal notranslate"><span class="pre">Vector2.normalized()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector2.project"><code class="docutils literal notranslate"><span class="pre">Vector2.project()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector2.reflect"><code class="docutils literal notranslate"><span class="pre">Vector2.reflect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector2.x"><code class="docutils literal notranslate"><span class="pre">Vector2.x</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector2.y"><code class="docutils literal notranslate"><span class="pre">Vector2.y</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector3"><code class="docutils literal notranslate"><span class="pre">Vector3</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector3.angle"><code class="docutils literal notranslate"><span class="pre">Vector3.angle()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector3.copy"><code class="docutils literal notranslate"><span class="pre">Vector3.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector3.cross"><code class="docutils literal notranslate"><span class="pre">Vector3.cross()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector3.dot"><code class="docutils literal notranslate"><span class="pre">Vector3.dot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector3.magnitude"><code class="docutils literal notranslate"><span class="pre">Vector3.magnitude()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector3.magnitude_squared"><code class="docutils literal notranslate"><span class="pre">Vector3.magnitude_squared()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector3.normalize"><code class="docutils literal notranslate"><span class="pre">Vector3.normalize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector3.normalized"><code class="docutils literal notranslate"><span class="pre">Vector3.normalized()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector3.project"><code class="docutils literal notranslate"><span class="pre">Vector3.project()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector3.reflect"><code class="docutils literal notranslate"><span class="pre">Vector3.reflect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector3.rotate_around"><code class="docutils literal notranslate"><span class="pre">Vector3.rotate_around()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector3.x"><code class="docutils literal notranslate"><span class="pre">Vector3.x</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector3.y"><code class="docutils literal notranslate"><span class="pre">Vector3.y</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euclid.Vector3.z"><code class="docutils literal notranslate"><span class="pre">Vector3.z</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.euler">pyacs.lib.euler module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euler.euler2rot"><code class="docutils literal notranslate"><span class="pre">euler2rot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euler.euler_uncertainty"><code class="docutils literal notranslate"><span class="pre">euler_uncertainty()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euler.pole_matrix"><code class="docutils literal notranslate"><span class="pre">pole_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euler.pole_matrix_fault"><code class="docutils literal notranslate"><span class="pre">pole_matrix_fault()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euler.rot2euler"><code class="docutils literal notranslate"><span class="pre">rot2euler()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.euler.vel_from_euler"><code class="docutils literal notranslate"><span class="pre">vel_from_euler()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.glinalg">pyacs.lib.glinalg module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.glinalg.corr_to_cov"><code class="docutils literal notranslate"><span class="pre">corr_to_cov()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.glinalg.cov_to_corr"><code class="docutils literal notranslate"><span class="pre">cov_to_corr()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.glinalg.cov_to_invcov"><code class="docutils literal notranslate"><span class="pre">cov_to_invcov()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.glinalg.dot"><code class="docutils literal notranslate"><span class="pre">dot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.glinalg.dot_and_sum"><code class="docutils literal notranslate"><span class="pre">dot_and_sum()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.glinalg.extract_block_diag"><code class="docutils literal notranslate"><span class="pre">extract_block_diag()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.glinalg.ls"><code class="docutils literal notranslate"><span class="pre">ls()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.glinalg.lscov"><code class="docutils literal notranslate"><span class="pre">lscov()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.glinalg.lscov_full"><code class="docutils literal notranslate"><span class="pre">lscov_full()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.glinalg.lsw"><code class="docutils literal notranslate"><span class="pre">lsw()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.glinalg.lsw_full"><code class="docutils literal notranslate"><span class="pre">lsw_full()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.glinalg.make_normal_system"><code class="docutils literal notranslate"><span class="pre">make_normal_system()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.glinalg.make_normal_system_tarantola"><code class="docutils literal notranslate"><span class="pre">make_normal_system_tarantola()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.glinalg.matrix_from_pattern"><code class="docutils literal notranslate"><span class="pre">matrix_from_pattern()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.glinalg.odot"><code class="docutils literal notranslate"><span class="pre">odot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.glinalg.repeat_matrix_in_col"><code class="docutils literal notranslate"><span class="pre">repeat_matrix_in_col()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.glinalg.syminv"><code class="docutils literal notranslate"><span class="pre">syminv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.glinalg.symmetrize"><code class="docutils literal notranslate"><span class="pre">symmetrize()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.glinalg.sympinv"><code class="docutils literal notranslate"><span class="pre">sympinv()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.gmtpoint">pyacs.lib.gmtpoint module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point"><code class="docutils literal notranslate"><span class="pre">GMT_Point</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.lon"><code class="docutils literal notranslate"><span class="pre">GMT_Point.lon</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.lat"><code class="docutils literal notranslate"><span class="pre">GMT_Point.lat</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.code"><code class="docutils literal notranslate"><span class="pre">GMT_Point.code</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.he"><code class="docutils literal notranslate"><span class="pre">GMT_Point.he</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.Vu"><code class="docutils literal notranslate"><span class="pre">GMT_Point.Vu</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.SVen"><code class="docutils literal notranslate"><span class="pre">GMT_Point.SVen</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.add_to_gmt_psvelo"><code class="docutils literal notranslate"><span class="pre">GMT_Point.add_to_gmt_psvelo()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.assign_index"><code class="docutils literal notranslate"><span class="pre">GMT_Point.assign_index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.copy"><code class="docutils literal notranslate"><span class="pre">GMT_Point.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.get_index"><code class="docutils literal notranslate"><span class="pre">GMT_Point.get_index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.get_info"><code class="docutils literal notranslate"><span class="pre">GMT_Point.get_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.magaz"><code class="docutils literal notranslate"><span class="pre">GMT_Point.magaz()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.midpoint"><code class="docutils literal notranslate"><span class="pre">GMT_Point.midpoint()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.pole"><code class="docutils literal notranslate"><span class="pre">GMT_Point.pole()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.rotate_vel"><code class="docutils literal notranslate"><span class="pre">GMT_Point.rotate_vel()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gmtpoint.GMT_Point.spherical_distance"><code class="docutils literal notranslate"><span class="pre">GMT_Point.spherical_distance()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.gpstime">pyacs.lib.gpstime module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gpstime.GpsSecondsFromPyUTC"><code class="docutils literal notranslate"><span class="pre">GpsSecondsFromPyUTC()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gpstime.UTCFromGps"><code class="docutils literal notranslate"><span class="pre">UTCFromGps()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gpstime.dayOfWeek"><code class="docutils literal notranslate"><span class="pre">dayOfWeek()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gpstime.gpsFromUTC"><code class="docutils literal notranslate"><span class="pre">gpsFromUTC()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gpstime.gpsWeek"><code class="docutils literal notranslate"><span class="pre">gpsWeek()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gpstime.julianDay"><code class="docutils literal notranslate"><span class="pre">julianDay()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gpstime.mkUTC"><code class="docutils literal notranslate"><span class="pre">mkUTC()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gpstime.testDayOfWeek"><code class="docutils literal notranslate"><span class="pre">testDayOfWeek()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gpstime.testGpsWeek"><code class="docutils literal notranslate"><span class="pre">testGpsWeek()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gpstime.testJulD"><code class="docutils literal notranslate"><span class="pre">testJulD()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gpstime.testPyUtilties"><code class="docutils literal notranslate"><span class="pre">testPyUtilties()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gpstime.testTimeStuff"><code class="docutils literal notranslate"><span class="pre">testTimeStuff()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gpstime.wtFromUTCpy"><code class="docutils literal notranslate"><span class="pre">wtFromUTCpy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.gpstime.ymdhmsFromPyUTC"><code class="docutils literal notranslate"><span class="pre">ymdhmsFromPyUTC()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.icosahedron">pyacs.lib.icosahedron module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.icosahedron.distance"><code class="docutils literal notranslate"><span class="pre">distance()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.icosahedron.icosahedron"><code class="docutils literal notranslate"><span class="pre">icosahedron()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.icosahedron.mesh_global"><code class="docutils literal notranslate"><span class="pre">mesh_global()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.icosahedron.mesh_regional"><code class="docutils literal notranslate"><span class="pre">mesh_regional()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.icosahedron.subdivide"><code class="docutils literal notranslate"><span class="pre">subdivide()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.pygamit_module">pyacs.lib.pygamit_module module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.pygamit_module.get_nearest_from_apr"><code class="docutils literal notranslate"><span class="pre">get_nearest_from_apr()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.pygamit_module.make_apr_doy"><code class="docutils literal notranslate"><span class="pre">make_apr_doy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.pygamit_module.read_qfile"><code class="docutils literal notranslate"><span class="pre">read_qfile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.pygamit_module.substitute_site"><code class="docutils literal notranslate"><span class="pre">substitute_site()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.pygamit_module.update_apr"><code class="docutils literal notranslate"><span class="pre">update_apr()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.robustestimators">pyacs.lib.robustestimators module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.robustestimators.Dik_m"><code class="docutils literal notranslate"><span class="pre">Dik_m()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.robustestimators.Dikin"><code class="docutils literal notranslate"><span class="pre">Dikin()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.robustestimators.Error"><code class="docutils literal notranslate"><span class="pre">Error</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.robustestimators.UnboundedFunctionError"><code class="docutils literal notranslate"><span class="pre">UnboundedFunctionError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.shapefile">pyacs.lib.shapefile module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.shapefile.psvelo_to_shapefile"><code class="docutils literal notranslate"><span class="pre">psvelo_to_shapefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.shapefile.pyeblock_fault"><code class="docutils literal notranslate"><span class="pre">pyeblock_fault()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.shapefile.static_slip_to_shapefile"><code class="docutils literal notranslate"><span class="pre">static_slip_to_shapefile()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.strain">pyacs.lib.strain module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.strain.vgrad"><code class="docutils literal notranslate"><span class="pre">vgrad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.syscmd">pyacs.lib.syscmd module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.syscmd.Error"><code class="docutils literal notranslate"><span class="pre">Error</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.syscmd.ReturnedCodeError"><code class="docutils literal notranslate"><span class="pre">ReturnedCodeError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.syscmd.getstatusoutput"><code class="docutils literal notranslate"><span class="pre">getstatusoutput()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.syscmd.run_command_verbose"><code class="docutils literal notranslate"><span class="pre">run_command_verbose()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.timeperiod">pyacs.lib.timeperiod module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.timeperiod.TimePeriod"><code class="docutils literal notranslate"><span class="pre">TimePeriod</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.timeperiod.TimePeriod.__start_time"><code class="docutils literal notranslate"><span class="pre">TimePeriod.__start_time</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.timeperiod.TimePeriod.__end_time"><code class="docutils literal notranslate"><span class="pre">TimePeriod.__end_time</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.timeperiod.TimePeriod.begin"><code class="docutils literal notranslate"><span class="pre">TimePeriod.begin()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.timeperiod.TimePeriod.display"><code class="docutils literal notranslate"><span class="pre">TimePeriod.display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.timeperiod.TimePeriod.end"><code class="docutils literal notranslate"><span class="pre">TimePeriod.end()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.timeperiod.TimePeriod.epoch_begin"><code class="docutils literal notranslate"><span class="pre">TimePeriod.epoch_begin()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.timeperiod.TimePeriod.epoch_end"><code class="docutils literal notranslate"><span class="pre">TimePeriod.epoch_end()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.timeperiod.TimePeriod.get_info"><code class="docutils literal notranslate"><span class="pre">TimePeriod.get_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.timeperiod.TimePeriod.has_in"><code class="docutils literal notranslate"><span class="pre">TimePeriod.has_in()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.timeperiod.TimePeriod.intersection"><code class="docutils literal notranslate"><span class="pre">TimePeriod.intersection()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.timeperiod.TimePeriod.isdefined"><code class="docutils literal notranslate"><span class="pre">TimePeriod.isdefined()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.timeperiod.TimePeriodUndefinedError"><code class="docutils literal notranslate"><span class="pre">TimePeriodUndefinedError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.units">pyacs.lib.units module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.units.magnitude_to_moment"><code class="docutils literal notranslate"><span class="pre">magnitude_to_moment()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.units.mas2rad"><code class="docutils literal notranslate"><span class="pre">mas2rad()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.units.moment_to_magnitude"><code class="docutils literal notranslate"><span class="pre">moment_to_magnitude()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.units.rad2mas"><code class="docutils literal notranslate"><span class="pre">rad2mas()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.units.radians2deg_mn_sec"><code class="docutils literal notranslate"><span class="pre">radians2deg_mn_sec()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.utils">pyacs.lib.utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.utils.make_grid"><code class="docutils literal notranslate"><span class="pre">make_grid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.utils.numpy_array_2_numpy_recarray"><code class="docutils literal notranslate"><span class="pre">numpy_array_2_numpy_recarray()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.utils.numpy_recarray_2_numpy_array"><code class="docutils literal notranslate"><span class="pre">numpy_recarray_2_numpy_array()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.utils.run_cmd"><code class="docutils literal notranslate"><span class="pre">run_cmd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.utils.save_np_array_with_string"><code class="docutils literal notranslate"><span class="pre">save_np_array_with_string()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.utils.str2list_float"><code class="docutils literal notranslate"><span class="pre">str2list_float()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.vectors">pyacs.lib.vectors module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vectors.norm"><code class="docutils literal notranslate"><span class="pre">norm()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vectors.normalize"><code class="docutils literal notranslate"><span class="pre">normalize()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vectors.np_array"><code class="docutils literal notranslate"><span class="pre">np_array()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vectors.scal_prod"><code class="docutils literal notranslate"><span class="pre">scal_prod()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vectors.vector_product"><code class="docutils literal notranslate"><span class="pre">vector_product()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib.vel_field">pyacs.lib.vel_field module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vel_field.Velocity_Field"><code class="docutils literal notranslate"><span class="pre">Velocity_Field</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vel_field.Velocity_Field.name"><code class="docutils literal notranslate"><span class="pre">Velocity_Field.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vel_field.Velocity_Field.file_name"><code class="docutils literal notranslate"><span class="pre">Velocity_Field.file_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vel_field.Velocity_Field.sites"><code class="docutils literal notranslate"><span class="pre">Velocity_Field.sites</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vel_field.Velocity_Field.add_point"><code class="docutils literal notranslate"><span class="pre">Velocity_Field.add_point()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vel_field.Velocity_Field.calc_pole"><code class="docutils literal notranslate"><span class="pre">Velocity_Field.calc_pole()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vel_field.Velocity_Field.common"><code class="docutils literal notranslate"><span class="pre">Velocity_Field.common()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vel_field.Velocity_Field.info"><code class="docutils literal notranslate"><span class="pre">Velocity_Field.info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vel_field.Velocity_Field.l_GMT_Point"><code class="docutils literal notranslate"><span class="pre">Velocity_Field.l_GMT_Point()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vel_field.Velocity_Field.lcode"><code class="docutils literal notranslate"><span class="pre">Velocity_Field.lcode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vel_field.Velocity_Field.nsites"><code class="docutils literal notranslate"><span class="pre">Velocity_Field.nsites()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vel_field.Velocity_Field.pole"><code class="docutils literal notranslate"><span class="pre">Velocity_Field.pole()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vel_field.Velocity_Field.print_info_site"><code class="docutils literal notranslate"><span class="pre">Velocity_Field.print_info_site()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vel_field.Velocity_Field.proj_profile"><code class="docutils literal notranslate"><span class="pre">Velocity_Field.proj_profile()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vel_field.Velocity_Field.radial"><code class="docutils literal notranslate"><span class="pre">Velocity_Field.radial()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vel_field.Velocity_Field.read"><code class="docutils literal notranslate"><span class="pre">Velocity_Field.read()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vel_field.Velocity_Field.remove_point"><code class="docutils literal notranslate"><span class="pre">Velocity_Field.remove_point()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vel_field.Velocity_Field.site"><code class="docutils literal notranslate"><span class="pre">Velocity_Field.site()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vel_field.Velocity_Field.strain"><code class="docutils literal notranslate"><span class="pre">Velocity_Field.strain()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vel_field.Velocity_Field.subset"><code class="docutils literal notranslate"><span class="pre">Velocity_Field.subset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vel_field.Velocity_Field.substract_pole"><code class="docutils literal notranslate"><span class="pre">Velocity_Field.substract_pole()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.lib.html#pyacs.lib.vel_field.Velocity_Field.write"><code class="docutils literal notranslate"><span class="pre">Velocity_Field.write()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.lib.html#module-pyacs.lib">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.message.html">pyacs.message package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.message.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.message.html#module-pyacs.message.debug_message">pyacs.message.debug_message module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.message.html#pyacs.message.debug_message.debug_message"><code class="docutils literal notranslate"><span class="pre">debug_message()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.message.html#module-pyacs.message.error">pyacs.message.error module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.message.html#pyacs.message.error.error"><code class="docutils literal notranslate"><span class="pre">error()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.message.html#module-pyacs.message.get_logger">pyacs.message.get_logger module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.message.html#pyacs.message.get_logger.get_logger"><code class="docutils literal notranslate"><span class="pre">get_logger()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.message.html#module-pyacs.message.message">pyacs.message.message module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.message.html#pyacs.message.message.message"><code class="docutils literal notranslate"><span class="pre">message()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.message.html#module-pyacs.message.verbose_message">pyacs.message.verbose_message module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.message.html#pyacs.message.verbose_message.verbose_message"><code class="docutils literal notranslate"><span class="pre">verbose_message()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.message.html#module-pyacs.message.warning">pyacs.message.warning module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.message.html#pyacs.message.warning.warning"><code class="docutils literal notranslate"><span class="pre">warning()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.message.html#module-pyacs.message">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.sinex.html">pyacs.sinex package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sinex.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sinex.html#module-pyacs.sinex.constants">pyacs.sinex.constants module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.constants.record"><code class="docutils literal notranslate"><span class="pre">record</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sinex.html#module-pyacs.sinex.date">pyacs.sinex.date module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.date.date"><code class="docutils literal notranslate"><span class="pre">date</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.date.date.add_d"><code class="docutils literal notranslate"><span class="pre">date.add_d()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.date.date.add_h"><code class="docutils literal notranslate"><span class="pre">date.add_h()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.date.date.add_s"><code class="docutils literal notranslate"><span class="pre">date.add_s()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.date.date.from_mjd"><code class="docutils literal notranslate"><span class="pre">date.from_mjd()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.date.date.from_snxepoch"><code class="docutils literal notranslate"><span class="pre">date.from_snxepoch()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.date.date.from_wdec"><code class="docutils literal notranslate"><span class="pre">date.from_wdec()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.date.date.from_weekdow"><code class="docutils literal notranslate"><span class="pre">date.from_weekdow()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.date.date.from_ydec"><code class="docutils literal notranslate"><span class="pre">date.from_ydec()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.date.date.from_ymdhms"><code class="docutils literal notranslate"><span class="pre">date.from_ymdhms()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.date.date.isoepoch"><code class="docutils literal notranslate"><span class="pre">date.isoepoch()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.date.date.snxepoch"><code class="docutils literal notranslate"><span class="pre">date.snxepoch()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.date.date.wdec"><code class="docutils literal notranslate"><span class="pre">date.wdec()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.date.date.ydec"><code class="docutils literal notranslate"><span class="pre">date.ydec()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sinex.html#module-pyacs.sinex.mathutils">pyacs.sinex.mathutils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.mathutils.Q2C"><code class="docutils literal notranslate"><span class="pre">Q2C()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.mathutils.cart2geo"><code class="docutils literal notranslate"><span class="pre">cart2geo()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.mathutils.chebychev"><code class="docutils literal notranslate"><span class="pre">chebychev()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.mathutils.detrend"><code class="docutils literal notranslate"><span class="pre">detrend()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.mathutils.dot"><code class="docutils literal notranslate"><span class="pre">dot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.mathutils.enh2uvh"><code class="docutils literal notranslate"><span class="pre">enh2uvh()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.mathutils.geo2cart"><code class="docutils literal notranslate"><span class="pre">geo2cart()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.mathutils.kolmo2d"><code class="docutils literal notranslate"><span class="pre">kolmo2d()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.mathutils.lombscargle"><code class="docutils literal notranslate"><span class="pre">lombscargle()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.mathutils.rms"><code class="docutils literal notranslate"><span class="pre">rms()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.mathutils.spline_smooth"><code class="docutils literal notranslate"><span class="pre">spline_smooth()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.mathutils.syminv"><code class="docutils literal notranslate"><span class="pre">syminv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.mathutils.sympinv"><code class="docutils literal notranslate"><span class="pre">sympinv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.mathutils.trend"><code class="docutils literal notranslate"><span class="pre">trend()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.mathutils.vondrak"><code class="docutils literal notranslate"><span class="pre">vondrak()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.mathutils.xyz2enh"><code class="docutils literal notranslate"><span class="pre">xyz2enh()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sinex.html#module-pyacs.sinex.sinex">pyacs.sinex.sinex module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex"><code class="docutils literal notranslate"><span class="pre">sinex</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.add_metadata"><code class="docutils literal notranslate"><span class="pre">sinex.add_metadata()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.add_min_const"><code class="docutils literal notranslate"><span class="pre">sinex.add_min_const()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.add_per"><code class="docutils literal notranslate"><span class="pre">sinex.add_per()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.add_psd"><code class="docutils literal notranslate"><span class="pre">sinex.add_psd()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.apply_offsets"><code class="docutils literal notranslate"><span class="pre">sinex.apply_offsets()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.apriori_sf"><code class="docutils literal notranslate"><span class="pre">sinex.apriori_sf()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.check_erp"><code class="docutils literal notranslate"><span class="pre">sinex.check_erp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.check_sat_pco"><code class="docutils literal notranslate"><span class="pre">sinex.check_sat_pco()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.check_solns"><code class="docutils literal notranslate"><span class="pre">sinex.check_solns()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.check_staid"><code class="docutils literal notranslate"><span class="pre">sinex.check_staid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.correct_opoleload"><code class="docutils literal notranslate"><span class="pre">sinex.correct_opoleload()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.extract_core"><code class="docutils literal notranslate"><span class="pre">sinex.extract_core()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.fix_params"><code class="docutils literal notranslate"><span class="pre">sinex.fix_params()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.fix_sta"><code class="docutils literal notranslate"><span class="pre">sinex.fix_sta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.get_common_points"><code class="docutils literal notranslate"><span class="pre">sinex.get_common_points()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.get_core"><code class="docutils literal notranslate"><span class="pre">sinex.get_core()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.get_cov_sta"><code class="docutils literal notranslate"><span class="pre">sinex.get_cov_sta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.get_helmert_matrix"><code class="docutils literal notranslate"><span class="pre">sinex.get_helmert_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.get_lonlat"><code class="docutils literal notranslate"><span class="pre">sinex.get_lonlat()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.get_nonpubsolns"><code class="docutils literal notranslate"><span class="pre">sinex.get_nonpubsolns()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.get_plh"><code class="docutils literal notranslate"><span class="pre">sinex.get_plh()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.get_residuals"><code class="docutils literal notranslate"><span class="pre">sinex.get_residuals()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.get_sigenh"><code class="docutils literal notranslate"><span class="pre">sinex.get_sigenh()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.get_xyz"><code class="docutils literal notranslate"><span class="pre">sinex.get_xyz()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.helmert_wrt"><code class="docutils literal notranslate"><span class="pre">sinex.helmert_wrt()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.insert_disc"><code class="docutils literal notranslate"><span class="pre">sinex.insert_disc()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.keep_relevant_solns"><code class="docutils literal notranslate"><span class="pre">sinex.keep_relevant_solns()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.keep_sta"><code class="docutils literal notranslate"><span class="pre">sinex.keep_sta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.loadest_wrt"><code class="docutils literal notranslate"><span class="pre">sinex.loadest_wrt()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.map"><code class="docutils literal notranslate"><span class="pre">sinex.map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.neqinv"><code class="docutils literal notranslate"><span class="pre">sinex.neqinv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.plate_poles"><code class="docutils literal notranslate"><span class="pre">sinex.plate_poles()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.prior2ref"><code class="docutils literal notranslate"><span class="pre">sinex.prior2ref()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.propagate"><code class="docutils literal notranslate"><span class="pre">sinex.propagate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.read"><code class="docutils literal notranslate"><span class="pre">sinex.read()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.reduce_doublons"><code class="docutils literal notranslate"><span class="pre">sinex.reduce_doublons()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.reduce_helmerts"><code class="docutils literal notranslate"><span class="pre">sinex.reduce_helmerts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.reduce_params"><code class="docutils literal notranslate"><span class="pre">sinex.reduce_params()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.reduce_sta"><code class="docutils literal notranslate"><span class="pre">sinex.reduce_sta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.refsys_effect"><code class="docutils literal notranslate"><span class="pre">sinex.refsys_effect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.remove_params"><code class="docutils literal notranslate"><span class="pre">sinex.remove_params()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.remove_psd"><code class="docutils literal notranslate"><span class="pre">sinex.remove_psd()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.remove_sta"><code class="docutils literal notranslate"><span class="pre">sinex.remove_sta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.remove_sta_wo_domes"><code class="docutils literal notranslate"><span class="pre">sinex.remove_sta_wo_domes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.remove_undef_params"><code class="docutils literal notranslate"><span class="pre">sinex.remove_undef_params()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.rescale"><code class="docutils literal notranslate"><span class="pre">sinex.rescale()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.set_constraints"><code class="docutils literal notranslate"><span class="pre">sinex.set_constraints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.setup_geocenter"><code class="docutils literal notranslate"><span class="pre">sinex.setup_geocenter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.setup_scale"><code class="docutils literal notranslate"><span class="pre">sinex.setup_scale()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.trim_metadata"><code class="docutils literal notranslate"><span class="pre">sinex.trim_metadata()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.unconstrain"><code class="docutils literal notranslate"><span class="pre">sinex.unconstrain()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.update_stalist"><code class="docutils literal notranslate"><span class="pre">sinex.update_stalist()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.write"><code class="docutils literal notranslate"><span class="pre">sinex.write()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.sinex.sinex.write_solndomes"><code class="docutils literal notranslate"><span class="pre">sinex.write_solndomes()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sinex.html#module-pyacs.sinex.snxutils">pyacs.sinex.snxutils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.snxutils.compute_opoleload"><code class="docutils literal notranslate"><span class="pre">compute_opoleload()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.snxutils.compute_psd"><code class="docutils literal notranslate"><span class="pre">compute_psd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.snxutils.earlier"><code class="docutils literal notranslate"><span class="pre">earlier()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.snxutils.extract_solns"><code class="docutils literal notranslate"><span class="pre">extract_solns()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.snxutils.helmert14_outliers"><code class="docutils literal notranslate"><span class="pre">helmert14_outliers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.snxutils.helmert_hist"><code class="docutils literal notranslate"><span class="pre">helmert_hist()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.snxutils.helmert_map"><code class="docutils literal notranslate"><span class="pre">helmert_map()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.snxutils.helmert_outliers"><code class="docutils literal notranslate"><span class="pre">helmert_outliers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.snxutils.meanpole"><code class="docutils literal notranslate"><span class="pre">meanpole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.snxutils.read_domes"><code class="docutils literal notranslate"><span class="pre">read_domes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.snxutils.read_opoleload"><code class="docutils literal notranslate"><span class="pre">read_opoleload()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.snxutils.read_solns"><code class="docutils literal notranslate"><span class="pre">read_solns()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.snxutils.station_map"><code class="docutils literal notranslate"><span class="pre">station_map()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sinex.html#module-pyacs.sinex.utils">pyacs.sinex.utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.utils.dict2rec"><code class="docutils literal notranslate"><span class="pre">dict2rec()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.utils.isfloat"><code class="docutils literal notranslate"><span class="pre">isfloat()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.utils.leapsec"><code class="docutils literal notranslate"><span class="pre">leapsec()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.utils.parallel_sh"><code class="docutils literal notranslate"><span class="pre">parallel_sh()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.utils.print_message"><code class="docutils literal notranslate"><span class="pre">print_message()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.utils.ps2png"><code class="docutils literal notranslate"><span class="pre">ps2png()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.utils.read_yaml"><code class="docutils literal notranslate"><span class="pre">read_yaml()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.utils.rec2dict"><code class="docutils literal notranslate"><span class="pre">rec2dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.utils.sed_keywords"><code class="docutils literal notranslate"><span class="pre">sed_keywords()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.utils.temp_file"><code class="docutils literal notranslate"><span class="pre">temp_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sinex.html#pyacs.sinex.utils.write_yaml"><code class="docutils literal notranslate"><span class="pre">write_yaml()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sinex.html#module-pyacs.sinex">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyacs.sol.html">pyacs.sol package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sol.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sol.html#module-pyacs.sol.discontinuity">pyacs.sol.discontinuity module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.discontinuity.Discontinuities"><code class="docutils literal notranslate"><span class="pre">Discontinuities</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.discontinuity.Discontinuities.display"><code class="docutils literal notranslate"><span class="pre">Discontinuities.display()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.discontinuity.Discontinuities.get_soln"><code class="docutils literal notranslate"><span class="pre">Discontinuities.get_soln()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.discontinuity.Discontinuities.read_igs_discontinuity"><code class="docutils literal notranslate"><span class="pre">Discontinuities.read_igs_discontinuity()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sol.html#module-pyacs.sol.errors">pyacs.sol.errors module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.errors.PyacsSolError"><code class="docutils literal notranslate"><span class="pre">PyacsSolError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.errors.PyacsSol_BadLsnx"><code class="docutils literal notranslate"><span class="pre">PyacsSol_BadLsnx</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.errors.PyacsSol_HelmertError"><code class="docutils literal notranslate"><span class="pre">PyacsSol_HelmertError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sol.html#module-pyacs.sol.gpoint">pyacs.sol.gpoint module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.gpoint.Gpoint"><code class="docutils literal notranslate"><span class="pre">Gpoint</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.gpoint.Gpoint.apply_helmert"><code class="docutils literal notranslate"><span class="pre">Gpoint.apply_helmert()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.gpoint.Gpoint.assign_index"><code class="docutils literal notranslate"><span class="pre">Gpoint.assign_index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.gpoint.Gpoint.covarenu"><code class="docutils literal notranslate"><span class="pre">Gpoint.covarenu()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.gpoint.Gpoint.covarxyz"><code class="docutils literal notranslate"><span class="pre">Gpoint.covarxyz()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.gpoint.Gpoint.posxyz"><code class="docutils literal notranslate"><span class="pre">Gpoint.posxyz()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.gpoint.Gpoint.read_from_sinex"><code class="docutils literal notranslate"><span class="pre">Gpoint.read_from_sinex()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.gpoint.Gpoint.staxyz"><code class="docutils literal notranslate"><span class="pre">Gpoint.staxyz()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.gpoint.Gpoint.substract_pole"><code class="docutils literal notranslate"><span class="pre">Gpoint.substract_pole()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.gpoint.Gpoint.velxyz"><code class="docutils literal notranslate"><span class="pre">Gpoint.velxyz()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.gpoint.Gpoint.write_as_estimate"><code class="docutils literal notranslate"><span class="pre">Gpoint.write_as_estimate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.gpoint.Gpoint.xyz_distance"><code class="docutils literal notranslate"><span class="pre">Gpoint.xyz_distance()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sol.html#module-pyacs.sol.helmert">pyacs.sol.helmert module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.helmert.estimate_helmert"><code class="docutils literal notranslate"><span class="pre">estimate_helmert()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.helmert.find_outliers_Helmert"><code class="docutils literal notranslate"><span class="pre">find_outliers_Helmert()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.helmert.helmert_matrix"><code class="docutils literal notranslate"><span class="pre">helmert_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.helmert.observation_equation_helmert_local"><code class="docutils literal notranslate"><span class="pre">observation_equation_helmert_local()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sol.html#module-pyacs.sol.log">pyacs.sol.log module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.log.helmert_residuals"><code class="docutils literal notranslate"><span class="pre">helmert_residuals()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.log.output_directories"><code class="docutils literal notranslate"><span class="pre">output_directories()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.log.write_tsg"><code class="docutils literal notranslate"><span class="pre">write_tsg()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sol.html#module-pyacs.sol.read_conf">pyacs.sol.read_conf module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.read_conf.Conf"><code class="docutils literal notranslate"><span class="pre">Conf</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.read_conf.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sol.html#module-pyacs.sol.sinex">pyacs.sol.sinex module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.sinex.SSinex"><code class="docutils literal notranslate"><span class="pre">SSinex</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.sinex.SSinex.add_site"><code class="docutils literal notranslate"><span class="pre">SSinex.add_site()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.sinex.SSinex.add_to_STA"><code class="docutils literal notranslate"><span class="pre">SSinex.add_to_STA()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.sinex.SSinex.apply_helmert"><code class="docutils literal notranslate"><span class="pre">SSinex.apply_helmert()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.sinex.SSinex.change_STA"><code class="docutils literal notranslate"><span class="pre">SSinex.change_STA()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.sinex.SSinex.clear"><code class="docutils literal notranslate"><span class="pre">SSinex.clear()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.sinex.SSinex.common"><code class="docutils literal notranslate"><span class="pre">SSinex.common()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.sinex.SSinex.from_sinex"><code class="docutils literal notranslate"><span class="pre">SSinex.from_sinex()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.sinex.SSinex.get_STA"><code class="docutils literal notranslate"><span class="pre">SSinex.get_STA()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.sinex.SSinex.info_gpoint"><code class="docutils literal notranslate"><span class="pre">SSinex.info_gpoint()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.sinex.SSinex.lcode"><code class="docutils literal notranslate"><span class="pre">SSinex.lcode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.sinex.SSinex.print_STA"><code class="docutils literal notranslate"><span class="pre">SSinex.print_STA()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.sinex.SSinex.read_apr"><code class="docutils literal notranslate"><span class="pre">SSinex.read_apr()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.sinex.SSinex.read_section_estimate"><code class="docutils literal notranslate"><span class="pre">SSinex.read_section_estimate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.sinex.SSinex.site"><code class="docutils literal notranslate"><span class="pre">SSinex.site()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.sinex.SSinex.subset_from_code"><code class="docutils literal notranslate"><span class="pre">SSinex.subset_from_code()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.sinex.SSinex.subset_from_keys"><code class="docutils literal notranslate"><span class="pre">SSinex.subset_from_keys()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.sinex.SSinex.write_sinex"><code class="docutils literal notranslate"><span class="pre">SSinex.write_sinex()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.sinex.SSinex.write_tsxyz"><code class="docutils literal notranslate"><span class="pre">SSinex.write_tsxyz()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.sinex.glred_1_day"><code class="docutils literal notranslate"><span class="pre">glred_1_day()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.sinex.glx2snx"><code class="docutils literal notranslate"><span class="pre">glx2snx()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.sinex.snx2ssc"><code class="docutils literal notranslate"><span class="pre">snx2ssc()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sol.html#module-pyacs.sol.soln">pyacs.sol.soln module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.soln.Soln"><code class="docutils literal notranslate"><span class="pre">Soln</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyacs.sol.html#pyacs.sol.soln.Soln.append_period"><code class="docutils literal notranslate"><span class="pre">Soln.append_period()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyacs.sol.html#module-pyacs.sol">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-pyacs.debug">
+<span id="pyacs-debug-module"></span><h2>pyacs.debug module<a class="headerlink" href="#module-pyacs.debug" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.debug.debug">
+<span class="sig-prename descclassname"><span class="pre">pyacs.debug.</span></span><span class="sig-name descname"><span class="pre">debug</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/debug.html#debug"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.debug.debug" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if verbose mode is debug, returns False otherwise</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.verbose">
+<span id="pyacs-verbose-module"></span><h2>pyacs.verbose module<a class="headerlink" href="#module-pyacs.verbose" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.verbose.verbose">
+<span class="sig-prename descclassname"><span class="pre">pyacs.verbose.</span></span><span class="sig-name descname"><span class="pre">verbose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'INFO'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/verbose.html#verbose"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.verbose.verbose" title="Link to this definition"></a></dt>
+<dd><p>Set pyacs verbose level and optionally configure file logging.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>level</strong> (<em>str</em><em>, </em><em>optional</em>) – Verbose level: ‘DEBUG’, ‘INFO’, ‘VERBOSE’, ‘WARNING’, ‘ERROR’, or ‘SILENT’.
+Default ‘INFO’.</p></li>
+<li><p><strong>print_message</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, print a message when the level changes. Default True.</p></li>
+<li><p><strong>log_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Directory for log files. If None, file logging is not configured.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyacs" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

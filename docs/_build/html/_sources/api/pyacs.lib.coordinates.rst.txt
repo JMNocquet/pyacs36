@@ -1,0 +1,125 @@
+pyacs.lib.coordinates package
+=============================
+
+Submodules
+----------
+
+pyacs.lib.coordinates.azimuth\_to\_en module
+--------------------------------------------
+
+.. automodule:: pyacs.lib.coordinates.azimuth_to_en
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.coordinates.denu\_at\_x0y0z0\_to\_xyz module
+------------------------------------------------------
+
+.. automodule:: pyacs.lib.coordinates.denu_at_x0y0z0_to_xyz
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.coordinates.flat\_earth2geo module
+--------------------------------------------
+
+.. automodule:: pyacs.lib.coordinates.flat_earth2geo
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.coordinates.geo2flat\_earth module
+--------------------------------------------
+
+.. automodule:: pyacs.lib.coordinates.geo2flat_earth
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.coordinates.geo2xyz module
+------------------------------------
+
+.. automodule:: pyacs.lib.coordinates.geo2xyz
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.coordinates.geo\_spherical\_distance module
+-----------------------------------------------------
+
+.. automodule:: pyacs.lib.coordinates.geo_spherical_distance
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.coordinates.mat\_rot\_general\_to\_local module
+---------------------------------------------------------
+
+.. automodule:: pyacs.lib.coordinates.mat_rot_general_to_local
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.coordinates.mat\_rot\_local\_to\_general module
+---------------------------------------------------------
+
+.. automodule:: pyacs.lib.coordinates.mat_rot_local_to_general
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.coordinates.spherical\_baseline\_length\_rate module
+--------------------------------------------------------------
+
+.. automodule:: pyacs.lib.coordinates.spherical_baseline_length_rate
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.coordinates.vel\_xyz\_to\_enu module
+----------------------------------------------
+
+.. automodule:: pyacs.lib.coordinates.vel_xyz_to_enu
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.coordinates.wnorm module
+----------------------------------
+
+.. automodule:: pyacs.lib.coordinates.wnorm
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.coordinates.xyz2geo module
+------------------------------------
+
+.. automodule:: pyacs.lib.coordinates.xyz2geo
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.coordinates.xyz2geospheric module
+-------------------------------------------
+
+.. automodule:: pyacs.lib.coordinates.xyz2geospheric
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.coordinates.xyz\_spherical\_distance module
+-----------------------------------------------------
+
+.. automodule:: pyacs.lib.coordinates.xyz_spherical_distance
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: pyacs.lib.coordinates
+   :members:
+   :show-inheritance:
+   :undoc-members:

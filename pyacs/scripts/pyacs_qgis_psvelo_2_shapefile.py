@@ -40,17 +40,21 @@ parser.add_argument('-gmt', action='store', type=str, dest='gmt',required=True,h
 parser.add_argument('-shapefile', action='store', type=str, dest='shapefile',default=None,help='output shapefile name')
 parser.add_argument('--verbose', action='count', default=0, help='verbose mode')
 
-if (len(sys.argv)<2):parser.print_help()
-args = parser.parse_args()
 
-if args.shapefile is None:
-    shp = path_base_name( args.gmt )
-else:
-    shp = args.shapefile
+def main():
+    if len(sys.argv) < 2:
+        parser.print_help()
+        return
+    args = parser.parse_args()
 
-if args.verbose>0:
-    verbose=True
-else:
-    verbose=False
+    if args.shapefile is None:
+        shp = path_base_name(args.gmt)
+    else:
+        shp = args.shapefile
 
-pyacs.lib.shapefile.psvelo_to_shapefile(args.gmt, shp, verbose=verbose)
+    verbose = args.verbose > 0
+    pyacs.lib.shapefile.psvelo_to_shapefile(args.gmt, shp, verbose=verbose)
+
+
+if __name__ == "__main__":
+    main()

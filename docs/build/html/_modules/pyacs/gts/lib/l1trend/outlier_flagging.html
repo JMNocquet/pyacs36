@@ -1,0 +1,212 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.gts.lib.l1trend.outlier_flagging &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../libraries.html">core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyacs.gts.lib.l1trend.outlier_flagging</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyacs.gts.lib.l1trend.outlier_flagging</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Outlier flagging using L1-trend analysis.</span>
+
+<span class="sd">This module provides functions to identify and flag outliers in GPS time series</span>
+<span class="sd">based on their deviation from L1-trend filtered representations.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+
+
+<div class="viewcode-block" id="flag_outliers_using_l1trend">
+<a class="viewcode-back" href="../../../../../api/pyacs.gts.lib.l1trend.outlier_flagging.html#pyacs.gts.lib.l1trend.flag_outliers_using_l1trend">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">flag_outliers_using_l1trend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">l1trend</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Flag outliers in the time series based on a user provided l1trend filter representation of the time series.</span>
+<span class="sd">    </span>
+<span class="sd">    This function identifies outliers by comparing the original time series to its L1-trend</span>
+<span class="sd">    representation. Outliers are flagged based on their deviation from the trend using</span>
+<span class="sd">    the Median Absolute Deviation (MAD) method.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    self : Gts object</span>
+<span class="sd">        The time series to flag outliers in.</span>
+<span class="sd">    l1trend : Gts object</span>
+<span class="sd">        The l1trend representation of the time series.</span>
+<span class="sd">    threshold : float, optional</span>
+<span class="sd">        The threshold for flagging outliers. Default is 5 for 5 times the median </span>
+<span class="sd">        absolute deviation (MAD) from the median.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Gts</span>
+<span class="sd">        The original time series object with outliers flagged in self.outliers</span>
+<span class="sd">        </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The method uses the Median Absolute Deviation (MAD) which is more robust to outliers</span>
+<span class="sd">    than standard deviation. Outliers are identified as points that deviate more than</span>
+<span class="sd">    threshold * MAD from the median of the absolute differences between the original</span>
+<span class="sd">    time series and the L1-trend representation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Flagging outliers using L1-trend with threshold: </span><span class="si">%.1f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">threshold</span><span class="p">)</span>
+    
+    <span class="c1"># Calculate the difference between original time series and L1-trend</span>
+    <span class="n">diff_ts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">substract_ts_daily</span><span class="p">(</span><span class="n">l1trend</span><span class="p">)</span>
+    
+    <span class="c1"># Get absolute differences for N, E, U components</span>
+    <span class="n">data_fabs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">diff_ts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>  <span class="c1"># Columns 1, 2, 3 for N, E, U</span>
+    
+    <span class="c1"># Calculate median of absolute differences for each component</span>
+    <span class="n">median</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">data_fabs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    
+    <span class="c1"># Calculate Median Absolute Deviation (MAD) for each component</span>
+    <span class="n">mad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">data_fabs</span> <span class="o">-</span> <span class="n">median</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    
+    <span class="c1"># Calculate threshold values for each component</span>
+    <span class="n">threshold_values</span> <span class="o">=</span> <span class="n">threshold</span> <span class="o">*</span> <span class="n">mad</span>
+    
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;MAD values (N, E, U): [</span><span class="si">%.3f</span><span class="s2">, </span><span class="si">%.3f</span><span class="s2">, </span><span class="si">%.3f</span><span class="s2">] mm&quot;</span> <span class="o">%</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">mad</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Threshold values (N, E, U): [</span><span class="si">%.3f</span><span class="s2">, </span><span class="si">%.3f</span><span class="s2">, </span><span class="si">%.3f</span><span class="s2">] mm&quot;</span> <span class="o">%</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">threshold_values</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
+    
+    <span class="c1"># Find outliers: points where any component exceeds its threshold</span>
+    <span class="c1"># Check each component separately and combine results</span>
+    <span class="n">outliers_by_component</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>  <span class="c1"># N, E, U components</span>
+        <span class="n">component_outliers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data_fabs</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">threshold_values</span><span class="p">[</span><span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">outliers_by_component</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">component_outliers</span><span class="p">)</span>
+    
+    <span class="c1"># Combine outliers from all components</span>
+    <span class="n">outliers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">outliers_by_component</span><span class="p">))</span>
+    
+    <span class="c1"># Do not flag outliers that are close to identified offsets (5 days)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">offsets_dates</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">outliers_dates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">outliers</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        
+        <span class="n">outliers_close_to_offsets</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">offset_date</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">offsets_dates</span><span class="p">:</span>
+            <span class="c1"># Find outliers that are within 5 days of this offset</span>
+            <span class="n">close_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">outliers_dates</span> <span class="o">-</span> <span class="n">offset_date</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="o">/</span><span class="mf">365.25</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">outliers_close_to_offsets</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">outliers_close_to_offsets</span><span class="p">,</span> <span class="n">close_indices</span><span class="p">])</span>
+        
+        <span class="c1"># Remove duplicates from outliers_close_to_offsets</span>
+        <span class="n">outliers_close_to_offsets</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">outliers_close_to_offsets</span><span class="p">)</span>
+        
+        <span class="c1"># Remove outliers close to offsets</span>
+        <span class="n">outliers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">setdiff1d</span><span class="p">(</span><span class="n">outliers</span><span class="p">,</span> <span class="n">outliers</span><span class="p">[</span><span class="n">outliers_close_to_offsets</span><span class="p">])</span>
+
+
+
+    <span class="c1"># create new Gts</span>
+    <span class="n">new_gts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">new_gts</span><span class="o">.</span><span class="n">outliers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">outliers</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Flagged </span><span class="si">%d</span><span class="s2"> outliers out of </span><span class="si">%d</span><span class="s2"> total points (</span><span class="si">%.1f%%</span><span class="s2">)&quot;</span> <span class="o">%</span> 
+           <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">new_gts</span><span class="o">.</span><span class="n">outliers</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_gts</span><span class="o">.</span><span class="n">outliers</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)))</span>
+    
+    <span class="k">return</span> <span class="n">new_gts</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

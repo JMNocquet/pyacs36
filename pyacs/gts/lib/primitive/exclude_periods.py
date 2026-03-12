@@ -3,13 +3,21 @@
 def exclude_periods(self,lperiod,in_place=False,verbose=False):
 ###################################################################
     """
-    exclude periods of a Gts
-    
-    :param lperiod: a list [start_date,end_date] or a list of periods e.g. periods=[[2000.1,2003.5],[2009.3,2010.8]]
-    :param in_place: if True, will make change in place, if False, return s a new time series
-    
-    :note 1: X0,Y0,Z0 attributes will be changed if necessary
-    :note 2: handles both .data and .data_xyz
+    Exclude periods of a Gts.
+
+    Parameters
+    ----------
+    lperiod : list
+        A list [start_date,end_date] or a list of periods e.g. [[2000.1,2003.5],[2009.3,2010.8]].
+    in_place : bool, optional
+        If True, will make change in place; if False, returns a new time series.
+    verbose : bool, optional
+        Verbose mode.
+
+    Notes
+    -----
+    1. X0, Y0, Z0 attributes will be changed if necessary.
+    2. Handles both .data and .data_xyz.
     """
 
     ### import 
@@ -17,6 +25,13 @@ def exclude_periods(self,lperiod,in_place=False,verbose=False):
     import numpy as np
     import pyacs.gts.Gts
     import pyacs.lib.utils
+
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
 
 
     ### working gts
@@ -35,7 +50,7 @@ def exclude_periods(self,lperiod,in_place=False,verbose=False):
                 from pyacs.gts.lib.errors import GtsCDataError
                 raise GtsCDataError( inspect.stack()[0][3],__name__,self )
         except GtsCDataError as error:
-            print( error )
+            ERROR( error )
             return( self )
 
     # ensure lperiod is a list of lists
@@ -74,8 +89,7 @@ def exclude_periods(self,lperiod,in_place=False,verbose=False):
     
     # case no observation in periods
     if new_data_xyz.shape[0] == 0:
-        if verbose: 
-            print("!!! ",self.code," has no data for the selected list of periods ",lperiod)
+        VERBOSE(" %s has no data for the selected list of periods %s " % (self.code , str(lperiod)))
         if in_place:
             self.data     = None
             self.data_xyz = None

@@ -1,0 +1,495 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.vel_field &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pyacs_make_time_series.py" href="../make_time_series.html" />
+    <link rel="prev" title="Velocity field" href="../vel_field.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries.html">core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gts.html">Time series library</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../vel_field.html">velocity field</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../vel_field.html#velocity-field-class-api">Velocity_Field class API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../vel_field.html#summary-of-available-methods">Summary of available methods</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../vel_field.html#api-reference">API reference</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">pyacs.vel_field</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../vel_field.html">Velocity field</a></li>
+      <li class="breadcrumb-item active">pyacs.vel_field</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/pyacs.vel_field.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pyacs.vel_field">
+<span id="pyacs-vel-field"></span><h1>pyacs.vel_field<a class="headerlink" href="#module-pyacs.vel_field" title="Link to this heading"></a></h1>
+<p>Velocity field package: read, manipulate and write GMT psvelo velocity fields.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyacs.vel_field.Velocity_Field">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyacs.vel_field.</span></span><span class="sig-name descname"><span class="pre">Velocity_Field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lgmt_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/vel_field/velocity_field.html#Velocity_Field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.vel_field.Velocity_Field" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Read a velocity field from a GMT psvelo file and manipulate it.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyacs.vel_field.Velocity_Field.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pyacs.vel_field.Velocity_Field.name" title="Link to this definition"></a></dt>
+<dd><p>Name of the velocity field.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyacs.vel_field.Velocity_Field.file_name">
+<span class="sig-name descname"><span class="pre">file_name</span></span><a class="headerlink" href="#pyacs.vel_field.Velocity_Field.file_name" title="Link to this definition"></a></dt>
+<dd><p>Path to the GMT psvelo file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyacs.vel_field.Velocity_Field.sites">
+<span class="sig-name descname"><span class="pre">sites</span></span><a class="headerlink" href="#pyacs.vel_field.Velocity_Field.sites" title="Link to this definition"></a></dt>
+<dd><p>List of GMT_Point instances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.vel_field.Velocity_Field.add_point">
+<span class="sig-name descname"><span class="pre">add_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.vel_field.Velocity_Field.add_point" title="Link to this definition"></a></dt>
+<dd><p>Append a GMT_Point to the velocity field.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>M</strong> (<a class="reference internal" href="pyacs.lib.gmtpoint.GMT_Point.html#pyacs.lib.gmtpoint.gmt_point.GMT_Point" title="pyacs.lib.gmtpoint.gmt_point.GMT_Point"><em>GMT_Point</em></a>) – Point to add.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>self (for chaining).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyacs.vel_field.Velocity_Field" title="pyacs.vel_field.Velocity_Field">Velocity_Field</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.vel_field.Velocity_Field.calc_pole">
+<span class="sig-name descname"><span class="pre">calc_pole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'WLS'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.vel_field.Velocity_Field.calc_pole" title="Link to this definition"></a></dt>
+<dd><p>Perform Euler pole calculation for multiple plates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>plates</strong> (<em>dict</em>) – Plate name -&gt; list of site codes for each plate.</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – ‘WLS’ (weighted least-squares) or ‘L1’. Default is ‘WLS’.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, print progress. Default is False.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>For each plate, creates: euler_stat_&lt;plate&gt;.dat, &lt;plate&gt;.gmt, &lt;plate&gt;.shp,
+and euler_sum.dat with Euler pole summary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.vel_field.Velocity_Field.common">
+<span class="sig-name descname"><span class="pre">common</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">linGpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lexclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.vel_field.Velocity_Field.common" title="Link to this definition"></a></dt>
+<dd><p>Return sites common to this velocity field and a list of GMT_Points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>linGpoint</strong> (<em>list</em>) – List of GMT_Point instances (e.g. from SINEX).</p></li>
+<li><p><strong>prefit</strong> (<em>float</em><em>, </em><em>optional</em>) – Maximum coordinate difference (m) to consider a match. Default is 10.0.</p></li>
+<li><p><strong>lexclude</strong> (<em>list</em><em>, </em><em>optional</em>) – Site codes to exclude.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>GMT_Point instances from this field that match by code (coordinates from this field).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.vel_field.Velocity_Field.info">
+<span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.vel_field.Velocity_Field.info" title="Link to this definition"></a></dt>
+<dd><p>Print basic information about the velocity field.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>details</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, list all site codes. Default is True.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.vel_field.Velocity_Field.l_GMT_Point">
+<span class="sig-name descname"><span class="pre">l_GMT_Point</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.vel_field.Velocity_Field.l_GMT_Point" title="Link to this definition"></a></dt>
+<dd><p>Return the velocity field as a list of GMT_Point objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of GMT_Point instances.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.vel_field.Velocity_Field.lcode">
+<span class="sig-name descname"><span class="pre">lcode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.vel_field.Velocity_Field.lcode" title="Link to this definition"></a></dt>
+<dd><p>Return a list of all point codes in the velocity field.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of 4-character site codes.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.vel_field.Velocity_Field.nsites">
+<span class="sig-name descname"><span class="pre">nsites</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.vel_field.Velocity_Field.nsites" title="Link to this definition"></a></dt>
+<dd><p>Return the number of sites in the velocity field.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of sites.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.vel_field.Velocity_Field.pole">
+<span class="sig-name descname"><span class="pre">pole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lexclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'WLS'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pLate'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.vel_field.Velocity_Field.pole" title="Link to this definition"></a></dt>
+<dd><p>Compute Euler pole from the velocity field.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lexclude</strong> (<em>list</em><em>, </em><em>optional</em>) – Site codes to exclude from the fit.</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – ‘WLS’ (weighted least squares), ‘LS’, or ‘Dikin’ (L1). Default is ‘WLS’.</p></li>
+<li><p><strong>exp</strong> (<em>str</em><em>, </em><em>optional</em>) – Experiment name prefix. Default is ‘pLate’.</p></li>
+<li><p><strong>log</strong> (<em>str</em><em>, </em><em>optional</em>) – Log file path. If None, uses exp + ‘.log’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(X, VCV_POLE_X): rotation rate vector (3,) and variance-covariance (3, 3).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.vel_field.Velocity_Field.print_info_site">
+<span class="sig-name descname"><span class="pre">print_info_site</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.vel_field.Velocity_Field.print_info_site" title="Link to this definition"></a></dt>
+<dd><p>Print information for a site given its code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>code</strong> (<em>str</em>) – 4-character site code.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, print legend. Default is False.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.vel_field.Velocity_Field.proj_profile">
+<span class="sig-name descname"><span class="pre">proj_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.vel_field.Velocity_Field.proj_profile" title="Link to this definition"></a></dt>
+<dd><p>Project velocity components along a great-circle profile.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>slon</strong> (<em>float</em>) – Longitude of profile start (decimal degrees).</p></li>
+<li><p><strong>slat</strong> (<em>float</em>) – Latitude of profile start (decimal degrees).</p></li>
+<li><p><strong>elon</strong> (<em>float</em>) – Longitude of profile end (decimal degrees).</p></li>
+<li><p><strong>elat</strong> (<em>float</em>) – Latitude of profile end (decimal degrees).</p></li>
+<li><p><strong>d</strong> (<em>float</em>) – Maximum distance (km) from profile for a point to be included.</p></li>
+<li><p><strong>save</strong> (<em>str</em><em>, </em><em>optional</em>) – If provided, write results to this file.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, print progress. Default is False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>np_code, np_distance_along_profile, np_distance_to_profile,
+np_Ve, np_Vn, np_SVe, np_SVn, np_v_parallele, np_v_perpendicular,
+np_sigma_v_parallele, np_sigma_v_perpendicular, np_lazimuth.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.vel_field.Velocity_Field.radial">
+<span class="sig-name descname"><span class="pre">radial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">center</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.vel_field.Velocity_Field.radial" title="Link to this definition"></a></dt>
+<dd><p>Return a velocity field with radial and tangential components about a center.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>center</strong> (<em>array_like</em>) – [longitude, latitude] of center in decimal degrees.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New velocity field with Ve = radial, Vn = tangential.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyacs.vel_field.Velocity_Field" title="pyacs.vel_field.Velocity_Field">Velocity_Field</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.vel_field.Velocity_Field.read">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lexclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lonly</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.vel_field.Velocity_Field.read" title="Link to this definition"></a></dt>
+<dd><p>Read a GMT psvelo file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to the GMT psvelo file.</p></li>
+<li><p><strong>lexclude</strong> (<em>list</em><em>, </em><em>optional</em>) – List of site codes to exclude.</p></li>
+<li><p><strong>lonly</strong> (<em>list</em><em>, </em><em>optional</em>) – If non-empty, only these site codes are included.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, print progress. Default is False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Populated velocity field instance.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyacs.vel_field.Velocity_Field" title="pyacs.vel_field.Velocity_Field">Velocity_Field</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.vel_field.Velocity_Field.remove_point">
+<span class="sig-name descname"><span class="pre">remove_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.vel_field.Velocity_Field.remove_point" title="Link to this definition"></a></dt>
+<dd><p>Remove a GMT_Point from the velocity field by code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>code</strong> (<em>str</em>) – 4-character code of the point to remove.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New velocity field without the point (self replaced).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyacs.vel_field.Velocity_Field" title="pyacs.vel_field.Velocity_Field">Velocity_Field</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.vel_field.Velocity_Field.site">
+<span class="sig-name descname"><span class="pre">site</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.vel_field.Velocity_Field.site" title="Link to this definition"></a></dt>
+<dd><p>Return a site as a GMT_Point by code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>code</strong> (<em>str</em>) – 4-character site code.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The site if found, else None.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.lib.gmtpoint.GMT_Point.html#pyacs.lib.gmtpoint.gmt_point.GMT_Point" title="pyacs.lib.gmtpoint.gmt_point.GMT_Point">GMT_Point</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.vel_field.Velocity_Field.strain">
+<span class="sig-name descname"><span class="pre">strain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lcode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'WLS'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.vel_field.Velocity_Field.strain" title="Link to this definition"></a></dt>
+<dd><p>Calculate strain rate from a list of sites.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lcode</strong> (<em>list</em>) – List of site codes to use.</p></li>
+<li><p><strong>save</strong> (<em>str</em><em>, </em><em>optional</em>) – File path to save the result. If None, result is only printed.</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – ‘WLS’ (weighted least-squares) or ‘L1’. Default is ‘WLS’.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, print progress. Default is False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>self.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyacs.vel_field.Velocity_Field" title="pyacs.vel_field.Velocity_Field">Velocity_Field</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.vel_field.Velocity_Field.subset">
+<span class="sig-name descname"><span class="pre">subset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lonly</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lexclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.vel_field.Velocity_Field.subset" title="Link to this definition"></a></dt>
+<dd><p>Return a new Velocity_Field from a subset of sites.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lonly</strong> (<em>list</em><em>, </em><em>optional</em>) – If provided, only these site codes are included.</p></li>
+<li><p><strong>lexclude</strong> (<em>list</em><em>, </em><em>optional</em>) – If provided, these site codes are excluded (ignored if lonly is set).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New velocity field with the subset of sites.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyacs.vel_field.Velocity_Field" title="pyacs.vel_field.Velocity_Field">Velocity_Field</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.vel_field.Velocity_Field.substract_pole">
+<span class="sig-name descname"><span class="pre">substract_pole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">W</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_euler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'rot'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.vel_field.Velocity_Field.substract_pole" title="Link to this definition"></a></dt>
+<dd><p>Subtract (or add) the prediction of an Euler pole from the velocity field.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>W</strong> (<em>array_like</em><em>, </em><em>optional</em>) – Euler pole: either [lon, lat, omega] in deg/Myr or [wx, wy, wz] in rad/yr.</p></li>
+<li><p><strong>type_euler</strong> (<em>str</em><em>, </em><em>optional</em>) – ‘rot’ for cartesian rotation rate (rad/yr), ‘euler’ for geographic. Default is ‘rot’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New velocity field with pole removed.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyacs.vel_field.Velocity_Field" title="pyacs.vel_field.Velocity_Field">Velocity_Field</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.vel_field.Velocity_Field.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">out_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lexclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.vel_field.Velocity_Field.write" title="Link to this definition"></a></dt>
+<dd><p>Write the velocity field to a GMT psvelo file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>out_file</strong> (<em>str</em><em>, </em><em>optional</em>) – Output file path. Default is ‘tmp_vel.gmt’ if None.</p></li>
+<li><p><strong>lexclude</strong> (<em>list</em><em>, </em><em>optional</em>) – List of site codes to exclude from output.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, print progress. Default is True.</p></li>
+<li><p><strong>comment</strong> (<em>str</em><em>, </em><em>optional</em>) – Comment line written at top of file.</p></li>
+<li><p><strong>up</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, write up component instead of east/north. Default is False.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../vel_field.html" class="btn btn-neutral float-left" title="Velocity field" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../make_time_series.html" class="btn btn-neutral float-right" title="pyacs_make_time_series.py" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

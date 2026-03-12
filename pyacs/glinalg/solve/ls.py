@@ -2,13 +2,25 @@
 def ls(G,d, verbose=False):
 ###############################################################################
     """
-    Solve the least-squares (LS) problem m so that  (Gm-d).T (Gm-d) is minimum.
-    
-    :param G: m x n model matrix as 2D numpy array
-    :param d: m 1D numpy observation vector
-    :param verbose: verbose mode
-    :return: x,chi2: m (1D numpy array of dim m), chi2 (chi-square)
-    :note: solved through numpy.linalg.lstsq
+    Solve the least-squares problem min (Gm-d).T (Gm-d).
+
+    Parameters
+    ----------
+    G : ndarray
+        m x n model matrix (2D).
+    d : ndarray
+        m observation vector (1D).
+    verbose : bool, optional
+        Verbose mode.
+
+    Returns
+    -------
+    ndarray
+        Solution m (1D, length n). chi2 available from lstsq internally.
+
+    Notes
+    -----
+    Solved via numpy.linalg.lstsq.
     """
 
     # numpy linalg lstsq

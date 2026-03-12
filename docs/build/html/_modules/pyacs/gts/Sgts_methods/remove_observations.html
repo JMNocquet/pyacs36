@@ -1,0 +1,219 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.gts.Sgts_methods.remove_observations &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../libraries.html">core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyacs.gts.Sgts_methods.remove_observations</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyacs.gts.Sgts_methods.remove_observations</h1><div class="highlight"><pre>
+<span></span><span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="remove_observations">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.Sgts_methods.remove_observations.html#pyacs.gts.Sgts_methods.remove_observations.remove_observations">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">remove_observations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observations_to_remove</span><span class="p">,</span> <span class="n">date_tolerance</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove observations given as (code, date) pairs.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    observations_to_remove : list of tuple</span>
+<span class="sd">        (code, date) with date in decimal year.</span>
+<span class="sd">    date_tolerance : float, optional</span>
+<span class="sd">        Date matching tolerance in days. Default is 0.25.</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        Verbose mode. Default is False.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Sgts</span>
+<span class="sd">        New Sgts with specified observations removed.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Date matching uses the same tolerance as other pyacs methods.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># import</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+    
+    <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+    
+    <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+    
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Running Sgts.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span><span class="p">)</span>
+    
+    <span class="c1"># Create a deep copy of the current Sgts object</span>
+    <span class="n">new_sgts</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    
+    <span class="c1"># Group observations by site code for efficiency</span>
+    <span class="n">observations_by_site</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">observations_to_remove</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">observations_by_site</span><span class="p">:</span>
+            <span class="n">observations_by_site</span><span class="p">[</span><span class="n">code</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">observations_by_site</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+    
+    <span class="c1"># Process each site</span>
+    <span class="n">total_removed</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">dates_to_remove</span> <span class="ow">in</span> <span class="n">observations_by_site</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">new_sgts</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+            <span class="n">WARNING</span><span class="p">(</span><span class="s2">&quot;Site code </span><span class="si">%s</span><span class="s2"> not found in Sgts object&quot;</span> <span class="o">%</span> <span class="n">code</span><span class="p">)</span>
+            <span class="k">continue</span>
+            
+        <span class="n">gts</span> <span class="o">=</span> <span class="n">new_sgts</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">gts</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">WARNING</span><span class="p">(</span><span class="s2">&quot;Site </span><span class="si">%s</span><span class="s2"> has no data&quot;</span> <span class="o">%</span> <span class="n">code</span><span class="p">)</span>
+            <span class="k">continue</span>
+        
+        <span class="c1"># Get indices of observations to remove</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.gts.Gts</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_index_from_dates</span>
+        <span class="n">indices_to_remove</span> <span class="o">=</span> <span class="n">get_index_from_dates</span><span class="p">(</span><span class="n">dates_to_remove</span><span class="p">,</span> <span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">date_tolerance</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices_to_remove</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;No observations found to remove for site </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">code</span><span class="p">)</span>
+            <span class="k">continue</span>
+        
+        <span class="c1"># Create mask for observations to keep</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="n">mask</span><span class="p">[</span><span class="n">indices_to_remove</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        
+        <span class="c1"># Remove observations</span>
+        <span class="n">gts</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+        
+        <span class="c1"># Update other data arrays if they exist</span>
+        <span class="k">if</span> <span class="n">gts</span><span class="o">.</span><span class="n">data_xyz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">gts</span><span class="o">.</span><span class="n">data_xyz</span> <span class="o">=</span> <span class="n">gts</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">gts</span><span class="o">.</span><span class="n">data_corr_neu</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">gts</span><span class="o">.</span><span class="n">data_corr_neu</span> <span class="o">=</span> <span class="n">gts</span><span class="o">.</span><span class="n">data_corr_neu</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">gts</span><span class="o">.</span><span class="n">data_corr_xyz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">gts</span><span class="o">.</span><span class="n">data_corr_xyz</span> <span class="o">=</span> <span class="n">gts</span><span class="o">.</span><span class="n">data_corr_xyz</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+        
+        <span class="c1"># Update outliers list if it exists</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">gts</span><span class="p">,</span> <span class="s1">&#39;outliers&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">gts</span><span class="o">.</span><span class="n">outliers</span><span class="p">:</span>
+            <span class="c1"># Adjust outlier indices after removal</span>
+            <span class="n">new_outliers</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">outlier_idx</span> <span class="ow">in</span> <span class="n">gts</span><span class="o">.</span><span class="n">outliers</span><span class="p">:</span>
+                <span class="c1"># Count how many removed observations come before this outlier</span>
+                <span class="n">removed_before</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">indices_to_remove</span> <span class="k">if</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="n">outlier_idx</span><span class="p">)</span>
+                <span class="n">new_idx</span> <span class="o">=</span> <span class="n">outlier_idx</span> <span class="o">-</span> <span class="n">removed_before</span>
+                <span class="k">if</span> <span class="n">new_idx</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">new_idx</span> <span class="o">&lt;</span> <span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="n">new_outliers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_idx</span><span class="p">)</span>
+            <span class="n">gts</span><span class="o">.</span><span class="n">outliers</span> <span class="o">=</span> <span class="n">new_outliers</span>
+        
+        <span class="n">total_removed</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices_to_remove</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Removed </span><span class="si">%d</span><span class="s2"> observations from site </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indices_to_remove</span><span class="p">),</span> <span class="n">code</span><span class="p">))</span>
+    
+    <span class="n">MESSAGE</span><span class="p">(</span><span class="s2">&quot;Total observations removed: </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">total_removed</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">new_sgts</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

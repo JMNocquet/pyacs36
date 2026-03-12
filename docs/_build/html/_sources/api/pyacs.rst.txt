@@ -1,0 +1,42 @@
+pyacs package
+=============
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   pyacs.glinalg
+   pyacs.gts
+   pyacs.lib
+   pyacs.message
+   pyacs.sinex
+   pyacs.sol
+
+Submodules
+----------
+
+pyacs.debug module
+------------------
+
+.. automodule:: pyacs.debug
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.verbose module
+--------------------
+
+.. automodule:: pyacs.verbose
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: pyacs
+   :members:
+   :show-inheritance:
+   :undoc-members:

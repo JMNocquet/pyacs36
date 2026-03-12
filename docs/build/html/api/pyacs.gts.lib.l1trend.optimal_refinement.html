@@ -1,0 +1,199 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.gts.lib.l1trend.optimal_refinement module &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries.html">core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">pyacs.gts.lib.l1trend.optimal_refinement module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/pyacs.gts.lib.l1trend.optimal_refinement.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pyacs.gts.lib.l1trend.optimal_refinement">
+<span id="pyacs-gts-lib-l1trend-optimal-refinement-module"></span><h1>pyacs.gts.lib.l1trend.optimal_refinement module<a class="headerlink" href="#module-pyacs.gts.lib.l1trend.optimal_refinement" title="Link to this heading"></a></h1>
+<p>Optimal piecewise linear function refinement algorithms.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.l1trend.optimal_refinement.optimal_pwlf_refinement">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.l1trend.optimal_refinement.</span></span><span class="sig-name descname"><span class="pre">optimal_pwlf_refinement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nbp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/l1trend/optimal_refinement.html#optimal_pwlf_refinement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.l1trend.optimal_refinement.optimal_pwlf_refinement" title="Link to this definition"></a></dt>
+<dd><p>Find the optimal piecewise linear function with nbp breakpoints fitting y.</p>
+<p>The function finds the optimal piecewise linear function (opwlf) fitting y with
+nbp breakpoints according to the weighted L2 norm. The obtained optimal piecewise linear
+function verifies opwlf[0]=y0 and opwlf[-1]=yn, that is end and starting point
+of y are kept fixed.</p>
+<p>The problem is applied to small dimension (n&lt;=6), so that a systematic search
+can be performed and does not require complex optimization approaches.</p>
+<p>For large time series (&gt;100 points), preprocessing is applied to decimate the
+data while preserving essential structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<em>numpy.ndarray</em>) – Time array expressed in integer seconds</p></li>
+<li><p><strong>y</strong> (<em>numpy.ndarray</em>) – Values of the function to fit</p></li>
+<li><p><strong>y0</strong> (<em>float</em>) – Value of the function at t[0] (fixed)</p></li>
+<li><p><strong>yn</strong> (<em>float</em>) – Value of the function at t[-1] (fixed)</p></li>
+<li><p><strong>nbp</strong> (<em>int</em>) – Number of breakpoints (excluding start and end points)</p></li>
+<li><p><strong>weights</strong> (<em>numpy.ndarray</em><em>, </em><em>optional</em>) – Weights for each data point. If None, all weights are set to 1.0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(optimal_breakpoints, optimal_values, min_error)
+- optimal_breakpoints: array of breakpoint times
+- optimal_values: array of function values at breakpoints
+- min_error: minimum weighted L2 error achieved</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.l1trend.optimal_refinement.optimal_pwlf_refinement_fast">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.l1trend.optimal_refinement.</span></span><span class="sig-name descname"><span class="pre">optimal_pwlf_refinement_fast</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/l1trend/optimal_refinement.html#optimal_pwlf_refinement_fast"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.l1trend.optimal_refinement.optimal_pwlf_refinement_fast" title="Link to this definition"></a></dt>
+<dd><p>Fast version of optimal_pwlf_refinement using l1trendi with criterion AICc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<em>numpy.ndarray</em>) – Time array expressed in integer seconds</p></li>
+<li><p><strong>y</strong> (<em>numpy.ndarray</em>) – Values of the function to fit</p></li>
+<li><p><strong>y0</strong> (<em>float</em>) – Value of the function at t[0] (fixed)</p></li>
+<li><p><strong>yn</strong> (<em>float</em>) – Value of the function at t[-1] (fixed)</p></li>
+<li><p><strong>weights</strong> (<em>numpy.ndarray</em><em>, </em><em>optional</em>) – Weights for each data point. If None, all weights are set to 1.0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(optimal_breakpoints, optimal_values, min_error)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.l1trend.optimal_refinement.preprocess_timeseries_for_optimization">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.l1trend.optimal_refinement.</span></span><span class="sig-name descname"><span class="pre">preprocess_timeseries_for_optimization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/l1trend/optimal_refinement.html#preprocess_timeseries_for_optimization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.l1trend.optimal_refinement.preprocess_timeseries_for_optimization" title="Link to this definition"></a></dt>
+<dd><p>Preprocess time series for optimization by applying median filter and decimation.</p>
+<p>This function reduces the number of points while preserving the essential
+structure of the time series, making optimization faster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<em>numpy.ndarray</em>) – Time array</p></li>
+<li><p><strong>y</strong> (<em>numpy.ndarray</em>) – Values array</p></li>
+<li><p><strong>target_length</strong> (<em>int</em>) – Target length for the decimated series (default: 50)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(t_decimated, y_decimated, decimation_factor)
+- t_decimated: decimated time array
+- y_decimated: decimated values array
+- decimation_factor: factor used for decimation</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

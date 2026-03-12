@@ -1,0 +1,409 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.gts.lib.l1trend.optimization &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../libraries.html">core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyacs.gts.lib.l1trend.optimization</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyacs.gts.lib.l1trend.optimization</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Optimization functions for L1-trend analysis.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+
+
+<div class="viewcode-block" id="best_l1trend_golden">
+<a class="viewcode-back" href="../../../../../api/pyacs.gts.lib.l1trend.optimization.html#pyacs.gts.lib.filters.l1trend.best_l1trend_golden">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">best_l1trend_golden</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">criterion_idx</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">tol</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">component_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find the optimal hyperparameter alpha in l1trend using golden section search algorithm.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : numpy.ndarray</span>
+<span class="sd">        Input time array</span>
+<span class="sd">    y : numpy.ndarray</span>
+<span class="sd">        Input data array</span>
+<span class="sd">    criterion_idx : int</span>
+<span class="sd">        Index of the criterion to use (-1 for BIC, -2 for AICc, -3 for Cp)</span>
+<span class="sd">    bounds : list</span>
+<span class="sd">        Bounds for the search [lower, upper]</span>
+<span class="sd">    tol : float</span>
+<span class="sd">        Tolerance for convergence</span>
+<span class="sd">    logger : logging.Logger, optional</span>
+<span class="sd">        Logger instance for logging messages</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    numpy.ndarray</span>
+<span class="sd">        Optimally filtered data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">time</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.statistics</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_stats_l1_model</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">trendfilter</span><span class="w"> </span><span class="kn">import</span> <span class="n">trend_filter</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+        <span class="n">theme_path</span> <span class="o">=</span> <span class="s1">&#39;bokeh_theme.yaml&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">theme_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">theme_path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span>
+                <span class="s2">&quot;attrs:</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;    Axis:</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;        major_label_text_font_size: &#39;12pt&#39;</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;        axis_label_text_font_size: &#39;14pt&#39;</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;    Line:</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;        line_width: 3</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;    Title:</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;        text_font_size: &#39;12pt&#39;</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;    Legend:</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;        background_fill_alpha: 0.8</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span>
+            <span class="p">)</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">trendfilter</span><span class="w"> </span><span class="kn">import</span> <span class="n">trend_filter</span>
+
+
+    <span class="c1"># Start timing</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Starting golden section search optimization (</span><span class="si">{</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> epochs)&quot;</span>
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="c1"># if y.shape[0] &lt;=5, return the best fitting line</span>
+    <span class="k">if</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="c1"># Compute best fitting line using least squares</span>
+        <span class="n">coeffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># 1st degree polynomial (line)</span>
+        <span class="n">fy</span> <span class="o">=</span> <span class="n">coeffs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">coeffs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># y = mx + b</span>
+        <span class="n">mesg</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Less than 5 epochs in best_l1trend_golden. Using best fitting line.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">WARNING</span><span class="p">(</span><span class="n">mesg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fy</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">convergence_reached</span><span class="p">(</span><span class="n">score1</span><span class="p">,</span> <span class="n">score2</span><span class="p">,</span> <span class="n">score_ref</span><span class="p">,</span> <span class="n">cp1</span><span class="p">,</span> <span class="n">cp2</span><span class="p">,</span> <span class="n">cpref</span><span class="p">,</span> <span class="n">ny</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if convergence criteria are met.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">score1</span> <span class="o">-</span> <span class="n">score_ref</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.01</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">score2</span> <span class="o">-</span> <span class="n">score_ref</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.01</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;Convergence reached: delta_score &lt; tol&#39;</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">cp1</span><span class="o">-</span><span class="n">cp2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;Convergence reached: same number of parameters&#39;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">cp1</span> <span class="o">==</span> <span class="n">cpref</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">cp2</span> <span class="o">==</span> <span class="n">cpref</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;Convergence reached: same number of parameters&#39;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">cp1</span> <span class="o">&gt;=</span> <span class="n">ny</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">cp2</span> <span class="o">&gt;=</span> <span class="n">ny</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;Stop: too many breakpoints&#39;</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">cost</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">criterion_idx</span><span class="p">,</span> <span class="n">component_mask</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute cost function for given alpha.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">fy</span> <span class="o">=</span> <span class="n">trend_filter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">l_norm</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha_2</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float_power</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span><span class="p">))[</span><span class="s1">&#39;y_fit&#39;</span><span class="p">]</span>
+            <span class="n">H_alpha</span> <span class="o">=</span> <span class="n">get_stats_l1_model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float_power</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span><span class="p">),</span> <span class="n">component_mask</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">H_alpha</span><span class="p">[</span><span class="n">criterion_idx</span><span class="p">],</span> <span class="n">H_alpha</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">],</span> <span class="n">fy</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">warning_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Error in cost function for alpha=</span><span class="si">{</span><span class="n">alpha</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+
+            <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">warning_msg</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">WARNING</span><span class="p">(</span><span class="n">warning_msg</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">golden_section_search</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">criterion_idx</span><span class="p">,</span> <span class="n">component_mask</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform golden section search optimization.&quot;&quot;&quot;</span>
+        <span class="n">ny</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">golden_ratio</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">a_start</span><span class="p">,</span> <span class="n">b_start</span> <span class="o">=</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+
+        <span class="c1"># Validate bounds</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">score_a</span><span class="p">,</span> <span class="n">cpa</span><span class="p">,</span> <span class="n">fa</span> <span class="o">=</span> <span class="n">cost</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">criterion_idx</span><span class="p">,</span> <span class="n">component_mask</span><span class="p">)</span>
+            <span class="n">score_b</span><span class="p">,</span> <span class="n">cpb</span><span class="p">,</span> <span class="n">fb</span> <span class="o">=</span> <span class="n">cost</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">criterion_idx</span><span class="p">,</span> <span class="n">component_mask</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">warning_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Failed to validate bounds: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">WARNING</span><span class="p">(</span><span class="n">warning_msg</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">warning_msg</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+        <span class="c1"># Main optimization loop</span>
+        <span class="n">niter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">niter</span> <span class="o">&lt;</span> <span class="n">maxiter</span><span class="p">:</span>
+            <span class="n">niter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">b</span> <span class="o">-</span> <span class="n">golden_ratio</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">golden_ratio</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">score_c</span><span class="p">,</span> <span class="n">cpc</span><span class="p">,</span> <span class="n">fc</span> <span class="o">=</span> <span class="n">cost</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">criterion_idx</span><span class="p">,</span> <span class="n">component_mask</span><span class="p">)</span>
+                <span class="n">score_d</span><span class="p">,</span> <span class="n">cpd</span><span class="p">,</span> <span class="n">fd</span> <span class="o">=</span> <span class="n">cost</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">criterion_idx</span><span class="p">,</span> <span class="n">component_mask</span><span class="p">)</span>
+
+                <span class="c1"># Check convergence</span>
+                <span class="n">END</span><span class="p">,</span> <span class="n">message</span> <span class="o">=</span> <span class="n">convergence_reached</span><span class="p">(</span><span class="n">score_c</span><span class="p">,</span> <span class="n">score_d</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">score_c</span><span class="p">,</span> <span class="n">score_d</span><span class="p">),</span> <span class="n">cpc</span><span class="p">,</span> <span class="n">cpd</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">cpc</span><span class="p">,</span> <span class="n">cpd</span><span class="p">),</span> <span class="n">ny</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">END</span><span class="p">:</span>
+                    <span class="n">VERBOSE</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+                    <span class="n">best_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">([</span><span class="n">score_c</span><span class="p">,</span> <span class="n">score_d</span><span class="p">])</span>
+                    <span class="k">return</span> <span class="p">[</span><span class="n">fc</span><span class="p">,</span> <span class="n">fd</span><span class="p">][</span><span class="n">best_idx</span><span class="p">]</span>
+
+                <span class="c1"># Update search interval</span>
+                <span class="k">if</span> <span class="n">score_c</span> <span class="o">&lt;</span> <span class="n">score_d</span><span class="p">:</span>
+                    <span class="n">b</span> <span class="o">=</span> <span class="n">d</span>
+                    <span class="n">score_d</span> <span class="o">=</span> <span class="n">score_c</span>
+                    <span class="n">cpd</span> <span class="o">=</span> <span class="n">cpc</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">a</span> <span class="o">=</span> <span class="n">c</span>
+                    <span class="n">score_c</span> <span class="o">=</span> <span class="n">score_d</span>
+                    <span class="n">cpc</span> <span class="o">=</span> <span class="n">cpd</span>
+
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">warning_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Error in iteration </span><span class="si">{</span><span class="n">niter</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">WARNING</span><span class="p">(</span><span class="n">warning_msg</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">warning_msg</span><span class="p">)</span>
+                <span class="k">break</span>
+
+        <span class="n">warning_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;No convergence after </span><span class="si">{</span><span class="n">maxiter</span><span class="si">}</span><span class="s2"> iterations&quot;</span>
+        <span class="n">WARNING</span><span class="p">(</span><span class="n">warning_msg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">warning_msg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fc</span> <span class="k">if</span> <span class="n">score_c</span> <span class="o">&lt;</span> <span class="n">score_d</span> <span class="k">else</span> <span class="n">fd</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Run golden section search</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">golden_section_search</span><span class="p">(</span><span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">criterion_idx</span><span class="p">,</span> <span class="n">component_mask</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
+        
+        <span class="c1"># Log completion</span>
+        <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+        <span class="n">VERBOSE</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Golden section search completed in </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Golden section search completed in </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">warning_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Golden section search failed: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">WARNING</span><span class="p">(</span><span class="n">warning_msg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">warning_msg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">y</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="best_l1trend_custom">
+<a class="viewcode-back" href="../../../../../api/pyacs.gts.lib.l1trend.optimization.html#pyacs.gts.lib.filters.l1trend.best_l1trend_custom">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">best_l1trend_custom</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">criterion_idx</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">component_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find the optimal hyperparameter alpha in l1trend using a custom search algorithm.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : numpy.ndarray</span>
+<span class="sd">        Input time array</span>
+<span class="sd">    y : numpy.ndarray</span>
+<span class="sd">        Input data array</span>
+<span class="sd">    criterion_idx : int</span>
+<span class="sd">        Index of the criterion to use (-1 for BIC, -2 for AICc, -3 for Cp)</span>
+<span class="sd">    logger : logging.Logger, optional</span>
+<span class="sd">        Logger instance for logging messages</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        (optimal filtered data, history dictionary, optimal alpha)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Start timing</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Starting custom l1trend optimization&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting custom l1trend optimization&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Initialize variables</span>
+    <span class="n">H_alpha</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">step</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">maxiter</span> <span class="o">=</span> <span class="mi">40</span>
+    <span class="n">niter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Start with alpha = 0</span>
+        <span class="n">fy</span> <span class="o">=</span> <span class="n">trend_filter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">l_norm</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha_2</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float_power</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span><span class="p">))[</span><span class="s1">&#39;y_fit&#39;</span><span class="p">]</span>
+        <span class="n">H_alpha</span><span class="p">[</span><span class="n">alpha</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_stats_l1_model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float_power</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span><span class="p">),</span> <span class="n">component_mask</span><span class="p">)</span>
+        <span class="n">alpha_ref</span> <span class="o">=</span> <span class="n">alpha</span>
+        <span class="n">score_ref</span> <span class="o">=</span> <span class="n">H_alpha</span><span class="p">[</span><span class="n">alpha</span><span class="p">][</span><span class="n">criterion_idx</span><span class="p">]</span>
+        <span class="n">cpref</span> <span class="o">=</span> <span class="n">H_alpha</span><span class="p">[</span><span class="n">alpha</span><span class="p">][</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span>
+        <span class="n">fy_ref</span> <span class="o">=</span> <span class="n">fy</span>
+
+        <span class="c1"># Choose initial search direction based on number of change points</span>
+        <span class="k">if</span> <span class="n">cpref</span> <span class="o">&lt;</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">fy</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">step</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">+</span> <span class="n">step</span>
+
+        <span class="c1"># Main optimization loop</span>
+        <span class="k">while</span> <span class="n">niter</span> <span class="o">&lt;</span> <span class="n">maxiter</span><span class="p">:</span>
+            <span class="n">niter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">fy</span> <span class="o">=</span> <span class="n">trend_filter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">l_norm</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha_2</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float_power</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span><span class="p">))[</span><span class="s1">&#39;y_fit&#39;</span><span class="p">]</span>
+                <span class="n">H_alpha</span><span class="p">[</span><span class="n">alpha</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_stats_l1_model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float_power</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span><span class="p">),</span> <span class="n">component_mask</span><span class="p">)</span>
+                <span class="n">score</span> <span class="o">=</span> <span class="n">H_alpha</span><span class="p">[</span><span class="n">alpha</span><span class="p">][</span><span class="n">criterion_idx</span><span class="p">]</span>
+                <span class="n">cp</span> <span class="o">=</span> <span class="n">H_alpha</span><span class="p">[</span><span class="n">alpha</span><span class="p">][</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="n">score</span> <span class="o">&lt;</span> <span class="n">score_ref</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">score</span> <span class="o">-</span> <span class="n">score_ref</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.01</span><span class="p">:</span>
+                        <span class="n">VERBOSE</span><span class="p">(</span><span class="s1">&#39;Convergence reached: delta_score &lt; tol&#39;</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Convergence reached: delta_score &lt; tol&#39;</span><span class="p">)</span>
+                        <span class="k">break</span>
+                    <span class="k">if</span> <span class="n">cp</span> <span class="o">==</span> <span class="n">cpref</span><span class="p">:</span>
+                        <span class="n">VERBOSE</span><span class="p">(</span><span class="s1">&#39;Convergence reached: number of parameters is stable&#39;</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Convergence reached: number of parameters is stable&#39;</span><span class="p">)</span>
+                        <span class="k">break</span>
+                    <span class="n">alpha_ref</span> <span class="o">=</span> <span class="n">alpha</span>
+                    <span class="n">score_ref</span> <span class="o">=</span> <span class="n">score</span>
+                    <span class="n">cpref</span> <span class="o">=</span> <span class="n">cp</span>
+                    <span class="n">fy_ref</span> <span class="o">=</span> <span class="n">fy</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">step</span> <span class="o">=</span> <span class="o">-</span><span class="n">step</span>
+                    <span class="k">if</span> <span class="n">alpha_ref</span> <span class="o">+</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">H_alpha</span><span class="p">:</span>
+                        <span class="n">step</span> <span class="o">=</span> <span class="n">step</span> <span class="o">/</span> <span class="mi">2</span>
+
+                <span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha_ref</span> <span class="o">+</span> <span class="n">step</span>
+
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">warning_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Error in iteration </span><span class="si">{</span><span class="n">niter</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">WARNING</span><span class="p">(</span><span class="n">warning_msg</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">warning_msg</span><span class="p">)</span>
+                <span class="k">break</span>
+
+        <span class="c1"># Log results</span>
+        <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+        <span class="n">VERBOSE</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Custom optimization completed in </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+        <span class="n">VERBOSE</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Results: niter=</span><span class="si">{</span><span class="n">niter</span><span class="si">}</span><span class="s2">, alpha=</span><span class="si">{</span><span class="n">alpha_ref</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, cp=</span><span class="si">{</span><span class="n">cpref</span><span class="si">}</span><span class="s2">, score=</span><span class="si">{</span><span class="n">score_ref</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, ndata=</span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Custom optimization completed in </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Results: niter=</span><span class="si">{</span><span class="n">niter</span><span class="si">}</span><span class="s2">, alpha=</span><span class="si">{</span><span class="n">alpha_ref</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, cp=</span><span class="si">{</span><span class="n">cpref</span><span class="si">}</span><span class="s2">, score=</span><span class="si">{</span><span class="n">score_ref</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, ndata=</span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">fy_ref</span><span class="p">,</span> <span class="n">H_alpha</span><span class="p">,</span> <span class="n">alpha_ref</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">warning_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Custom optimization failed: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">WARNING</span><span class="p">(</span><span class="n">warning_msg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">logger</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">warning_msg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="p">{},</span> <span class="mi">0</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

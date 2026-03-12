@@ -1,9 +1,18 @@
 def split_gap(self,gap=10,verbose=False):
     """
+    Split the time series at gaps larger than a given number of days.
 
-    :param gap: gap in number of days to split the time series
-    :param verbose: verbose mode
-    :return: a list a gts split from the original
+    Parameters
+    ----------
+    gap : int or float, optional
+        Gap in days above which the series is split.
+    verbose : bool, optional
+        Verbose mode.
+
+    Returns
+    -------
+    list of Gts
+        List of Gts split from the original.
     """
 
     # import

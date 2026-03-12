@@ -8,8 +8,17 @@ import datetime
 
 def np_yyyy_mm_dd_hh_mm_ss_2_decyear(data):
     """
-    converts a numpy array including year month mday hour minute sec to decimal year
-    returns a 1D array
+    Convert numpy array [year, month, mday, hour, minute, sec] to decimal year.
+
+    Parameters
+    ----------
+    data : ndarray
+        Array of shape (n, 6) with year, month, day, hour, minute, sec.
+
+    Returns
+    -------
+    ndarray
+        1D array of decimal years.
     """
     
     from pyacs.lib import  astrotime as AstroTime
@@ -25,8 +34,17 @@ def np_yyyy_mm_dd_hh_mm_ss_2_decyear(data):
     
 def np_yyyy_mm_dd_hh_mm_ss_2_datetime(data):
     """
-    converts a numpy array including year month mday hour minute sec to an array of python datetime.datetime object
-    returns a hash
+    Convert numpy array [year, month, mday, hour, minute, sec] to datetime objects.
+
+    Parameters
+    ----------
+    data : ndarray
+        Array of shape (n, 6).
+
+    Returns
+    -------
+    dict
+        Mapping index -> datetime.datetime.
     """
 
     import datetime
@@ -44,11 +62,23 @@ def np_yyyy_mm_dd_hh_mm_ss_2_datetime(data):
 
 def np_datetime_2_eq_time(data,leap_sec=0.0,eq_time=0.0):
     """
-    takes a hash of python datetime.datetime object and return a numpy array of seconds with respect to eq_time
-    if the input array is in GPS time, providing leap_sec correct for the GPS_time - UTC delta
+    Convert dict of datetime to seconds relative to eq_time.
 
-    :param leap_sec: number of seconds between GPS_time - UTC delta (leap_sec=17 that is GPS is ahead of UTC by 17 seconds on 13/02/2016)
-    :param eq_time:  time of earthquake as a python datetime.datetime object (in UTC)
+    If input is in GPS time, leap_sec corrects for GPS-UTC (e.g. 17 s on 2016-02-13).
+
+    Parameters
+    ----------
+    data : dict
+        Mapping index -> datetime.datetime.
+    leap_sec : float, optional
+        GPS time minus UTC in seconds (e.g. 17).
+    eq_time : datetime, optional
+        Earthquake time in UTC (reference for seconds).
+
+    Returns
+    -------
+    ndarray
+        Seconds relative to eq_time (and leap_sec correction if applied).
     """
     
     from datetime import timedelta
@@ -63,8 +93,19 @@ def np_datetime_2_eq_time(data,leap_sec=0.0,eq_time=0.0):
  
 def decyear2days(self,ref_date='',in_place=False):
     """
-    Converts the dates of a time series from decimal years to days after a reference date
-    ref_date is read by guess_date
+    Convert time series dates from decimal year to days after a reference date.
+
+    Parameters
+    ----------
+    ref_date : float or str, optional
+        Reference date (decimal year or parseable by guess_date). Default first data date.
+    in_place : bool, optional
+        If True, modify in place; otherwise return a new Gts.
+
+    Returns
+    -------
+    Gts
+        Time series with dates in days (or self if in_place).
     """
 
     from pyacs.lib.astrotime import guess_date
@@ -74,9 +115,19 @@ def decyear2days(self,ref_date='',in_place=False):
     
     def np_decyear_2_days(data,ref_date):
         """
-        converts a 1-D numpy array including decimal year to a 1-D numpy array of days after a reference date
-        ref_date is read by guess_date
-        returns a 1-D numpy array
+        Convert 1D array of decimal year to days after a reference date.
+
+        Parameters
+        ----------
+        data : ndarray
+            1D array of decimal years.
+        ref_date : float
+            Reference date in decimal year.
+
+        Returns
+        -------
+        ndarray
+            1D array of days after ref_date.
         """
     
         from pyacs.lib import  astrotime as AT

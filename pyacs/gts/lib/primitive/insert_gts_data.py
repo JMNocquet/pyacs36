@@ -2,14 +2,21 @@
 def insert_gts_data(self,gts,in_place=False, verbose=False):
 ###################################################################
     """
+    Insert data (and/or .data_xyz) of another Gts into the current Gts.
 
-    insert data (and/or) .data_xyz of a gts into the current gts
-    
-    :param gts: time series to be inserted
-    :param in_place: boolean, if True add_obs to the current Gts, if False, returns a new Gts
-    :param verbose: verbose mode 
-  
-    :return : new Gts or the modified Gts if in_place
+    Parameters
+    ----------
+    gts : Gts
+        Time series to be inserted.
+    in_place : bool, optional
+        If True, modify current Gts; if False, return a new Gts.
+    verbose : bool, optional
+        Verbose mode.
+
+    Returns
+    -------
+    Gts
+        New Gts or the modified Gts if in_place.
     """
     
     # import 

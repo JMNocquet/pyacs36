@@ -2,97 +2,70 @@
 def add_obs(self,date,NEUSNSESUCNECNUCEU,in_place=False,check=True,verbose=False):
 ###################################################################
     """
-    Adds observation(s) as DN,DE,DU to a time series
+    Add observation(s) as DN, DE, DU to a time series.
 
-    :param date: date in decimal year. float, a list or 1D numpy array
-    :param NEUSNSESUCNECNUCEU: value to be added in the Gts, provided as a list, a 1D numpy array or a 2D numpy array.
-                               requires at least NEU: North, East, UP values
-                               optional: SN, SE, SU, CNE, CNU, CEU: standard deviations and correlation coefficient between North, East and Up components.
-                               If not provided, SN=SE=SU=0.001 (1 mm) and CNE=CNU=CEU=0
+    Parameters
+    ----------
+    date : float or list or ndarray
+        Date(s) in decimal year.
+    NEUSNSESUCNECNUCEU : list or ndarray
+        Values to add: at least NEU (North, East, Up). Optional: SN, SE, SU, CNE, CNU, CEU
+        (standard deviations and correlations). If not provided, SN=SE=SU=0.001, CNE=CNU=CEU=0.
+    in_place : bool, optional
+        If True, add to current Gts; if False, return a new Gts.
+    check : bool, optional
+        Check time order and duplicate dates.
+    verbose : bool, optional
+        Verbose mode.
 
-    :param in_place: boolean, if True add_obs to the current Gts, if False, returns a new Gts
-    :param check: check time order and duplicate dates
-    :param verbose: verbose mode
-    :return: new Gts or the modified Gts if in_place
-    :note: if it exists, .data_xyz will be set to None for consistency.
+    Returns
+    -------
+    Gts
+        New Gts or the modified Gts if in_place.
+
+    Notes
+    -----
+    If .data_xyz exists, it will be set to None for consistency.
     """
     # import 
     import numpy as np
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
+    import pyacs.lib.astrotime as at
 
     # check argument
-    
-    if isinstance(date,list) :
-        if  (len(list)>1) :
-            date=np.array(date)
+
+    np_date = np.array(date).reshape(-1)
+    np_data = np.array(NEUSNSESUCNECNUCEU)
+
+
+    if np_data.ndim==1:
+        if np_data.shape[0] not in [3,6,9]:
+            ERROR("second argument must be of length 3, 6 or 9. Its shape is %s" % str(NEUSNSESUCNECNUCEU.shape),exit=True)
         else:
-            date=date[0]
-            
-        
-    if isinstance(date,np.ndarray):
-        
-        if not ( isinstance(NEUSNSESUCNECNUCEU,np.ndarray) and (np.ndim(NEUSNSESUCNECNUCEU) != 2 ) ):
-            raise TypeError('!!! ERROR: various dates require the second argument to be a 2D numpy array')
-            return(self)
-    
-    if isinstance(NEUSNSESUCNECNUCEU,list):
-        NEUSNSESUCNECNUCEU=np.array(NEUSNSESUCNECNUCEU)
-    
-    if np.ndim(NEUSNSESUCNECNUCEU) == 1:
-        if NEUSNSESUCNECNUCEU.shape[0] not in [3,6,9]:
-                raise TypeError('!!! ERROR: second argument must be of length 3, 6 or 9')
-    
-    if np.ndim(NEUSNSESUCNECNUCEU) == 2:
-        if NEUSNSESUCNECNUCEU.shape[1] not in [3,6,9]:
-                raise TypeError('!!! ERROR: second argument must be a 2D array with 3, 6 or 9 columns')
-    
-    # creates array to be stacked to current .data array
-    
-    if isinstance(date,float):
-        # single obs provided
-        
-        new_data=np.zeros((1,10))
-        new_data[0,4] = .001
-        new_data[0,5] = .001
-        new_data[0,6] = .001
-        
-        new_data[0,0] = date
+            np_data = np_data.reshape(1,-1)
+    else:
+        if np_data.shape[1] not in [3, 6, 9]:
+            ERROR("second argument must have 3, 6 or 9 columns. Its shape is %s" % str(NEUSNSESUCNECNUCEU.shape), exit=True)
 
+    # fill data as 2d
+    np_data_2d = np.zeros(( np_data.shape[0],10 ))
+    if np_data.shape[1] ==3:
+        np_data_2d[:,1:4] = np_data
+        np_data_2d[:,4:7] = 1.E-3
+    if np_data.shape[1] ==6:
+        np_data_2d[:,1:7] = np_data
+    if np_data.shape[1] ==9:
+        np_data_2d[:,1:] = np_data
 
-        new_data[0,1] = NEUSNSESUCNECNUCEU[0] 
-        new_data[0,2] = NEUSNSESUCNECNUCEU[1] 
-        new_data[0,3] = NEUSNSESUCNECNUCEU[2]
-        
-        if NEUSNSESUCNECNUCEU.shape[0] > 3:
+    if np_date.shape[0] != np_data_2d.shape[0]:
+        ERROR("date and observation have incompatible shape. date: %s observation %s" % (str(np_date.shape),str(np_data.shape)),exit=True)
 
-            new_data[0,4] = NEUSNSESUCNECNUCEU[3] 
-            new_data[0,5] = NEUSNSESUCNECNUCEU[4] 
-            new_data[0,6] = NEUSNSESUCNECNUCEU[5]
-             
-        if NEUSNSESUCNECNUCEU.shape[0] > 6:
-
-            new_data[0,7] = NEUSNSESUCNECNUCEU[6] 
-            new_data[0,8] = NEUSNSESUCNECNUCEU[7] 
-            new_data[0,9] = NEUSNSESUCNECNUCEU[8]
-         
-    if isinstance(date,np.ndarray):
-        # various obs provided
-        
-        new_data=np.zeros((date.shape[0],10))
-        new_data[:,4] = new_data[:,4] + .001
-        new_data[:,5] = new_data[:,5] + .001
-        new_data[:,6] = new_data[:,6] + .001
-
-        if NEUSNSESUCNECNUCEU.shape[1] > 3:
-
-            new_data[:,4] = NEUSNSESUCNECNUCEU[:,3] 
-            new_data[:,5] = NEUSNSESUCNECNUCEU[:,4] 
-            new_data[:,6] = NEUSNSESUCNECNUCEU[:,5]
-             
-        if NEUSNSESUCNECNUCEU.shape[1] > 6:
-
-            new_data[:,7] = NEUSNSESUCNECNUCEU[:,6] 
-            new_data[:,8] = NEUSNSESUCNECNUCEU[:,7] 
-            new_data[:,9] = NEUSNSESUCNECNUCEU[:,8]
+    np_data_2d[:,0] = np_date
 
     # update .data
     
@@ -101,20 +74,19 @@ def add_obs(self,date,NEUSNSESUCNECNUCEU,in_place=False,check=True,verbose=False
     else:
         new_gts = self.copy()
     
-    ### set .data_xyz to None
+    # set .data_xyz to None
     
     new_gts.data_xyz = None
 
-    if verbose:
-        print('-- updating Gts for code ',new_gts.code,' with ',new_data.shape[0], ' new entries.')
+    VERBOSE("updating Gts for code %s with %d new observations" % (new_gts.code,np_data_2d.shape[0]))
 
     if new_gts.data is None:
-        new_gts.data = new_data
+        new_gts.data = np_data_2d
     else:
         if new_gts.data.shape[1] == 7:
-            new_gts.data = np.vstack ( ( new_gts.data , new_data[:,:7] ) )
+            new_gts.data = np.vstack ( ( new_gts.data , np_data_2d ) )
         else:
-            new_gts.data = np.vstack ( ( new_gts.data , new_data ) )
+            new_gts.data = np.vstack ( ( new_gts.data , np_data_2d ) )
         
     # check order and duplicate
     if check:

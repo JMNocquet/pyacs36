@@ -12,13 +12,26 @@ def same_site(self,dc=10, in_place=True, verbose=False):
      
     return: a new Sgts instance
     """
-     
+
+
     # import
     import numpy as np
     from pyacs.gts.Sgts import Sgts
     from pyacs.gts.Gts  import Gts
 
 
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
+
+
+
+    import inspect
+
+    VERBOSE("Running Sgts.%s" % inspect.currentframe().f_code.co_name)
 
     if not in_place:
         new_Sgts = Sgts(read=False)
@@ -29,9 +42,7 @@ def same_site(self,dc=10, in_place=True, verbose=False):
      
     for site in lcode:
          
-        if verbose:
-            print('-- Processing ', site )
-
+        VERBOSE("Processing %s" % site )
         my_ts = self.__dict__[site].copy()
 
         if my_ts.data_xyz is not None:
@@ -40,7 +51,7 @@ def same_site(self,dc=10, in_place=True, verbose=False):
          
         else:
             # if no data_xyz go to next gts
-            print("!!! WARNING: data_xyz attribute required for method same_site and not found gts %s" % (site))
+            WARNING("data_xyz attribute required for method same_site and not found gts %s" % (site))
          
         # ensure median calculation
         if np.mod(data.shape[0],2)==0:
@@ -59,11 +70,11 @@ def same_site(self,dc=10, in_place=True, verbose=False):
             new_code = my_ts.code[:3]+'_'
             if new_code in self.lcode():
 
-                print("!!! ERROR: try to create a new gts with code %s and it already exists." % (new_code))
+                VERBOSE("try to create a new gts with code %s and it already exists." % (new_code))
                 new_code = my_ts.code[:2]+'__'
-            if verbose:
-                print("-- time series for site %s appears to include different sites because there are coordinates at %d dates %.1lf km from the median position" % ( site, len(lindex) , np.max( ddata )*1.E-3 ) )
-                print("-- %s time series will be split into code %s and code %s" % (site,site,new_code) )
+                VERBOSE("Creating new code %s" % (new_code))
+            VERBOSE("time series for site %s appears to include different sites because there are coordinates at %d dates %.1lf km from the median position" % ( site, len(lindex) , np.max( ddata )*1.E-3 ) )
+            VERBOSE("%s time series will be split into code %s and code %s" % (site,site,new_code) )
              
             # create a new gts
             new_gts = Gts(code=new_code,data_xyz=np.copy(my_ts.data_xyz[lindex]))

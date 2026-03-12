@@ -1,0 +1,230 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.gts.lib.format.cats &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../libraries.html">core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyacs.gts.lib.format.cats</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyacs.gts.lib.format.cats</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Read and write time series files in the CATS format.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="read_cats_file">
+<a class="viewcode-back" href="../../../../../api/pyacs.gts.lib.format.cats.html#pyacs.gts.lib.format.cats.read_cats_file">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_cats_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">idir</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span><span class="n">ifile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">gmt</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read a CATS file and load the time series into this Gts.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    idir : str, optional</span>
+<span class="sd">        Directory for CATS files.</span>
+<span class="sd">    ifile : str, optional</span>
+<span class="sd">        Path to CATS file. If None, uses idir/cats_&lt;code&gt;.dat.</span>
+<span class="sd">    gmt : bool or str, optional</span>
+<span class="sd">        If True, read lon/lat from ../maps_en_velo.gmt; if str, path to GMT file.</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        Verbose mode.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Gts</span>
+<span class="sd">        self (data loaded from file).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+    
+    <span class="k">if</span> <span class="n">gmt</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
+        <span class="n">gmt_file</span><span class="o">=</span><span class="n">idir</span><span class="o">+</span><span class="s1">&#39;/../maps_en_velo.gmt&#39;</span>
+    <span class="k">if</span>  <span class="nb">isinstance</span><span class="p">(</span><span class="n">gmt</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+        <span class="n">gmt_file</span><span class="o">=</span><span class="n">gmt</span>
+    
+    <span class="k">if</span> <span class="n">gmt</span> <span class="o">!=</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">read_lon_lat</span><span class="p">(</span><span class="n">gmt_file</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">ifile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cats_file_basename</span><span class="o">=</span> <span class="n">idir</span> <span class="o">+</span> <span class="s1">&#39;/cats_&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="o">+</span><span class="s1">&#39;.dat&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cats_file_basename</span><span class="o">=</span><span class="n">ifile</span>
+
+    <span class="c1"># file</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">ifile</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">cats_file_basename</span><span class="p">)</span>
+    
+    <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">cats_file_basename</span><span class="p">,</span><span class="n">comments</span><span class="o">=</span><span class="s1">&#39;#&#39;</span><span class="p">)</span>
+
+    <span class="c1"># check that data has 7 columns</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+        <span class="c1"># adds 3 columns of zeros</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">3</span><span class="p">))))</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="write_cats">
+<a class="viewcode-back" href="../../../../../api/pyacs.gts.lib.format.cats.html#pyacs.gts.lib.format.cats.write_cats">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">write_cats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">idir</span><span class="o">=</span><span class="s1">&#39;./cats&#39;</span><span class="p">,</span><span class="n">offsets_dates</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">add_key</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Write a file for CATS analysis.</span>
+
+<span class="sd">    If offsets_dates is not None, offset date information is added at the beginning.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    idir : str, optional</span>
+<span class="sd">        Directory to save the file (default &#39;./cats&#39;).</span>
+<span class="sd">    offsets_dates : list, optional</span>
+<span class="sd">        List of offset dates to write in the header.</span>
+<span class="sd">    add_key : str, optional</span>
+<span class="sd">        Additional key in the file name (e.g. cats_&lt;code&gt;_&lt;add_key&gt;.dat).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">idir</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span> <span class="n">idir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">WARNING</span><span class="p">(</span><span class="s2">&quot;Could not create directory &quot;</span><span class="p">,</span><span class="n">idir</span><span class="p">)</span>
+
+    
+    <span class="k">if</span> <span class="n">add_key</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="n">cats_file</span><span class="o">=</span><span class="n">idir</span><span class="o">+</span><span class="s1">&#39;/cats_&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">add_key</span><span class="o">+</span><span class="s1">&#39;.dat&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cats_file</span><span class="o">=</span><span class="n">idir</span><span class="o">+</span><span class="s1">&#39;/cats_&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="o">+</span><span class="s1">&#39;.dat&#39;</span>
+    
+    <span class="c1"># header lines for outliers</span>
+    <span class="n">header</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">offsets_dates</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">offsets_dates</span><span class="p">:</span><span class="n">header</span><span class="o">=</span><span class="n">header</span><span class="o">+</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%10.5lf</span><span class="s2"> 7</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">date</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">offsets_dates</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">offsets_dates</span><span class="p">:</span><span class="n">header</span><span class="o">=</span><span class="n">header</span><span class="o">+</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%10.5lf</span><span class="s2"> 7</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">date</span><span class="p">)</span>
+            
+    
+    <span class="c1"># main data</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">cats_file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,:</span><span class="mi">7</span><span class="p">],</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%10.5lf</span><span class="s2"> </span><span class="si">%10.5lf</span><span class="s2"> </span><span class="si">%10.5lf</span><span class="s2"> </span><span class="si">%10.5lf</span><span class="s2"> </span><span class="si">%10.5lf</span><span class="s2"> </span><span class="si">%10.5lf</span><span class="s2"> </span><span class="si">%10.5lf</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">header</span><span class="o">=</span><span class="n">header</span><span class="p">)</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

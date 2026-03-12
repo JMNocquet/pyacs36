@@ -16,6 +16,18 @@ def read_gts_conf(self,gts_conf_file,verbose=False):
     from pyacs.lib.astrotime import guess_date
     import pyacs.lib.astrotime as at
 
+
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
+
+    import inspect
+
+    VERBOSE("Running Sgts.%s" % inspect.currentframe().f_code.co_name)
+
     New_Sgts=self.copy()
     
     conf=open(gts_conf_file,'r')

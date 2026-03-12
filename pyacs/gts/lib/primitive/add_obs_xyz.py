@@ -2,20 +2,32 @@
 def add_obs_xyz(self,date,XYZSXSYSZCXYCXZCYZ,in_place=False,check=True, neu=True , verbose=False):
 ###################################################################
     """
-    Adds observation(s) as XYZ to a time series
-    
-    :param date: date in decimal year. float, a list or 1D numpy array
-    :param XYZSXSYSZCXYCXZCYZ: value to be added in the Gts, provided as a list, a 1D numpy array or a 2D numpy array.\
-    requires at least X,Y,Z. Optional: SX, SY, SZ, CXY, CXZ, CYZ: standard deviations and correlation coefficients.\
-    If not provided, SX=SY=SZ=0.001 (1 mm) and CXY=CXZ=CYZ=0
-    :param in_place: boolean, if True add_obs to the current Gts, if False, returns a new Gts
-    :param check: check time order , duplicate dates and re-generate NEU time series (.data)
-    :param neu: regenerate .data from the updated .data_xyz
-    :param verbose: verbose mode 
-  
-    :return : new Gts or the modified Gts if in_place
-    :note 1: by default .data will be updated from .data_xyz, and X0,Y0,Z0 will be updated.
-    :note 2: 
+    Add observation(s) as XYZ to a time series.
+
+    Parameters
+    ----------
+    date : float or list or ndarray
+        Date(s) in decimal year.
+    XYZSXSYSZCXYCXZCYZ : list or ndarray
+        Values to add: at least X, Y, Z. Optional: SX, SY, SZ, CXY, CXZ, CYZ (standard
+        deviations and correlations). If not provided, SX=SY=SZ=0.001, CXY=CXZ=CYZ=0.
+    in_place : bool, optional
+        If True, add to current Gts; if False, return a new Gts.
+    check : bool, optional
+        Check time order, duplicate dates, and regenerate NEU (.data).
+    neu : bool, optional
+        Regenerate .data from updated .data_xyz.
+    verbose : bool, optional
+        Verbose mode.
+
+    Returns
+    -------
+    Gts
+        New Gts or the modified Gts if in_place.
+
+    Notes
+    -----
+    By default .data is updated from .data_xyz and X0, Y0, Z0 are updated.
     """
     
     # import 

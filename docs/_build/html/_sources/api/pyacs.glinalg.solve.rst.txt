@@ -1,0 +1,37 @@
+pyacs.glinalg.solve package
+===========================
+
+Submodules
+----------
+
+pyacs.glinalg.solve.ls module
+-----------------------------
+
+.. automodule:: pyacs.glinalg.solve.ls
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.glinalg.solve.lscov module
+--------------------------------
+
+.. automodule:: pyacs.glinalg.solve.lscov
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.glinalg.solve.lsw module
+------------------------------
+
+.. automodule:: pyacs.glinalg.solve.lsw
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: pyacs.glinalg.solve
+   :members:
+   :show-inheritance:
+   :undoc-members:

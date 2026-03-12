@@ -2,12 +2,27 @@
 def find_outliers_around_date(self, date, conf_level=95, n=3, lcomponent='NE', verbose=True):
 ###################################################################
     """
-    Find an outlier around a given date
-    returns the index of the outlier, returns [] if no outlier found
-    :param date       : given date
-    :param conf_level : confidence level for F_ratio test of outlier significance (default 95%%)
-    :param n          : number of dates either sides of date (default n=3)
-    :param lcomponent : components 'N','E','U','NE','NEU' (default 'NE')
+    Find an outlier around a given date using F-ratio test.
+
+    Returns the index of the outlier, or [] if none found.
+
+    Parameters
+    ----------
+    date : float
+        Date in decimal year.
+    conf_level : float, optional
+        Confidence level for F-ratio test (default 95).
+    n : int, optional
+        Number of dates on each side of date (default 3).
+    lcomponent : str, optional
+        Components to test: 'N', 'E', 'U', 'NE', 'NEU' (default 'NE').
+    verbose : bool, optional
+        Verbose mode.
+
+    Returns
+    -------
+    Gts or list
+        self with outlier flagged, or [] if no significant outlier.
     """
 
     # import
@@ -31,7 +46,21 @@ def find_outliers_around_date(self, date, conf_level=95, n=3, lcomponent='NE', v
     def f_ratio(chi_square_1, p1, chi_square_2, p2, n):
         ###############################################
         """
-        returns result of a F_ratio test
+        Return the F-ratio test CDF value (probability).
+
+        Parameters
+        ----------
+        chi_square_1, chi_square_2 : float
+            Chi-square values.
+        p1, p2 : int
+            Number of parameters.
+        n : int
+            Sample size.
+
+        Returns
+        -------
+        float
+            F CDF value.
         """
         F = ((chi_square_1 - chi_square_2) / (p2 - p1)) / (chi_square_2 / (n - p2))
 

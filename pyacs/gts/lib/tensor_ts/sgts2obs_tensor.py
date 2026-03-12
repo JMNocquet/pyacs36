@@ -2,26 +2,37 @@
 def sgts2tensor( sgts, rounding='day' , verbose=False ):
 ###############################################################################
     """
-    returns a numpy array including all gts (.data ENU) information as a 3D tensor and 1D array of site code
-    
-    :param sgts: Sgts instance
-    :param rounding: 'day','hour','second'. all dates will be rounded to the nearest chosen day, hour or second. default is 'day'
-    :param verbose: boolean for verbose mode
-    
-    :return: the numpy 3D array T_OBS, np_names, np_date_s
-    
-    :note: T_OBS[k,i,0] returns the East value at the k_th date for site i in mm
-     
+    Return a 3D tensor of all Gts (.data ENU) and site codes.
+
+    Parameters
+    ----------
+    sgts : Sgts
+        Sgts instance.
+    rounding : str, optional
+        'day', 'hour', or 'second'; dates rounded accordingly (default 'day').
+    verbose : bool, optional
+        Verbose mode.
+
+    Returns
+    -------
+    tuple
+        (T_OBS, np_names, np_date_s). T_OBS[k, i, 0] is East at k-th date for site i (mm).
+
+    Notes
+    -----
+    T_OBS[k, i, 0] returns the East value at the k-th date for site i in mm.
     """
 
     # import
     import numpy as np
     import pyacs.lib.astrotime as at
 
-    # import pyeq.message.message as MESSAGE
-    # import pyeq.message.verbose_message as VERBOSE
-    # import pyeq.message.error as ERROR
-    # import pyeq.message.debug_message as DEBUG
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.debug_message as DEBUG
+
+    from icecream import ic
 
 # np print option for debug
     #np.set_printoptions(precision=2 , suppress=True)
@@ -37,9 +48,12 @@ def sgts2tensor( sgts, rounding='day' , verbose=False ):
         code = np_names[i]
         # get the gts for current site
         wts = sgts.__dict__[code]
-        # update np of all dates        
-        np_seconds_sol = np.unique( np.sort( np.append( np_seconds_sol, at.decyear2seconds( wts.data[:,0] , rounding=rounding )) ))
-        
+        try:
+            # update np of all dates        
+            np_seconds_sol = np.unique( np.sort( np.append( np_seconds_sol, at.decyear2seconds( wts.data[:,0] , rounding=rounding )) ))
+        except:
+            ERROR("there is a date problem in gts: %s" % code)
+            ERROR("Most probably, it has no data", exit=True)
 
     # initialize T
     T = np.full( (np_seconds_sol.shape[0] , np_names.shape[0], 6  ) , np.nan )
@@ -52,7 +66,6 @@ def sgts2tensor( sgts, rounding='day' , verbose=False ):
 
         # code
         code = np_names[i]
-        
         #DEBUG("%04d / %s " % (i,code) )
         
         # get the gts for current site
@@ -62,13 +75,14 @@ def sgts2tensor( sgts, rounding='day' , verbose=False ):
         np_seconds_site = at.decyear2seconds( wts.data[:,0] , rounding=rounding )
         
         # check for non duplicated dates
-        if np.min( np.diff( np_seconds_site) ) <= 0:
-            #ERROR("there is a date problem in gts: %s" % code)
-            #ERROR("most probably, your round option (%s) leads to two successive equal dates" % (rounding))
-            #ERROR(("%d" % np.min( np.diff( np_seconds_site) ) ))
-            print(np.diff( np_seconds_site) )
-            print( np_seconds_site )
-            #ERROR("",exit=True)
+        if np_seconds_site.shape[0] > 1:
+            if np.min( np.diff( np_seconds_site) ) <= 0:
+                #ERROR("there is a date problem in gts: %s" % code)
+                #ERROR("most probably, your round option (%s) leads to two successive equal dates" % (rounding))
+                #ERROR(("%d" % np.min( np.diff( np_seconds_site) ) ))
+                print(np.diff( np_seconds_site) )
+                print( np_seconds_site )
+                #ERROR("",exit=True)
 
         # current gts date index in T
         

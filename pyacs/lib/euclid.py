@@ -305,11 +305,33 @@ class Vector2:
                        self.y - d * normal.y)
 
     def angle(self, other):
-        """Return the angle to the vector other"""
+        """Return the angle to the vector other.
+
+        Parameters
+        ----------
+        other : Vector2
+            The other vector.
+
+        Returns
+        -------
+        float
+            Angle in radians.
+        """
         return math.acos(self.dot(other) / (self.magnitude()*other.magnitude()))
 
     def project(self, other):
-        """Return one vector projected on the vector other"""
+        """Return one vector projected on the vector other.
+
+        Parameters
+        ----------
+        other : Vector2
+            The vector to project onto.
+
+        Returns
+        -------
+        Vector2
+            This vector projected onto other.
+        """
         n = other.normalized()
         return self.dot(n)*n
 
@@ -566,7 +588,20 @@ class Vector3:
                        self.z - d * normal.z)
 
     def rotate_around(self, axis, theta):
-        """Return the vector rotated around axis through angle theta. Right hand rule applies"""
+        """Return the vector rotated around axis through angle theta. Right hand rule applies.
+
+        Parameters
+        ----------
+        axis : Vector3
+            Rotation axis (will be normalized).
+        theta : float
+            Rotation angle in radians.
+
+        Returns
+        -------
+        Vector3
+            Rotated vector.
+        """
 
         # Adapted from equations published by Glenn Murray.
         # http://inside.mines.edu/~gmurray/ArbitraryAxisRotation/ArbitraryAxisRotation.html
@@ -584,11 +619,33 @@ class Vector3:
                        (w * dt + z * ct + (-v * x + u * y) * st))
 
     def angle(self, other):
-        """Return the angle to the vector other"""
+        """Return the angle to the vector other.
+
+        Parameters
+        ----------
+        other : Vector3
+            The other vector.
+
+        Returns
+        -------
+        float
+            Angle in radians.
+        """
         return math.acos(self.dot(other) / (self.magnitude()*other.magnitude()))
 
     def project(self, other):
-        """Return one vector projected on the vector other"""
+        """Return one vector projected on the vector other.
+
+        Parameters
+        ----------
+        other : Vector3
+            The vector to project onto.
+
+        Returns
+        -------
+        Vector3
+            This vector projected onto other.
+        """
         n = other.normalized()
         return self.dot(n)*n
 
@@ -1236,9 +1293,15 @@ class Matrix4:
         return tmp;
 
     def get_quaternion(self):
-        """Returns a quaternion representing the rotation part of the matrix.
-        Taken from:
+        """Return a quaternion representing the rotation part of the matrix.
+
+        Algorithm from:
         http://web.archive.org/web/20041029003853/http://www.j3d.org/matrix_faq/matrfaq_latest.html#Q55
+
+        Returns
+        -------
+        Quaternion
+            Quaternion representing the rotation part.
         """
         trace = self.a + self.f + self.k
 

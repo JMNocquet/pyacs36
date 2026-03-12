@@ -1,11 +1,15 @@
-def unit_slip( strike , dip, rake):
-    """
-    return the unit slip in ENU convention (Up positive upward)
+def unit_slip(strike, dip, rake):
+    """Return unit slip vector in ENU convention (Up positive).
 
-    :param strike:
-    :param dip:
-    :param rake:
-    :return:
+    Parameters
+    ----------
+    strike, dip, rake : float
+        Fault angles in decimal degrees.
+
+    Returns
+    -------
+    tuple
+        (unit_E, unit_N, unit_U) unit slip components in ENU.
     """
 
     import numpy as np

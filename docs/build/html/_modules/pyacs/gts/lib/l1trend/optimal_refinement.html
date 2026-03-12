@@ -1,0 +1,518 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.gts.lib.l1trend.optimal_refinement &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../libraries.html">core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyacs.gts.lib.l1trend.optimal_refinement</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyacs.gts.lib.l1trend.optimal_refinement</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Optimal piecewise linear function refinement algorithms.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">combinations</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">at</span>
+<span class="c1">#from pyacs.gts.Gts import Gts</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">medfilt</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+
+
+<div class="viewcode-block" id="preprocess_timeseries_for_optimization">
+<a class="viewcode-back" href="../../../../../api/pyacs.gts.lib.l1trend.optimal_refinement.html#pyacs.gts.lib.filters.refine_l1trend.preprocess_timeseries_for_optimization">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">preprocess_timeseries_for_optimization</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">target_length</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Preprocess time series for optimization by applying median filter and decimation.</span>
+<span class="sd">    </span>
+<span class="sd">    This function reduces the number of points while preserving the essential </span>
+<span class="sd">    structure of the time series, making optimization faster.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : numpy.ndarray</span>
+<span class="sd">        Time array</span>
+<span class="sd">    y : numpy.ndarray</span>
+<span class="sd">        Values array</span>
+<span class="sd">    target_length : int</span>
+<span class="sd">        Target length for the decimated series (default: 50)</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        (t_decimated, y_decimated, decimation_factor)</span>
+<span class="sd">        - t_decimated: decimated time array</span>
+<span class="sd">        - y_decimated: decimated values array  </span>
+<span class="sd">        - decimation_factor: factor used for decimation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="n">target_length</span><span class="p">:</span>
+        <span class="c1"># No need to decimate</span>
+        <span class="k">return</span> <span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">1</span>
+    
+    <span class="c1"># Apply median filter with window size 3 to reduce noise</span>
+    <span class="n">y_filtered</span> <span class="o">=</span> <span class="n">medfilt</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="c1">#y_filtered = y</span>
+
+    <span class="c1"># Calculate decimation factor</span>
+    <span class="n">decimation_factor</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">//</span> <span class="n">target_length</span><span class="p">)</span>
+    
+    <span class="c1"># Decimate by taking every decimation_factor-th point</span>
+    <span class="c1"># Ensure we keep the first and last points</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Always keep first point</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">decimation_factor</span><span class="p">,</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">decimation_factor</span><span class="p">):</span>
+        <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">:</span>  <span class="c1"># Always keep last point</span>
+        <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="n">t_decimated</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+    <span class="n">y_decimated</span> <span class="o">=</span> <span class="n">y_filtered</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+    
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Preprocessing: </span><span class="si">%d</span><span class="s2"> points -&gt; </span><span class="si">%d</span><span class="s2"> points (decimation factor: </span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> 
+           <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">t_decimated</span><span class="p">),</span> <span class="n">decimation_factor</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">t_decimated</span><span class="p">,</span> <span class="n">y_decimated</span><span class="p">,</span> <span class="n">decimation_factor</span></div>
+
+
+
+<div class="viewcode-block" id="optimal_pwlf_refinement">
+<a class="viewcode-back" href="../../../../../api/pyacs.gts.lib.l1trend.optimal_refinement.html#pyacs.gts.lib.filters.refine_l1trend.optimal_pwlf_refinement">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">optimal_pwlf_refinement</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">yn</span><span class="p">,</span> <span class="n">nbp</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find the optimal piecewise linear function with nbp breakpoints fitting y.</span>
+<span class="sd">    </span>
+<span class="sd">    The function finds the optimal piecewise linear function (opwlf) fitting y with </span>
+<span class="sd">    nbp breakpoints according to the weighted L2 norm. The obtained optimal piecewise linear </span>
+<span class="sd">    function verifies opwlf[0]=y0 and opwlf[-1]=yn, that is end and starting point </span>
+<span class="sd">    of y are kept fixed.</span>
+<span class="sd">    </span>
+<span class="sd">    The problem is applied to small dimension (n&lt;=6), so that a systematic search </span>
+<span class="sd">    can be performed and does not require complex optimization approaches.</span>
+<span class="sd">    </span>
+<span class="sd">    For large time series (&gt;100 points), preprocessing is applied to decimate the </span>
+<span class="sd">    data while preserving essential structure.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : numpy.ndarray</span>
+<span class="sd">        Time array expressed in integer seconds</span>
+<span class="sd">    y : numpy.ndarray</span>
+<span class="sd">        Values of the function to fit</span>
+<span class="sd">    y0 : float</span>
+<span class="sd">        Value of the function at t[0] (fixed)</span>
+<span class="sd">    yn : float</span>
+<span class="sd">        Value of the function at t[-1] (fixed)</span>
+<span class="sd">    nbp : int</span>
+<span class="sd">        Number of breakpoints (excluding start and end points)</span>
+<span class="sd">    weights : numpy.ndarray, optional</span>
+<span class="sd">        Weights for each data point. If None, all weights are set to 1.0.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        (optimal_breakpoints, optimal_values, min_error)</span>
+<span class="sd">        - optimal_breakpoints: array of breakpoint times</span>
+<span class="sd">        - optimal_values: array of function values at breakpoints</span>
+<span class="sd">        - min_error: minimum weighted L2 error achieved</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    
+    <span class="c1"># Initialize weights if not provided</span>
+    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    
+    <span class="c1"># Apply preprocessing for large time series to speed up optimization</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+        <span class="n">t_opt</span><span class="p">,</span> <span class="n">y_opt</span><span class="p">,</span> <span class="n">decimation_factor</span> <span class="o">=</span> <span class="n">preprocess_timeseries_for_optimization</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">target_length</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+        <span class="c1"># Adjust y0 and yn for the decimated series</span>
+        <span class="n">y0_opt</span> <span class="o">=</span> <span class="n">y_opt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">yn_opt</span> <span class="o">=</span> <span class="n">y_opt</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># Decimate weights accordingly - need to use the same indices as the decimated data</span>
+        <span class="c1"># Get the indices used in preprocessing</span>
+        <span class="n">n_original</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n_original</span> <span class="o">&lt;=</span> <span class="mi">50</span><span class="p">:</span>
+            <span class="c1"># No decimation needed</span>
+            <span class="n">weights_opt</span> <span class="o">=</span> <span class="n">weights</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Apply median filter and decimation to weights as well</span>
+            <span class="n">weights_filtered</span> <span class="o">=</span> <span class="n">medfilt</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+            <span class="c1"># Use the same decimation pattern as in preprocessing</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Always keep first point</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">decimation_factor</span><span class="p">,</span> <span class="n">n_original</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">decimation_factor</span><span class="p">):</span>
+                <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">n_original</span><span class="o">-</span><span class="mi">1</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">:</span>  <span class="c1"># Always keep last point</span>
+                <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n_original</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">weights_opt</span> <span class="o">=</span> <span class="n">weights_filtered</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+        <span class="n">use_preprocessing</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">t_opt</span><span class="p">,</span> <span class="n">y_opt</span> <span class="o">=</span> <span class="n">t</span><span class="p">,</span> <span class="n">y</span>
+        <span class="n">y0_opt</span><span class="p">,</span> <span class="n">yn_opt</span> <span class="o">=</span> <span class="n">y0</span><span class="p">,</span> <span class="n">yn</span>
+        <span class="n">weights_opt</span> <span class="o">=</span> <span class="n">weights</span>
+        <span class="n">decimation_factor</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">use_preprocessing</span> <span class="o">=</span> <span class="kc">False</span>
+    
+    <span class="n">n_opt</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">t_opt</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">n_opt</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="c1"># No breakpoints possible, return start and end points</span>
+        <span class="k">if</span> <span class="n">use_preprocessing</span><span class="p">:</span>
+            <span class="c1"># Interpolate back to original time grid</span>
+            <span class="n">optimal_interp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">t_opt</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">y0_opt</span><span class="p">,</span> <span class="n">yn_opt</span><span class="p">,</span> <span class="n">n_opt</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">y0</span><span class="p">,</span> <span class="n">yn</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">optimal_interp</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">y0</span><span class="p">,</span> <span class="n">yn</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">y0</span><span class="p">,</span> <span class="n">yn</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">nbp</span> <span class="o">&gt;=</span> <span class="n">n_opt</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># Too many breakpoints, use all points</span>
+        <span class="k">if</span> <span class="n">use_preprocessing</span><span class="p">:</span>
+            <span class="c1"># Interpolate back to original time grid</span>
+            <span class="n">optimal_interp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">t_opt</span><span class="p">,</span> <span class="n">y_opt</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">optimal_interp</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mf">0.0</span>
+    
+    <span class="c1"># Generate all possible combinations of breakpoint positions</span>
+    <span class="c1"># We need to choose nbp positions from the interior points (excluding first and last)</span>
+    <span class="n">interior_indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_opt</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">interior_indices</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">nbp</span><span class="p">:</span>
+        <span class="c1"># Not enough interior points, use all available</span>
+        <span class="n">nbp</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">interior_indices</span><span class="p">)</span>
+    
+    <span class="n">min_error</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+    <span class="n">optimal_breakpoints</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">optimal_values</span> <span class="o">=</span> <span class="kc">None</span>
+    
+    <span class="c1"># Try all combinations of breakpoint positions</span>
+    <span class="k">for</span> <span class="n">bp_indices</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="n">interior_indices</span><span class="p">,</span> <span class="n">nbp</span><span class="p">):</span>
+        <span class="c1"># Sort breakpoint indices</span>
+        <span class="n">bp_indices</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">bp_indices</span><span class="p">)</span>
+        
+        <span class="c1"># Create breakpoint array including start and end points</span>
+        <span class="n">bp_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">t_opt</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+</span> <span class="p">[</span><span class="n">t_opt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">bp_indices</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">t_opt</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+        
+        <span class="c1"># For each combination, we need to find the optimal values at breakpoints</span>
+        <span class="c1"># that minimize the L2 error while keeping y0 and yn fixed</span>
+        
+        <span class="c1"># The problem can be solved using linear algebra</span>
+        <span class="c1"># We&#39;ll solve for the interior breakpoint values</span>
+        
+        <span class="k">if</span> <span class="n">nbp</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># No interior breakpoints, just linear interpolation</span>
+            <span class="n">pwlf_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">y0</span><span class="p">,</span> <span class="n">yn</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="n">pwlf_values</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">error</span> <span class="o">&lt;</span> <span class="n">min_error</span><span class="p">:</span>
+                <span class="n">min_error</span> <span class="o">=</span> <span class="n">error</span>
+                <span class="n">optimal_breakpoints</span> <span class="o">=</span> <span class="n">bp_times</span>
+                <span class="n">optimal_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">y0</span><span class="p">,</span> <span class="n">yn</span><span class="p">])</span>
+                
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># We need to solve for the interior breakpoint values</span>
+            <span class="c1"># The system is overdetermined, so we&#39;ll use weighted least squares</span>
+            
+            <span class="c1"># Create the system matrix for piecewise linear function</span>
+            <span class="c1"># For each point, we need to express it in terms of the interior breakpoint values</span>
+            <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_opt</span><span class="p">,</span> <span class="n">nbp</span><span class="p">))</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_opt</span><span class="p">)</span>
+            
+            <span class="c1"># Fill the matrix and vector</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_opt</span><span class="p">):</span>
+                <span class="c1"># Find which segment t_opt[i] belongs to</span>
+                <span class="n">segment_idx</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bp_times</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">bp_times</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">t_opt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">bp_times</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]:</span>
+                        <span class="n">segment_idx</span> <span class="o">=</span> <span class="n">j</span>
+                        <span class="k">break</span>
+                
+                <span class="k">if</span> <span class="n">segment_idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="c1"># First segment: linear interpolation between y0 and first interior breakpoint</span>
+                    <span class="k">if</span> <span class="n">nbp</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="c1"># y = y0 + (bp1 - y0) * (t - t0) / (t1 - t0)</span>
+                        <span class="c1"># y = y0 * (1 - alpha) + bp1 * alpha, where alpha = (t - t0) / (t1 - t0)</span>
+                        <span class="n">alpha</span> <span class="o">=</span> <span class="p">(</span><span class="n">t_opt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">bp_times</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">bp_times</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">bp_times</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                        <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">alpha</span>
+                        <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">y0_opt</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">segment_idx</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">bp_times</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="c1"># Last segment: linear interpolation between last interior breakpoint and yn</span>
+                    <span class="k">if</span> <span class="n">nbp</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="c1"># y = bp_n + (yn - bp_n) * (t - t_n) / (t_{n+1} - t_n)</span>
+                        <span class="c1"># y = bp_n * (1 - alpha) + yn * alpha, where alpha = (t - t_n) / (t_{n+1} - t_n)</span>
+                        <span class="n">alpha</span> <span class="o">=</span> <span class="p">(</span><span class="n">t_opt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">bp_times</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">bp_times</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">bp_times</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+                        <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span>
+                        <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">yn_opt</span> <span class="o">*</span> <span class="n">alpha</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Middle segment: linear interpolation between two interior breakpoints</span>
+                    <span class="n">bp_idx</span> <span class="o">=</span> <span class="n">segment_idx</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># Index in interior breakpoints</span>
+                    <span class="k">if</span> <span class="n">bp_idx</span> <span class="o">&lt;</span> <span class="n">nbp</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="c1"># y = bp_j + (bp_{j+1} - bp_j) * (t - t_j) / (t_{j+1} - t_j)</span>
+                        <span class="c1"># y = bp_j * (1 - alpha) + bp_{j+1} * alpha, where alpha = (t - t_j) / (t_{j+1} - t_j)</span>
+                        <span class="n">alpha</span> <span class="o">=</span> <span class="p">(</span><span class="n">t_opt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">bp_times</span><span class="p">[</span><span class="n">segment_idx</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">bp_times</span><span class="p">[</span><span class="n">segment_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">bp_times</span><span class="p">[</span><span class="n">segment_idx</span><span class="p">])</span>
+                        <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">bp_idx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span>
+                        <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">bp_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">alpha</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># This shouldn&#39;t happen with proper indexing, but just in case</span>
+                        <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">bp_idx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            
+            <span class="c1"># Apply weights to the system</span>
+            <span class="c1"># Ensure weights_opt has the same length as y_opt</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights_opt</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_opt</span><span class="p">):</span>
+                <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Warning: weights_opt length (</span><span class="si">%d</span><span class="s2">) != y_opt length (</span><span class="si">%d</span><span class="s2">), adjusting weights&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">weights_opt</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_opt</span><span class="p">)))</span>
+                <span class="c1"># If lengths don&#39;t match, use ones for the missing weights</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights_opt</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_opt</span><span class="p">):</span>
+                    <span class="n">weights_opt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">weights_opt</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_opt</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights_opt</span><span class="p">))])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">weights_opt</span> <span class="o">=</span> <span class="n">weights_opt</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">y_opt</span><span class="p">)]</span>
+            
+            <span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">weights_opt</span><span class="p">))</span>
+            <span class="n">A_weighted</span> <span class="o">=</span> <span class="n">W</span> <span class="o">@</span> <span class="n">A</span>
+            <span class="n">b_weighted</span> <span class="o">=</span> <span class="n">W</span> <span class="o">@</span> <span class="p">(</span><span class="n">y_opt</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span>
+            
+            <span class="c1"># Solve the weighted least squares problem</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">interior_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">A_weighted</span><span class="p">,</span> <span class="n">b_weighted</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                
+                <span class="c1"># Reconstruct the full piecewise linear function</span>
+                <span class="n">pwlf_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_opt</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_opt</span><span class="p">):</span>
+                    <span class="c1"># Find which segment t_opt[i] belongs to</span>
+                    <span class="n">segment_idx</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bp_times</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">bp_times</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">t_opt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">bp_times</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]:</span>
+                            <span class="n">segment_idx</span> <span class="o">=</span> <span class="n">j</span>
+                            <span class="k">break</span>
+                    
+                    <span class="k">if</span> <span class="n">segment_idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="c1"># First segment</span>
+                        <span class="k">if</span> <span class="n">nbp</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">pwlf_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">y0_opt</span> <span class="o">+</span> <span class="p">(</span><span class="n">interior_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">y0_opt</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">t_opt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">t_opt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">bp_times</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">t_opt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">pwlf_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">y0_opt</span> <span class="o">+</span> <span class="p">(</span><span class="n">yn_opt</span> <span class="o">-</span> <span class="n">y0_opt</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">t_opt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">t_opt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">bp_times</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">t_opt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="k">elif</span> <span class="n">segment_idx</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">bp_times</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">:</span>
+                        <span class="c1"># Last segment</span>
+                        <span class="k">if</span> <span class="n">nbp</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">pwlf_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">interior_values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">yn_opt</span> <span class="o">-</span> <span class="n">interior_values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">t_opt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">bp_times</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">bp_times</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">bp_times</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">pwlf_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">y0_opt</span> <span class="o">+</span> <span class="p">(</span><span class="n">yn_opt</span> <span class="o">-</span> <span class="n">y0_opt</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">t_opt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">t_opt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">bp_times</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">t_opt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># Middle segment</span>
+                        <span class="n">bp_idx</span> <span class="o">=</span> <span class="n">segment_idx</span> <span class="o">-</span> <span class="mi">1</span>
+                        <span class="k">if</span> <span class="n">bp_idx</span> <span class="o">&lt;</span> <span class="n">nbp</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                            <span class="n">pwlf_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">interior_values</span><span class="p">[</span><span class="n">bp_idx</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">interior_values</span><span class="p">[</span><span class="n">bp_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">interior_values</span><span class="p">[</span><span class="n">bp_idx</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">t_opt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">bp_times</span><span class="p">[</span><span class="n">segment_idx</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">bp_times</span><span class="p">[</span><span class="n">segment_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">bp_times</span><span class="p">[</span><span class="n">segment_idx</span><span class="p">])</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">pwlf_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">interior_values</span><span class="p">[</span><span class="n">bp_idx</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">yn_opt</span> <span class="o">-</span> <span class="n">interior_values</span><span class="p">[</span><span class="n">bp_idx</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">t_opt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">bp_times</span><span class="p">[</span><span class="n">segment_idx</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">bp_times</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">bp_times</span><span class="p">[</span><span class="n">segment_idx</span><span class="p">])</span>
+                
+                <span class="c1"># Calculate error</span>
+                <span class="k">if</span> <span class="n">use_preprocessing</span><span class="p">:</span>
+                    <span class="c1"># Interpolate back to original time grid for error calculation</span>
+                    <span class="n">pwlf_interp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">t_opt</span><span class="p">,</span> <span class="n">pwlf_values</span><span class="p">)</span>
+                    <span class="n">error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">pwlf_interp</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights_opt</span> <span class="o">*</span> <span class="p">(</span><span class="n">y_opt</span> <span class="o">-</span> <span class="n">pwlf_values</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+                
+                <span class="k">if</span> <span class="n">error</span> <span class="o">&lt;</span> <span class="n">min_error</span><span class="p">:</span>
+                    <span class="n">min_error</span> <span class="o">=</span> <span class="n">error</span>
+                    <span class="k">if</span> <span class="n">use_preprocessing</span><span class="p">:</span>
+                        <span class="c1"># Map breakpoint times from decimated to original time grid</span>
+                        <span class="c1"># Find the closest original time points to the decimated breakpoints</span>
+                        <span class="n">optimal_breakpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">bp_times</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">bp_time</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bp_times</span><span class="p">):</span>
+                            <span class="c1"># Find the closest original time point</span>
+                            <span class="n">closest_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">bp_time</span><span class="p">))</span>
+                            <span class="n">optimal_breakpoints</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">closest_idx</span><span class="p">]</span>
+                        
+                        <span class="c1"># For values, we need to interpolate from the decimated solution</span>
+                        <span class="c1"># to the original time grid</span>
+                        <span class="n">optimal_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">y0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">interior_values</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">yn</span><span class="p">])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">optimal_breakpoints</span> <span class="o">=</span> <span class="n">bp_times</span>
+                        <span class="n">optimal_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">y0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">interior_values</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">yn</span><span class="p">])</span>
+                    
+                    <span class="c1"># Debug: Print some information about the solution</span>
+                    <span class="c1">#if nbp == 2:  # Special attention to nbp=2 case</span>
+                    <span class="c1">#    VERBOSE(&quot;Found better solution for nbp=%d: error=%.6f, breakpoints=%s&quot; % </span>
+                    <span class="c1">#           (nbp, error, [f&quot;{bp:.3f}&quot; for bp in bp_times]))</span>
+                    
+            <span class="k">except</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">LinAlgError</span><span class="p">:</span>
+                <span class="c1"># Skip this combination if the system is singular</span>
+                <span class="k">continue</span>
+    
+    <span class="k">return</span> <span class="n">optimal_breakpoints</span><span class="p">,</span> <span class="n">optimal_values</span><span class="p">,</span> <span class="n">min_error</span></div>
+
+
+
+<div class="viewcode-block" id="optimal_pwlf_refinement_fast">
+<a class="viewcode-back" href="../../../../../api/pyacs.gts.lib.l1trend.optimal_refinement.html#pyacs.gts.lib.filters.refine_l1trend.optimal_pwlf_refinement_fast">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">optimal_pwlf_refinement_fast</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">yn</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fast version of optimal_pwlf_refinement using l1trendi with criterion AICc.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : numpy.ndarray</span>
+<span class="sd">        Time array expressed in integer seconds</span>
+<span class="sd">    y : numpy.ndarray</span>
+<span class="sd">        Values of the function to fit</span>
+<span class="sd">    y0 : float</span>
+<span class="sd">        Value of the function at t[0] (fixed)</span>
+<span class="sd">    yn : float</span>
+<span class="sd">        Value of the function at t[-1] (fixed)</span>
+<span class="sd">    weights : numpy.ndarray, optional</span>
+<span class="sd">        Weights for each data point. If None, all weights are set to 1.0.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        (optimal_breakpoints, optimal_values, min_error)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># create a fake Gts object  </span>
+    <span class="n">fake_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="mi">10</span><span class="p">))</span> <span class="o">*</span> <span class="mf">1.E-3</span> <span class="c1"># Gts object uses m</span>
+    <span class="n">fake_data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">datetime2decyear</span><span class="p">(</span><span class="n">at</span><span class="o">.</span><span class="n">seconds2datetime</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+    <span class="n">fake_data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span> <span class="o">*</span> <span class="mf">1E-3</span> <span class="c1"># mm</span>
+    <span class="n">fake_code</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;fast refinement [</span><span class="si">%s</span><span class="s2">-</span><span class="si">%s</span><span class="s2">] [</span><span class="si">%.2lf</span><span class="s2"> - </span><span class="si">%.2lf</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">at</span><span class="o">.</span><span class="n">seconds2datetime</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()[:</span><span class="mi">10</span><span class="p">],</span> <span class="n">at</span><span class="o">.</span><span class="n">seconds2datetime</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()[:</span><span class="mi">10</span><span class="p">],</span> <span class="n">y0</span><span class="p">,</span> <span class="n">yn</span><span class="p">))</span>
+    <span class="n">fake_gts</span> <span class="o">=</span> <span class="n">Gts</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">fake_code</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">fake_data</span><span class="p">)</span>
+
+    <span class="c1"># run l1trendi with criterion AICc</span>
+    <span class="n">l1ts</span> <span class="o">=</span> <span class="n">fake_gts</span><span class="o">.</span><span class="n">l1trendi</span><span class="p">(</span><span class="n">criterion</span><span class="o">=</span><span class="s1">&#39;AICc&#39;</span><span class="p">,</span> <span class="n">refine</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">lcomponent</span><span class="o">=</span><span class="s1">&#39;N&#39;</span><span class="p">)</span>
+
+    <span class="c1"># simplify l1ts</span>
+    <span class="n">l1ts</span> <span class="o">=</span> <span class="n">l1ts</span><span class="o">.</span><span class="n">simplify_l1trend</span><span class="p">(</span><span class="n">tolerance</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">components</span><span class="o">=</span><span class="s1">&#39;N&#39;</span><span class="p">)</span>
+
+    <span class="c1"># run refine_l1trend</span>
+    <span class="n">l1ts</span> <span class="o">=</span> <span class="n">l1ts</span><span class="o">.</span><span class="n">refine_l1trend</span><span class="p">(</span><span class="n">fake_gts</span><span class="p">,</span> <span class="n">lcomponent</span><span class="o">=</span><span class="s1">&#39;N&#39;</span><span class="p">)</span>
+
+    <span class="c1"># get the breakpoints</span>
+    <span class="n">breakpoints</span> <span class="o">=</span> <span class="n">l1ts</span><span class="o">.</span><span class="n">l1trend_to_breakpoints</span><span class="p">(</span><span class="n">tol</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)[</span><span class="s1">&#39;N&#39;</span><span class="p">]</span>
+
+    <span class="c1"># get the breakpoints times in seconds</span>
+    <span class="n">breakpoints_times</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2seconds</span><span class="p">(</span><span class="n">breakpoints</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># get the breakpoints values</span>
+    <span class="n">breakpoints_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">breakpoints</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="mf">1E-3</span> <span class="c1"># mm</span>
+
+    <span class="c1"># replace the first and last breakpoints with y0 and yn</span>
+    <span class="n">breakpoints_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">y0</span>
+    <span class="n">breakpoints_values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">yn</span>
+
+    <span class="c1"># Initialize weights if not provided</span>
+    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+    
+    <span class="c1"># interpolate breakpoints_times and breakpoints_values at t to compute min_error</span>
+    <span class="n">interpolated_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">breakpoints_times</span><span class="p">,</span> <span class="n">breakpoints_values</span><span class="p">)</span>
+    <span class="n">min_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">interpolated_values</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># return</span>
+    <span class="k">return</span> <span class="n">breakpoints_times</span><span class="p">,</span> <span class="n">breakpoints_values</span><span class="p">,</span> <span class="n">min_error</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

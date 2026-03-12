@@ -1,0 +1,397 @@
+pyacs.gts.Sgts\_methods package
+===============================
+
+Submodules
+----------
+
+pyacs.gts.Sgts\_methods.add\_offsets\_dates module
+--------------------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.add_offsets_dates
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.append module
+-------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.append
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.apply\_coseismic module
+-----------------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.apply_coseismic
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.common\_mode module
+-------------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.common_mode
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.compute\_common\_mode\_l1trend module
+-------------------------------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.compute_common_mode_l1trend
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.copy module
+-----------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.copy
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.correct\_offsets\_from\_file module
+-----------------------------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.correct_offsets_from_file
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.dates module
+------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.dates
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.delnone module
+--------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.delnone
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.delts module
+------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.delts
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.frame module
+------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.frame
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.get\_dates module
+-----------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.get_dates
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.get\_unr module
+---------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.get_unr
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.gts module
+----------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.gts
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.gts\_mp module
+--------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.gts_mp
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.gts\_mp\_ipyparallel module
+---------------------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.gts_mp_ipyparallel
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.has\_ts module
+--------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.has_ts
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.info module
+-----------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.info
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.lGts module
+-----------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.lGts
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.lcode module
+------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.lcode
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.make\_distance\_matrix\_from\_sgts module
+-----------------------------------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.make_distance_matrix_from_sgts
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.medvel module
+-------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.medvel
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.n module
+--------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.n
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.nearest module
+--------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.nearest
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.plot\_component module
+----------------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.plot_component
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.plot\_data\_sum module
+----------------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.plot_data_sum
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.read\_gmt module
+----------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.read_gmt
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.read\_gts\_conf module
+----------------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.read_gts_conf
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.read\_soln module
+-----------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.read_soln
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.read\_ts module
+---------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.read_ts
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.remove\_observations module
+---------------------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.remove_observations
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.same\_site module
+-----------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.same_site
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.save\_velocity module
+---------------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.save_velocity
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.sel\_from\_grid module
+----------------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.sel_from_grid
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.sel\_period module
+------------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.sel_period
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.sel\_radius module
+------------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.sel_radius
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.sel\_radius\_eq module
+----------------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.sel_radius_eq
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.sel\_rectangle module
+---------------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.sel_rectangle
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.show\_ivel\_map\_gmt module
+---------------------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.show_ivel_map_gmt
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.show\_map module
+----------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.show_map
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.stat\_site module
+-----------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.stat_site
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.sub module
+----------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.sub
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.to\_displacement module
+-----------------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.to_displacement
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.to\_kml module
+--------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.to_kml
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.to\_obs\_tensor module
+----------------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.to_obs_tensor
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.to\_tsnpz module
+----------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.to_tsnpz
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.to\_tspck module
+----------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.to_tspck
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts\_methods.write\_pck module
+-----------------------------------------
+
+.. automodule:: pyacs.gts.Sgts_methods.write_pck
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: pyacs.gts.Sgts_methods
+   :members:
+   :show-inheritance:
+   :undoc-members:

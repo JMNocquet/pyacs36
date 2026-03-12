@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyacs.gts.lib.primitive.neu2xyz &#8212; PYACS 0.66.18 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../../../_static/documentation_options.js?v=2262e354"></script>
+    <script src="../../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pyacs.gts.lib.primitive.neu2xyz</h1><div class="highlight"><pre>
+<span></span><span class="c1">###################################################################</span>
+<div class="viewcode-block" id="neu2xyz">
+<a class="viewcode-back" href="../../../../../api/pyacs.gts.lib.primitive.html#pyacs.gts.lib.primitive.neu2xyz.neu2xyz">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">neu2xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">corr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Populate .data_xyz from .data (requires X0,Y0,Z0 or lon, lat, h).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    corr : bool, optional</span>
+<span class="sd">        If True, compute standard deviations and correlations. Default is False.</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        Verbose mode. Default is False.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Gts</span>
+<span class="sd">        self.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># import</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.debug</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.coordinates</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    
+
+    <span class="c1"># check X0,Y0,Z0</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">X0</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ERROR</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;X0,Y0,Z0 and lon, lat, h attributes are None, but are required for neu2xyz method. Returning the Gts object as is.&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_xyz</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">WARNING</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Creating X0,Y0,Z0 from lon, lat, h attributes.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">WARNING</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;h attribute is None, but is required for neu2xyz method. Using 0 as default.&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">xref</span><span class="p">,</span> <span class="n">yref</span><span class="p">,</span> <span class="n">zref</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">geo2xyz</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;dec_deg&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">X0</span> <span class="o">=</span> <span class="n">xref</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Y0</span> <span class="o">=</span> <span class="n">yref</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Z0</span> <span class="o">=</span> <span class="n">zref</span>
+
+    <span class="c1"># reference pos</span>
+    
+    <span class="n">xref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X0</span>
+    <span class="n">yref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y0</span>
+    <span class="n">zref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Z0</span>
+    <span class="c1">#X0=np.array([xref,yref,zref])</span>
+
+    <span class="c1"># local frame to geocentric frame rotation matrix - assumes ENU convention</span>
+     
+    <span class="p">(</span><span class="n">lam</span><span class="p">,</span><span class="n">phi</span><span class="p">,</span><span class="n">_h</span><span class="p">)</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">xyz2geo</span><span class="p">(</span><span class="n">xref</span><span class="p">,</span><span class="n">yref</span><span class="p">,</span><span class="n">zref</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">mat_rot_local_to_general</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span> <span class="n">phi</span><span class="p">)</span>
+
+    <span class="n">DNEU</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
+    <span class="c1"># swap for ENU convention - pyacs.gts is NEU</span>
+    <span class="n">DENU</span> <span class="o">=</span>  <span class="n">DNEU</span>
+    <span class="n">DENU</span><span class="p">[:,[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">DENU</span><span class="p">[:,[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
+    
+    <span class="c1"># DXYZ</span>
+    
+    <span class="n">DXYZ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">DENU</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    
+    <span class="bp">self</span><span class="o">.</span><span class="n">data_xyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="mi">10</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    
+    <span class="bp">self</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="n">DXYZ</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">X0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="n">DXYZ</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="n">DXYZ</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Z0</span>
+    
+    
+    <span class="k">if</span> <span class="n">corr</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.glinalg</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="p">[</span>  <span class="n">_dN</span> <span class="p">,</span> <span class="n">_dE</span> <span class="p">,</span> <span class="n">_dU</span> <span class="p">,</span> <span class="n">Sn</span> <span class="p">,</span> <span class="n">Se</span> <span class="p">,</span> <span class="n">Su</span> <span class="p">,</span> <span class="n">Rne</span> <span class="p">,</span> <span class="n">Rnu</span> <span class="p">,</span> <span class="n">Reu</span> <span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="n">CORR_ENU</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>\
+                              <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">Rne</span><span class="p">,</span><span class="n">Reu</span><span class="p">],</span>\
+                              <span class="p">[</span><span class="n">Rne</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">Rnu</span><span class="p">],</span>\
+                              <span class="p">[</span><span class="n">Reu</span><span class="p">,</span><span class="n">Rnu</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>\
+                              <span class="p">])</span>
+            <span class="n">STD_ENU</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">Se</span><span class="p">,</span><span class="n">Sn</span><span class="p">,</span><span class="n">Su</span><span class="p">])</span>
+            <span class="n">VCV_ENU</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">glinalg</span><span class="o">.</span><span class="n">corr_to_cov</span><span class="p">(</span><span class="n">CORR_ENU</span><span class="p">,</span> <span class="n">STD_ENU</span><span class="p">)</span>
+    
+            <span class="n">VCV_XYZ</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">VCV_ENU</span><span class="p">),</span><span class="n">R</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="n">CORR_XYZ</span><span class="p">,</span><span class="n">STD_XYZ</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">glinalg</span><span class="o">.</span><span class="n">cov_to_corr</span><span class="p">(</span><span class="n">VCV_XYZ</span><span class="p">)</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="n">STD_XYZ</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="n">STD_XYZ</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span><span class="o">=</span><span class="n">STD_XYZ</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">7</span><span class="p">]</span><span class="o">=</span><span class="n">CORR_XYZ</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">8</span><span class="p">]</span><span class="o">=</span><span class="n">CORR_XYZ</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">9</span><span class="p">]</span><span class="o">=</span><span class="n">CORR_XYZ</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+    
+    <span class="c1"># reorder and check duplicate dates</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">reorder</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="c1"># check for duplicates</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">correct_duplicated_dates</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s1">&#39;correct&#39;</span><span class="p">,</span><span class="n">tol</span><span class="o">=</span> <span class="mf">.00000001</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+ 
+    <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../index.html">PYACS</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Jean-Mathieu NOCQUET.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

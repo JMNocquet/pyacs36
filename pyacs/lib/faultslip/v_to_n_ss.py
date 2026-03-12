@@ -1,17 +1,26 @@
 ###############################################################################
 def v_to_n_ss(ve, vn, strike):
 ###############################################################################
-    """
+    """Decompose horizontal velocity into normal and strike-slip components.
 
-    for a given relative horizontal velocity (ve,vn) between two blocks separated by a fault of a given strike
-    , returns normal and strike-slip component of motion.
-    The convention is that the point is in the left-domain with respect to the fault.
-    Shortening & right-lateral are positive, extension and left-lateral negative
+    Point is in the left-domain with respect to the fault. Shortening and
+    right-lateral are positive; extension and left-lateral are negative.
 
-    :param ve,vn: east and north components of motion (any unit)
-    :param strike: in decimal degrees
-    :returns normal,strike-slip: same units as ve,vn
+    Parameters
+    ----------
+    ve : float or array-like
+        East component of motion (any unit).
+    vn : float or array-like
+        North component of motion (any unit).
+    strike : float or array-like
+        Fault strike in decimal degrees.
 
+    Returns
+    -------
+    normal : float or numpy.ndarray
+        Normal component, same units as ve, vn.
+    strike_slip : float or numpy.ndarray
+        Strike-slip component, same units as ve, vn.
     """
 
     import numpy as np

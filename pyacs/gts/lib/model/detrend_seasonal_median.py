@@ -1,5 +1,5 @@
 ###############################################################################
-def detrend_seasonal_median(self, wl=11, in_place=False, verbose=False):
+def detrend_seasonal_median(self, wl=11, verbose=False):
 ###############################################################################
     """
     Calculates a velocity using the median of pair of displacements exactly separated by one year, inspired from MIDAS and then removes repeating yearly signal
@@ -11,10 +11,16 @@ def detrend_seasonal_median(self, wl=11, in_place=False, verbose=False):
     import numpy as np
     from pyacs.gts.Gts import Gts
     import inspect
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
 
 
     # after this method .data  and .data_xyz are not consistent so .data_xyz is set to None
-    self.data_xyz = None
+    #self.data_xyz = None
 
     ###########################################################################
     # check data is not None
@@ -26,7 +32,7 @@ def detrend_seasonal_median(self, wl=11, in_place=False, verbose=False):
             raise GtsInputDataNone(inspect.stack()[0][3], __name__, self)
     except GtsInputDataNone as error:
         # print PYACS WARNING
-        print(error)
+        ERROR(error)
         return (self)
     ###########################################################################
 

@@ -2,20 +2,26 @@
 ## remove_pole
 ###################################################################
 
-def remove_pole(self, pole, pole_type='euler', in_place=False, verbose=True):
+def remove_pole(self, pole, pole_type='euler', verbose=True):
     """
-    remove velocity predicted by an Euler pole or a rotation rate vector from a time series
-    pole is a 1D array with 3 values
-    requires self.lon & self.lat attributes to have been filled before
-    if in_place = True then replace the current time series
+    Remove velocity predicted by an Euler pole or a rotation rate vector from a time series.
+    pole is a 1D array with 3 values.
+    Requires self.lon & self.lat attributes to have been filled before.
+    Returns a new Gts instance.
     """
 
     import numpy as np
     from pyacs.gts.Gts import Gts
     import inspect
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
 
     # after this method .data  and .data_xyz are not consistent so .data_xyz is set to None
-    self.data_xyz = None
+    #self.data_xyz = None
 
 
     ###########################################################################
@@ -28,12 +34,12 @@ def remove_pole(self, pole, pole_type='euler', in_place=False, verbose=True):
             raise GtsInputDataNone(inspect.stack()[0][3], __name__, self)
     except GtsInputDataNone as error:
         # print PYACS WARNING
-        print(error)
+        WARNING(error)
         return (self)
     ###########################################################################
 
     if (self.lon is None) or (self.lat is None):
-        print("!!! ERROR: lon & lat needs to be properly filled to use this method.")
+        ERROR("lon & lat needs to be properly filled to use this method.")
         return ()
 
     from pyacs.lib.gmtpoint import GMT_Point
@@ -45,10 +51,7 @@ def remove_pole(self, pole, pole_type='euler', in_place=False, verbose=True):
 
     vel_neu = np.array([N.Vn, N.Ve, 0.]) * 1E-3
 
-    if verbose: print("-- Removing velocity (NEU)", vel_neu * 1.E3)
+    VERBOSE("Removing velocity (NEU): %10.3lf %10.3lf %10.3lf" % tuple((vel_neu * 1.E3).tolist()))
 
     new_Gts = self.remove_velocity(vel_neu)
-
-    if in_place:
-        self.data = new_Gts.data.copy()
     return (new_Gts)

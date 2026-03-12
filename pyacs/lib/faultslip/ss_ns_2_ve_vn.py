@@ -1,18 +1,27 @@
 ###################################################################
 def ss_ns_2_ve_vn(ss, ns, strike):
 ###################################################################
-    """
-    Converts strike-slip and normal slip components of a fault to ve, vn
+    """Convert strike-slip and normal-slip components to east/north velocity.
 
-    :param ss: vector of strike-slip
-    :param ns: vector of normal-slip
-    :param strike: vector of fault strike, counter-clockwise from north in degrees
+    Parameters
+    ----------
+    ss : array-like
+        Strike-slip component (positive for left-lateral).
+    ns : array-like
+        Normal-slip component (positive for reverse motion).
+    strike : array-like
+        Fault strike, counter-clockwise from north in degrees.
 
-    :return: ve, vn, same unit as ss and ds
+    Returns
+    -------
+    ve : numpy.ndarray
+        East component, same unit as ss and ns.
+    vn : numpy.ndarray
+        North component, same unit as ss and ns.
 
-    :note:
-    ss is assume to be positive for left-lateral motion
-    ds will be positive for reverse motion
+    Notes
+    -----
+    ss is assumed positive for left-lateral motion; ns positive for reverse.
     """
 
     import numpy as np

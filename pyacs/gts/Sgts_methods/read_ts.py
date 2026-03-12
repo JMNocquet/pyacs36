@@ -1,26 +1,96 @@
-###################################################################
+  ###################################################################
 def read_ts(self,ts_dir='.', verbose=True, name_filter='', add_key='', sites=[],lexclude=[], type = None, xyz=True):
 ###################################################################
-    """
-    Reads time series, trying to guess the format. Current time series format supported are: pos, kenv, mb_file, cats, txyz (pyacs), track (NEU format for high rate)
-     
-    :param ts_dir: directory of time series files
-    :param name_filter: string used to filter time series name '*name_filter*'
-    :param add_key: adds a string before site code
-    :param sites: list of site codes to be read. Any other will be discarded.
-    :param lexclude: list of sites to be excluded from reading
-    :param type: specifies the format of the time series files. Choose among ['pos', 'kenv', 'mb_file', 'cats', 'txyz', 'track' , 'pride','pck']
-    :param xyz: for pos files, reads the XYZ coordinates rather than dNEU. This is the default.
-     
-    :return: an Sgts instance.
+    """Read time series from directory; format is auto-detected or set by type.
+
+    Supported formats: pos, kenv, mb_file, cats, txyz (pyacs), track (NEU), pride, pck.
+
+    Parameters
+    ----------
+    ts_dir : str, optional
+        Directory of time series files. Default is '.'.
+    verbose : bool, optional
+        If True, print progress. Default is True.
+    name_filter : str, optional
+        Filter on time series name ('*name_filter*').
+    add_key : str, optional
+        String to add before site code.
+    sites : list, optional
+        If non-empty, only these site codes are read.
+    lexclude : list, optional
+        Site codes to exclude from reading.
+    type : str, optional
+        Format: 'pos', 'kenv', 'mb_file', 'cats', 'txyz', 'track', 'pride', 'pck'.
+    xyz : bool, optional
+        For pos files, read XYZ rather than dNEU. Default is True.
+
+    Returns
+    -------
+    None
+        Time series are appended to this Sgts instance (in-place).
     """
     # import
     import numpy as np
     import sys
     from pyacs.gts.Gts import Gts
-    
-    if verbose:
-        print('-- Reading directory: ',ts_dir)
+    import os
+
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
+
+
+    import inspect
+
+    VERBOSE("Running Sgts.%s" % inspect.currentframe().f_code.co_name)
+
+    #######################################################################
+    # CASE PCK FILE HAS BEEN PROVIDED
+    # DO NOT ATTEMPT TO READ OTHER FILES
+    if os.path.splitext(ts_dir)[1] == '.pck':
+        if os.path.isfile(ts_dir):
+            lGts={}
+            # read Sgts from pickle
+            import pickle
+
+            with open(ts_dir, "rb") as f:
+                ts = pickle.load(f)
+            f.close()
+
+            # Normalize the code to string
+            MESSAGE("Normalizing GPS site codes in pickle file")
+            try:
+                ts.__dict__ = {str(k).strip(): v for k, v in ts.__dict__.items()}
+            except Exception as e:
+                ERROR(f"Failed to normalize site codes: {str(e)}", exit=True)
+
+            for code in ts.lcode():
+                lGts[code] = ts.__dict__[code]
+            MESSAGE("Sgts read from PYACS pck file: %s" % (ts_dir))
+
+            for gts in list(lGts.values()):
+                try:
+                    gts.code = str(gts.code).strip()
+                    if len(gts.code) < 4:
+                        WARNING(f"Site code {gts.code} is shorter than 4 characters")
+                except Exception as e:
+                    ERROR(f"Failed to normalize site code for Gts object: {str(e)}", exit=True)
+                    
+                if gts.code not in lexclude:
+                    VERBOSE("adding %s " % gts.code)
+                    self.append(gts)
+
+            VERBOSE("read %d time series from %s " % (len(self.lcode()), ts_dir))
+            return
+        else:
+            if not os.path.exists(ts_dir):
+                ERROR("File %s does not exist." % ts_dir, exit=True)
+            else:
+                ERROR("File %s is not a pickle file" % ts_dir, exit=True)
+    VERBOSE("Reading time series in directory %s " % ts_dir)
     
     #######################################################################
     def __pride_pos(ts_dir=ts_dir, name_filter=name_filter, add_key=add_key, verbose=verbose):
@@ -38,8 +108,7 @@ def read_ts(self,ts_dir='.', verbose=True, name_filter='', add_key='', sites=[],
                 lcode.append( code )
              
         for code in lcode:
-            if verbose:
-                print("-- Reading pride pos files for: %s " % code )
+            VERBOSE("Reading pride pos files for: %s " % code )
             lGts[code+add_key]=Gts(code=code)
             lGts[code+add_key].read_pride_pos(tsdir=ts_dir , verbose=verbose )
     
@@ -60,8 +129,7 @@ def read_ts(self,ts_dir='.', verbose=True, name_filter='', add_key='', sites=[],
                 lcode.append( code )
              
         for code in lcode:
-            if verbose:
-                print("-- Reading pride files for: %s " % code )
+            VERBOSE("Reading pride pos files for: %s " % code )
             lGts[code+add_key]=Gts(code=code)
             lGts[code+add_key].read_pride(tsdir=ts_dir , verbose=verbose )
     
@@ -76,17 +144,34 @@ def read_ts(self,ts_dir='.', verbose=True, name_filter='', add_key='', sites=[],
         ldat=sorted(glob.glob(ts_dir+'/'+'*'+name_filter+'*.tdp'))
         for fdat in ldat:
             if not os.path.isfile( fdat ): continue
-            mb_file=fdat.split('/')[-1][0:4]
+            mb_file=os.path.basename(fdat)[0:4]
             code=mb_file[0:4]
             if code not in sites and sites !=[]:continue
-            if verbose:
-                print("-- Reading ", mb_file)
+            VERBOSE("Reading %s " % mb_file )
             lGts[code+add_key]=Gts(code=code)
             lGts[code+add_key].read_tdp(ifile=fdat,gmt=False)
     
         return(lGts)
     
-     
+    #######################################################################
+    def __sol(ts_dir=ts_dir, name_filter=name_filter, add_key=add_key, verbose=verbose):
+        import glob
+        import os
+         
+        lGts={}
+        lsol=sorted(glob.glob(ts_dir+'/'+'*'+name_filter+'*.sol'))
+        for fsol in lsol:
+            if not os.path.isfile( fsol ): continue
+            mb_file=os.path.basename(fsol)[0:4]
+            code=mb_file[0:4]
+            if code not in sites and sites !=[]:continue
+            VERBOSE("Reading %s " % mb_file )
+            lGts[code+add_key]=Gts(code=code)
+            lGts[code+add_key].read_sol(ifile=fsol)
+    
+        return(lGts)
+
+
     #######################################################################
     def __mb_files(ts_dir=ts_dir, name_filter=name_filter, add_key=add_key, verbose=verbose):
         import glob
@@ -98,8 +183,7 @@ def read_ts(self,ts_dir='.', verbose=True, name_filter='', add_key='', sites=[],
             mb_file=fdat[0:-1]
             code=mb_file[-12:-8]
             if code not in sites and sites !=[]:continue
-            if verbose:
-                print("-- Reading ", mb_file)
+            VERBOSE("Reading %s " % mb_file)
             lGts[code+add_key]=Gts(code=code)
             lGts[code+add_key].read_mb_file(ifile=mb_file,gmt=False)
     
@@ -116,12 +200,12 @@ def read_ts(self,ts_dir='.', verbose=True, name_filter='', add_key='', sites=[],
         for fkenv in lkenv:
             if not os.path.isfile( fkenv ): continue
             code=fkenv[-20:-9]
-            if verbose:print("-- Reading ", fkenv)
+            VERBOSE("Reading %s " % fkenv )
             lGts[code+add_key]=Gts(code=code)
             try:
                 lGts[code+add_key].read_kenv(fkenv,date_type='jd')
             except:
-                print("!!! Error. Could not read ",fkenv)
+                ERROR("Could not read %s" % fkenv)
                 del lGts[code+add_key]
                 continue
         return(lGts)
@@ -135,12 +219,12 @@ def read_ts(self,ts_dir='.', verbose=True, name_filter='', add_key='', sites=[],
         for cats in lcats:
             if not os.path.isfile( cats ): continue
             code=cats.split('cats_')[-1][:4].upper()
-            if verbose:print("-- Reading ", cats)
+            VERBOSE("Reading %s" % cats)
             lGts[code+add_key]=Gts(code=code)
             try:
                 lGts[code+add_key].read_cats_file(ifile=cats,gmt=False)
             except:
-                print("!!! Error. Could not read ",cats)
+                ERROR("Could not read %s" % cats )
                 del lGts[code+add_key]
                 continue
         return(lGts)
@@ -148,18 +232,27 @@ def read_ts(self,ts_dir='.', verbose=True, name_filter='', add_key='', sites=[],
     #######################################################################
     def __pos(ts_dir=ts_dir, name_filter=name_filter, add_key=add_key, verbose=verbose,xyz=True):
         import glob
-        lGts={}
-        lpos=sorted(glob.glob(ts_dir+'/????*.pos'))
         import os
+
+
+        lGts={}
+        # change if a single pos file is provided
+        if os.path.isfile(ts_dir) and os.path.splitext(ts_dir)[1] == '.pos':
+            lpos = [ ts_dir ]
+        else:
+            lpos=sorted(glob.glob(ts_dir+'/????*.pos'))
+
         for pos_w_path in lpos:
             if not os.path.isfile( pos_w_path): continue
             _drive, path_and_file = os.path.splitdrive(pos_w_path)
             _path, pos = os.path.split(path_and_file)
             code=pos[:4]
             if code not in sites and sites !=[]:continue
-            if verbose:print("-- Reading ", pos)
-            lGts[code+add_key]=Gts(code=code)
-            lGts[code+add_key].read_pos(tsfile=pos_w_path,xyz=xyz)
+            VERBOSE("Reading %s" % pos)
+            wts = Gts().read_pos(tsfile=pos_w_path,xyz=xyz)
+            lGts[wts.code+add_key]=wts
+            #lGts[code+add_key]=Gts(code=code)
+            #lGts[code+add_key].read_pos(tsfile=pos_w_path,xyz=xyz)
         return(lGts)
     
     #######################################################################
@@ -199,9 +292,8 @@ def read_ts(self,ts_dir='.', verbose=True, name_filter='', add_key='', sites=[],
         i=1
         for txyz in l_txyz:
             if not os.path.isfile( txyz ): continue
-            if verbose:
-                print('-- Reading ',txyz,i,'/',len(l_txyz))
-                i = i + 1
+            VERBOSE("Reading %s #%05d / %05d" % (txyz,i,len(l_txyz)))
+            i = i + 1
                  
             lGts=__read_txyz(txyz, lGts,verbose=verbose)
          
@@ -209,8 +301,7 @@ def read_ts(self,ts_dir='.', verbose=True, name_filter='', add_key='', sites=[],
              
             gts = lGts[code]
              
-            if verbose:
-                print('-- Generating NEU from XYZ for ',gts.code)
+            VERBOSE("Generating NEU from XYZ for %s" % gts.code)
             gts.xyz2neu(corr=False)
              
             if not gts.cdata():
@@ -231,19 +322,22 @@ def read_ts(self,ts_dir='.', verbose=True, name_filter='', add_key='', sites=[],
             _path, track = os.path.split(path_and_file)
             code= track.split('.')[-2].upper()
             if code not in sites and sites !=[]:continue
-            if verbose:print("-- Reading ", track)
+            VERBOSE("Reading %s" % track)
             lGts[code+add_key]=Gts(code=code)
             try:
                 lGts[code+add_key].read_track_NEU(tsfile=track_w_path)
             except:
-                print("!!! Error. Could not read ",track)
+                ERROR("Could not read %s" % track)
                 del lGts[code+add_key]
                 continue
         return(lGts)
-    
-    
-    # START
-    
+
+    # END OF SUBROUTINES  #######################################################################
+
+    #######################################################################
+    # START OF MAIN
+    #######################################################################
+
     lGts={}
     #######################################################################
     # PCK FORMAT
@@ -252,7 +346,12 @@ def read_ts(self,ts_dir='.', verbose=True, name_filter='', add_key='', sites=[],
     # Sgts saved as a pickle dump
     if type is None or type=='pck':
         import glob
-        lpck = glob.glob( self.dir+'/*.pck' )
+
+        if os.path.isfile( self.dir ) and self.dir[-3:]=='pck':
+            lpck = [self.dir]
+        else:
+            lpck = glob.glob( self.dir+'/*.pck' )
+
         if lpck != []:
             pck = lpck[-1]
             # read Sgts from pickle
@@ -263,11 +362,10 @@ def read_ts(self,ts_dir='.', verbose=True, name_filter='', add_key='', sites=[],
              
             for code in ts.lcode():
                 lGts[code] = ts.__dict__[code]
-            if verbose:
-                print("-- Sgts read from PYACS pck file: %s" % (pck) )
+            VERBOSE("Sgts read from PYACS pck file: %s" % (pck) )
         else:
-        # no pck file    
-            if verbose:print("-- No PYACS pck file found")
+        # no pck file
+            VERBOSE("No PYACS pck file found.")
     
     
     #######################################################################
@@ -276,7 +374,7 @@ def read_ts(self,ts_dir='.', verbose=True, name_filter='', add_key='', sites=[],
     if type is None or type=='pride_pos':
         lGts_pride_pos = __pride_pos(ts_dir=self.dir,verbose=verbose)
         if lGts_pride_pos=={}:
-            if verbose:print("-- No pride pos files found")
+            VERBOSE("No pride pos files found")
         else:
             lGts=lGts_pride_pos
     
@@ -286,7 +384,7 @@ def read_ts(self,ts_dir='.', verbose=True, name_filter='', add_key='', sites=[],
     if type is None or type=='pride':
         lGts_pride = __pride(ts_dir=self.dir,verbose=verbose)
         if lGts_pride=={}:
-            if verbose:print("-- No pride_files found")
+            VERBOSE("No pride_files found")
         else:
             lGts=lGts_pride
     
@@ -296,14 +394,15 @@ def read_ts(self,ts_dir='.', verbose=True, name_filter='', add_key='', sites=[],
     if type is None or type=='mb_file':
         lGts_mb_files=__mb_files(ts_dir=self.dir,verbose=verbose)
         if lGts_mb_files=={}:
-            if verbose:print("-- No mb_files found")
+            VERBOSE("No mb_files found")
         else:
             lGts=lGts_mb_files
              
             try:
                 self.read_gmt(verbose=verbose, gmt=self.dir+'/../stat/pyacs_void.gmt')
             except:
-                print("! Warning: Could not read a gmt file to populate Gts attributes lon,lat,h & X0,Y0,Z0 for mb_files")
+                WARNING("Could not read a gmt file to populate Gts attributes lon,lat,h & X0,Y0,Z0 for mb_files.")
+                WARNING("Some PYACS function will produce errors")
      
     #######################################################################
     # TDP
@@ -311,37 +410,49 @@ def read_ts(self,ts_dir='.', verbose=True, name_filter='', add_key='', sites=[],
     if type is None or type=='tdp':
         lGts_mb_files=__tdp(ts_dir=self.dir,verbose=verbose)
         if lGts_mb_files=={}:
-            if verbose:print("-- No tdp_files found")
+            VERBOSE("No tdp_files found")
         else:
             lGts=lGts_mb_files
             try:
                 self.read_gmt(verbose=verbose, gmt=self.dir+'/../stat/pyacs_void.gmt')
             except:
-                print("! Warning: Could not read a gmt file to populate Gts attributes lon,lat,h & X0,Y0,Z0 for mb_files")
-     
+                WARNING("Could not read a gmt file to populate Gts attributes lon,lat,h & X0,Y0,Z0 for tdp file.")
+                WARNING("Some PYACS function will produce errors")
+
     #######################################################################
     # KENV
     #######################################################################
     if type is None or type=='kenv':
         lGts_kenv=__kenv(ts_dir=self.dir,verbose=verbose)
         if lGts_kenv=={}:
-            if verbose:print("-- No kenv file found")
+            VERBOSE("No kenv file found")
         else:lGts=lGts_kenv
-     
+
+    #######################################################################
+    # SOL
+    #######################################################################
+    if type is None or type=='sol':
+        lGts_sol=__sol(ts_dir=self.dir,verbose=verbose)
+        if lGts_sol=={}:
+            VERBOSE("No sol file found")
+        else:lGts=lGts_sol
+
+
     #######################################################################
     # CATS
     #######################################################################
     if type is None or type=='cats':
         lGts_cats=__cats(ts_dir=self.dir,verbose=verbose)
         if lGts_cats=={}:
-            if verbose:print("-- No cats file found")
+            VERBOSE("No cats file found")
         else:
             lGts=lGts_cats
             try:
                 self.read_gmt(verbose=verbose, gmt=self.dir+'/../stat/pyacs_void.gmt')
             except:
-                print("! Warning: Could not read a gmt file to populate Gts attributes lon,lat,h & X0,Y0,Z0 for mb_files")
-     
+                WARNING("Could not read a gmt file to populate Gts attributes lon,lat,h & X0,Y0,Z0 for cats files")
+                WARNING("Some PYACS function will produce errors")
+
      
     #######################################################################
     # POS FORMAT
@@ -349,7 +460,7 @@ def read_ts(self,ts_dir='.', verbose=True, name_filter='', add_key='', sites=[],
     if type is None or type=='pos':
         lGts_pos=__pos(ts_dir=self.dir,verbose=verbose,xyz=xyz)
         if lGts_pos=={}:
-            if verbose:print("-- No Gamit/Globk pos file found")
+            VERBOSE("No Gamit/Globk pos file found")
         else:lGts=lGts_pos
     
     #######################################################################
@@ -358,7 +469,7 @@ def read_ts(self,ts_dir='.', verbose=True, name_filter='', add_key='', sites=[],
     if type is None or type=='txyz':
         lGts_txyz=__ts_xyz(ts_dir=self.dir,verbose=verbose)
         if lGts_txyz=={}:
-            if verbose:print("-- No pyacs t_xyz file found")
+            VERBOSE("No pyacs t_xyz file found")
         else:lGts=lGts_txyz
     
     #######################################################################
@@ -367,18 +478,16 @@ def read_ts(self,ts_dir='.', verbose=True, name_filter='', add_key='', sites=[],
     if type is None or type=='track':
         lGts_track=__track_NEU(ts_dir=self.dir,verbose=verbose)
         if lGts_track=={}:
-            if verbose:print("-- No Gamit/Globk track NEU file found")
+            VERBOSE("No Gamit/Globk track NEU file found")
         else:lGts=lGts_track
     
     
     for gts in list(lGts.values()):
         if gts.code not in lexclude:
-            if verbose:
-                print('-- adding ', gts.code)
+            VERBOSE("adding %s " % gts.code)
             self.append(gts)
     
-    if verbose:
-        print('-- read ',len(self.lcode() ),' time series in directory ',ts_dir)
+    VERBOSE("read %d time series from %s " % (len(self.lcode()), ts_dir))
     
     
     

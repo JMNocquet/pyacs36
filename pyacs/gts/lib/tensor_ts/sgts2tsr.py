@@ -1,30 +1,30 @@
 """
-Time series express as a 4D-numpy array D and a separate observation time vector T
+Time series as 4D array D and observation time vector T.
 
-    D(i,j,k) would be the displacement
-    observation time index i
-    for site j
-    for component k [0,1,2,3,4,5] [de,dn,du,sde,sdn,sdu]
-
-    no data are NaN
-
+D(i,j,k): displacement at time index i, site j, component k [0,1,2,3,4,5] = [de,dn,du,sde,sdn,sdu].
+No-data entries are NaN.
 """
 ###################################################################
 def sgts2tsr( sgts , tol=0.01, verbose=False ):
 ###################################################################
         
     """
-    Convert an Sgts object into a tsr
-    
-    :param sgts: Sgts object
-    :param tol : tolerance in decimal day to assign the same date 
-    
-    :return: NAMES (1D-Numpy string array), DATES (1D-Numpy integer array of seconds), a 4D numpy array
-    D(i,j,k) would be the displacement
-    observation time index i
-    for site j
-    for component k [0,1,2,3,4,5] [de,dn,du,sde,sdn,sdu]
-    
+    Convert an Sgts object into a tsr (4D array + dates).
+
+    Parameters
+    ----------
+    sgts : Sgts
+        Sgts object.
+    tol : float, optional
+        Tolerance in decimal day to assign the same date.
+    verbose : bool, optional
+        Verbose mode.
+
+    Returns
+    -------
+    tuple
+        (NAMES, DATES, D). NAMES: 1D string array; DATES: 1D integer array (seconds);
+        D(i,j,k): displacement at time i, site j, component k [de,dn,du,sde,sdn,sdu].
     """
 
     # import

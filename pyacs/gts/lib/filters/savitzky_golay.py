@@ -20,16 +20,35 @@ the point.
 def savitzky_golay(self , in_place=False , verbose=True , window_length=15, polyorder=3, deriv=0, delta=1.0, mode='interp', cval=0.0):
 ###############################################################################
     """
-    returns a filtered time series using scipy.signal.savgol_filter
-    
-    See documentation for the filter parameters.
-    http://https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.savgol_filter.html#scipy.signal.savgol_filter
-    
-    :param in_place: if True then replace the current time series
-    :param verbose: boolean, verbose mode
+    Return a filtered time series using scipy.signal.savgol_filter.
 
-    :return: the filtered time series
+    Parameters
+    ----------
+    in_place : bool, optional
+        If True, replace the current time series; otherwise return a new Gts.
+    verbose : bool, optional
+        Verbose mode.
+    window_length : int, optional
+        Length of the filter window (must be odd).
+    polyorder : int, optional
+        Order of the polynomial.
+    deriv : int, optional
+        Order of derivative (0 = smoothing).
+    delta : float, optional
+        Sample spacing.
+    mode : str, optional
+        Extension mode ('interp', 'mirror', etc.).
+    cval : float, optional
+        Value for mode='constant'.
 
+    Returns
+    -------
+    Gts
+        Filtered time series.
+
+    See Also
+    --------
+    scipy.signal.savgol_filter
     """
     
     import scipy.signal

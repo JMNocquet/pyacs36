@@ -1,0 +1,379 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.lib.gmtpoint.gmt_point &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries.html">core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">pyacs.lib.gmtpoint.gmt_point</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/pyacs.lib.gmtpoint.GMT_Point.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pyacs.lib.gmtpoint.gmt_point">
+<span id="pyacs-lib-gmtpoint-gmt-point"></span><h1>pyacs.lib.gmtpoint.gmt_point<a class="headerlink" href="#module-pyacs.lib.gmtpoint.gmt_point" title="Link to this heading"></a></h1>
+<p>GMT_Point class: position and optional velocity (GMT psvelo style).</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyacs.lib.gmtpoint.gmt_point.GMT_Point">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyacs.lib.gmtpoint.gmt_point.</span></span><span class="sig-name descname"><span class="pre">GMT_Point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">he</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ve</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SVe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SVn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SVu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SVen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cv_xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cv_enu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/lib/gmtpoint/gmt_point.html#GMT_Point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.lib.gmtpoint.gmt_point.GMT_Point" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Simple point with position and optional velocity (GMT psvelo style).</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyacs.lib.gmtpoint.gmt_point.GMT_Point.lon">
+<span class="sig-name descname"><span class="pre">lon</span></span><a class="headerlink" href="#pyacs.lib.gmtpoint.gmt_point.GMT_Point.lon" title="Link to this definition"></a></dt>
+<dd><p>Longitude in decimal degrees.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyacs.lib.gmtpoint.gmt_point.GMT_Point.lat">
+<span class="sig-name descname"><span class="pre">lat</span></span><a class="headerlink" href="#pyacs.lib.gmtpoint.gmt_point.GMT_Point.lat" title="Link to this definition"></a></dt>
+<dd><p>Latitude in decimal degrees.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyacs.lib.gmtpoint.gmt_point.GMT_Point.code">
+<span class="sig-name descname"><span class="pre">code</span></span><a class="headerlink" href="#pyacs.lib.gmtpoint.gmt_point.GMT_Point.code" title="Link to this definition"></a></dt>
+<dd><p>4-letter site code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyacs.lib.gmtpoint.gmt_point.GMT_Point.he">
+<span class="sig-name descname"><span class="pre">he</span></span><a class="headerlink" href="#pyacs.lib.gmtpoint.gmt_point.GMT_Point.he" title="Link to this definition"></a></dt>
+<dd><p>Height above ellipsoid (m). Default is 0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">Ve,</span> <span class="pre">Vn</span></span></dt>
+<dd><p>East and north velocity components (mm/yr).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyacs.lib.gmtpoint.gmt_point.GMT_Point.Vu">
+<span class="sig-name descname"><span class="pre">Vu</span></span><a class="headerlink" href="#pyacs.lib.gmtpoint.gmt_point.GMT_Point.Vu" title="Link to this definition"></a></dt>
+<dd><p>Up component (mm/yr). Default is 0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">SVe,</span> <span class="pre">SVn,</span> <span class="pre">SVu</span></span></dt>
+<dd><p>Standard deviations on velocity components. Default is 0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyacs.lib.gmtpoint.gmt_point.GMT_Point.SVen">
+<span class="sig-name descname"><span class="pre">SVen</span></span><a class="headerlink" href="#pyacs.lib.gmtpoint.gmt_point.GMT_Point.SVen" title="Link to this definition"></a></dt>
+<dd><p>Correlation or covariance term for Ve/Vn. Default is 0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.lib.gmtpoint.gmt_point.GMT_Point.add_to_gmt_psvelo">
+<span class="sig-name descname"><span class="pre">add_to_gmt_psvelo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.lib.gmtpoint.gmt_point.GMT_Point.add_to_gmt_psvelo" title="Link to this definition"></a></dt>
+<dd><p>Add the current GMT_Point to a GMT psvelo file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fname</strong> (<em>str</em>) – Path to the GMT psvelo file (created if missing).</p></li>
+<li><p><strong>overwrite</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, replace existing line with same code. Default is False.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, print progress. Default is False.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.lib.gmtpoint.gmt_point.GMT_Point.assign_index">
+<span class="sig-name descname"><span class="pre">assign_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.lib.gmtpoint.gmt_point.GMT_Point.assign_index" title="Link to this definition"></a></dt>
+<dd><p>Assign an index to the current GMT_Point (for linear systems).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>int</em>) – Index value.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>self.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyacs.lib.gmtpoint.gmt_point.GMT_Point" title="pyacs.lib.gmtpoint.gmt_point.GMT_Point">GMT_Point</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.lib.gmtpoint.gmt_point.GMT_Point.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.lib.gmtpoint.gmt_point.GMT_Point.copy" title="Link to this definition"></a></dt>
+<dd><p>Return a copy of the current GMT_Point.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.lib.gmtpoint.gmt_point.GMT_Point.get_index">
+<span class="sig-name descname"><span class="pre">get_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.lib.gmtpoint.gmt_point.GMT_Point.get_index" title="Link to this definition"></a></dt>
+<dd><p>Return the index of the current GMT_Point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Assigned index.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.lib.gmtpoint.gmt_point.GMT_Point.get_info">
+<span class="sig-name descname"><span class="pre">get_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">display</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.lib.gmtpoint.gmt_point.GMT_Point.get_info" title="Link to this definition"></a></dt>
+<dd><p>Print information for the current GMT_Point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>display</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, print to stdout. Default is False.</p></li>
+<li><p><strong>legend</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, print column legend. Default is False.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, print verbose message. Default is False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted info string.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.lib.gmtpoint.gmt_point.GMT_Point.magaz">
+<span class="sig-name descname"><span class="pre">magaz</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.lib.gmtpoint.gmt_point.GMT_Point.magaz" title="Link to this definition"></a></dt>
+<dd><p>Return magnitude and azimuth of velocity for the current GMT_Point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>mag</strong> (<em>float</em>) – Velocity magnitude in mm/yr.</p></li>
+<li><p><strong>az</strong> (<em>float</em>) – Azimuth in decimal degrees, clockwise from North.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Uncertainty on magnitude/azimuth is not implemented.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.lib.gmtpoint.gmt_point.GMT_Point.midpoint">
+<span class="sig-name descname"><span class="pre">midpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Mm'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.lib.gmtpoint.gmt_point.GMT_Point.midpoint" title="Link to this definition"></a></dt>
+<dd><p>Return the midpoint between this point and another.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> (<a class="reference internal" href="#pyacs.lib.gmtpoint.gmt_point.GMT_Point" title="pyacs.lib.gmtpoint.gmt_point.GMT_Point"><em>GMT_Point</em></a>) – Other point.</p></li>
+<li><p><strong>code</strong> (<em>str</em><em>, </em><em>optional</em>) – Code for the new point. Default is ‘Mm’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Midpoint (lon, lat, he set; velocity not set).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyacs.lib.gmtpoint.gmt_point.GMT_Point" title="pyacs.lib.gmtpoint.gmt_point.GMT_Point">GMT_Point</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.lib.gmtpoint.gmt_point.GMT_Point.pole">
+<span class="sig-name descname"><span class="pre">pole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">W</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SW</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_euler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'rot'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'predict'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.lib.gmtpoint.gmt_point.GMT_Point.pole" title="Link to this definition"></a></dt>
+<dd><p>Apply or remove an Euler pole prediction to this point’s velocity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>W</strong> (<em>array_like</em>) – Euler pole: [lon, lat, omega] (deg/Myr) or [wx, wy, wz] (rad/yr).</p></li>
+<li><p><strong>SW</strong> (<em>array_like</em><em>, </em><em>optional</em>) – Variance-covariance of pole (3x3). If provided, updates SVe, SVn.</p></li>
+<li><p><strong>type_euler</strong> (<em>str</em><em>, </em><em>optional</em>) – ‘euler’ (geographic) or ‘rot’ (cartesian rad/yr). Default is ‘rot’.</p></li>
+<li><p><strong>option</strong> (<em>str</em><em>, </em><em>optional</em>) – ‘predict’ (velocity = pole only), ‘remove’ (subtract), ‘add’. Default is ‘predict’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New point with modified velocity.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyacs.lib.gmtpoint.gmt_point.GMT_Point" title="pyacs.lib.gmtpoint.gmt_point.GMT_Point">GMT_Point</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.lib.gmtpoint.gmt_point.GMT_Point.rotate_vel">
+<span class="sig-name descname"><span class="pre">rotate_vel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'radians'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.lib.gmtpoint.gmt_point.GMT_Point.rotate_vel" title="Link to this definition"></a></dt>
+<dd><p>Rotate velocity components by an angle (clockwise).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>angle</strong> (<em>float</em>) – Rotation angle.</p></li>
+<li><p><strong>unit</strong> (<em>str</em><em>, </em><em>optional</em>) – ‘radians’ or ‘degrees’. Default is ‘radians’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New point with rotated Ve, Vn.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyacs.lib.gmtpoint.gmt_point.GMT_Point" title="pyacs.lib.gmtpoint.gmt_point.GMT_Point">GMT_Point</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.lib.gmtpoint.gmt_point.GMT_Point.spherical_distance">
+<span class="sig-name descname"><span class="pre">spherical_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyacs.lib.gmtpoint.gmt_point.GMT_Point.spherical_distance" title="Link to this definition"></a></dt>
+<dd><p>Return spherical distance between this point and another (meters).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>M</strong> (<a class="reference internal" href="#pyacs.lib.gmtpoint.gmt_point.GMT_Point" title="pyacs.lib.gmtpoint.gmt_point.GMT_Point"><em>GMT_Point</em></a>) – Other point.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Distance along the sphere in meters.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

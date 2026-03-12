@@ -1,0 +1,46 @@
+pyacs.gts package
+=================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   pyacs.gts.Sgts_methods
+   pyacs.gts.lib
+
+Submodules
+----------
+
+pyacs.gts.Gts module
+--------------------
+
+.. automodule:: pyacs.gts.Gts
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.Sgts module
+---------------------
+
+.. automodule:: pyacs.gts.Sgts
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.tsr module
+--------------------
+
+.. automodule:: pyacs.gts.tsr
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: pyacs.gts
+   :members:
+   :show-inheritance:
+   :undoc-members:

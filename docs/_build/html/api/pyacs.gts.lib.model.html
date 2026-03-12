@@ -1,0 +1,451 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.gts.lib.model package &mdash; PYACS 0.66.18 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2262e354"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PYACS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">pyacs.gts.lib.model package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.model.add_vel_sigma">pyacs.gts.lib.model.add_vel_sigma module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.model.add_vel_sigma.add_vel_sigma"><code class="docutils literal notranslate"><span class="pre">add_vel_sigma()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.model.detrend">pyacs.gts.lib.model.detrend module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.model.detrend.detrend"><code class="docutils literal notranslate"><span class="pre">detrend()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.model.detrend_annual">pyacs.gts.lib.model.detrend_annual module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.model.detrend_annual.detrend_annual"><code class="docutils literal notranslate"><span class="pre">detrend_annual()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.model.detrend_hectorp">pyacs.gts.lib.model.detrend_hectorp module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.model.detrend_hectorp.detrend_hectorp"><code class="docutils literal notranslate"><span class="pre">detrend_hectorp()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.model.detrend_median">pyacs.gts.lib.model.detrend_median module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.model.detrend_median.detrend_median"><code class="docutils literal notranslate"><span class="pre">detrend_median()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.model.detrend_pytrf">pyacs.gts.lib.model.detrend_pytrf module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.model.detrend_pytrf.detrend_pytrf"><code class="docutils literal notranslate"><span class="pre">detrend_pytrf()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.model.detrend_seasonal">pyacs.gts.lib.model.detrend_seasonal module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.model.detrend_seasonal.detrend_seasonal"><code class="docutils literal notranslate"><span class="pre">detrend_seasonal()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.model.detrend_seasonal_median">pyacs.gts.lib.model.detrend_seasonal_median module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.model.detrend_seasonal_median.detrend_seasonal_median"><code class="docutils literal notranslate"><span class="pre">detrend_seasonal_median()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.model.frame">pyacs.gts.lib.model.frame module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.model.frame.frame"><code class="docutils literal notranslate"><span class="pre">frame()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.model.make_model">pyacs.gts.lib.model.make_model module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.model.make_model.make_model"><code class="docutils literal notranslate"><span class="pre">make_model()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.model.mmodel">pyacs.gts.lib.model.mmodel module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.model.mmodel.mmodel"><code class="docutils literal notranslate"><span class="pre">mmodel()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.model.non_linear_gts_model">pyacs.gts.lib.model.non_linear_gts_model module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.model.non_linear_gts_model.nl_gts_fit"><code class="docutils literal notranslate"><span class="pre">nl_gts_fit()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.model.remove_pole">pyacs.gts.lib.model.remove_pole module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.model.remove_pole.remove_pole"><code class="docutils literal notranslate"><span class="pre">remove_pole()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.model.trajectory">pyacs.gts.lib.model.trajectory module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.model.trajectory.trajectory"><code class="docutils literal notranslate"><span class="pre">trajectory()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.model">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PYACS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">pyacs.gts.lib.model package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/pyacs.gts.lib.model.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pyacs-gts-lib-model-package">
+<h1>pyacs.gts.lib.model package<a class="headerlink" href="#pyacs-gts-lib-model-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-pyacs.gts.lib.model.add_vel_sigma">
+<span id="pyacs-gts-lib-model-add-vel-sigma-module"></span><h2>pyacs.gts.lib.model.add_vel_sigma module<a class="headerlink" href="#module-pyacs.gts.lib.model.add_vel_sigma" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.model.add_vel_sigma.add_vel_sigma">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.model.add_vel_sigma.</span></span><span class="sig-name descname"><span class="pre">add_vel_sigma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b_fn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/model/add_vel_sigma.html#add_vel_sigma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.model.add_vel_sigma.add_vel_sigma" title="Link to this definition"></a></dt>
+<dd><p>calculates realistic sigma on velocity components assuming white &amp;
+flicker using eq (19) &amp; (23) from Williams (J. of Geodesy, 2003)
+b_fn is the value for flicker noise, taken as 4 mm/yr^1/4
+model can be detrend, detrend_annual, detrend_seasonal
+if in_place = True then replace the current time series</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.model.detrend">
+<span id="pyacs-gts-lib-model-detrend-module"></span><h2>pyacs.gts.lib.model.detrend module<a class="headerlink" href="#module-pyacs.gts.lib.model.detrend" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.model.detrend.detrend">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.model.detrend.</span></span><span class="sig-name descname"><span class="pre">detrend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'L2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_periods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/model/detrend.html#detrend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.model.detrend.detrend" title="Link to this definition"></a></dt>
+<dd><p>Detrend time series and store velocity (and optional offsets) in attributes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – Estimation method (e.g. ‘L2’). Default is ‘L2’.</p></li>
+<li><p><strong>in_place</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, replace current time series. Default is False.</p></li>
+<li><p><strong>periods</strong> (<em>list</em><em>, </em><em>optional</em>) – Periods used for velocity estimate. Default is [].</p></li>
+<li><p><strong>exclude_periods</strong> (<em>list</em><em>, </em><em>optional</em>) – Periods excluded from velocity estimate. Default is [].</p></li>
+<li><p><strong>log_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Directory for Gts-specific log file {self.code}.log. Default is None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Detrended time series (velocity attribute set).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Outliers in Gts.outliers are omitted; offsets in Gts.offsets_dates are
+estimated simultaneously.</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.model.detrend_annual">
+<span id="pyacs-gts-lib-model-detrend-annual-module"></span><h2>pyacs.gts.lib.model.detrend_annual module<a class="headerlink" href="#module-pyacs.gts.lib.model.detrend_annual" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.model.detrend_annual.detrend_annual">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.model.detrend_annual.</span></span><span class="sig-name descname"><span class="pre">detrend_annual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'L2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_periods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/model/detrend_annual.html#detrend_annual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.model.detrend_annual.detrend_annual" title="Link to this definition"></a></dt>
+<dd><p>Estimate trend + annual terms and remove them from the time series.</p>
+<p>Velocity and annual are saved in Gts.velocity and Gts.annual.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – Estimation method (e.g. ‘L2’).</p></li>
+<li><p><strong>in_place</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, replace the current time series; otherwise return a new Gts.</p></li>
+<li><p><strong>periods</strong> (<em>list</em><em>, </em><em>optional</em>) – Periods used for estimation.</p></li>
+<li><p><strong>exclude_periods</strong> (<em>list</em><em>, </em><em>optional</em>) – Periods to exclude from estimation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Detrended time series (or self if in_place).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Outliers (Gts.outliers) are omitted in the estimation; offsets (Gts.offsets_dates)
+are estimated simultaneously.</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.model.detrend_hectorp">
+<span id="pyacs-gts-lib-model-detrend-hectorp-module"></span><h2>pyacs.gts.lib.model.detrend_hectorp module<a class="headerlink" href="#module-pyacs.gts.lib.model.detrend_hectorp" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.model.detrend_hectorp.detrend_hectorp">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.model.detrend_hectorp.</span></span><span class="sig-name descname"><span class="pre">detrend_hectorp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NEU'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/model/detrend_hectorp.html#detrend_hectorp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.model.detrend_hectorp.detrend_hectorp" title="Link to this definition"></a></dt>
+<dd><p>Detrend a time series using the Hector model (HECTOR from Machiel Bos).</p>
+<p>References: Bos et al. (2013), J. Geodesy 87(4), 351-360.
+See <a class="reference external" href="https://gitlab.com/machielsimonbos/hectorp">https://gitlab.com/machielsimonbos/hectorp</a> and estimatetrend wiki.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>component</strong> (<em>str</em><em>, </em><em>optional</em>) – Component(s) to detrend (‘N’, ‘E’, ‘U’ or ‘NEU’). Default is ‘NEU’.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Additional arguments for the Hector control file (estimatetrend).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Residual time series with velocity (and sigmas), offsets attributes.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.model.detrend_median">
+<span id="pyacs-gts-lib-model-detrend-median-module"></span><h2>pyacs.gts.lib.model.detrend_median module<a class="headerlink" href="#module-pyacs.gts.lib.model.detrend_median" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.model.detrend_median.detrend_median">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.model.detrend_median.</span></span><span class="sig-name descname"><span class="pre">detrend_median</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_day</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_periods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/model/detrend_median.html#detrend_median"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.model.detrend_median.detrend_median" title="Link to this definition"></a></dt>
+<dd><p>Compute velocity from median of 1-year pair displacements (MIDAS-style).</p>
+<p>If the time series is shorter than one year, it is left unchanged.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>delta_day</strong> (<em>int</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Time delta in days for pairs. None = one year, 0 = relax mode for campaign data. Default is None.</p></li>
+<li><p><strong>in_place</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, modify self; if False, return new Gts. Default is False.</p></li>
+<li><p><strong>periods</strong> (<em>list</em><em>, </em><em>optional</em>) – Periods to include for trend. Default is [].</p></li>
+<li><p><strong>exclude_periods</strong> (<em>list</em><em>, </em><em>optional</em>) – Periods to exclude. Default is [].</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, print progress. Default is False.</p></li>
+<li><p><strong>auto</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, try delta_day=None then 0, else fallback to regular detrend. Default is False.</p></li>
+<li><p><strong>log_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Directory for log file {self.code}_detrend_median.log. Default is None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Detrended Gts, or None if series shorter than 1 year.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.model.detrend_pytrf">
+<span id="pyacs-gts-lib-model-detrend-pytrf-module"></span><h2>pyacs.gts.lib.model.detrend_pytrf module<a class="headerlink" href="#module-pyacs.gts.lib.model.detrend_pytrf" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.model.detrend_pytrf.detrend_pytrf">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.model.detrend_pytrf.</span></span><span class="sig-name descname"><span class="pre">detrend_pytrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['wn',</span> <span class="pre">'fn']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Nelder-Mead'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_correlated_noise_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[None,</span> <span class="pre">None]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/model/detrend_pytrf.html#detrend_pytrf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.model.detrend_pytrf.detrend_pytrf" title="Link to this definition"></a></dt>
+<dd><p>Detrend using PyTRF; estimate velocity and offsets with realistic sigmas.</p>
+<p>Wrapper around pytrf (<a class="reference external" href="https://github.com/prebischung/pytrf">https://github.com/prebischung/pytrf</a>, P. Rebischung).
+Simplified trajectory: constant velocity, offsets, annual/semi-annual,
+white + power-law noise. For more complex models use pytrf directly.
+Power-law noise can be fixed (useful for campaign data).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>noise</strong> (<em>list</em><em>, </em><em>optional</em>) – Noise model: ‘wn’ (mandatory) plus ‘fn’, ‘rw’, or ‘pl’. Default is [‘wn’,’fn’].</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – Optimization: ‘Nelder-Mead’, ‘BFGS’, ‘CG’, ‘Newton’, ‘Powell’. Default is ‘Nelder-Mead’.</p></li>
+<li><p><strong>fixed_correlated_noise_value</strong> (<em>list</em><em>, </em><em>optional</em>) – [s2, a] for power-law; None to estimate. Default is [None, None].</p></li>
+<li><p><strong>log_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Directory for pytrf yaml log; None = current dir. Default is None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Residual time series with velocity (and sigmas), offsets.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>‘Nelder-Mead’ is default and often more robust than ‘BFGS’ despite being slower.</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.model.detrend_seasonal">
+<span id="pyacs-gts-lib-model-detrend-seasonal-module"></span><h2>pyacs.gts.lib.model.detrend_seasonal module<a class="headerlink" href="#module-pyacs.gts.lib.model.detrend_seasonal" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.model.detrend_seasonal.detrend_seasonal">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.model.detrend_seasonal.</span></span><span class="sig-name descname"><span class="pre">detrend_seasonal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'L2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_periods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/model/detrend_seasonal.html#detrend_seasonal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.model.detrend_seasonal.detrend_seasonal" title="Link to this definition"></a></dt>
+<dd><p>Estimate trend + annual + semi-annual terms and remove them from the time series.</p>
+<p>Velocity, annual and semi_annual are saved in Gts.velocity, Gts.annual, Gts.semi_annual.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – Estimation method (e.g. ‘L2’).</p></li>
+<li><p><strong>in_place</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, replace the current time series; otherwise return a new Gts.</p></li>
+<li><p><strong>periods</strong> (<em>list</em><em>, </em><em>optional</em>) – Periods used for estimation.</p></li>
+<li><p><strong>exclude_periods</strong> (<em>list</em><em>, </em><em>optional</em>) – Periods to exclude from estimation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Detrended time series (or self if in_place).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Outliers (Gts.outliers) are omitted; offsets (Gts.offsets_dates) are estimated simultaneously.</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.model.detrend_seasonal_median">
+<span id="pyacs-gts-lib-model-detrend-seasonal-median-module"></span><h2>pyacs.gts.lib.model.detrend_seasonal_median module<a class="headerlink" href="#module-pyacs.gts.lib.model.detrend_seasonal_median" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.model.detrend_seasonal_median.detrend_seasonal_median">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.model.detrend_seasonal_median.</span></span><span class="sig-name descname"><span class="pre">detrend_seasonal_median</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">11</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/model/detrend_seasonal_median.html#detrend_seasonal_median"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.model.detrend_seasonal_median.detrend_seasonal_median" title="Link to this definition"></a></dt>
+<dd><p>Calculates a velocity using the median of pair of displacements exactly separated by one year, inspired from MIDAS and then removes repeating yearly signal
+If the time series has less than three years of data, then the time series is kept untouched.</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.model.frame">
+<span id="pyacs-gts-lib-model-frame-module"></span><h2>pyacs.gts.lib.model.frame module<a class="headerlink" href="#module-pyacs.gts.lib.model.frame" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.model.frame.frame">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.model.frame.</span></span><span class="sig-name descname"><span class="pre">frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/model/frame.html#frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.model.frame.frame" title="Link to this definition"></a></dt>
+<dd><p>Rotates a time series according to an Euler pole
+Returns a new Gts instance</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.model.make_model">
+<span id="pyacs-gts-lib-model-make-model-module"></span><h2>pyacs.gts.lib.model.make_model module<a class="headerlink" href="#module-pyacs.gts.lib.model.make_model" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.model.make_model.make_model">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.model.make_model.</span></span><span class="sig-name descname"><span class="pre">make_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'detrend'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'L2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loutlier</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/model/make_model.html#make_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.model.make_model.make_model" title="Link to this definition"></a></dt>
+<dd><p>Estimate linear model parameters using least squares
+input: data: Gts format
+option are: ‘detrend’/’detrend_annual’/’detrend_seasonal’
+output: new Gts object: time series is now the residuals wrt to the model and its associated values (vel, annual, semi-annual etc)</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.model.mmodel">
+<span id="pyacs-gts-lib-model-mmodel-module"></span><h2>pyacs.gts.lib.model.mmodel module<a class="headerlink" href="#module-pyacs.gts.lib.model.mmodel" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.model.mmodel.mmodel">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.model.mmodel.</span></span><span class="sig-name descname"><span class="pre">mmodel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/model/mmodel.html#mmodel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.model.mmodel.mmodel" title="Link to this definition"></a></dt>
+<dd><p>Generates a modeled time series from the parameters read in self</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.model.non_linear_gts_model">
+<span id="pyacs-gts-lib-model-non-linear-gts-model-module"></span><h2>pyacs.gts.lib.model.non_linear_gts_model module<a class="headerlink" href="#module-pyacs.gts.lib.model.non_linear_gts_model" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.model.non_linear_gts_model.nl_gts_fit">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.model.non_linear_gts_model.</span></span><span class="sig-name descname"><span class="pre">nl_gts_fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ty</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ym</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sym</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset_dates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eq_dates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">H_fix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">H_constraints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">H_bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/model/non_linear_gts_model.html#nl_gts_fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.model.non_linear_gts_model.nl_gts_fit" title="Link to this definition"></a></dt>
+<dd><p>Fits a single 1D time series with a (non-linear) trajectory model.
+See documentation of gts.fit_trajectory for explanation on the options.</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.model.remove_pole">
+<span id="pyacs-gts-lib-model-remove-pole-module"></span><h2>pyacs.gts.lib.model.remove_pole module<a class="headerlink" href="#module-pyacs.gts.lib.model.remove_pole" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.model.remove_pole.remove_pole">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.model.remove_pole.</span></span><span class="sig-name descname"><span class="pre">remove_pole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pole</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pole_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'euler'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/model/remove_pole.html#remove_pole"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.model.remove_pole.remove_pole" title="Link to this definition"></a></dt>
+<dd><p>remove velocity predicted by an Euler pole or a rotation rate vector from a time series
+pole is a 1D array with 3 values
+requires self.lon &amp; self.lat attributes to have been filled before
+if in_place = True then replace the current time series</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.model.trajectory">
+<span id="pyacs-gts-lib-model-trajectory-module"></span><h2>pyacs.gts.lib.model.trajectory module<a class="headerlink" href="#module-pyacs.gts.lib.model.trajectory" title="Link to this heading"></a></h2>
+<p>Non-linear trajectory models for geodetic time series.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.model.trajectory.trajectory">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.model.trajectory.</span></span><span class="sig-name descname"><span class="pre">trajectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset_dates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eq_dates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">H_fix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">H_constraints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">H_bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NEU'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/model/trajectory.html#trajectory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.model.trajectory.trajectory" title="Link to this definition"></a></dt>
+<dd><p>Estimate parameters of a (non-linear) trajectory model for the time series.</p>
+<p>Model: y(t) = trend + annual + semi-annual + offsets + post-seismic (psd_log).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_type</strong> (<em>str</em>) – String of key-word parameters to estimate: ‘trend’, ‘annual’, ‘semi-annual’,
+‘seasonal’, ‘offset’, ‘psd_log’. E.g. ‘trend-seasonal-offset-psd_log’ for full model.</p></li>
+<li><p><strong>offset_dates</strong> (<em>list</em><em>, </em><em>optional</em>) – List of offset dates in decimal year.</p></li>
+<li><p><strong>eq_dates</strong> (<em>list</em><em>, </em><em>optional</em>) – List of earthquake dates for post-seismic (psd_log) estimation.</p></li>
+<li><p><strong>H_fix</strong> (<em>dict</em><em>, </em><em>optional</em>) – Parameters to fix, e.g. {‘psd_log_offset_00’: [10., 15., 0.], ‘psd_log_tau_00’: [100., 100., 100.]}.</p></li>
+<li><p><strong>H_constraints</strong> (<em>dict</em><em>, </em><em>optional</em>) – Parameters to constrain (center, sigma), e.g. {‘psd_log_tau_01’: [[500., 50], [500., 50], [500., 50]]}.</p></li>
+<li><p><strong>H_bounds</strong> (<em>dict</em><em>, </em><em>optional</em>) – Bounds, e.g. {‘psd_log_tau_02’: [[2*365., 3*365.], …]}.</p></li>
+<li><p><strong>component</strong> (<em>str</em><em>, </em><em>optional</em>) – Components to estimate (‘NEU’ or subset).</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbose mode.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(results_dict, model_Gts, residual_Gts, daily_predictions_Gts). Unlike most pyacs.gts
+functions, trajectory returns these 4 elements.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.model">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyacs.gts.lib.model" title="Link to this heading"></a></h2>
+<p>The model subpackage contains the model functions for the Gts class.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

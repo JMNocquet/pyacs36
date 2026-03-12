@@ -2,17 +2,31 @@
 def displacement(self,sdate=None,edate=None,window=None,method='median',speriod=[],eperiod=[], rounding='day' , verbose=True):
 ###################################################################
     """
-    Calculates displacements between two dates or two periods
+    Calculate displacement between two dates or two periods.
 
-    :param sdate: start date in decimal year
-    :param edate: start date in decimal year
-    :param window: time window in days for searching available dates
-    :param method: method to calculate the position. 'median' or 'mean'. default is 'median'.
-    :param speriod: period for calculating the start position
-    :param eperiod: period for calculating the end position
-    :param rounding: rounding for dates. Choose among 'day','hour','minute' or 'second'. default is 'day'.
-    :param verbose: verbose mode
-    :return: displacement as np.array([dn,de,du,sdn,sde,sdu])
+    Parameters
+    ----------
+    sdate : float, optional
+        Start date in decimal year.
+    edate : float, optional
+        End date in decimal year.
+    window : float, optional
+        Time window in days for searching available dates.
+    method : str, optional
+        Method to calculate position: 'median' or 'mean'. Default is 'median'.
+    speriod : list, optional
+        Period [start, end] for calculating the start position.
+    eperiod : list, optional
+        Period [start, end] for calculating the end position.
+    rounding : str, optional
+        Rounding for dates: 'day', 'hour', 'minute', or 'second'. Default is 'day'.
+    verbose : bool, optional
+        Verbose mode.
+
+    Returns
+    -------
+    ndarray
+        Displacement as np.array([dn, de, du, sdn, sde, sdu]).
     """
 
     # import 

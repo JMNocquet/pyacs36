@@ -1,19 +1,25 @@
 ###############################################################################
 def to_obs_tensor(self, rounding='day', verbose=False):
 ###############################################################################
+    """Return ENU data as a 3D tensor and site code array.
+
+    Parameters
+    ----------
+    rounding : str, optional
+        'day', 'hour', or 'second' for date rounding. Default is 'day'.
+    verbose : bool, optional
+        Verbose mode. Default is False.
+
+    Returns
+    -------
+    tuple
+        (T_OBS, np_names, np_date_s); T_OBS[k,i,0] = East at date k, site i (mm).
+
+    Notes
+    -----
+    T_OBS is 3D (dates x sites x components), values in mm.
     """
-    returns a numpy array including all gts (.data ENU) information as a 3D tensor and 1D array of site code
-
-    :param sgts: Sgts instance
-    :param rounding: 'day','hour','second'. all dates will be rounded to the nearest chosen day, hour or second. default is 'day'
-    :param verbose: boolean for verbose mode
-
-    :return: the numpy 3D array T_OBS, np_names, np_date_s
-
-    :note: T_OBS[k,i,0] returns the East value at the k_th date for site i in mm
-
-    """
-
+# TODO : it looks like it is not always working. But from pyeq.obs_tensor.sgts2obs_tensor import sgts2tensor works
     # import
     import numpy as np
     import pyacs.lib.astrotime as at
@@ -23,6 +29,14 @@ def to_obs_tensor(self, rounding='day', verbose=False):
     import pyacs.message.verbose_message as VERBOSE
     import pyacs.message.error as ERROR
     import pyacs.message.debug_message as DEBUG
+
+
+    from tqdm import tqdm
+
+
+    import inspect
+
+    VERBOSE("Running Sgts.%s" % inspect.currentframe().f_code.co_name)
 
     # np print option for debug
     # np.set_printoptions(precision=2 , suppress=True)
@@ -59,7 +73,9 @@ def to_obs_tensor(self, rounding='day', verbose=False):
 
     # loop on gts in sgts
 
-    for i in np.arange(np_names.shape[0]):
+
+    #for i in np.arange(np_names.shape[0]):
+    for site in tqdm(np.arange(np_names.shape[0]), desc='to_obs_tensor'):
 
         # code
         code = np_names[i]

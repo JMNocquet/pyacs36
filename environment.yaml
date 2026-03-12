@@ -1,0 +1,40 @@
+name: pyacs
+channels:
+  - conda-forge
+channel_priority: strict
+dependencies:
+  - python=3.12
+  - numpy
+  - scipy
+  - pandas
+  - matplotlib
+  - pyyaml
+  - cvxpy
+  - geopandas
+  - icecream
+  - netCDF4
+  - progress
+  - tqdm
+  - termcolor
+  - pygmt
+  - pyproj
+  - pyshp
+  - shapely
+  - requests
+  - wget
+  - pip
+  - pytest
+  - ipython
+  - ipykernel
+  - pyqt
+  - sphinx
+  - sphinx_rtd_theme
+  - sphinxcontrib-bibtex
+  - sphinxcontrib-napoleon
+  - sphinxcontrib-svg2pdfconverter
+  - sphinxcontrib-imagesvg
+# pip only install
+# proxy_tv does not properly installed. Used in obsoleted pyacs36/pyacs/gts/lib/filters/total_variation.py
+# pip install pyacs_main/dis_local/trendfilter 
+# pip install str2bool
+# then install pyacs/pyeq/pygeca/pyeblock

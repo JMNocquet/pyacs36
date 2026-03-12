@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyacs.lib.icosahedron &#8212; PYACS 0.66.18 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../_static/documentation_options.js?v=2262e354"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pyacs.lib.icosahedron</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.lib.euclid</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+
+<div class="viewcode-block" id="distance">
+<a class="viewcode-back" href="../../../api/pyacs.lib.html#pyacs.lib.icosahedron.distance">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">distance</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">):</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">B</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="n">B</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="icosahedron">
+<a class="viewcode-back" href="../../../api/pyacs.lib.html#pyacs.lib.icosahedron.icosahedron">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">icosahedron</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Construct an icosahedron on the unit sphere.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    verts : list of tuple</span>
+<span class="sd">        Vertices (x, y, z) on unit sphere.</span>
+<span class="sd">    faces : list of tuple</span>
+<span class="sd">        Face indices, each a 3-tuple of vertex indices.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">tau</span><span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="c1"># normalized</span>
+    <span class="n">radius</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">tau</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">verts</span> <span class="o">=</span> <span class="p">[</span> \
+        <span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="n">tau</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="n">tau</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>  <span class="n">tau</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="n">tau</span><span class="p">),</span>
+
+        <span class="p">(</span> <span class="mi">1</span><span class="p">,</span>  <span class="n">tau</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="n">tau</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span>  <span class="n">tau</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="n">tau</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        
+        <span class="p">(</span> <span class="n">tau</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">),</span>
+        <span class="p">(</span> <span class="n">tau</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+        <span class="p">(</span><span class="o">-</span><span class="n">tau</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">),</span>
+        <span class="p">(</span><span class="o">-</span><span class="n">tau</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+
+    
+
+    
+    <span class="n">faces</span><span class="o">=</span><span class="p">[</span>\
+        <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">)]</span>
+
+    <span class="c1"># normalize</span>
+    <span class="n">verts</span> <span class="o">=</span> <span class="p">[</span> \
+        <span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="o">/</span><span class="n">radius</span><span class="p">,</span>  <span class="n">tau</span><span class="o">/</span><span class="n">radius</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="o">/</span><span class="n">radius</span><span class="p">,</span> <span class="o">-</span><span class="n">tau</span><span class="o">/</span><span class="n">radius</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">radius</span><span class="p">,</span>  <span class="n">tau</span><span class="o">/</span><span class="n">radius</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">radius</span><span class="p">,</span> <span class="o">-</span><span class="n">tau</span><span class="o">/</span><span class="n">radius</span><span class="p">),</span>
+
+        <span class="p">(</span> <span class="mi">1</span><span class="o">/</span><span class="n">radius</span><span class="p">,</span>  <span class="n">tau</span><span class="o">/</span><span class="n">radius</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="p">(</span> <span class="mi">1</span><span class="o">/</span><span class="n">radius</span><span class="p">,</span> <span class="o">-</span><span class="n">tau</span><span class="o">/</span><span class="n">radius</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">radius</span><span class="p">,</span>  <span class="n">tau</span><span class="o">/</span><span class="n">radius</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">radius</span><span class="p">,</span> <span class="o">-</span><span class="n">tau</span><span class="o">/</span><span class="n">radius</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        
+        <span class="p">(</span> <span class="n">tau</span><span class="o">/</span><span class="n">radius</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="o">/</span><span class="n">radius</span><span class="p">),</span>
+        <span class="p">(</span> <span class="n">tau</span><span class="o">/</span><span class="n">radius</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">radius</span><span class="p">),</span>
+        <span class="p">(</span><span class="o">-</span><span class="n">tau</span><span class="o">/</span><span class="n">radius</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="o">/</span><span class="n">radius</span><span class="p">),</span>
+        <span class="p">(</span><span class="o">-</span><span class="n">tau</span><span class="o">/</span><span class="n">radius</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">radius</span><span class="p">)]</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">verts</span><span class="p">,</span><span class="n">faces</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="subdivide">
+<a class="viewcode-back" href="../../../api/pyacs.lib.html#pyacs.lib.icosahedron.subdivide">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">subdivide</span><span class="p">(</span><span class="n">verts</span><span class="p">,</span> <span class="n">faces</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Subdivide each triangle into four triangles, pushing verts to the unit sphere.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    verts : list</span>
+<span class="sd">        List of vertices (modified in place).</span>
+<span class="sd">    faces : list</span>
+<span class="sd">        List of face index tuples (modified in place).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    verts : list</span>
+<span class="sd">        Updated vertices.</span>
+<span class="sd">    faces : list</span>
+<span class="sd">        Updated faces.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">progress.bar</span><span class="w"> </span><span class="kn">import</span> <span class="n">Bar</span>
+
+    <span class="n">triangles</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span>
+    <span class="n">bar</span> <span class="o">=</span> <span class="n">Bar</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="n">triangles</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(percent).1f%%</span><span class="s1"> - </span><span class="si">%(elapsed)d</span><span class="s1">s&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">faceIndex</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">triangles</span><span class="p">):</span>
+
+
+        <span class="c1"># Create three new verts at the midpoints of each edge:</span>
+        <span class="n">face</span> <span class="o">=</span> <span class="n">faces</span><span class="p">[</span><span class="n">faceIndex</span><span class="p">]</span>
+        <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="n">Vector3</span><span class="p">(</span><span class="o">*</span><span class="n">verts</span><span class="p">[</span><span class="n">vertIndex</span><span class="p">])</span> <span class="k">for</span> <span class="n">vertIndex</span> <span class="ow">in</span> <span class="n">face</span><span class="p">)</span>
+        <span class="n">verts</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">normalized</span><span class="p">()[:])</span>
+        <span class="n">verts</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">b</span> <span class="o">+</span> <span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">normalized</span><span class="p">()[:])</span>
+        <span class="n">verts</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">a</span> <span class="o">+</span> <span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">normalized</span><span class="p">()[:])</span>
+
+        <span class="c1"># Split the current triangle into four smaller triangles:</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">verts</span><span class="p">)</span> <span class="o">-</span> <span class="mi">3</span>
+        <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">2</span>
+        <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+        <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">face</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+        <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">face</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">j</span><span class="p">))</span>
+        <span class="n">faces</span><span class="p">[</span><span class="n">faceIndex</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">face</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+        <span class="n">bar</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+
+    <span class="n">bar</span><span class="o">.</span><span class="n">finish</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">verts</span><span class="p">,</span> <span class="n">faces</span></div>
+
+
+
+<div class="viewcode-block" id="mesh_global">
+<a class="viewcode-back" href="../../../api/pyacs.lib.html#pyacs.lib.icosahedron.mesh_global">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">mesh_global</span><span class="p">(</span><span class="n">num_subdivisions</span><span class="o">=</span><span class="mi">6</span><span class="p">):</span>
+
+    <span class="n">Rt</span><span class="o">=</span><span class="mf">6371.0E3</span>
+    <span class="p">(</span><span class="n">verts</span><span class="p">,</span><span class="n">faces</span><span class="p">)</span><span class="o">=</span><span class="n">icosahedron</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Number of vertices and faces of initial icosahedron &quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">verts</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">faces</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Number of divisions &quot;</span><span class="p">,</span><span class="n">num_subdivisions</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Now doing subdivision...&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_subdivisions</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   - Division iteration: &quot;</span><span class="p">,</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="s2">&quot;/&quot;</span><span class="p">,</span><span class="n">num_subdivisions</span><span class="p">)</span>
+        <span class="n">verts</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="n">subdivide</span><span class="p">(</span><span class="n">verts</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   - New Number of vertices and faces &quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">verts</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">faces</span><span class="p">))</span>
+        <span class="n">A</span><span class="o">=</span><span class="n">verts</span><span class="p">[</span><span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">B</span><span class="o">=</span><span class="n">verts</span><span class="p">[</span><span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;   - New triangle edge distance : </span><span class="si">%8.3lf</span><span class="s2"> km&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">distance</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">)</span><span class="o">*</span><span class="n">Rt</span><span class="o">/</span><span class="mf">1000.</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">verts</span><span class="p">,</span><span class="n">faces</span><span class="p">)</span></div>
+
+    
+    
+    
+    
+<div class="viewcode-block" id="mesh_regional">
+<a class="viewcode-back" href="../../../api/pyacs.lib.html#pyacs.lib.icosahedron.mesh_regional">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">mesh_regional</span><span class="p">(</span><span class="n">num_subdivisions</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build an equilateral triangle mesh on the unit sphere within bounds.</span>
+
+<span class="sd">    Uses successive subdivisions of an icosahedron; only faces intersecting</span>
+<span class="sd">    the given bounds are kept.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    num_subdivisions : int, optional</span>
+<span class="sd">        Number of subdivision iterations. Default is 6.</span>
+<span class="sd">    bounds : str, optional</span>
+<span class="sd">        Region as string, e.g. &#39;/lon_min/lon_max/lat_min/lat_max&#39; (degrees).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    verts : list</span>
+<span class="sd">        Vertices as [x, y, z] in geocentric cartesian on unit sphere.</span>
+<span class="sd">    faces : list</span>
+<span class="sd">        Faces as lists of vertex indices; faces[i][j] is vertex j of face i.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="p">(</span><span class="n">lon_min</span><span class="p">,</span><span class="n">lon_max</span><span class="p">,</span><span class="n">lat_min</span><span class="p">,</span><span class="n">lat_max</span><span class="p">)</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span><span class="n">bounds</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]))</span>
+    <span class="p">(</span><span class="n">rlon_min</span><span class="p">,</span><span class="n">rlon_max</span><span class="p">,</span><span class="n">rlat_min</span><span class="p">,</span><span class="n">rlat_max</span><span class="p">)</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">,(</span><span class="n">lon_min</span><span class="p">,</span><span class="n">lon_max</span><span class="p">,</span><span class="n">lat_min</span><span class="p">,</span><span class="n">lat_max</span><span class="p">)))</span>
+
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># import</span>
+    <span class="c1">###########################################################################</span>
+ <span class="c1">#   import Polygon</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">coordinates</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Polygon</span> <span class="k">as</span> <span class="n">shp_polygon</span>
+
+ <span class="c1">#   rectangle=Polygon.Polygon(((rlon_min,rlat_min), (rlon_max,rlat_min),(rlon_max,rlat_max),(rlon_min,rlat_max)))</span>
+    <span class="n">shp_rectangle</span> <span class="o">=</span>  <span class="n">shp_polygon</span><span class="p">(</span> <span class="p">[(</span><span class="n">rlon_min</span><span class="p">,</span><span class="n">rlat_min</span><span class="p">),</span> <span class="p">(</span><span class="n">rlon_max</span><span class="p">,</span><span class="n">rlat_min</span><span class="p">),(</span><span class="n">rlon_max</span><span class="p">,</span><span class="n">rlat_max</span><span class="p">),(</span><span class="n">rlon_min</span><span class="p">,</span><span class="n">rlat_max</span><span class="p">)]</span> <span class="p">)</span>
+
+    <span class="n">Rt</span><span class="o">=</span><span class="mf">6371.0E3</span>
+    <span class="p">(</span><span class="n">verts</span><span class="p">,</span><span class="n">faces</span><span class="p">)</span><span class="o">=</span><span class="n">icosahedron</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Number of vertices and faces of initial icosahedron &quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">verts</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">faces</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Number of divisions &quot;</span><span class="p">,</span><span class="n">num_subdivisions</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Now doing subdivision...&quot;</span><span class="p">)</span>
+    <span class="n">ndivision</span><span class="o">=</span><span class="mi">6</span>
+    <span class="k">if</span> <span class="n">num_subdivisions</span><span class="o">&lt;</span><span class="mi">6</span><span class="p">:</span><span class="n">ndivision</span><span class="o">=</span><span class="n">num_subdivisions</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ndivision</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   - Division iteration: &quot;</span><span class="p">,</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="s2">&quot;/&quot;</span><span class="p">,</span><span class="n">num_subdivisions</span><span class="p">)</span>
+        <span class="n">verts</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="n">subdivide</span><span class="p">(</span><span class="n">verts</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   - New Number of vertices and faces &quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">verts</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">faces</span><span class="p">))</span>
+        <span class="n">A</span><span class="o">=</span><span class="n">verts</span><span class="p">[</span><span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">B</span><span class="o">=</span><span class="n">verts</span><span class="p">[</span><span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;   - New triangle edge distance : </span><span class="si">%8.3lf</span><span class="s2"> km&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">distance</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">)</span><span class="o">*</span><span class="n">Rt</span><span class="o">/</span><span class="mf">1000.</span><span class="p">)))</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Now doing selection on bounds &quot;</span><span class="p">,</span><span class="n">bounds</span><span class="p">)</span>
+    <span class="n">lfaces</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
+        <span class="c1">#print &quot;#face: &quot;,face</span>
+        <span class="n">lgeo</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]:</span>
+            <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span><span class="o">=</span><span class="n">verts</span><span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span>
+            <span class="p">(</span><span class="n">rlon</span><span class="p">,</span><span class="n">rlat</span><span class="p">,</span><span class="n">rh</span><span class="p">)</span><span class="o">=</span><span class="n">coordinates</span><span class="o">.</span><span class="n">xyz2geospheric</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
+            <span class="n">lgeo</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">rlon</span><span class="p">,</span><span class="n">rlat</span><span class="p">))</span>
+        
+<span class="c1">#        triangle=Polygon.Polygon((lgeo))</span>
+        <span class="n">shp_triangle</span> <span class="o">=</span> <span class="n">shp_polygon</span><span class="p">(</span> <span class="n">lgeo</span> <span class="p">)</span>
+<span class="c1">#        intersection = rectangle &amp; triangle</span>
+        <span class="n">shp_intersection</span> <span class="o">=</span> <span class="n">shp_rectangle</span><span class="o">.</span><span class="n">intersects</span><span class="p">(</span> <span class="n">shp_triangle</span> <span class="p">)</span>
+<span class="c1">#        print(&#39;intersection &#39; , intersection)</span>
+<span class="c1">#        print(&#39;shp_intersection &#39; , shp_intersection)</span>
+<span class="c1">#        if not intersection:continue#print &quot;No intersection&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">shp_intersection</span><span class="p">:</span><span class="k">continue</span><span class="c1">#print &quot;No intersection&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1">#print &quot;Intersection&quot;    </span>
+            <span class="n">lfaces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Keeping &quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">lfaces</span><span class="p">),</span><span class="s2">&quot; faces&quot;</span><span class="p">)</span>
+    <span class="n">faces</span><span class="o">=</span><span class="n">lfaces</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Now dealing with finer subdivisions&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ndivision</span><span class="p">,</span><span class="n">num_subdivisions</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   - Division iteration: &quot;</span><span class="p">,</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="s2">&quot;/&quot;</span><span class="p">,</span><span class="n">num_subdivisions</span><span class="p">)</span>
+        <span class="n">verts</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="n">subdivide</span><span class="p">(</span><span class="n">verts</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   - New Number of vertices and faces &quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">verts</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">faces</span><span class="p">))</span>
+        <span class="n">A</span><span class="o">=</span><span class="n">verts</span><span class="p">[</span><span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">B</span><span class="o">=</span><span class="n">verts</span><span class="p">[</span><span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;   - New triangle edge distance : </span><span class="si">%8.3lf</span><span class="s2"> km&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">distance</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">)</span><span class="o">*</span><span class="n">Rt</span><span class="o">/</span><span class="mf">1000.</span><span class="p">)))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   - Selecting faces on bounds &quot;</span><span class="p">,</span><span class="n">bounds</span><span class="p">)</span>
+
+        <span class="n">lfaces</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
+            <span class="c1">#print &quot;#face: &quot;,face</span>
+            <span class="n">lgeo</span><span class="o">=</span><span class="p">[]</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]:</span>
+                <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span><span class="o">=</span><span class="n">verts</span><span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span>
+                <span class="p">(</span><span class="n">rlon</span><span class="p">,</span><span class="n">rlat</span><span class="p">,</span><span class="n">rh</span><span class="p">)</span><span class="o">=</span><span class="n">coordinates</span><span class="o">.</span><span class="n">xyz2geospheric</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
+                <span class="n">lgeo</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">rlon</span><span class="p">,</span><span class="n">rlat</span><span class="p">))</span>
+            
+ <span class="c1">#           triangle=Polygon.Polygon((lgeo))</span>
+ <span class="c1">#           intersection = rectangle &amp; triangle</span>
+
+            <span class="n">shp_triangle</span> <span class="o">=</span> <span class="n">shp_polygon</span><span class="p">(</span><span class="n">lgeo</span><span class="p">)</span>
+            <span class="n">shp_intersection</span> <span class="o">=</span> <span class="n">shp_rectangle</span><span class="o">.</span><span class="n">intersects</span><span class="p">(</span><span class="n">shp_triangle</span><span class="p">)</span>
+
+<span class="c1">#            if not intersection:continue#print &quot;No intersection&quot;</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">shp_intersection</span><span class="p">:</span> <span class="k">continue</span>  <span class="c1"># print &quot;No intersection&quot;</span>
+            <span class="c1">#else: print &quot;Intersection&quot;</span>
+            <span class="n">lfaces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+        
+    <span class="n">faces</span><span class="o">=</span><span class="n">lfaces</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- &quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">faces</span><span class="p">),</span><span class="s2">&quot; faces kept.&quot;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="p">(</span><span class="n">verts</span><span class="p">,</span><span class="n">faces</span><span class="p">)</span>
+
+    
+    
+    <span class="n">ftriangles</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;triangles.dat&#39;</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">faces</span><span class="p">)):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- face #&quot;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="s2">&quot;/&quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">faces</span><span class="p">))</span>
+        <span class="n">ftriangles</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&gt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">face</span><span class="o">=</span><span class="n">faces</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]:</span>
+            <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span><span class="o">=</span><span class="n">verts</span><span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span>
+            <span class="c1">#print &#39;x,y,z &#39;,x,y,z</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="o">*</span><span class="n">Rt</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="o">*</span><span class="n">Rt</span>
+            <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="o">*</span><span class="n">Rt</span>
+            <span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">phi</span><span class="p">,</span><span class="n">he</span><span class="p">)</span><span class="o">=</span><span class="n">coordinates</span><span class="o">.</span><span class="n">xyz2geo</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
+            <span class="c1">#print (&quot;%10.5lf %10.5lf \n&quot; % (math.degrees(l),math.degrees(phi)))</span>
+            <span class="n">ftriangles</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%10.5lf</span><span class="s2"> </span><span class="si">%10.5lf</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">l</span><span class="p">),</span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">phi</span><span class="p">)))</span>
+        
+    <span class="n">ftriangles</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="n">Rt</span><span class="o">=</span><span class="mf">6371.0E3</span>
+    <span class="p">(</span><span class="n">verts</span><span class="p">,</span><span class="n">faces</span><span class="p">)</span><span class="o">=</span><span class="n">icosahedron</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Number of vertices and faces of initial icosahedron &quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">verts</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">faces</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Number of divisions &quot;</span><span class="p">,</span><span class="n">num_subdivisions</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Now doing subdivision...&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_subdivisions</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   - Division iteration: &quot;</span><span class="p">,</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="s2">&quot;/&quot;</span><span class="p">,</span><span class="n">num_subdivisions</span><span class="p">)</span>
+        <span class="n">verts</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="n">subdivide</span><span class="p">(</span><span class="n">verts</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   - New Number of vertices and faces &quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">verts</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">faces</span><span class="p">))</span>
+        <span class="n">A</span><span class="o">=</span><span class="n">verts</span><span class="p">[</span><span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">B</span><span class="o">=</span><span class="n">verts</span><span class="p">[</span><span class="n">faces</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;   - New triangle edge distance : </span><span class="si">%8.3lf</span><span class="s2"> km&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">distance</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">)</span><span class="o">*</span><span class="n">Rt</span><span class="o">/</span><span class="mf">1000.</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">verts</span><span class="p">,</span><span class="n">faces</span><span class="p">)</span></div>
+
+    
+    
+    
+<span class="c1">#    ftriangles=open(&#39;triangles.dat&#39;,&#39;w&#39;)</span>
+<span class="c1">#    for i in range(len(faces)):</span>
+<span class="c1">#        print &quot;- face #&quot;,i,&quot;/&quot;,len(faces)</span>
+<span class="c1">#        ftriangles.write(&quot;&gt;\n&quot;)</span>
+<span class="c1">#        face=faces[i]</span>
+<span class="c1">#        for j in [0,1,2]:</span>
+<span class="c1">#            (x,y,z)=verts[face[j]]</span>
+<span class="c1">#            #print &#39;x,y,z &#39;,x,y,z</span>
+<span class="c1">#            x=x*Rt</span>
+<span class="c1">#            y=y*Rt</span>
+<span class="c1">#            z=z*Rt</span>
+<span class="c1">#            (l,phi,he)=Coordinates.xyz2geo(x,y,z)</span>
+<span class="c1">#            #print (&quot;%10.5lf %10.5lf \n&quot; % (math.degrees(l),math.degrees(phi)))</span>
+<span class="c1">#            ftriangles.write(&quot;%10.5lf %10.5lf \n&quot; % (math.degrees(l),math.degrees(phi)))</span>
+<span class="c1">#        </span>
+<span class="c1">#    ftriangles.close()</span>
+    
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">PYACS</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Jean-Mathieu NOCQUET.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

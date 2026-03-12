@@ -2,15 +2,27 @@
 def geo_to_strike(ilon, ilat, elon, elat):
 ###############################################################################
 
-    """
-    for a given fault segment starting at ilon,lat and ending at elon, elat
-    , returns the strike.
+    """Return strike for a fault segment from start and end coordinates.
 
-    :param ilon,ilat: geographical coordinates of fault segment start point in decimal degrees
-    :param elon,elat: geographical coordinates of fault segment end point in decimal degrees
-    :returns strike: in decimal degrees clockwise from north
+    Parameters
+    ----------
+    ilon : float
+        Longitude of fault segment start in decimal degrees.
+    ilat : float
+        Latitude of fault segment start in decimal degrees.
+    elon : float
+        Longitude of fault segment end in decimal degrees.
+    elat : float
+        Latitude of fault segment end in decimal degrees.
 
-    :note: strike here is taken as the initial bearing. Be cautious with long segments
+    Returns
+    -------
+    float
+        Strike in decimal degrees clockwise from north.
+
+    Notes
+    -----
+    Strike is the initial bearing; be cautious with long segments.
     """
 
     import numpy as np

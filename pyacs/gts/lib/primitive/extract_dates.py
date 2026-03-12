@@ -1,20 +1,35 @@
 ###################################################################
-def extract_dates(self,dates, tol= 0.05 , in_place=False, verbose=True):
+def extract_dates(self,dates, tol= 0.05 , rounding=None, in_place=False, verbose=True):
 ###################################################################
     """
-    Returns a time series extracted for a given list of dates
-    
-    :param dates: dates either as a list or  1D numpy array of decimal dates
-    :param tol: date tolerance in days to assert that two dates are equal (default 0.05 day)
-    :param in_place: if True, will make change in place, if False, return s a new time series
-    :param verbose: boolean, verbose mode
+    Return a time series extracted for a given list of dates.
 
+    Parameters
+    ----------
+    dates : list or ndarray
+        Dates as a list or 1D numpy array of decimal dates.
+    tol : float, optional
+        Date tolerance in days to assert that two dates are equal (default 0.05 day).
+    rounding : str, optional
+        Rounding for date comparison ('second', 'minute', 'hour', 'day'). Inferred from tol if None.
+    in_place : bool, optional
+        If True, will make change in place; if False, returns a new time series.
+    verbose : bool, optional
+        Verbose mode.
     """
 
     # import 
     import inspect
     import numpy as np
     import pyacs.gts
+    import pyacs.lib.astrotime as at
+
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
 
     # check data is not None
     from pyacs.gts.lib.errors import GtsInputDataNone
@@ -25,93 +40,55 @@ def extract_dates(self,dates, tol= 0.05 , in_place=False, verbose=True):
             raise GtsInputDataNone(inspect.stack()[0][3],__name__,self)
     except GtsInputDataNone as error:
         # print PYACS WARNING
-        print( error )
+        ERROR( error )
         return( self )
+
+    # check that data_xyz and data are consistent
+    if self.data_xyz is not None:
+        if self.data_xyz.shape != self.data.shape:
+            ERROR(".data and .data_xyz are not consistent for time series %s. Returning time series" % self.code)
+            return self.copy()
+
+    # handles rounding
+    if rounding is None:
+        rounding = 'day'
+        if tol < 0.05:
+            rounding = 'hour'
+        if tol < 0.0007:
+            rounding = 'minute'
+        if tol < 1.E-5:
+            rounding = 'second'
+
+    # converts dates
+
+    np_date_s = at.decyear2seconds( self.data[:,0],rounding=rounding)
+    np_date_s_ref = at.decyear2seconds( np.array(dates),rounding=rounding)
+
+    # find date index
+
+    xy, np_idx, y_ind = np.intersect1d(np_date_s, np_date_s_ref, return_indices=True)
+
+    if np_idx.size ==0:
+        WARNING("No data available for time series %s at requested dates. Check rounding. Returning input time series" % self.code )
+        return self.copy()
 
     # working gts
     new_gts = self.copy()
-  
-    # case .data_xyz is None
+
+    # case .data_xyz
     
-    if new_gts.data_xyz is None:
-        new_gts.neu2xyz(corr=True)
+    if new_gts.data_xyz is not None:
+        new_gts.data_xyz = self.data_xyz[np_idx,:]
+        # re-generate NEU time series
+        new_gts.xyz2neu(corr=False)
 
     else:
-        # check data/data_xyz consistency
-        try:
-            if not new_gts.cdata(data=True):
-                # raise exception
-                from pyacs.gts.lib.errors import GtsCDataError
-                raise GtsCDataError( inspect.stack()[0][3],__name__,self )
-        except GtsCDataError as error:
-            print( error )
-            return( self )
-    
-  
-    new_data=None
-    
-    # extract dates
-        
-    index = np.array( pyacs.gts.Gts.get_index_from_dates(dates, self.data, tol=tol) )
-    
-    if verbose:
-        print('-- Extracting ',index.shape[0],' entries from Gts or code: ',self.code)
-    
-    if index.shape[0] > 0:
-            new_data_xyz= self.data_xyz[index,:]
-            new_sigma   = self.data[index,4:]
-    else:
-        new_data=None
-        if verbose:
-            print("-- time series ",self.code," does not have dates at the requested dates ")
+        new_gts.data = self.data[np_idx, :]
 
-  
     # handles outliers
+    new_gts.outliers = []
 
-    if new_data is not None:    
-        ldate_outliers=self.data[:,0][self.outliers]
-        lupdated_outliers=pyacs.gts.Gts.get_index_from_dates(ldate_outliers, new_data, tol=tol)
-    else:
-        lupdated_outliers = []
-
-    if verbose:
-        print('-- Transmitting ',len(lupdated_outliers),' outliers to the extracted Gts ')
-    
-    # case observations
-    
-    new_gts.data_xyz = new_data_xyz
-      
-    # handle outliers
-
-    ldate_outliers=self.data[:,0][self.outliers]
-    lupdated_outliers=pyacs.gts.Gts.get_index_from_dates(ldate_outliers, new_data_xyz, tol=0.05)
-    
     # handles offsets_date
-    
-    upd_offsets=[]
-    for offset_date in self.offsets_dates:
-        if offset_date>=new_data_xyz[0,0] and offset_date<=new_data_xyz[-1,0]:
-            upd_offsets.append(offset_date)
-    
-    # handles X0,Y0,Z0
-    
-    new_gts.X0 = new_data_xyz[0,1]
-    new_gts.Y0 = new_data_xyz[0,2]
-    new_gts.Z0 = new_data_xyz[0,3]
-    
-    # re-generate NEU time series
-    new_gts.xyz2neu(corr=False)
+    new_gts.offsets_dates = []
 
-    # re-populate the uncertainties columns
-    new_gts.data[:,4:] = new_sigma
-    
-    # offsets & outliers
-        
-    new_gts.offsets_dates=upd_offsets
-    new_gts.outliers=lupdated_outliers
-    
-    if in_place:
-        self = new_gts
-        return(self)
-    else:
-        return(new_gts)
+    return(new_gts)

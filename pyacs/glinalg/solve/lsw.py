@@ -2,13 +2,25 @@
 def lsw(G,d,std):
 ###############################################################################
     """
-    Solve the least-squares (LS) with data uncertainties provided as a vector
-    
-    :param G: m x n model matrix as 2D numpy array
-    :param d: m 1D numpy observation vector
-    :param std: standard deviation vector for d
+    Solve least-squares with data uncertainties given as a vector.
 
-    :note: the system is modified to be solved by ordinary LS by the change G<- (G.T/std).T and d<- d/std
+    Parameters
+    ----------
+    G : ndarray
+        m x n model matrix (2D).
+    d : ndarray
+        m observation vector (1D).
+    std : ndarray
+        Standard deviation vector for d (length m).
+
+    Returns
+    -------
+    ndarray
+        Solution from ordinary LS on G<- (G.T/std).T, d<- d/std.
+
+    Notes
+    -----
+    System is weighted by 1/std and solved via ls.
     """
 
     # full solution

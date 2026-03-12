@@ -9,16 +9,25 @@ def get_coseismic2(self,
     ###################################################################
     """
     Get coseismic displacement at a given date.
-    Coseismic displacement is estimated as the position difference between the median of window_days before
-    the earthquake date and the median of sample_after samples after the earthquake date.
 
-    :param eq_date: earthquake date either as datetime instance or decimal year
-    :param window_days: number of days before the earthquake used to compute position before the earthquake
-    :param sample_after: number of data after the earthquake used to compute position after the earthquake
-    :param method: method used to compute positions. 'median' or 'mean'
-    :param exclude_eq_day: boolean. exclude the day of the earthquake from the data
-    :param verbose: boolean
+    Coseismic displacement is the position difference between the median (or mean) of
+    window_days before the earthquake and the median (or mean) of sample_after samples
+    after the earthquake date.
 
+    Parameters
+    ----------
+    eq_date : datetime or float
+        Earthquake date as datetime instance or decimal year.
+    window_days : int, optional
+        Number of days before the earthquake used to compute position before.
+    sample_after : int, optional
+        Number of data after the earthquake used to compute position after.
+    method : str, optional
+        Method to compute positions: 'median' or 'mean'.
+    exclude_eq_day : bool, optional
+        If True, exclude the day of the earthquake from the data.
+    verbose : bool, optional
+        Verbose mode.
     """
     # debug
     debug = False

@@ -1,0 +1,290 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.sol.sinex module &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries.html">core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">pyacs.sol.sinex module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/pyacs.sol.sinex.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pyacs.sol.sinex">
+<span id="pyacs-sol-sinex-module"></span><h1>pyacs.sol.sinex module<a class="headerlink" href="#module-pyacs.sol.sinex" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyacs.sol.sinex.SSinex">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyacs.sol.sinex.</span></span><span class="sig-name descname"><span class="pre">SSinex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">estimates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">VCV</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/sol/sinex.html#SSinex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.sol.sinex.SSinex" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Sinex class: reads and manipulates a Sinex solution.
+Sinex (Solution/Technique Independent Exchange format) : Sinex format handling
+Description of the Sinex format is available at:
+<a class="reference external" href="http://www.iers.org/documents/ac/sinex/sinex_v210_proposal.pdf">http://www.iers.org/documents/ac/sinex/sinex_v210_proposal.pdf</a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.sol.sinex.SSinex.add_site">
+<span class="sig-name descname"><span class="pre">add_site</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/sol/sinex.html#SSinex.add_site"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.sol.sinex.SSinex.add_site" title="Link to this definition"></a></dt>
+<dd><p>Adds a Gpoint M in the current Sinex instance</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.sol.sinex.SSinex.add_to_STA">
+<span class="sig-name descname"><span class="pre">add_to_STA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">soln</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_sta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/sol/sinex.html#SSinex.add_to_STA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.sol.sinex.SSinex.add_to_STA" title="Link to this definition"></a></dt>
+<dd><p>add sta [dx,dx,dz] to STA values for a given code and soln</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.sol.sinex.SSinex.apply_helmert">
+<span class="sig-name descname"><span class="pre">apply_helmert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/sol/sinex.html#SSinex.apply_helmert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.sol.sinex.SSinex.apply_helmert" title="Link to this definition"></a></dt>
+<dd><p>Applies an Helmert transformation to a SINEX instance
+returns a new SINEX instance</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.sol.sinex.SSinex.change_STA">
+<span class="sig-name descname"><span class="pre">change_STA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">soln</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_sta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/sol/sinex.html#SSinex.change_STA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.sol.sinex.SSinex.change_STA" title="Link to this definition"></a></dt>
+<dd><p>change STA values for a given code and soln</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.sol.sinex.SSinex.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/sol/sinex.html#SSinex.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.sol.sinex.SSinex.clear" title="Link to this definition"></a></dt>
+<dd><p>Clear the sinex</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.sol.sinex.SSinex.common">
+<span class="sig-name descname"><span class="pre">common</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H_Gpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/sol/sinex.html#SSinex.common"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.sol.sinex.SSinex.common" title="Link to this definition"></a></dt>
+<dd><p>Returns a dictionary of Gpoint common to the current Sinex object and a dictionary (code,soln) of Gpoint
+Coordinates will be the ones from the Sinex and NOT from the list of Gpoints
+commons point are points with the same code pt and soln</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.sol.sinex.SSinex.from_sinex">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_sinex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">snx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/sol/sinex.html#SSinex.from_sinex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.sol.sinex.SSinex.from_sinex" title="Link to this definition"></a></dt>
+<dd><p>Constructs a PYACS Sinex instance from a P. Rebishung sinex instance</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.sol.sinex.SSinex.get_STA">
+<span class="sig-name descname"><span class="pre">get_STA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">soln</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">soln_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psd_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discontinuity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/sol/sinex.html#SSinex.get_STA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.sol.sinex.SSinex.get_STA" title="Link to this definition"></a></dt>
+<dd><p>Provides the predicted coordinates for a site at a given epoch. Accounts for soln and psd if provided.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.sol.sinex.SSinex.info_gpoint">
+<span class="sig-name descname"><span class="pre">info_gpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">soln</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/sol/sinex.html#SSinex.info_gpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.sol.sinex.SSinex.info_gpoint" title="Link to this definition"></a></dt>
+<dd><p>Print info for a given code and optionally soln</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.sol.sinex.SSinex.lcode">
+<span class="sig-name descname"><span class="pre">lcode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/sol/sinex.html#SSinex.lcode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.sol.sinex.SSinex.lcode" title="Link to this definition"></a></dt>
+<dd><p>Returns a list of all point codes in current Sinex object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.sol.sinex.SSinex.print_STA">
+<span class="sig-name descname"><span class="pre">print_STA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">soln</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/sol/sinex.html#SSinex.print_STA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.sol.sinex.SSinex.print_STA" title="Link to this definition"></a></dt>
+<dd><p>print STA values for a given code and optional soln</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.sol.sinex.SSinex.read_apr">
+<span class="sig-name descname"><span class="pre">read_apr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lexclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discontinuity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/sol/sinex.html#SSinex.read_apr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.sol.sinex.SSinex.read_apr" title="Link to this definition"></a></dt>
+<dd><p>Read a Globk apr file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lexclude</strong> (<em>list</em><em>, </em><em>optional</em>) – Site codes to exclude from reading.</p></li>
+<li><p><strong>discontinuity</strong> (<em>object</em><em>, </em><em>optional</em>) – If provided, used to populate the SOLN field (e.g. from Discontinuity/IGS soln).</p></li>
+<li><p><strong>rename</strong> (<em>dict</em><em>, </em><em>optional</em>) – Keys: sinex file; values: list of (‘OLD_CODE’, ‘NEW_CODE’). Often from Read_Conf_Pyacs.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary with (CODE, SOLN) keys and Gpoint instance values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.sol.sinex.SSinex.read_section_estimate">
+<span class="sig-name descname"><span class="pre">read_section_estimate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lexclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lonly</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discontinuity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/sol/sinex.html#SSinex.read_section_estimate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.sol.sinex.SSinex.read_section_estimate" title="Link to this definition"></a></dt>
+<dd><p>Read the ESTIMATE section of a SINEX file.</p>
+<p>Returns a dictionary keyed by (CODE, SOLN) with Gpoint instance values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lexclude</strong> (<em>list</em><em>, </em><em>optional</em>) – Site codes to exclude from reading.</p></li>
+<li><p><strong>lonly</strong> (<em>list</em><em>, </em><em>optional</em>) – If non-empty, only these codes are considered.</p></li>
+<li><p><strong>discontinuity</strong> (<em>object</em><em>, </em><em>optional</em>) – If provided, used to populate the SOLN field (e.g. from Discontinuity/IGS soln).</p></li>
+<li><p><strong>rename</strong> (<em>dict</em><em>, </em><em>optional</em>) – Keys: sinex file; values: list of (‘OLD_CODE’, ‘NEW_CODE’). Often from Read_Conf_Pyacs.</p></li>
+<li><p><strong>exclude</strong> (<em>object</em><em>, </em><em>optional</em>) – Additional exclusion filter.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary with (CODE, SOLN) keys and Gpoint instance values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>A point in SINEX is defined by CODE, PT, DOMES and SOLN; here PT and DOMES
+are ignored for versatility.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.sol.sinex.SSinex.site">
+<span class="sig-name descname"><span class="pre">site</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">soln</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/sol/sinex.html#SSinex.site"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.sol.sinex.SSinex.site" title="Link to this definition"></a></dt>
+<dd><p>return site for a given code and soln</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.sol.sinex.SSinex.subset_from_code">
+<span class="sig-name descname"><span class="pre">subset_from_code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lcode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lsoln</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/sol/sinex.html#SSinex.subset_from_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.sol.sinex.SSinex.subset_from_code" title="Link to this definition"></a></dt>
+<dd><p>Takes a subset from a SINEX according to a list of code and optionally a list of associated soln.
+Returns a dictionary of Gpoint with key (code,soln)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.sol.sinex.SSinex.subset_from_keys">
+<span class="sig-name descname"><span class="pre">subset_from_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/sol/sinex.html#SSinex.subset_from_keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.sol.sinex.SSinex.subset_from_keys" title="Link to this definition"></a></dt>
+<dd><p>Takes a subset from a SINEX according to the key of a dictionary made of (code,soln)
+Returns a dictionary of Gpoint with key (code,soln)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.sol.sinex.SSinex.write_sinex">
+<span class="sig-name descname"><span class="pre">write_sinex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sinex_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Agency_Code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'IRD'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/sol/sinex.html#SSinex.write_sinex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.sol.sinex.SSinex.write_sinex" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyacs.sol.sinex.SSinex.write_tsxyz">
+<span class="sig-name descname"><span class="pre">write_tsxyz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">HCOV</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/sol/sinex.html#SSinex.write_tsxyz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.sol.sinex.SSinex.write_tsxyz" title="Link to this definition"></a></dt>
+<dd><p>Write a tsxyz file from the current Sinex instance</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.sol.sinex.glred_1_day">
+<span class="sig-prename descclassname"><span class="pre">pyacs.sol.sinex.</span></span><span class="sig-name descname"><span class="pre">glred_1_day</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">glx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir_prt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir_log</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eq_rename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/sol/sinex.html#glred_1_day"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.sol.sinex.glred_1_day" title="Link to this definition"></a></dt>
+<dd><p>run glred over a day</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.sol.sinex.glx2snx">
+<span class="sig-prename descclassname"><span class="pre">pyacs.sol.sinex.</span></span><span class="sig-name descname"><span class="pre">glx2snx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">glx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir_snx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/sol/sinex.html#glx2snx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.sol.sinex.glx2snx" title="Link to this definition"></a></dt>
+<dd><p>converts a GLOBK glx file into a sinex file</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.sol.sinex.snx2ssc">
+<span class="sig-prename descclassname"><span class="pre">pyacs.sol.sinex.</span></span><span class="sig-name descname"><span class="pre">snx2ssc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">snx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ssc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir_ssc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/sol/sinex.html#snx2ssc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.sol.sinex.snx2ssc" title="Link to this definition"></a></dt>
+<dd><p>simplifies a sinex file into a ssc file</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

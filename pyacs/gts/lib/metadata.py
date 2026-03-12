@@ -1,16 +1,22 @@
 ###################################################################
 def read_lon_lat(self,gmt_file, verbose=False):
 ###################################################################
-    """
-    Reads a gmt psvelo file and populates Gts.lon & Gts.lat
-    
-    :param gmt_file: gmt psvelo file
-    :param verbose: verbose mode (boolean)
+    """Read a GMT psvelo file and set Gts.lon and Gts.lat.
 
-    :return: the current Gts instance
+    Parameters
+    ----------
+    gmt_file : str
+        Path to GMT psvelo file.
+    verbose : bool, optional
+        If True, print progress. Default is False.
+
+    Returns
+    -------
+    Gts
+        self (lon, lat populated).
     """
     
-    from pyacs.lib.vel_field import Velocity_Field
+    from pyacs.vel_field import Velocity_Field
 
     if verbose:
         print("-- Reading ",gmt_file)
@@ -27,15 +33,23 @@ def read_lon_lat(self,gmt_file, verbose=False):
 ###################################################################
 def save_velocity(self,gmt_file, verbose=True, comment=None, up=False):
 ###################################################################
-    """
-    Appends velocity estimates (with uncertainties) to a gmt psvelo file
-    
-    :param gmt_file: output gmt psvelo file (will append if gmt_file already exists)
-    :param verbose: verbose mode (boolean)
-    :param comment: comment as a string. '# ' is pre-prended to comment if not provided 
-    :param up: boolean. If True, then Ve, SVe and SVen are set to 0 and Vu and Vu are written as 4-th and 6-th fields
-    
-    :return: the current Gts instance
+    """Append velocity estimates (with uncertainties) to a GMT psvelo file.
+
+    Parameters
+    ----------
+    gmt_file : str
+        Output GMT psvelo file (appended if it exists).
+    verbose : bool, optional
+        If True, print progress. Default is True.
+    comment : str, optional
+        Comment line; '#' is prepended if not present.
+    up : bool, optional
+        If True, Ve/SVe/SVen set to 0 and Vu written as 4th/6th fields. Default is False.
+
+    Returns
+    -------
+    Gts
+        self.
     """
 
     # comment
@@ -47,7 +61,7 @@ def save_velocity(self,gmt_file, verbose=True, comment=None, up=False):
         comment=''
 
     # import
-    from pyacs.lib.vel_field import Velocity_Field
+    from pyacs.vel_field import Velocity_Field
     from pyacs.lib.gmtpoint import GMT_Point
     import os.path
 
@@ -70,17 +84,25 @@ def save_velocity(self,gmt_file, verbose=True, comment=None, up=False):
 ###################################################################
 def save_offsets(self,ofile, verbose=True, comment='', up=False, info=False):
 ###################################################################
-    """
-    Appends offsets values to a given text file (gmt psvelo format)
-    
-    :param ofile: output offset file
-    :param verbose: verbose mode (boolean)
-    :param comment: comment as a string. '# ' is pre-prended to comment if not provided 
-    :param up: boolean. If True, then Ve, SVe and SVen are set to 0 and Vu and Vu are written as 4-th and 6-th fields
+    """Append offset values to a text file (GMT psvelo format).
 
-    :return: the current Gts instance
+    Parameters
+    ----------
+    ofile : str
+        Output offset file path.
+    verbose : bool, optional
+        If True, print progress. Default is True.
+    comment : str, optional
+        Comment; '#' is prepended if not present. Default is ''.
+    up : bool, optional
+        If True, Ve/SVe/SVen set to 0 and Vu as 4th/6th fields. Default is False.
+    info : bool, optional
+        If True, write extra info. Default is False.
 
-    
+    Returns
+    -------
+    Gts
+        self.
     """
 
     if verbose:
@@ -124,17 +146,24 @@ def save_offsets(self,ofile, verbose=True, comment='', up=False, info=False):
 ###################################################################
 def read_eq_rename(self,eq_rename,in_place=False,verbose=False):
 ###################################################################
-    """
-    Reads the information for the current site (code) from an eq_rename globk file.
-    
-    Populates loutliers and offsets_dates
-    Found excluded periods in the eq_rename file are added to loutliers
-    
-    :param eq_rename: eq_rename (globk format) file to be read
-    :param in_place: boolean. If True then the Gts instance is modified, if False the Gts instance is preserved and a new Gts instance is return
-    :param verbose: verbose mode (boolean)
+    """Read current site info from a globk eq_rename file.
 
-    :return: Gts instance
+    Populates outliers and offsets_dates; excluded periods from the file
+    are added to outliers.
+
+    Parameters
+    ----------
+    eq_rename : str
+        Path to eq_rename file (globk format).
+    in_place : bool, optional
+        If True, modify self; if False, return a new Gts. Default is False.
+    verbose : bool, optional
+        If True, print progress. Default is False.
+
+    Returns
+    -------
+    Gts
+        self (if in_place) or new Gts instance.
     """
     
     import pyacs.lib.astrotime
@@ -209,16 +238,21 @@ def read_eq_rename(self,eq_rename,in_place=False,verbose=False):
 ###################################################################
 def save_eq_rename(self,eq_rename,verbose=False, excluded_periods=None):
 ###################################################################
-    """
-    save results of a Gts analysis in globk format eq_rename
-    
-    :param eq_rename: output eq_rename file (Golbk format)
-    :param verbose: verbose mode (boolean)
-    :param exluded_periods: periods to be excluded
+    """Save Gts analysis results to a globk-format eq_rename file.
 
-    :return: Gts instance
-    
-    
+    Parameters
+    ----------
+    eq_rename : str
+        Output eq_rename file path (globk format).
+    verbose : bool, optional
+        If True, print progress. Default is False.
+    excluded_periods : list, optional
+        Periods to exclude. Default is None.
+
+    Returns
+    -------
+    Gts
+        self.
     """
     import pyacs.lib.astrotime
     import numpy as np
@@ -389,20 +423,27 @@ def save_eq_rename(self,eq_rename,verbose=False, excluded_periods=None):
 ###################################################################
 def make_dynamic_apr(self,apr, time_step=30., pos_tol=0.03, dates=[], gap=20.0, verbose=False):
 ###################################################################
-    """
-    Creates an apr file for GAMIT
-    The created apr file has no velocity, but a series of coordinates at different time
-    
-    
-    :param apr: apr file (Globk format)
-    :param time_step: time step for writing dates (default 30 days)
-    :param pos_tol: position tolerance. If exceeded, a new date will be written. (default 0.03 m)
-    :param dates: a list of dates in decimal years where writing will be forced
-    :param gap: gap in days. If there is no data during a duration greater than gap, then observation is forced to be included and tested against pos_tol
-    :param verbose: verbose mode (boolean)
+    """Create a dynamic apr file for GAMIT (coordinates at different times, no velocity).
 
-    :return: Gts instance
-    
+    Parameters
+    ----------
+    apr : str
+        Output apr file path (globk format).
+    time_step : float, optional
+        Time step for writing dates in days. Default is 30.
+    pos_tol : float, optional
+        Position tolerance (m); exceedance triggers a new date. Default is 0.03.
+    dates : list, optional
+        Decimal-year dates where writing is forced. Default is [].
+    gap : float, optional
+        Gap in days; if no data for longer than gap, observation is forced and tested against pos_tol. Default is 20.
+    verbose : bool, optional
+        If True, print progress. Default is False.
+
+    Returns
+    -------
+    Gts
+        self.
     """
 
     # import
@@ -531,18 +572,27 @@ def make_dynamic_apr(self,apr, time_step=30., pos_tol=0.03, dates=[], gap=20.0, 
 ###################################################################
 def save_apr(self,apr, epoch=None, verbose=False, excluded_periods=None):
 ###################################################################
-    """
-    save results of a Gts analysis in globk format apr file
-    
-    :param apr: apr file (Globk format)
-    :param epoch: epoch in decimal year for coordinates in apr
-    :param verbose: verbose mode (boolean)
-    :param exluded_periods: periods to be excluded
+    """Save Gts analysis results to a globk-format apr file.
 
-    :return: Gts instance
-    
-    :note: following Globk's convention, site will be named XXXX_1PS, XXXX_2PS etc between offset dates
-    
+    Parameters
+    ----------
+    apr : str
+        Output apr file path (globk format).
+    epoch : float, optional
+        Epoch in decimal year for coordinates. Default is None (use period mid).
+    verbose : bool, optional
+        If True, print progress. Default is False.
+    excluded_periods : list, optional
+        Periods to exclude. Default is None.
+
+    Returns
+    -------
+    Gts
+        self.
+
+    Notes
+    -----
+    Following globk convention, site names are XXXX_1PS, XXXX_2PS, etc. between offset dates.
     """
     import pyacs.lib.coordinates
     import numpy as np
@@ -632,14 +682,19 @@ def save_apr(self,apr, epoch=None, verbose=False, excluded_periods=None):
 ###################################################################
 def read_offset_dates(self,offset_file):
 ###################################################################
-    """
-    Reads an offset file and populates offsets_dates (pyacs format) attribute of the current Gts instance.
-    format is simply a code dates. dates can be any format read by pyacs.guess_date 
-    
-    :param offset_file: offset_file to be read
+    """Read an offset file and set offsets_dates (pyacs format).
 
-    :return: the current Gts instance
-    
+    File format: code and dates; dates parsed by pyacs.guess_date.
+
+    Parameters
+    ----------
+    offset_file : str
+        Path to offset file.
+
+    Returns
+    -------
+    Gts
+        self (offsets_dates populated).
     """
 
     import pyacs.lib.astrotime
@@ -695,12 +750,12 @@ def info(self,info=2):
     smjd=pyacs.lib.astrotime.decyear2mjd(self.data[0,0])
     emjd=pyacs.lib.astrotime.decyear2mjd(self.data[-1,0])
 
-    print(("# Time series period: %4d  %03d - %4d  %03d  (%d days)" %(int(self.data[0,0]),sdoy,int(self.data[-1,0]),edoy,int(emjd-smjd))))
+    print(("# Time series period: %4d  %03d - %4d  %03d  (%d days)" %(int(self.data[0,0]),sdoy,int(self.data[-1,0]),edoy,round(emjd-smjd))))
     
     # obs
     n_obs=self.data[:,0].shape[0]
 
-    n_expected_obs=int(emjd-smjd)+1
+    n_expected_obs=round(emjd-smjd)+1
     loss=100.0 - float(n_obs)/float(n_expected_obs)*100.0
     print(("# Obs %5d # Expected %5d # Loss %5.1lf %%" %(n_obs,n_expected_obs,loss)))
     
@@ -725,13 +780,13 @@ def info(self,info=2):
     __print_header__("seasonal terms")
     if not isinstance(self.annual,np.ndarray):print ("# Annual terms     : not available")
     else:
-        print("# Annual and semi-annual terms - phase in years")
+        print("# Annual and semi-annual terms - phase in decimal years - amplitude in mm")
         print ("N_amplitude    N_phase  E_amplitude    E_phase   U_amplitude     U_phase")
         a_n,phi_n=__pq2aphi__(self.annual[0],self.annual[1])
         a_e,phi_e=__pq2aphi__(self.annual[2],self.annual[3])
         a_u,phi_u=__pq2aphi__(self.annual[4],self.annual[5])
         
-        print((" %10.4lf %10.4lf   %10.4lf %10.4lf    %10.4lf  %10.4lf  (annual)" % (a_n,phi_n,a_e,phi_e,a_u,phi_u)))
+        print((" %10.4lf %10.4lf   %10.1lf %10.4lf    %10.4lf  %10.4lf  (annual)" % (a_n*1000.0,phi_n,a_e*1000.0,phi_e,a_u*1000.0,phi_u)))
 
     # semi-annual terms
     if not isinstance(self.semi_annual,np.ndarray):print ("# Semi annual terms: not available")
@@ -740,7 +795,7 @@ def info(self,info=2):
         a_e,phi_e=__pq2aphi__(self.semi_annual[2],self.semi_annual[3])
         a_u,phi_u=__pq2aphi__(self.semi_annual[4],self.semi_annual[5])
         
-        print((" %10.4lf %10.4lf   %10.4lf %10.4lf    %10.4lf  %10.4lf  (semi-annual)" % (a_n,phi_n,a_e,phi_e,a_u,phi_u)))
+        print((" %10.4lf %10.4lf   %10.4lf %10.4lf    %10.4lf  %10.4lf  (semi-annual)" % (a_n*1000.0,phi_n,a_e*1000.0,phi_e,a_u*1000.0,phi_u)))
 
 
     # offsets dates

@@ -1,16 +1,32 @@
 
 def fault_to_corners( lon, lat, depth, length , width, strike, dip):
-    """
+    """Compute 4 fault corner coordinates from origin, dimensions and orientation.
 
-    :param lon: origin longitude for fault
-    :param lat: origin latitude for fault
-    :param length: fault length in km
-    :param width:  fault width in km
-    :param strike: fault strike in degrees
-    :param dip: fault dip in degrees
-    :return: lonc, latc, depthc 1D numpy arrays of the 4 fault corners
+    Parameters
+    ----------
+    lon : float
+        Origin longitude for fault in decimal degrees.
+    lat : float
+        Origin latitude for fault in decimal degrees.
+    depth : float
+        Depth in km (negative downward; positive values are converted to negative).
+    length : float
+        Fault length in km.
+    width : float
+        Fault width in km.
+    strike : float
+        Fault strike in degrees.
+    dip : float
+        Fault dip in degrees.
 
-    :note: use a flat Earth approximation, depth is negative
+    Returns
+    -------
+    numpy.ndarray
+        Array of shape (4, 3) with [lon, lat, depth] for the 4 fault corners.
+
+    Notes
+    -----
+    Uses a flat Earth approximation; depth is negative.
     """
 
     # import

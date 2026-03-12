@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyacs.gts.lib.errors &#8212; PYACS 0.66.18 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../../_static/documentation_options.js?v=2262e354"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pyacs.gts.lib.errors</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Exception class for Gts</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">red</span>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="GtsError">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.errors.GtsError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GtsError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="k">pass</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="GtsInputDataNone">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.errors.GtsInputDataNone">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GtsInputDataNone</span><span class="p">(</span><span class="n">GtsError</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">method_name</span><span class="p">,</span><span class="n">lib</span><span class="p">,</span><span class="n">gts</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">=</span> <span class="n">method_name</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">gts</span> <span class="o">=</span> <span class="n">gts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="o">=</span> <span class="n">lib</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">return_str</span> <span class="o">=</span> <span class="n">red</span><span class="p">(</span> <span class="s2">&quot;[PYACS WARNING] method </span><span class="si">%s</span><span class="s2"> from </span><span class="si">%s</span><span class="s2">: input gts has no data for site: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> 
+                          <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span> <span class="p">)</span> <span class="p">)</span> 
+        <span class="k">return</span><span class="p">(</span> <span class="n">return_str</span> <span class="p">)</span></div>
+
+    
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="GtsInputData_xyzNone">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.errors.GtsInputData_xyzNone">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GtsInputData_xyzNone</span><span class="p">(</span><span class="n">GtsError</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">method_name</span><span class="p">,</span><span class="n">lib</span><span class="p">,</span><span class="n">gts</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">=</span> <span class="n">method_name</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">gts</span> <span class="o">=</span> <span class="n">gts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="o">=</span> <span class="n">lib</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">return_str</span> <span class="o">=</span> <span class="n">red</span><span class="p">(</span> <span class="s2">&quot;[PYACS WARNING] method </span><span class="si">%s</span><span class="s2"> from </span><span class="si">%s</span><span class="s2">: input gts has no data_xyz for site: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> 
+                          <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span> <span class="p">)</span> <span class="p">)</span> 
+        <span class="k">return</span><span class="p">(</span> <span class="n">return_str</span> <span class="p">)</span></div>
+
+        
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="GtsInputData_allNone">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.errors.GtsInputData_allNone">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GtsInputData_allNone</span><span class="p">(</span><span class="n">GtsError</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">method_name</span><span class="p">,</span><span class="n">lib</span><span class="p">,</span><span class="n">gts</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">=</span> <span class="n">method_name</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">gts</span> <span class="o">=</span> <span class="n">gts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="o">=</span> <span class="n">lib</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">return_str</span> <span class="o">=</span> <span class="n">red</span><span class="p">(</span> <span class="s2">&quot;[PYACS WARNING] method </span><span class="si">%s</span><span class="s2"> from </span><span class="si">%s</span><span class="s2">: input gts has neither data nor data_xyz for site: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> 
+                          <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span> <span class="p">)</span> <span class="p">)</span> 
+        <span class="k">return</span><span class="p">(</span> <span class="n">return_str</span> <span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="GtsInputDataTypeError">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.errors.GtsInputDataTypeError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GtsInputDataTypeError</span><span class="p">(</span><span class="n">GtsError</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">method_name</span><span class="p">,</span><span class="n">lib</span><span class="p">,</span><span class="n">gts</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">=</span> <span class="n">method_name</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">gts</span> <span class="o">=</span> <span class="n">gts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="o">=</span> <span class="n">lib</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">return_str</span> <span class="o">=</span> <span class="n">red</span><span class="p">(</span> <span class="s2">&quot;[PYACS WARNING] method </span><span class="si">%s</span><span class="s2"> from </span><span class="si">%s</span><span class="s2">: gts.data is not a 2D numpy array. gts.data.type: </span><span class="si">%s</span><span class="s2"> for site: </span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span> 
+                          <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span> <span class="p">)</span> <span class="p">)</span> 
+        <span class="k">return</span><span class="p">(</span> <span class="n">return_str</span> <span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="GtsInputDataBadDim">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.errors.GtsInputDataBadDim">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GtsInputDataBadDim</span><span class="p">(</span><span class="n">GtsError</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">method_name</span><span class="p">,</span><span class="n">lib</span><span class="p">,</span><span class="n">gts</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">=</span> <span class="n">method_name</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">gts</span> <span class="o">=</span> <span class="n">gts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="o">=</span> <span class="n">lib</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">return_str</span> <span class="o">=</span> <span class="n">red</span><span class="p">(</span> <span class="s2">&quot;[PYACS WARNING] method </span><span class="si">%s</span><span class="s2"> from </span><span class="si">%s</span><span class="s2">: gts.data is not a 2D numpy array. gts.data.ndim: </span><span class="si">%d</span><span class="s2"> for site: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> 
+                          <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">ndim</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span> <span class="p">)</span> <span class="p">)</span> 
+        <span class="k">return</span><span class="p">(</span> <span class="n">return_str</span> <span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="GtsInputDataBadNcolumns">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.errors.GtsInputDataBadNcolumns">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GtsInputDataBadNcolumns</span><span class="p">(</span><span class="n">GtsError</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">method_name</span><span class="p">,</span><span class="n">lib</span><span class="p">,</span><span class="n">gts</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">=</span> <span class="n">method_name</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">gts</span> <span class="o">=</span> <span class="n">gts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="o">=</span> <span class="n">lib</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">return_str</span> <span class="o">=</span> <span class="n">red</span><span class="p">(</span> <span class="s2">&quot;[PYACS WARNING] method </span><span class="si">%s</span><span class="s2"> from </span><span class="si">%s</span><span class="s2">: gts.data has wrong number of columns (must be in [7,10]). gts.data.shape[1]: </span><span class="si">%d</span><span class="s2"> for site: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> 
+                          <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span> <span class="p">)</span> <span class="p">)</span> 
+        <span class="k">return</span><span class="p">(</span> <span class="n">return_str</span> <span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="GtsInputDataBadNrows">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.errors.GtsInputDataBadNrows">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GtsInputDataBadNrows</span><span class="p">(</span><span class="n">GtsError</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">method_name</span><span class="p">,</span><span class="n">lib</span><span class="p">,</span><span class="n">gts</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">=</span> <span class="n">method_name</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">gts</span> <span class="o">=</span> <span class="n">gts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="o">=</span> <span class="n">lib</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">return_str</span> <span class="o">=</span> <span class="n">red</span><span class="p">(</span> <span class="s2">&quot;[PYACS WARNING] method </span><span class="si">%s</span><span class="s2"> from </span><span class="si">%s</span><span class="s2">: gts.data has wrong number of rows (must be &gt;0). gts.data.shape[0]: </span><span class="si">%d</span><span class="s2"> for site: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> 
+                          <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span><span class="p">)</span> <span class="p">)</span> 
+        <span class="k">return</span><span class="p">(</span> <span class="n">return_str</span> <span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="GtsInputData_xyzTypeError">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.errors.GtsInputData_xyzTypeError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GtsInputData_xyzTypeError</span><span class="p">(</span><span class="n">GtsError</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">method_name</span><span class="p">,</span><span class="n">lib</span><span class="p">,</span><span class="n">gts</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">=</span> <span class="n">method_name</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">gts</span> <span class="o">=</span> <span class="n">gts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="o">=</span> <span class="n">lib</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">return_str</span> <span class="o">=</span> <span class="n">red</span><span class="p">(</span> <span class="s2">&quot;[PYACS WARNING] method </span><span class="si">%s</span><span class="s2"> from </span><span class="si">%s</span><span class="s2">: gts.data_xyz is not a 2D numpy array. gts.data.type: </span><span class="si">%s</span><span class="s2"> for site: </span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span> 
+                          <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span> <span class="p">)</span> <span class="p">)</span> 
+        <span class="k">return</span><span class="p">(</span> <span class="n">return_str</span> <span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="GtsInputData_xyzBadDim">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.errors.GtsInputData_xyzBadDim">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GtsInputData_xyzBadDim</span><span class="p">(</span><span class="n">GtsError</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">method_name</span><span class="p">,</span><span class="n">lib</span><span class="p">,</span><span class="n">gts</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">=</span> <span class="n">method_name</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">gts</span> <span class="o">=</span> <span class="n">gts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="o">=</span> <span class="n">lib</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">return_str</span> <span class="o">=</span> <span class="n">red</span><span class="p">(</span> <span class="s2">&quot;[PYACS WARNING] method </span><span class="si">%s</span><span class="s2"> from </span><span class="si">%s</span><span class="s2">: gts.data_xyz is not a 2D numpy array. gts.data_xyz.ndim: </span><span class="si">%d</span><span class="s2"> for site: </span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span> 
+                          <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">data_xyz</span><span class="o">.</span><span class="n">ndim</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span> <span class="p">)</span> <span class="p">)</span> 
+        <span class="k">return</span><span class="p">(</span> <span class="n">return_str</span> <span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="GtsInputData_xyzBadNcolumns">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.errors.GtsInputData_xyzBadNcolumns">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GtsInputData_xyzBadNcolumns</span><span class="p">(</span><span class="n">GtsError</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">method_name</span><span class="p">,</span><span class="n">lib</span><span class="p">,</span><span class="n">gts</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">=</span> <span class="n">method_name</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">gts</span> <span class="o">=</span> <span class="n">gts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="o">=</span> <span class="n">lib</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">return_str</span> <span class="o">=</span> <span class="n">red</span><span class="p">(</span> <span class="s2">&quot;[PYACS WARNING] method </span><span class="si">%s</span><span class="s2"> from </span><span class="si">%s</span><span class="s2">: gts.data_xyz has wrong number of columns (must be in [7,10]). gts.data_xyz.shape[1]: </span><span class="si">%d</span><span class="s2"> for site: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> 
+                          <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">data_xyz</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span> <span class="p">)</span> <span class="p">)</span> 
+        <span class="k">return</span><span class="p">(</span> <span class="n">return_str</span> <span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="GtsInputData_xyzBadNrows">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.errors.GtsInputData_xyzBadNrows">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GtsInputData_xyzBadNrows</span><span class="p">(</span><span class="n">GtsError</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">method_name</span><span class="p">,</span><span class="n">lib</span><span class="p">,</span><span class="n">gts</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">=</span> <span class="n">method_name</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">gts</span> <span class="o">=</span> <span class="n">gts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="o">=</span> <span class="n">lib</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">return_str</span> <span class="o">=</span> <span class="n">red</span><span class="p">(</span> <span class="s2">&quot;[PYACS WARNING] method </span><span class="si">%s</span><span class="s2"> from </span><span class="si">%s</span><span class="s2">: gts.data_xyz has wrong number of rows (must be &gt;0). gts.data_xyz.shape[0]: </span><span class="si">%d</span><span class="s2"> for site: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> 
+                          <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">data_xyz</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span> <span class="p">)</span> <span class="p">)</span> 
+        <span class="k">return</span><span class="p">(</span> <span class="n">return_str</span> <span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="GtsInputDataDiffShape">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.errors.GtsInputDataDiffShape">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GtsInputDataDiffShape</span><span class="p">(</span><span class="n">GtsError</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">method_name</span><span class="p">,</span><span class="n">lib</span><span class="p">,</span><span class="n">gts</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">=</span> <span class="n">method_name</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">gts</span> <span class="o">=</span> <span class="n">gts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="o">=</span> <span class="n">lib</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">return_str</span> <span class="o">=</span> <span class="n">red</span><span class="p">(</span> <span class="s2">&quot;[PYACS WARNING] method </span><span class="si">%s</span><span class="s2"> from </span><span class="si">%s</span><span class="s2">: gts.data and gts.data_xyz have different shapes. gts.data.shape=(</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">) and gts.data_xyz.shape=(</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">) for site: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> 
+                          <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">data_xyz</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">data_xyz</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span><span class="p">)</span> <span class="p">)</span> 
+        <span class="k">return</span><span class="p">(</span> <span class="n">return_str</span> <span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="GtsInputDataDiffDate">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.errors.GtsInputDataDiffDate">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GtsInputDataDiffDate</span><span class="p">(</span><span class="n">GtsError</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">method_name</span><span class="p">,</span><span class="n">lib</span><span class="p">,</span><span class="n">gts</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">=</span> <span class="n">method_name</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">gts</span> <span class="o">=</span> <span class="n">gts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="o">=</span> <span class="n">lib</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">return_str</span> <span class="o">=</span> <span class="n">red</span><span class="p">(</span> <span class="s2">&quot;[PYACS WARNING] method </span><span class="si">%s</span><span class="s2"> from </span><span class="si">%s</span><span class="s2">: gts.data and gts.data_xyz have different dates. Check gts.data[:,0] and gts.data_xyz[:,0] for site: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> 
+                          <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span> <span class="p">)</span> <span class="p">)</span> 
+        <span class="k">return</span><span class="p">(</span> <span class="n">return_str</span> <span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="GtsCDataError">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.errors.GtsCDataError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GtsCDataError</span><span class="p">(</span><span class="n">GtsError</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">method_name</span><span class="p">,</span><span class="n">lib</span><span class="p">,</span><span class="n">gts</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">=</span> <span class="n">method_name</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">gts</span> <span class="o">=</span> <span class="n">gts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="o">=</span> <span class="n">lib</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">return_str</span> <span class="o">=</span> <span class="n">red</span><span class="p">(</span> <span class="s2">&quot;[PYACS ERROR] method </span><span class="si">%s</span><span class="s2"> from </span><span class="si">%s</span><span class="s2">: initial check with cdata failed. Check .data and or .data_xyz for site: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> 
+                          <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">code</span> <span class="p">)</span> <span class="p">)</span> 
+        <span class="k">return</span><span class="p">(</span> <span class="n">return_str</span> <span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="GtsReadFileError">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.errors.GtsReadFileError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GtsReadFileError</span><span class="p">(</span><span class="n">GtsError</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">method_name</span><span class="p">,</span><span class="n">lib</span><span class="p">,</span><span class="n">file_name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">=</span> <span class="n">method_name</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span> <span class="o">=</span> <span class="n">file_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="o">=</span> <span class="n">lib</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">return_str</span> <span class="o">=</span> <span class="n">red</span><span class="p">(</span> <span class="s2">&quot;[PYACS ERROR] method </span><span class="si">%s</span><span class="s2"> from </span><span class="si">%s</span><span class="s2">: Could not read file: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> 
+                          <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span>   <span class="p">)</span> <span class="p">)</span> 
+        <span class="k">return</span><span class="p">(</span> <span class="n">return_str</span> <span class="p">)</span></div>
+
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="GtsMethodError">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.errors.GtsMethodError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GtsMethodError</span><span class="p">(</span><span class="n">GtsError</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method_name</span><span class="p">,</span> <span class="n">lib</span><span class="p">,</span> <span class="n">file_name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method_name</span> <span class="o">=</span> <span class="n">method_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_name</span> <span class="o">=</span> <span class="n">file_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lib</span> <span class="o">=</span> <span class="n">lib</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">return_str</span> <span class="o">=</span> <span class="n">red</span><span class="p">(</span><span class="s2">&quot;[PYACS ERROR] running method </span><span class="si">%s</span><span class="s2"> from </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span>
+                         <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">method_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lib</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">return_str</span><span class="p">)</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">PYACS</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Jean-Mathieu NOCQUET.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

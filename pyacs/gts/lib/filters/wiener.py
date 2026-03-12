@@ -10,15 +10,27 @@ https://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.signal.wiener.
 def wiener(self , in_place=False , verbose=True , my_size=15, noise=None):
 ###############################################################################
     """
-    returns a filtered time series using scipy.signal.wiener
-    
-    See documentation for the filter parameters.
-    
-    :param in_place: if True then replace the current time series
-    :param verbose: boolean, verbose mode
+    Return a filtered time series using scipy.signal.wiener.
 
-    :return: the filtered time series
+    Parameters
+    ----------
+    in_place : bool, optional
+        If True, replace the current time series; otherwise return a new Gts.
+    verbose : bool, optional
+        Verbose mode.
+    my_size : int, optional
+        Size of the Wiener filter window.
+    noise : float, optional
+        Noise estimate for the filter.
 
+    Returns
+    -------
+    Gts
+        Filtered time series.
+
+    See Also
+    --------
+    scipy.signal.wiener
     """
     
     import scipy.signal

@@ -2,11 +2,19 @@
 def rotate(self,angle,in_place=False):
 ###################################################################
     """
-    rotates the axis by an angle
+    Rotate the horizontal axes (E, N) by an angle.
 
-    :param angle: angle in decimal degrees clockwise
-    
-    if in_place = True then replace the current time series
+    Parameters
+    ----------
+    angle : float
+        Angle in decimal degrees, clockwise.
+    in_place : bool, optional
+        If True, replace the current time series; otherwise return a new Gts.
+
+    Returns
+    -------
+    Gts
+        Rotated time series (self if in_place, else new Gts). .data_xyz set to None.
     """
 
     # import 

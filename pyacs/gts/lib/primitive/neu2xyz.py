@@ -1,25 +1,48 @@
 ###################################################################
 def neu2xyz(self,corr=False,verbose=False):
 ###################################################################
+    """Populate .data_xyz from .data (requires X0,Y0,Z0 or lon, lat, h).
+
+    Parameters
+    ----------
+    corr : bool, optional
+        If True, compute standard deviations and correlations. Default is False.
+    verbose : bool, optional
+        Verbose mode. Default is False.
+
+    Returns
+    -------
+    Gts
+        self.
     """
-    populates .data_xyz from .data
-    requires X0,Y0,Z0 attributes to be set
+
+    # import
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
+    import pyacs.debug
+    import pyacs.lib.coordinates
+    import numpy as np
     
-    :param corr: if True, then standard deviation and correlations will also be calculated  
-    :param verbose: verbose mode
-    
-    """
 
     # check X0,Y0,Z0
     if self.X0 is None:
-        print("!!! ERROR: X0,Y0,Z0 attributes required for neu2xyz method.")
-        self.data_xyz = None
-        return(self)
-    
-    # import
-
-    import pyacs.lib.coordinates
-    import numpy as np
+        if self.lon is None:
+            ERROR(f"X0,Y0,Z0 and lon, lat, h attributes are None, but are required for neu2xyz method. Returning the Gts object as is.")
+            self.data_xyz = None
+            return(self)
+        else:
+            WARNING(f"Creating X0,Y0,Z0 from lon, lat, h attributes.")
+            if self.h is None:
+                WARNING(f"h attribute is None, but is required for neu2xyz method. Using 0 as default.")
+                self.h = 0
+            xref, yref, zref = pyacs.lib.coordinates.geo2xyz(self.lon, self.lat, self.h, unit='dec_deg')
+            self.X0 = xref
+            self.Y0 = yref
+            self.Z0 = zref
 
     # reference pos
     

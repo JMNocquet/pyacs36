@@ -6,20 +6,31 @@ Minimum component filter for Gts.
 def minimum_component(self , mask_period=[], p=1, fcut=None, Q=None , in_place=False , verbose=True ):
 ###############################################################################
     """
-    Minimum component filtering for Gts.
-    Minimum component filtering is useful for determining the background
-    component of a signal in the presence of spikes
-    :param mask_periods: periods (list or list of lists) which should be ignored for smoothing
-    :param p: integer (optional). polynomial degree to be used for the fit (default = 1)
-    :param fcut: float (optional). the cutoff frequency for the low-pass filter.  Default value is f_nyq / sqrt(N)
-    :param Q: float (optional). the strength of the low-pass filter.  Larger Q means a steeper cutoff. default value is 0.1 * fcut
-    :param in_place: if True then replace the current time series
-    :param verbose: boolean, verbose mode
-    :return: the filtered time series
-    :note:
-    This code follows the procedure explained in the book
-    "Practical Statistics for Astronomers" by Wall & Jenkins book, as
-    well as in Wall, J, A&A 122:371, 1997
+    Minimum component filtering for Gts (background signal in the presence of spikes).
+
+    Parameters
+    ----------
+    mask_period : list, optional
+        Period(s) to ignore for smoothing (list or list of lists).
+    p : int, optional
+        Polynomial degree for the fit (default 1).
+    fcut : float, optional
+        Cutoff frequency for the low-pass filter. Default f_nyq / sqrt(N).
+    Q : float, optional
+        Strength of the low-pass filter; larger Q = steeper cutoff. Default 0.1 * fcut.
+    in_place : bool, optional
+        If True, replace the current time series; otherwise return a new Gts.
+    verbose : bool, optional
+        Verbose mode.
+
+    Returns
+    -------
+    Gts
+        Filtered time series.
+
+    Notes
+    -----
+    Follows "Practical Statistics for Astronomers" (Wall & Jenkins) and Wall, J, A&A 122:371, 1997.
     """
     
     # import
@@ -31,9 +42,18 @@ def minimum_component(self , mask_period=[], p=1, fcut=None, Q=None , in_place=F
     def __ensure_list_of_list(ll):
     ###############################################################################
         """
-        Ensures ll is a list of lists
-        
-        [a,b] returns [[a,b]], and [[a,b]] returns [[a,b]]
+        Ensure argument is a list of lists.
+
+        [a, b] returns [[a, b]]; [[a, b]] returns [[a, b]].
+
+        Parameters
+        ----------
+        ll : list
+            List or list of lists.
+
+        Returns
+        -------
+        list of list
         """
     
         # check this is a list

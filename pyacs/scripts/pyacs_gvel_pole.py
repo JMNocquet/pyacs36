@@ -20,7 +20,7 @@ import sys
 import argparse
 
 import numpy as np
-from pyacs.lib.vel_field import Velocity_Field as VF
+from pyacs.vel_field import Velocity_Field as VF
 from pyacs.lib.errors import PyacsError
 
 ###################################################################
@@ -38,133 +38,133 @@ parser.add_argument('-pll', action='append', type=str, dest='pll', help="show po
 parser.add_argument('--verbose', '-v', action='count',default=0,help='verbose mode')
 parser.add_argument('--debug', action='count',default=0,help='debug mode')
 
-args = parser.parse_args()
 
-# verbose
-if args.verbose > 0:
-    print("-- Verbose mode")
-    verbose = True
-else:
-    verbose = False
+def main():
+    args = parser.parse_args()
 
-# debug
-if args.debug > 0:
-    print("-- Debug mode")
-    verbose = True
-    debug = True
-else:
-    debug = False
+    # verbose
+    if args.verbose > 0:
+        print("-- Verbose mode")
+        verbose = True
+    else:
+        verbose = False
 
-###################################################################
-# CHECK ARGUMENTS COMPATIBILITY
-###################################################################
+    # debug
+    if args.debug > 0:
+        print("-- Debug mode")
+        verbose = True
+        debug = True
+    else:
+        debug = False
 
-if (args.euler_file is None) and (args.plate is not None):
-    print("!!! ERROR: argument plate provided but not euler_file")
-    sys.exit()
-    
-if (args.value is not None) and (args.plate is not None):
-    print("!!! ERROR: argument value and plate provided. PYACS does not know which one to choose.")
-    sys.exit()
+    ###################################################################
+    # CHECK ARGUMENTS COMPATIBILITY
+    ###################################################################
 
-if (args.ivel is not None) and (args.pll is not None):
-    print("!!! ERROR: argument ivel and pll provided. PYACS does not know which one to choose.")
-    sys.exit()
-
-if (args.ivel is None) and (args.pll is None):
-    print("!!! ERROR: argument ivel or pll missing.")
-    sys.exit()
-
-###################################################################
-# READ EULER FILE
-###################################################################
-H_euler={}
-if args.euler_file is not None:
-    print("-- reading Euler file: %s" % args.euler_file)
-    try:
-        ef=open(args.euler_file)
-        for line in ef:
-            if line[0]=='#':continue
-            
-            lline = line.split(':')
-            name = lline[0].strip()
-            value = np.array( list(map(float,lline[1].split('/') ) ) )
-            H_euler[name] = value
-        ef.close()
-        if H_euler=={}:
-            raise
-    except:
-        raise 
-
-###################################################################
-# GET THE EULER POLE VALUE
-###################################################################
-W=None
-
-if args.plate is not None:
-    if args.plate.strip() not in list( H_euler.keys() ):
-        print("!!! ERROR: plate %s not found in euler file %s" % (args.plate,args.euler_file))
+    if (args.euler_file is None) and (args.plate is not None):
+        print("!!! ERROR: argument plate provided but not euler_file")
         sys.exit()
-    else:
-        W=value.reshape(3,1)
 
-if args.value is not None:
-    lpole = args.value.split('/')
-    tmp_pole = lpole[-3:]
-    W = np.array( list( map(float,tmp_pole) ) ).reshape(3,1)
+    if (args.value is not None) and (args.plate is not None):
+        print("!!! ERROR: argument value and plate provided. PYACS does not know which one to choose.")
+        sys.exit()
 
-print("-- Using Euler pole value: %8.4lf %8.4lf %8.4lf" % tuple(W.flatten().tolist()) )
+    if (args.ivel is not None) and (args.pll is not None):
+        print("!!! ERROR: argument ivel and pll provided. PYACS does not know which one to choose.")
+        sys.exit()
 
-###################################################################
-# CASE IVEL
-###################################################################
+    if (args.ivel is None) and (args.pll is None):
+        print("!!! ERROR: argument ivel or pll missing.")
+        sys.exit()
 
-if args.ivel is not None:
+    ###################################################################
+    # READ EULER FILE
+    ###################################################################
+    H_euler = {}
+    if args.euler_file is not None:
+        print("-- reading Euler file: %s" % args.euler_file)
+        try:
+            ef = open(args.euler_file)
+            for line in ef:
+                if line[0] == '#':
+                    continue
+                lline = line.split(':')
+                name = lline[0].strip()
+                value = np.array(list(map(float, lline[1].split('/'))))
+                H_euler[name] = value
+            ef.close()
+            if H_euler == {}:
+                raise
+        except Exception:
+            raise
 
-    vel = VF.read(file_name=args.ivel)
-    
-    if verbose:
-        print("-- Reading %s" % args.vel)
-        print("-- Found %d in %s" % (vel.nsites(), args.vel))
+    ###################################################################
+    # GET THE EULER POLE VALUE
+    ###################################################################
+    W = None
 
-    new_vel = vel.substract_pole(W, type_euler='euler')
-    
-    if args.ovel is not None:
-        my_comment = ("Euler pole (%8.4lf %8.4lf %8.4lf) applied to %s" % tuple(W.flatten().tolist()+[args.ivel]) )
-        import os
-        if os.path.exists(args.ovel):
-            print("!!! WARNING: %s exists. Results will be appended to it." % args.ovel)
-        new_vel.write(args.ovel , comment= my_comment)
-    else:
-        for code in new_vel.lcode():
-            new_vel.print_info_site(code, verbose=False)
+    if args.plate is not None:
+        if args.plate.strip() not in list(H_euler.keys()):
+            print("!!! ERROR: plate %s not found in euler file %s" % (args.plate, args.euler_file))
+            sys.exit()
+        else:
+            W = H_euler[args.plate.strip()].reshape(3, 1)
 
-###################################################################
-# CASE PLL
-###################################################################
+    if args.value is not None:
+        lpole = args.value.split('/')
+        tmp_pole = lpole[-3:]
+        W = np.array(list(map(float, tmp_pole))).reshape(3, 1)
 
-if args.pll is not None:
+    print("-- Using Euler pole value: %8.4lf %8.4lf %8.4lf" % tuple(W.flatten().tolist()))
 
-    from pyacs.lib.gmtpoint import GMT_Point
-    W[2,0] = -W[2,0] 
-    vel = VF()
+    ###################################################################
+    # CASE IVEL
+    ###################################################################
 
-    # decipher pll option
-    i=1
-    for pll in args.pll:
-        [lon,lat] = list( map(float, pll.split('/')[-2:]) )
-        M=GMT_Point(code=("X%03d" % i), lon=lon,lat=lat,Ve=0.,Vn=0.,SVe=0.,SVn=0.,SVen=0.)
-        vel.add_point(M)
-        i = i + 1
-    
-    # prediction
+    if args.ivel is not None:
+        vel = VF.read(file_name=args.ivel)
 
-    new_vel = vel.substract_pole(W, type_euler='euler')
-    
-    # print results
-    if args.ovel is not None:
-        my_comment = ("# Euler pole (%8.4lf %8.4lf %8.4lf) prediction" % tuple(W.flatten().tolist()) )
-        new_vel.write(args.ovel , comment='# ')
-    else:
-        for code in new_vel.lcode():
-            new_vel.print_info_site(code, verbose=False)
+        if verbose:
+            print("-- Reading %s" % args.ivel)
+            print("-- Found %d in %s" % (vel.nsites(), args.ivel))
+
+        new_vel = vel.substract_pole(W, type_euler='euler')
+
+        if args.ovel is not None:
+            my_comment = ("Euler pole (%8.4lf %8.4lf %8.4lf) applied to %s" % tuple(W.flatten().tolist() + [args.ivel]))
+            import os
+            if os.path.exists(args.ovel):
+                print("!!! WARNING: %s exists. Results will be appended to it." % args.ovel)
+            new_vel.write(args.ovel, comment=my_comment)
+        else:
+            for code in new_vel.lcode():
+                new_vel.print_info_site(code, verbose=False)
+
+    ###################################################################
+    # CASE PLL
+    ###################################################################
+
+    if args.pll is not None:
+        from pyacs.lib.gmtpoint import GMT_Point
+        W[2, 0] = -W[2, 0]
+        vel = VF()
+
+        i = 1
+        for pll in args.pll:
+            [lon, lat] = list(map(float, pll.split('/')[-2:]))
+            M = GMT_Point(code=("X%03d" % i), lon=lon, lat=lat, Ve=0., Vn=0., SVe=0., SVn=0., SVen=0.)
+            vel.add_point(M)
+            i = i + 1
+
+        new_vel = vel.substract_pole(W, type_euler='euler')
+
+        if args.ovel is not None:
+            my_comment = ("# Euler pole (%8.4lf %8.4lf %8.4lf) prediction" % tuple(W.flatten().tolist()))
+            new_vel.write(args.ovel, comment='# ')
+        else:
+            for code in new_vel.lcode():
+                new_vel.print_info_site(code, verbose=False)
+
+
+if __name__ == "__main__":
+    main()

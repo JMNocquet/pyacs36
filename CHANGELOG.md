@@ -1,11 +1,161 @@
 # VERSION HISTORY
+## 0.66.20 on 04/03/2025
+- pyproject.toml added
+- installation documentation revised
+- README.md updated
+- script make_github.sh added to copy only relevant files for distribution.
+- foreword.rst / index.rst changed to reflect README.md
+- trendfilter (slightly modified for compatibility) now included in pyacs/external_pkg with 
+- added hectorp a package required in setup.py
+- change in pyeblock_fault.py to maintain compatibility with pyshp 3.x
+## 0.66.19 on 02/03/2025
+- vel_field moved to pyacs level. methods are now distributed in individual files
+- pyacs.lib.euler, glinalg, gmtpoint, icoshaedron, robustestimators, shafile, timeperiod, units, utils modules converted to packages
+- remove lib.pygamit_module. Was saved in pygeca.
+- work in progress towards documentation build
+- pyacs36/make_pyacs_doc_html_sphinx.sh script now stable to build documentation. Documentation still need update.
+- clean setup.py
+- remove all previous implementations of l1trend using prox_tv or plwf
+- pyacs.gts.lib offset methods have been refactored. This needs further testing.
+## 0.66.18 on 26/02/2025
+- All Docstring were reformatted to follow Numpy-style
+- remove pyacs.lib.astrotime.py and pyacs.lib.coordinates.py files since they were converted to package since pyacs.00.66.16 
+## 0.66.17 on 23/02/2025
+- make read_pos more robust to read UGA & Geodesy Plotter (https://www.poleterresolide.fr/geodesy-plotter/#/) pos format
+- implemented Gts.detrend_hectorp
+- implemented Gts.detrend_pytrf
+- remove check_apr, that was mistakelly in Sgts_methods. This is a pygeca script.
+## 0.66.16 on 19/12/2025
+- split pyacs.lib.coordinates.py into a package
+## 0.66.15 on 11/12/2025
+- split pyacs.lib.astrotime.py into a package
+## 0.66.14 on 10/12/2025
+- added Sgts.sel_radius_eq
+## 0.66.13 on 28/11/2025
+- change in Sgts.read_ts to use windows compatible path
+## 0.66.12 on 14/11/2025
+- added Gts.read_sol for SGC sol format
+## 0.66.11 on 14/11/2025
+- some improvement to make installation easier: contextily (used in Sgts.show_map) removed from mandatory library
+## 0.66.1 on 30/09/2025 & 06/11/2025
+- a few part in pyacs_make_time_series.py have been parallelized
+- update pandas.read_csv for future compatibility
+## 0.66.00 on 10/09/2025
+- add Sgts.get_dates
+- added sum_l1_trend: print a summary of a previsouly l1trend filtered time series
+- get_unr changed to get IGS20
+- added ncpu option in pyacs_make_time_series.py
+## 0.65.99 on 19/08/2025
+- gts.lib.l1trend.optimal_l1trend_workflow introduced in 0.65.98 is stabilized - still needs extensive testing
+- pyacs.message has been refactored so that it also handles full logging in files.
+## 0.65.98 on 13/08/2025
+- l1trend has been refactored in a separate directory gts.lib.l1trend for better maintainability.
+## 0.65.97 on 11/08/2025
+- added functions l1trend_to_breakpoints and clean_l1trend in pyacs.gts.lib.filter.refine_l1trend. Those functions avoid too many close breakpoints without altering results.
+## 0.65.96 on 20250610-20250626
+- vel field has been updated to avoid np.asmatrix which is deprecated.
+- solved remaing bug with date option in plot
+- change in Gts.neu2xyz. Now uses lon, lat, h if X0, Y0, Z0 are missing. Allows to work with CATS format that does not include explicit position of the site.
+- added save_file option in Sgts.stat_site. save_dir option kept for compatibility.
+- Gts.read_cats has now Gts.data with 10 columns
+## 0.65.95 on 20250513
+- added ability to read new format for Pride kinematic processing 
+- change in Sgts.stat_site - suppress numpy warning when no velocity have estimated
+- Gts().write_pos and Gts().write_cats now use pos and cats defaults directory for output. 
+## 0.65.94 on 20250425
+- Improve robustness of l1trend
+- Improve robustness in Sgts.gts_mp. In particular, better handles engine crash.
+- Added title option in Gts.show_map
+- There was an issue arising from a change in pickle/numpy interaction for python 3.12, making Sgts.code being np.str_ instread of pure str. str is now directly enforced when reading a Super time series .pck.
+- change in substract_daily_ts. Code are now kept 4-characters for compatibility with integrity tests in Sgts.gts_mp
+## 0.65.93 on 20241119-20250114
+- Added Sgts.correct_offsets_from_file to correct offsets from a file
+- Added Gts.find_offsets_ivel to estimate offsets with l1trend/ivel
+- Added Gts.get_coseismic_l1trend to estimate coseismic offsets with l1trend
+- Added Sgts.show_ivel_map_gmt to plot daily  velocity field with GMT
+- Correct minor bug in pyacs.lib.shapefile when writing velocity field (name was not properly written)
+- Added jpl dates conversions in astrotime
+- Added Gts.get_values_at_date
+## 0.65.92 on 20240906
+- Improve verbose message for Gts.l1trend helping to evaluate the algorithm
+- Gts.find_large_uncertainty was in_place. Now returns a new Gts
+## 0.65.91 on 20240605
+- change in Sgts.show_map to handle change in geopandas. Now download and use GMT coastlines shapefiles
+## 0.65.90 on 20240515
+- added Sgts.make_distance_matrix_from_sgts and Sgts.nearest
+- change in remove_outliers to properly handle .data_xyz
+## 0.65.89 on 20240416
+- gts.refine_l1trend: test 4-segments optimization
+## 0.65.88 on 20240415
+- pyacs on python 3.11: compatibility tests + add pyinterp dependency
+- sel_from_grid: bug correction when grid crosses the 180/-180 longitude like Alsaka & Kermadec
+## 0.65.87 on 20240411
+- Bug correction: .data was not created when --pck_only option alone. corrected.
+## 0.65.87 on 20240321
+- Gts.l1trend: added refined and option to select the component to be processed
+## 0.65.86 on 20230927
+- Sgts.to_tspck added: time series tensor format
+## 0.65.85 on 20230607
+- Sgts.delnone added
+## 0.65.84 on 20230602
+- new implementation of Gts.l1trend. Now allows AICc, Cp and MIX. Optimization alpha algorithm improved
+## 0.65.83 on 20230531
+- added citerion='AICc' in Gts.l1trend
+## 0.65.82 on 20230505
+- improved verbose
+- added new functionality in Sgts.get_unr allowing spatial selection 
+- remove Gts.l1_trend from pyacs distribution
+- added test & harmonized import throughout the code; import pyacs.glinalg.solve
+- made writing time series more efficient in pyacs_make_time_series.py
+## 0.65.81 on 20230504
+- read_igs_discontinuity: print line of error when IGS discontinuity file has format problem
+- bug correction reading an apr in sinex.py when velocity are not 0.
+- correct a rare bug using max_ivel option in Sgts.compute_common_mode
+## 0.65.80 on 20230417
+- added Gts.ivel
+- compute_common_mode_l1trend robust to np.nan
+## 0.65.79 on 20230412
+- correction line 176-177 in pyacs.lib.shapefile to handle psvelo file with only 1 record
+## 0.65.78 on 20230407
+- added Gts.edge_filter which is similar to l1trend
+## 0.65.77 on 20230405
+- added Sgts.gts_mp. requires ipyparallel
+## 0.65.76 on 20230404
+- added Sgts.compute_common_mode_l1trend
+## 0.65.75 on 20230331
+- added Gts.read_series to read GipsyX format
+## 0.65.74 on 20230328
+- Gts.get_unr_loading added: gets loading prediction from UNR
+## 0.65.73 on 20230306
+- Sgts.save_velocity refactoring
+## 0.65.72 on 20230131
+- Gts.apply_offset: sets .data_xyz to None to enforce consistency between .data and .data_xyz
+- bug in Gts.frame when argument passed w
+## 0.65.71 on 20221117
+- Sgts.sel_from_grid: selection over a grid like slab2 model
 
+## 0.65.70 on 20220805
+- Sgts.plot_component: multiple time series plot
+
+## 0.65.69 on 202200617
+- Gts.l1trend: l1 trend filter with optimal BIC criterion
+
+## 0.65.68 on 202200608
+- Gts.sub: default is now linclude=None to avoid misinterpretation of []
+
+## 0.65.67 on 20220318 
+- added exclude option in pyacs_make_time_series.py conf_file
+- new verbose format loading time series Sgts.read_ts
+- added Gts.extrapolate
+- added Gts.n_obs
 ## 0.65.66 on 20220209 
-painful cartopy dependency removed thanks to change in Gts.show_map
-added Sgts.to_kml and Sgts.plot_data_sum methods.
-set data_xyz = None in Gts.model methods
-add CHANGELOG.md
-Start to use logging to select the verbose level. Work not finished.
+- painful cartopy dependency removed thanks to change in Gts.show_map
+- added Sgts.to_kml and Sgts.plot_data_sum methods (small bug corrected 20220222)
+- set data_xyz = None in Gts.model methods
+- add CHANGELOG.md
+- Start to use logging to select the verbose level. Work not finished.
+- added pyacs.verbose and pyacs.debug
+- added art in setup.py
 ## 0.65.65 on 20211130 
 corrected small bug. Sgts.sel_radius when range=[0,X] did not include provided center site
 This release has been distributed to various users.

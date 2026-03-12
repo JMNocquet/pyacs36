@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyacs.gts.lib.primitive.extract_dates &#8212; PYACS 0.66.18 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../../../_static/documentation_options.js?v=2262e354"></script>
+    <script src="../../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pyacs.gts.lib.primitive.extract_dates</h1><div class="highlight"><pre>
+<span></span><span class="c1">###################################################################</span>
+<div class="viewcode-block" id="extract_dates">
+<a class="viewcode-back" href="../../../../../api/pyacs.gts.lib.primitive.html#pyacs.gts.lib.primitive.extract_dates.extract_dates">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_dates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dates</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span> <span class="mf">0.05</span> <span class="p">,</span> <span class="n">rounding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a time series extracted for a given list of dates.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dates : list or ndarray</span>
+<span class="sd">        Dates as a list or 1D numpy array of decimal dates.</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        Date tolerance in days to assert that two dates are equal (default 0.05 day).</span>
+<span class="sd">    rounding : str, optional</span>
+<span class="sd">        Rounding for date comparison (&#39;second&#39;, &#39;minute&#39;, &#39;hour&#39;, &#39;day&#39;). Inferred from tol if None.</span>
+<span class="sd">    in_place : bool, optional</span>
+<span class="sd">        If True, will make change in place; if False, returns a new time series.</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        Verbose mode.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># import </span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.gts</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">at</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+
+    <span class="c1"># check data is not None</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.gts.lib.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">GtsInputDataNone</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># raise exception</span>
+            <span class="k">raise</span> <span class="n">GtsInputDataNone</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span><span class="vm">__name__</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">GtsInputDataNone</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+        <span class="c1"># print PYACS WARNING</span>
+        <span class="n">ERROR</span><span class="p">(</span> <span class="n">error</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">(</span> <span class="bp">self</span> <span class="p">)</span>
+
+    <span class="c1"># check that data_xyz and data are consistent</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_xyz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_xyz</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+            <span class="n">ERROR</span><span class="p">(</span><span class="s2">&quot;.data and .data_xyz are not consistent for time series </span><span class="si">%s</span><span class="s2">. Returning time series&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="c1"># handles rounding</span>
+    <span class="k">if</span> <span class="n">rounding</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">rounding</span> <span class="o">=</span> <span class="s1">&#39;day&#39;</span>
+        <span class="k">if</span> <span class="n">tol</span> <span class="o">&lt;</span> <span class="mf">0.05</span><span class="p">:</span>
+            <span class="n">rounding</span> <span class="o">=</span> <span class="s1">&#39;hour&#39;</span>
+        <span class="k">if</span> <span class="n">tol</span> <span class="o">&lt;</span> <span class="mf">0.0007</span><span class="p">:</span>
+            <span class="n">rounding</span> <span class="o">=</span> <span class="s1">&#39;minute&#39;</span>
+        <span class="k">if</span> <span class="n">tol</span> <span class="o">&lt;</span> <span class="mf">1.E-5</span><span class="p">:</span>
+            <span class="n">rounding</span> <span class="o">=</span> <span class="s1">&#39;second&#39;</span>
+
+    <span class="c1"># converts dates</span>
+
+    <span class="n">np_date_s</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2seconds</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">rounding</span><span class="o">=</span><span class="n">rounding</span><span class="p">)</span>
+    <span class="n">np_date_s_ref</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2seconds</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dates</span><span class="p">),</span><span class="n">rounding</span><span class="o">=</span><span class="n">rounding</span><span class="p">)</span>
+
+    <span class="c1"># find date index</span>
+
+    <span class="n">xy</span><span class="p">,</span> <span class="n">np_idx</span><span class="p">,</span> <span class="n">y_ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">np_date_s</span><span class="p">,</span> <span class="n">np_date_s_ref</span><span class="p">,</span> <span class="n">return_indices</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">np_idx</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">WARNING</span><span class="p">(</span><span class="s2">&quot;No data available for time series </span><span class="si">%s</span><span class="s2"> at requested dates. Check rounding. Returning input time series&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="c1"># working gts</span>
+    <span class="n">new_gts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="c1"># case .data_xyz</span>
+    
+    <span class="k">if</span> <span class="n">new_gts</span><span class="o">.</span><span class="n">data_xyz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">new_gts</span><span class="o">.</span><span class="n">data_xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">[</span><span class="n">np_idx</span><span class="p">,:]</span>
+        <span class="c1"># re-generate NEU time series</span>
+        <span class="n">new_gts</span><span class="o">.</span><span class="n">xyz2neu</span><span class="p">(</span><span class="n">corr</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">new_gts</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">np_idx</span><span class="p">,</span> <span class="p">:]</span>
+
+    <span class="c1"># handles outliers</span>
+    <span class="n">new_gts</span><span class="o">.</span><span class="n">outliers</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># handles offsets_date</span>
+    <span class="n">new_gts</span><span class="o">.</span><span class="n">offsets_dates</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">new_gts</span><span class="p">)</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../index.html">PYACS</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Jean-Mathieu NOCQUET.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

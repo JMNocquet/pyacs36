@@ -1,12 +1,19 @@
 
 def get_unr( self , site , verbose=False ):
 
-    """
-    Get a time series from http://geodesy.unr.edu/gps_timeseries/txyz/IGS14/ in PYACS
-    
-    :param site: 4-letters code
-    :param verbose: verbose mode
- 
+    """Fetch a time series from UNR (IGS20 txyz) and return as Gts.
+
+    Parameters
+    ----------
+    site : str
+        4-letter site code.
+    verbose : bool, optional
+        If True, print progress. Default is False.
+
+    Returns
+    -------
+    Gts or None
+        Loaded time series or None on failure.
     """
 
     # import    
@@ -23,8 +30,9 @@ def get_unr( self , site , verbose=False ):
     delta_12h = timedelta(hours=12)
 
     # url
-    url = ("http://geodesy.unr.edu/gps_timeseries/txyz/IGS14/%s.txyz2" % site.upper())
-    
+    url = ("https://geodesy.unr.edu/gps_timeseries/IGS20/txyz/%s.txyz2" % site.upper())
+    # template on 11/09/2024
+    #https://geodesy.unr.edu/gps_timeseries/IGS20/txyz/BCES.txyz2
     # get data
     
     try:

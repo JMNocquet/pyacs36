@@ -1,0 +1,267 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.lib.coordinates.spherical_baseline_length_rate &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../libraries.html">core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyacs.lib.coordinates.spherical_baseline_length_rate</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyacs.lib.coordinates.spherical_baseline_length_rate</h1><div class="highlight"><pre>
+<span></span>
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="spherical_baseline_length_rate">
+<a class="viewcode-back" href="../../../../api/pyacs.lib.coordinates.spherical_baseline_length_rate.html#pyacs.lib.coordinates.spherical_baseline_length_rate">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">spherical_baseline_length_rate</span><span class="p">(</span><span class="n">slon</span><span class="p">,</span> <span class="n">slat</span><span class="p">,</span> <span class="n">sve</span><span class="p">,</span> <span class="n">svn</span><span class="p">,</span> <span class="n">elon</span><span class="p">,</span> <span class="n">elat</span><span class="p">,</span> <span class="n">eve</span><span class="p">,</span> <span class="n">evn</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Baseline (great circle) length rate between two points.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    slon : float</span>
+<span class="sd">        Longitude of profile start point, decimal degrees.</span>
+<span class="sd">    slat : float</span>
+<span class="sd">        Latitude of profile start point, decimal degrees.</span>
+<span class="sd">    sve : float</span>
+<span class="sd">        East velocity at start point, mm/yr.</span>
+<span class="sd">    svn : float</span>
+<span class="sd">        North velocity at start point, mm/yr.</span>
+<span class="sd">    elon : float</span>
+<span class="sd">        Longitude of profile end point, decimal degrees.</span>
+<span class="sd">    elat : float</span>
+<span class="sd">        Latitude of profile end point, decimal degrees.</span>
+<span class="sd">    eve : float</span>
+<span class="sd">        East velocity at end point, mm/yr.</span>
+<span class="sd">    evn : float</span>
+<span class="sd">        North velocity at end point, mm/yr.</span>
+<span class="sd">    sigma : array_like, optional</span>
+<span class="sd">        Velocity uncertainties [sig_sve, sig_svn, corr_sven, sig_eve, sig_evn, corr_even].</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        If True, enable verbose output.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    length_arc : float</span>
+<span class="sd">        Great circle arc length in meters.</span>
+<span class="sd">    length_rate : float</span>
+<span class="sd">        Lengthening rate in mm/yr.</span>
+<span class="sd">    strain_rate : float</span>
+<span class="sd">        1D strain rate in 1/yr.</span>
+<span class="sd">    If sigma is provided, also returns sig_v, sig_strain_rate.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Rt in meters</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.lib.gmtpoint</span><span class="w"> </span><span class="kn">import</span> <span class="n">GMT_Point</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">glinalg</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">euler</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.mat_rot_general_to_local</span><span class="w"> </span><span class="kn">import</span> <span class="n">mat_rot_general_to_local</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.geo2xyz</span><span class="w"> </span><span class="kn">import</span> <span class="n">geo2xyz</span>
+    
+    <span class="n">Rt</span> <span class="o">=</span> <span class="mf">6371.0E3</span>
+    
+    <span class="c1"># </span>
+    <span class="c1">#print(&#39;slon, slat, sve, svn, elon, elat, eve, evn&#39;,slon, slat, sve, svn, elon, elat, eve, evn)</span>
+    <span class="c1">#print(&#39;sigma &#39;, sigma )</span>
+    
+    <span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="n">yi</span><span class="p">,</span> <span class="n">zi</span><span class="p">)</span> <span class="o">=</span> <span class="n">geo2xyz</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">slon</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">slat</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;radians&quot;</span><span class="p">)</span>
+    <span class="n">Xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xi</span><span class="p">,</span> <span class="n">yi</span><span class="p">,</span> <span class="n">zi</span><span class="p">])</span>
+    <span class="c1">#print(&#39;Xi&#39; , Xi)</span>
+
+    <span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">zs</span><span class="p">)</span> <span class="o">=</span> <span class="n">geo2xyz</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">elon</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">elat</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;radians&quot;</span><span class="p">)</span>
+    <span class="n">Xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">zs</span><span class="p">])</span>
+    <span class="c1">#print(&#39;Xs&#39; , Xs)</span>
+
+    <span class="n">POLE</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">Xi</span><span class="p">,</span> <span class="n">Xs</span><span class="p">)</span>
+    <span class="c1">#print( euler.rot2euler(POLE[0], POLE[1], POLE[2]) )</span>
+    <span class="n">POLE</span> <span class="o">=</span> <span class="n">POLE</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">POLE</span><span class="p">)</span>
+
+    <span class="c1"># along / transverse great circle component start point</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">mat_rot_general_to_local</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">slon</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">slat</span><span class="p">),</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;radians&quot;</span><span class="p">)</span>
+    <span class="n">OM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xi</span><span class="p">,</span> <span class="n">yi</span><span class="p">,</span> <span class="n">zi</span><span class="p">])</span>
+    <span class="n">OM</span> <span class="o">=</span> <span class="n">OM</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">OM</span><span class="p">)</span>
+
+    <span class="n">unit_parallele_xyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">POLE</span><span class="p">,</span> <span class="n">OM</span><span class="p">)</span>
+    <span class="n">unit_parallele_enu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">unit_parallele_xyz</span><span class="p">)</span>
+    <span class="c1">#print(&#39;unit_parallele_enu&#39; , unit_parallele_enu*10. )</span>
+
+    <span class="n">sv_parallele</span> <span class="o">=</span> <span class="n">sve</span> <span class="o">*</span> <span class="n">unit_parallele_enu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">svn</span> <span class="o">*</span> <span class="n">unit_parallele_enu</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">sv_perpendicular</span> <span class="o">=</span> <span class="n">sve</span> <span class="o">*</span> <span class="n">unit_parallele_enu</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">svn</span> <span class="o">*</span> <span class="n">unit_parallele_enu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># covariance</span>
+    <span class="k">if</span> <span class="n">sigma</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sigma</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sigma</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+        <span class="n">corr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">corr</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">sigma</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">corr</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">sigma</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">cov</span> <span class="o">=</span> <span class="n">glinalg</span><span class="o">.</span><span class="n">corr_to_cov</span><span class="p">(</span><span class="n">corr</span><span class="p">,</span> <span class="n">sig</span><span class="p">)</span>
+        <span class="c1"># rotation</span>
+        <span class="n">angle_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">unit_parallele_enu</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">unit_parallele_enu</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="c1">#print(&#39;angle_rad in deg &#39; , np.degrees( angle_rad ))</span>
+        <span class="n">rot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">rot</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle_rad</span><span class="p">)</span>
+        <span class="n">rot</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle_rad</span><span class="p">)</span>
+        <span class="n">rot</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle_rad</span><span class="p">)</span>
+        <span class="n">rot</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle_rad</span><span class="p">)</span>
+        <span class="n">rot</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle_rad</span><span class="p">)</span>
+        <span class="c1"># apply rotation</span>
+        <span class="n">vcv_en</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">rot</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">cov</span><span class="p">,</span> <span class="n">rot</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+        
+        <span class="n">s_sv_parallel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">vcv_en</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># along / transverse great circle component end point</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">mat_rot_general_to_local</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">elon</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">elat</span><span class="p">),</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;radians&quot;</span><span class="p">)</span>
+    <span class="n">OM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">zs</span><span class="p">])</span>
+    <span class="n">OM</span> <span class="o">=</span> <span class="n">OM</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">OM</span><span class="p">)</span>
+
+    <span class="n">unit_parallele_xyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">POLE</span><span class="p">,</span> <span class="n">OM</span><span class="p">)</span>
+    <span class="n">unit_parallele_enu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">unit_parallele_xyz</span><span class="p">)</span>
+    <span class="c1">#print(&#39;unit_parallele_enu&#39; , unit_parallele_enu*10. )</span>
+    <span class="n">ev_parallele</span> <span class="o">=</span> <span class="n">eve</span> <span class="o">*</span> <span class="n">unit_parallele_enu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">evn</span> <span class="o">*</span> <span class="n">unit_parallele_enu</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">ev_perpendicular</span> <span class="o">=</span> <span class="n">eve</span> <span class="o">*</span> <span class="n">unit_parallele_enu</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">evn</span> <span class="o">*</span> <span class="n">unit_parallele_enu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># covariance</span>
+    <span class="k">if</span> <span class="n">sigma</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sigma</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">sigma</span><span class="p">[</span><span class="mi">4</span><span class="p">]])</span>
+        <span class="n">corr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">corr</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">sigma</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+        <span class="n">corr</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">sigma</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+        <span class="n">cov</span> <span class="o">=</span> <span class="n">glinalg</span><span class="o">.</span><span class="n">corr_to_cov</span><span class="p">(</span><span class="n">corr</span><span class="p">,</span> <span class="n">sig</span><span class="p">)</span>
+        <span class="c1"># rotation</span>
+        <span class="n">angle_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">unit_parallele_enu</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">unit_parallele_enu</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="c1">#print(&#39;angle_rad in deg &#39; , np.degrees( angle_rad ))</span>
+        <span class="n">rot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">rot</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle_rad</span><span class="p">)</span>
+        <span class="n">rot</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle_rad</span><span class="p">)</span>
+        <span class="n">rot</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle_rad</span><span class="p">)</span>
+        <span class="n">rot</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle_rad</span><span class="p">)</span>
+        <span class="n">rot</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle_rad</span><span class="p">)</span>
+        <span class="c1"># apply rotation</span>
+        <span class="n">vcv_en</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">rot</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">cov</span><span class="p">,</span> <span class="n">rot</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+        
+        <span class="n">s_ev_parallel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">vcv_en</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        
+        
+    <span class="c1"># great circle arc length</span>
+    <span class="n">MS</span> <span class="o">=</span> <span class="n">GMT_Point</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="n">slon</span><span class="p">,</span> <span class="n">lat</span><span class="o">=</span><span class="n">slat</span><span class="p">)</span>
+    <span class="n">ME</span> <span class="o">=</span> <span class="n">GMT_Point</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="n">elon</span><span class="p">,</span> <span class="n">lat</span><span class="o">=</span><span class="n">elat</span><span class="p">)</span>
+    <span class="n">length_arc</span> <span class="o">=</span> <span class="n">MS</span><span class="o">.</span><span class="n">spherical_distance</span><span class="p">(</span><span class="n">ME</span><span class="p">)</span>
+
+    <span class="c1"># lengthening in mm/yr</span>
+    <span class="n">length_rate</span> <span class="o">=</span> <span class="n">ev_parallele</span> <span class="o">-</span> <span class="n">sv_parallele</span>
+
+    <span class="c1"># 1D strain rate in 1/yr</span>
+    <span class="n">strain_rate</span> <span class="o">=</span> <span class="n">length_rate</span> <span class="o">*</span> <span class="mf">1E-3</span> <span class="o">/</span> <span class="n">length_arc</span>
+    
+    <span class="c1"># case covariance</span>
+    <span class="k">if</span> <span class="n">sigma</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span>  <span class="n">length_arc</span> <span class="p">,</span> <span class="n">length_rate</span> <span class="p">,</span> <span class="n">strain_rate</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sig_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">s_sv_parallel</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">s_ev_parallel</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">sig_strain_rate</span> <span class="o">=</span> <span class="n">sig_v</span> <span class="o">*</span> <span class="mf">1.0e-3</span> <span class="o">/</span> <span class="n">length_arc</span>
+        <span class="k">return</span>  <span class="n">length_arc</span> <span class="p">,</span> <span class="n">length_rate</span> <span class="p">,</span> <span class="n">strain_rate</span><span class="p">,</span>  <span class="n">sig_v</span><span class="p">,</span> <span class="n">sig_strain_rate</span></div>
+
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -11,29 +11,28 @@ from six.moves import zip
 
 
 def t_scan(L, window = 1e3, num_workers = -1):
-    """
-    Computes t statistic for i to i+window points versus i-window to i
-    points for each point i in input array. Uses multiple processes to
-    do this calculation asynchronously. Array is decomposed into window
-    number of frames, each consisting of points spaced at window
-    intervals. This optimizes the calculation, as the drone function
-    need only compute the mean and variance for each set once.
+    """Compute t statistic for sliding windows along a 1D time series.
+
+    For each index i, compares the segment [i, i+window) with [i-window, i)
+    using a t statistic. Uses multiple processes; the array is decomposed
+    into frames (points spaced at window intervals) so mean and variance
+    are computed once per segment.
+
     Parameters
     ----------
-    L : numpy array
-        1 dimensional array that represents time series of datapoints
-    window : int / float
-        Number of points that comprise the windows of data that are
-        compared
-    num_workers : int
-        Number of worker processes for multithreaded t_stat computation
-        Defult value uses num_cpu - 1 workers
+    L : array_like, shape (n,)
+        One-dimensional time series of data points.
+    window : int or float, optional
+        Number of points in each half-window. Default 1000.
+    num_workers : int, optional
+        Number of worker processes for parallel computation. If -1, uses
+        ``cpu_count() - 1``. Default -1.
+
     Returns
     -------
-    t_stat : numpy array
-        Array which holds t statistic values for each point. The first 
-        and last (window) points are replaced with zero, since the t
-        statistic calculation cannot be performed in that case.
+    t_stat : ndarray, shape (n,)
+        t statistic at each point. The first and last ``window`` points
+        are zero (calculation not defined there).
     """
     size    = L.size
     window  = int(window)
@@ -196,6 +195,7 @@ def get_step_sizes(array, indices, window=1000):
     and a negative value indicates a downward step). The combined 
     standard deviation of both measurements (as a measure of uncertainty
     in step calculation) is also provided.
+    
     Parameters
     ----------
     array : numpy array
@@ -206,6 +206,7 @@ def get_step_sizes(array, indices, window=1000):
     window : int, optional
         Number of points to average over to determine baseline levels
         before and after step.
+    
     Returns
     -------
     step_sizes : list

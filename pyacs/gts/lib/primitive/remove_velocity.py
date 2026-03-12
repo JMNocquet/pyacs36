@@ -10,6 +10,13 @@ def remove_velocity(self,vel_neu,in_place=False):
     # import 
     import inspect
     import numpy as np
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
+
 
     # check data is not None
     from pyacs.gts.lib.errors import GtsInputDataNone
@@ -20,7 +27,7 @@ def remove_velocity(self,vel_neu,in_place=False):
             raise GtsInputDataNone(inspect.stack()[0][3],__name__,self)
     except GtsInputDataNone as error:
         # print PYACS WARNING
-        print( error )
+        ERROR( error )
         return( self )
 
     if self.t0 != None:

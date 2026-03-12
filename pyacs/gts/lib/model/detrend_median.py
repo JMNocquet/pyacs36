@@ -1,27 +1,72 @@
 ###############################################################################
-def detrend_median(self, delta_day=None, in_place=False, periods=[], exclude_periods=[], verbose=False, auto=False):
+def detrend_median(self, delta_day=None, periods=[], exclude_periods=[], verbose=False, auto=False, log_dir=None):
 ###############################################################################
-    """
-    Calculates a velocity using the median of pair of displacements exactly separated by one year, inspired from MIDAS
-    If the time series has less than a year of data, then the time series is kept untouched.
-    :param delta_day: if None, it is one year, if 0 then it is the relax mode for campaign data,
-        any integer is the time delta (in days) used to compute velocity.
-    :param in_place: boolean, if True, in_place, if False, returns a new Gts instance (default)
-    :param periods: periods (list of lists) to be included for trend calculation
-    :param exclude_periods: periods (list of lists) to be excluded for trend calculation
-    :param verbose: verbose mode
-    :param auto: if True, then start will delta_day=None, if it fails or found less than 100 pairs then use delta_day=0,
-        if fails then use regular detrend
-    :note: returns None if time series is shorter than 1 year
+    """Compute velocity from median of 1-year pair displacements (MIDAS-style).
+
+    If the time series is shorter than one year, it is left unchanged.
+
+    Parameters
+    ----------
+    delta_day : int or None, optional
+        Time delta in days for pairs. None = one year, 0 = relax mode for campaign data. Default is None.
+    periods : list, optional
+        Periods to include for trend. Default is [].
+    exclude_periods : list, optional
+        Periods to exclude. Default is [].
+    verbose : bool, optional
+        If True, print progress. Default is False.
+    auto : bool, optional
+        If True, try delta_day=None then 0, else fallback to regular detrend. Default is False.
+    log_dir : str, optional
+        Directory for log file {self.code}_detrend_median.log. Default is None.
+
+    Returns
+    -------
+    Gts or None
+        Detrended Gts, or None if series shorter than 1 year.
     """
 
+    # import
     import numpy as np
     from pyacs.gts.Gts import Gts
     import inspect
+    import logging
+    import os
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
 
+    # Setup Gts-specific logging if log_dir is provided
+    gts_logger = None
+    if log_dir is not None:
+        # Create log directory if it doesn't exist
+        os.makedirs(log_dir, exist_ok=True)
+        
+        # Create Gts-specific log file
+        log_file = os.path.join(log_dir, f"{self.code}.log")
+        
+        # Configure Gts-specific logger
+        gts_logger = logging.getLogger(f'pyacs.gts.{self.code}')
+        if not gts_logger.handlers:
+            gts_logger.setLevel(logging.INFO)
+            # Prevent propagation to parent loggers to avoid duplicate logging
+            gts_logger.propagate = False
+            file_handler = logging.FileHandler(log_file, mode='a')  # append mode
+            file_handler.setLevel(logging.INFO)
+            # Custom formatter with [Gts.code] prefix
+            formatter = logging.Formatter('%(asctime)s - %(levelname)s - [%(name)s] %(message)s')
+            file_handler.setFormatter(formatter)
+            gts_logger.addHandler(file_handler)
+        
+        # Log method start with [Gts.code] prefix
+        gts_logger.info(f"[{self.code}] [detrend_median] Starting method")
+        gts_logger.info(f"[{self.code}] [detrend_median] Parameters: delta_day={delta_day}, auto={auto}")
+        gts_logger.info(f"[{self.code}] [detrend_median] Time series: {len(self.data)} points from {self.data[0, 0]:.3f} to {self.data[-1, 0]:.3f}")
 
     # after this method .data  and .data_xyz are not consistent so .data_xyz is set to None
-    self.data_xyz = None
+    #self.data_xyz = None
 
     ###########################################################################
     # check data is not None
@@ -33,6 +78,8 @@ def detrend_median(self, delta_day=None, in_place=False, periods=[], exclude_per
             raise GtsInputDataNone(inspect.stack()[0][3], __name__, self)
     except GtsInputDataNone as error:
         # print PYACS WARNING
+        if gts_logger:
+            gts_logger.error(f"[{self.code}] [detrend_median] Input data is None")
         print(error)
         return (self)
     ###########################################################################
@@ -42,8 +89,10 @@ def detrend_median(self, delta_day=None, in_place=False, periods=[], exclude_per
     ###########################################################################
 
     if (self.data[-1, 0] - self.data[0, 0]) < 1.:
-        if verbose:
-            print("!!! WARNING: time series shorter than 1 year for side: %s" % self.code)
+        warning_msg = f"time series shorter than 1 year for side: {self.code}"
+        if gts_logger:
+            gts_logger.warning(f"[{self.code}] [detrend_median] Time series shorter than 1 year")
+        WARNING(warning_msg)
         return (None)
 
     ###########################################################################
@@ -51,20 +100,30 @@ def detrend_median(self, delta_day=None, in_place=False, periods=[], exclude_per
     ###########################################################################
 
     if auto:
+        if gts_logger:
+            gts_logger.info(f"[{self.code}] [detrend_median] Auto mode enabled, trying different delta_day values")
 
-        tts = self.detrend_median(delta_day=None, in_place=in_place, \
+        tts = self.detrend_median(delta_day=None, \
                                   periods=periods, exclude_periods=exclude_periods, \
-                                  verbose=verbose, auto=False)
+                                  verbose=verbose, auto=False, log_dir=log_dir)
 
         if tts is None:
-            tts = self.detrend_median(delta_day=0, in_place=in_place, \
+            if gts_logger:
+                gts_logger.info(f"[{self.code}] [detrend_median] delta_day=None failed, trying delta_day=0")
+            tts = self.detrend_median(delta_day=0, \
                                       periods=periods, exclude_periods=exclude_periods, \
-                                      verbose=verbose, auto=False)
+                                      verbose=verbose, auto=False, log_dir=log_dir)
 
         if tts is None:
-            tts = self.detrend(in_place=in_place, \
-                               periods=periods, exclude_periods=exclude_periods, \
-                               verbose=verbose)
+            if gts_logger:
+                gts_logger.info(f"[{self.code}] [detrend_median] delta_day=0 failed, trying regular detrend")
+            tts = self.detrend(periods=periods, exclude_periods=exclude_periods)
+
+        if gts_logger:
+            if tts is not None:
+                gts_logger.info(f"[{self.code}] [detrend_median] Auto mode completed successfully")
+            else:
+                gts_logger.warning(f"[{self.code}] [detrend_median] Auto mode failed")
 
         return (tts)
 
@@ -73,6 +132,9 @@ def detrend_median(self, delta_day=None, in_place=False, periods=[], exclude_per
     ###########################################################################
 
     import pyacs.lib.astrotime
+
+    if gts_logger:
+        gts_logger.info(f"[{self.code}] [detrend_median] Starting main processing")
 
     tmp_ts = self.remove_outliers()
 
@@ -90,6 +152,8 @@ def detrend_median(self, delta_day=None, in_place=False, periods=[], exclude_per
     ###########################################################################
 
     if delta_day is None:
+        if gts_logger:
+            gts_logger.info(f"[{self.code}] [detrend_median] Using 1-year pair method")
 
         duration_in_year = tmp_ts.data[-1, 0] - tmp_ts.data[0, 0]
 
@@ -130,6 +194,8 @@ def detrend_median(self, delta_day=None, in_place=False, periods=[], exclude_per
             # test whether there are at least 3 non-Nan numbers
 
             if np.count_nonzero(~np.isnan(np_vel)) < min_vel_estimate:
+                if gts_logger:
+                    gts_logger.warning(f"[{self.code}] [detrend_median] Insufficient velocity estimates: {np.count_nonzero(~np.isnan(np_vel))} < {min_vel_estimate}")
                 return (None)
 
             # calculates the median velocity
@@ -187,6 +253,8 @@ def detrend_median(self, delta_day=None, in_place=False, periods=[], exclude_per
         else:
             # time series has less than a year of data
             # velocity is set to 0.
+            if gts_logger:
+                gts_logger.warning(f"[{self.code}] [detrend_median] Time series has less than 1 year of data, setting velocity to 0")
             med_vel = np.array([0., 0., 0.])
 
     # end case 1-yr
@@ -196,6 +264,8 @@ def detrend_median(self, delta_day=None, in_place=False, periods=[], exclude_per
         ###########################################################################
         # case campaign, close to relaxed method in MIDAS
         ###########################################################################
+        if gts_logger:
+            gts_logger.info(f"[{self.code}] [detrend_median] Using campaign mode (delta_day=0)")
 
         H_year = {}
         lvel = []
@@ -311,6 +381,8 @@ def detrend_median(self, delta_day=None, in_place=False, periods=[], exclude_per
         ###########################################################################
         # case delta_day with integer value
         ###########################################################################
+        if gts_logger:
+            gts_logger.info(f"[{self.code}] [detrend_median] Using custom delta_day={delta_day}")
 
         def delta(n):
             """
@@ -356,15 +428,19 @@ def detrend_median(self, delta_day=None, in_place=False, periods=[], exclude_per
     # return detrended time series
     ###########################################################################
 
+
     new_gts = self.remove_velocity(med_vel)
     new_gts.outliers = self.outliers
     new_gts.offsets_values = self.offsets_values
     new_gts.velocity = med_vel
 
-    #    if in_place:
-    #            self.velocity = new_gts.velocity
-    #            return( self )
-    #    else:
-    #        return( new_gts )
+    VERBOSE("Velocity estimates (N,E,U, mm/yr) from detrend_median for %s: [%.3f, %.3f, %.3f]" % (self.code, med_vel[0]*1.E3, med_vel[1]*1.E3, med_vel[2]*1.E3))
 
-    return (self.remove_velocity(med_vel, in_place=in_place))
+    # Log final results
+    if gts_logger:
+        gts_logger.info(f"[{self.code}] [detrend_median] Velocity estimates (N,E,U, mm/yr): [{med_vel[0]*1.E3:.3f}, {med_vel[1]*1.E3:.3f}, {med_vel[2]*1.E3:.3f}]")
+        if len(med_vel) > 3:
+            gts_logger.info(f"[{self.code}] [detrend_median] Velocity uncertainties (N,E,U, mm/yr): [{med_vel[3]*1.E3:.3f}, {med_vel[4]*1.E3:.3f}, {med_vel[5]*1.E3:.3f}]")
+        gts_logger.info(f"[{self.code}] [detrend_median] Method completed successfully")
+
+    return (self.remove_velocity(med_vel))

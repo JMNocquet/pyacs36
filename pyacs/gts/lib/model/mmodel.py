@@ -10,9 +10,15 @@ def mmodel(self):
     import numpy as np
     from pyacs.gts.Gts import Gts
     import inspect
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
 
     # after this method .data  and .data_xyz are not consistent so .data_xyz is set to None
-    self.data_xyz = None
+    #self.data_xyz = None
 
 
     if isinstance(self.offsets_values, np.ndarray):

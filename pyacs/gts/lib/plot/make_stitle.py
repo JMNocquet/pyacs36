@@ -2,9 +2,19 @@
 def make_stitle(component, info=[]):
 ###############################################################################
     """
-    
-    :param component: component that will be displayed as subplottitle
-    :param info: string be displayed as subplottitle
+    Build a subplot title string from component and optional info.
+
+    Parameters
+    ----------
+    component : str
+        Component to display ('N', 'E', or 'U').
+    info : list or str, optional
+        Additional string(s) for the subplot title.
+
+    Returns
+    -------
+    str
+        Title string (e.g. 'North' or custom info).
     """
     
     

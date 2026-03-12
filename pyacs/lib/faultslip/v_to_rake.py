@@ -2,17 +2,26 @@
 def v_to_rake(ve, vn, strike, dip, style='inverse'):
 ###############################################################################
 
-    """
-    for a given relative horizontal velocity (ve,vn) between two blocks separated by a fault of a given strike & dip
-    , returns the expected rake for the eq. Input can be single float or 1D numpy array
+    """Compute expected rake from relative horizontal velocity and fault geometry.
 
-    :param ve,vn: east and north components of motion (any unit)
-    :param strike,dip: in decimal degrees
-    :param style: string among {'inverse', 'normal', 'leftlateral','rightlateral'}
-    :returns rake: in decimal degrees
+    Parameters
+    ----------
+    ve, vn : float or numpy.ndarray
+        East and north components of relative motion (any unit).
+    strike, dip : float or numpy.ndarray
+        Fault strike and dip in decimal degrees.
+    style : str, optional
+        One of 'inverse', 'normal', 'leftlateral', 'rightlateral' to resolve
+        ambiguity (hanging wall vs footwall). If None, first solution is returned.
 
-    :note: Because only providing ve,vn is ambiguous (we don't know whether if ve,vn is hanging wall motion wrt the footwall or the opposite) \
-    an additional information (style) in the form of one of {'inverse', 'normal', 'leftlateral','rightlateral'} must be provided.
+    Returns
+    -------
+    float or numpy.ndarray
+        Rake in decimal degrees.
+
+    Notes
+    -----
+    ve, vn alone are ambiguous (hanging wall vs footwall); style disambiguates.
     """
 
     ###############################################################################
@@ -20,6 +29,7 @@ def v_to_rake(ve, vn, strike, dip, style='inverse'):
     ###############################################################################
 
     import numpy as np
+    #from icecream import ic
 
     ###############################################################################
     # INPUT AS 1D NUMPY ARRAY
@@ -68,7 +78,7 @@ def v_to_rake(ve, vn, strike, dip, style='inverse'):
                 rake_leftlateral = rake_2;
                 rake_rightlateral = rake_1
 
-            if style == 'inverse': rake = rake_positive
+            if style in ['inverse','reverse']: rake = rake_positive
             if style == 'normal': rake = rake_negative
             if style == 'leftlateral': rake = rake_leftlateral
             if style == 'rightlateral': rake = rake_rightlateral

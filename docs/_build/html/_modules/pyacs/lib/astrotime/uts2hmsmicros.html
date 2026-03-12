@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyacs.lib.astrotime.uts2hmsmicros &#8212; PYACS 0.66.18 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../../_static/documentation_options.js?v=2262e354"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pyacs.lib.astrotime.uts2hmsmicros</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Convert seconds since 00:00:00.0 (0-86400) to hours, minutes, seconds, microseconds.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="uts2hmsmicros">
+<a class="viewcode-back" href="../../../../api/pyacs.lib.astrotime.html#pyacs.lib.astrotime.uts2hmsmicros">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">uts2hmsmicros</span><span class="p">(</span><span class="n">uts</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert seconds since 00:00:00.0 (0-86400) to hours, minutes, seconds, microseconds.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    uts : float or array-like</span>
+<span class="sd">        Seconds since 00:00:00.0, in [0., 86400.[.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    h : int or ndarray</span>
+<span class="sd">        Hours.</span>
+<span class="sd">    mn : int or ndarray</span>
+<span class="sd">        Minutes.</span>
+<span class="sd">    s : int or ndarray</span>
+<span class="sd">        Seconds.</span>
+<span class="sd">    microsecond : float or ndarray</span>
+<span class="sd">        Microseconds.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import pyacs</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.uts2hmsmicros(86399.999999)</span>
+<span class="sd">    &gt;&gt;&gt; (23, 59, 59, 999999.0000069374)</span>
+<span class="sd">    &gt;&gt;&gt; pyacs.uts2hmsmicros(86400)</span>
+<span class="sd">    &gt;&gt;&gt; !!!  86400 uts out of range [0- 86400.0 [</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">._common</span><span class="w"> </span><span class="kn">import</span> <span class="n">__utsOK</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">uts</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">uts</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">uts</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">uts</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="p">[</span><span class="n">h</span><span class="p">,</span><span class="n">mn</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="n">microsecond</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">uts2hmsmicros</span><span class="p">,</span><span class="n">uts</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">__utsOK</span><span class="p">(</span><span class="n">uts</span><span class="p">)</span>
+        
+        <span class="n">nsec_hour</span><span class="o">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span>
+        <span class="n">nsec_min</span><span class="o">=</span> <span class="mi">60</span>
+        
+        <span class="n">int_sec</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">uts</span><span class="p">)</span>
+        
+        <span class="n">h</span> <span class="o">=</span> <span class="n">int_sec</span> <span class="o">//</span> <span class="n">nsec_hour</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">int_sec</span> <span class="o">%</span> <span class="n">nsec_hour</span>
+
+        <span class="n">mn</span> <span class="o">=</span> <span class="n">r</span> <span class="o">//</span> <span class="n">nsec_min</span>
+        <span class="n">s</span> <span class="o">=</span>  <span class="n">r</span> <span class="o">%</span> <span class="n">nsec_min</span>
+
+        <span class="n">microsecond</span><span class="o">=</span> <span class="p">(</span><span class="n">uts</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">int_sec</span><span class="p">))</span> <span class="o">*</span> <span class="mf">1.E6</span>
+
+        <span class="k">return</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">+</span><span class="mi">0</span><span class="p">,</span>\
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mn</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">+</span><span class="mi">0</span><span class="p">,</span>\
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">+</span><span class="mi">0</span><span class="p">,</span>\
+                <span class="n">microsecond</span><span class="p">)</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">PYACS</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Jean-Mathieu NOCQUET.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

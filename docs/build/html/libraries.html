@@ -1,0 +1,362 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PYACS core libraries &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=aca1a097"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pyacs.lib.astrotime" href="api/pyacs.lib.astrotime.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">core libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.html">pyacs.lib.astrotime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.coordinates.html">pyacs.lib.coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.errors.html">pyacs.lib.errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.euclid.html">pyacs.lib.euclid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.euler.html">pyacs.lib.euler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.faultslip.html">pyacs.lib.faultslip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.glinalg.html">pyacs.lib.glinalg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gmtpoint.html">pyacs.lib.gmtpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gpstime.html">pyacs.lib.gpstime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.icosahedron.html">pyacs.lib.icosahedron</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.robustestimators.html">pyacs.lib.robustestimators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.shapefile.html">pyacs.lib.shapefile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.syscmd.html">pyacs.lib.syscmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.timeperiod.html">pyacs.lib.timeperiod</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.units.html">pyacs.lib.units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.utils.html">pyacs.lib.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">PYACS core libraries</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/libraries.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pyacs-core-libraries">
+<h1>PYACS core libraries<a class="headerlink" href="#pyacs-core-libraries" title="Link to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/pyacs.lib.astrotime.html">pyacs.lib.astrotime</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.cal2datetime.html">pyacs.lib.astrotime.cal2datetime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.cal2dayno.html">pyacs.lib.astrotime.cal2dayno</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.cal2decyear.html">pyacs.lib.astrotime.cal2decyear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.cal2mjd.html">pyacs.lib.astrotime.cal2mjd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.datetime2cal.html">pyacs.lib.astrotime.datetime2cal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.datetime2dayno.html">pyacs.lib.astrotime.datetime2dayno</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.datetime2decyear.html">pyacs.lib.astrotime.datetime2decyear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.datetime2mjd.html">pyacs.lib.astrotime.datetime2mjd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.datetime2seconds.html">pyacs.lib.astrotime.datetime2seconds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.datetime_from_calarray.html">pyacs.lib.astrotime.datetime_from_calarray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.datetime_round_second.html">pyacs.lib.astrotime.datetime_round_second</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.day_since_decyear.html">pyacs.lib.astrotime.day_since_decyear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.dayno2cal.html">pyacs.lib.astrotime.dayno2cal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.dayno2datetime.html">pyacs.lib.astrotime.dayno2datetime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.dayno2decyear.html">pyacs.lib.astrotime.dayno2decyear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.dayno2mjd.html">pyacs.lib.astrotime.dayno2mjd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.decyear2cal.html">pyacs.lib.astrotime.decyear2cal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.decyear2datetime.html">pyacs.lib.astrotime.decyear2datetime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.decyear2dayno.html">pyacs.lib.astrotime.decyear2dayno</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.decyear2epoch.html">pyacs.lib.astrotime.decyear2epoch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.decyear2mjd.html">pyacs.lib.astrotime.decyear2mjd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.decyear2seconds.html">pyacs.lib.astrotime.decyear2seconds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.epoch2decyear.html">pyacs.lib.astrotime.epoch2decyear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.gpsweek2mjd.html">pyacs.lib.astrotime.gpsweek2mjd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.guess_date.html">pyacs.lib.astrotime.guess_date</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.hmsmicros2ut.html">pyacs.lib.astrotime.hmsmicros2ut</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.hmsmicros2uts.html">pyacs.lib.astrotime.hmsmicros2uts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.jd2mjd.html">pyacs.lib.astrotime.jd2mjd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.jpldate_2_datetime.html">pyacs.lib.astrotime.jpldate_2_datetime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.jpldate_2_decyear.html">pyacs.lib.astrotime.jpldate_2_decyear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.leap_year.html">pyacs.lib.astrotime.leap_year</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.mjd2cal.html">pyacs.lib.astrotime.mjd2cal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.mjd2datetime.html">pyacs.lib.astrotime.mjd2datetime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.mjd2dayno.html">pyacs.lib.astrotime.mjd2dayno</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.mjd2decyear.html">pyacs.lib.astrotime.mjd2decyear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.mjd2gpsweek.html">pyacs.lib.astrotime.mjd2gpsweek</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.mjd2jd.html">pyacs.lib.astrotime.mjd2jd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.seconds2datetime.html">pyacs.lib.astrotime.seconds2datetime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.ut2uts.html">pyacs.lib.astrotime.ut2uts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.uts2hmsmicros.html">pyacs.lib.astrotime.uts2hmsmicros</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.uts2ut.html">pyacs.lib.astrotime.uts2ut</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.year2yr.html">pyacs.lib.astrotime.year2yr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.astrotime.yr2year.html">pyacs.lib.astrotime.yr2year</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/pyacs.lib.coordinates.html">pyacs.lib.coordinates</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.coordinates.azimuth_to_en.html">pyacs.lib.coordinates.azimuth_to_en</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.coordinates.denu_at_x0y0z0_to_xyz.html">pyacs.lib.coordinates.denu_at_x0y0z0_to_xyz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.coordinates.flat_earth2geo.html">pyacs.lib.coordinates.flat_earth2geo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.coordinates.geo2flat_earth.html">pyacs.lib.coordinates.geo2flat_earth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.coordinates.geo2xyz.html">pyacs.lib.coordinates.geo2xyz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.coordinates.geo_spherical_distance.html">pyacs.lib.coordinates.geo_spherical_distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.coordinates.mat_rot_general_to_local.html">pyacs.lib.coordinates.mat_rot_general_to_local</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.coordinates.mat_rot_local_to_general.html">pyacs.lib.coordinates.mat_rot_local_to_general</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.coordinates.spherical_baseline_length_rate.html">pyacs.lib.coordinates.spherical_baseline_length_rate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.coordinates.vel_xyz_to_enu.html">pyacs.lib.coordinates.vel_xyz_to_enu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.coordinates.wnorm.html">pyacs.lib.coordinates.wnorm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.coordinates.xyz2geo.html">pyacs.lib.coordinates.xyz2geo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.coordinates.xyz2geospheric.html">pyacs.lib.coordinates.xyz2geospheric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.coordinates.xyz_spherical_distance.html">pyacs.lib.coordinates.xyz_spherical_distance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/pyacs.lib.errors.html">pyacs.lib.errors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.errors.html#pyacs.lib.errors.BadOption"><code class="docutils literal notranslate"><span class="pre">BadOption</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.errors.html#pyacs.lib.errors.OptionError"><code class="docutils literal notranslate"><span class="pre">OptionError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.errors.html#pyacs.lib.errors.PyacsError"><code class="docutils literal notranslate"><span class="pre">PyacsError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.errors.html#pyacs.lib.errors.ReadingFile"><code class="docutils literal notranslate"><span class="pre">ReadingFile</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/pyacs.lib.euclid.html">pyacs.lib.euclid</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.euclid.html#pyacs.lib.euclid.Circle"><code class="docutils literal notranslate"><span class="pre">Circle</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.euclid.html#pyacs.lib.euclid.Geometry"><code class="docutils literal notranslate"><span class="pre">Geometry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.euclid.html#pyacs.lib.euclid.Line2"><code class="docutils literal notranslate"><span class="pre">Line2</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.euclid.html#pyacs.lib.euclid.Line3"><code class="docutils literal notranslate"><span class="pre">Line3</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.euclid.html#pyacs.lib.euclid.LineSegment2"><code class="docutils literal notranslate"><span class="pre">LineSegment2</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.euclid.html#pyacs.lib.euclid.LineSegment3"><code class="docutils literal notranslate"><span class="pre">LineSegment3</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.euclid.html#pyacs.lib.euclid.Matrix3"><code class="docutils literal notranslate"><span class="pre">Matrix3</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.euclid.html#pyacs.lib.euclid.Matrix4"><code class="docutils literal notranslate"><span class="pre">Matrix4</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.euclid.html#pyacs.lib.euclid.Plane"><code class="docutils literal notranslate"><span class="pre">Plane</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.euclid.html#pyacs.lib.euclid.Point2"><code class="docutils literal notranslate"><span class="pre">Point2</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.euclid.html#pyacs.lib.euclid.Point3"><code class="docutils literal notranslate"><span class="pre">Point3</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.euclid.html#pyacs.lib.euclid.Quaternion"><code class="docutils literal notranslate"><span class="pre">Quaternion</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.euclid.html#pyacs.lib.euclid.Ray2"><code class="docutils literal notranslate"><span class="pre">Ray2</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.euclid.html#pyacs.lib.euclid.Ray3"><code class="docutils literal notranslate"><span class="pre">Ray3</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.euclid.html#pyacs.lib.euclid.Sphere"><code class="docutils literal notranslate"><span class="pre">Sphere</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.euclid.html#pyacs.lib.euclid.Vector2"><code class="docutils literal notranslate"><span class="pre">Vector2</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.euclid.html#pyacs.lib.euclid.Vector3"><code class="docutils literal notranslate"><span class="pre">Vector3</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/pyacs.lib.euler.html">pyacs.lib.euler</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.euler.euler2rot.html">pyacs.lib.euler.euler2rot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.euler.euler_uncertainty.html">pyacs.lib.euler.euler_uncertainty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.euler.pole_matrix.html">pyacs.lib.euler.pole_matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.euler.pole_matrix_fault.html">pyacs.lib.euler.pole_matrix_fault</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.euler.rot2euler.html">pyacs.lib.euler.rot2euler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.euler.vel_from_euler.html">pyacs.lib.euler.vel_from_euler</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/pyacs.lib.faultslip.html">pyacs.lib.faultslip</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.faultslip.fault_to_corners.html">pyacs.lib.faultslip.fault_to_corners</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.faultslip.geo_to_strike.html">pyacs.lib.faultslip.geo_to_strike</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.faultslip.rake_from_euler.html">pyacs.lib.faultslip.rake_from_euler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.faultslip.rake_from_slip_az.html">pyacs.lib.faultslip.rake_from_slip_az</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.faultslip.slip_rake_2_ds_ss.html">pyacs.lib.faultslip.slip_rake_2_ds_ss</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.faultslip.ss_ns_2_ve_vn.html">pyacs.lib.faultslip.ss_ns_2_ve_vn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.faultslip.strike_dip_rake_to_dir.html">pyacs.lib.faultslip.strike_dip_rake_to_dir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.faultslip.unit_normal.html">pyacs.lib.faultslip.unit_normal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.faultslip.unit_slip.html">pyacs.lib.faultslip.unit_slip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.faultslip.v_to_n_ss.html">pyacs.lib.faultslip.v_to_n_ss</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.faultslip.v_to_rake.html">pyacs.lib.faultslip.v_to_rake</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/pyacs.lib.glinalg.html">pyacs.lib.glinalg</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.glinalg.corr_to_cov.html">pyacs.lib.glinalg.corr_to_cov</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.glinalg.cov_to_corr.html">pyacs.lib.glinalg.cov_to_corr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.glinalg.cov_to_invcov.html">pyacs.lib.glinalg.cov_to_invcov</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.glinalg.dot.html">pyacs.lib.glinalg.dot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.glinalg.dot_and_sum.html">pyacs.lib.glinalg.dot_and_sum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.glinalg.extract_block_diag.html">pyacs.lib.glinalg.extract_block_diag</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.glinalg.ls.html">pyacs.lib.glinalg.ls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.glinalg.lscov.html">pyacs.lib.glinalg.lscov</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.glinalg.lscov_full.html">pyacs.lib.glinalg.lscov_full</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.glinalg.lsw.html">pyacs.lib.glinalg.lsw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.glinalg.lsw_full.html">pyacs.lib.glinalg.lsw_full</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.glinalg.make_normal_system.html">pyacs.lib.glinalg.make_normal_system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.glinalg.make_normal_system_tarantola.html">pyacs.lib.glinalg.make_normal_system_tarantola</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.glinalg.matrix_from_pattern.html">pyacs.lib.glinalg.matrix_from_pattern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.glinalg.odot.html">pyacs.lib.glinalg.odot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.glinalg.repeat_matrix_in_col.html">pyacs.lib.glinalg.repeat_matrix_in_col</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.glinalg.syminv.html">pyacs.lib.glinalg.syminv</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.glinalg.symmetrize.html">pyacs.lib.glinalg.symmetrize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.glinalg.sympinv.html">pyacs.lib.glinalg.sympinv</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/pyacs.lib.gmtpoint.html">pyacs.lib.gmtpoint</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gmtpoint.add_to_gmt_psvelo.html">pyacs.lib.gmtpoint.add_to_gmt_psvelo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gmtpoint.assign_index.html">pyacs.lib.gmtpoint.assign_index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gmtpoint.copy.html">pyacs.lib.gmtpoint.copy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gmtpoint.get_index.html">pyacs.lib.gmtpoint.get_index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gmtpoint.get_info.html">pyacs.lib.gmtpoint.get_info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gmtpoint.magaz.html">pyacs.lib.gmtpoint.magaz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gmtpoint.midpoint.html">pyacs.lib.gmtpoint.midpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gmtpoint.pole.html">pyacs.lib.gmtpoint.pole</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gmtpoint.rotate_vel.html">pyacs.lib.gmtpoint.rotate_vel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gmtpoint.spherical_distance.html">pyacs.lib.gmtpoint.spherical_distance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/pyacs.lib.gpstime.html">pyacs.lib.gpstime</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.GpsSecondsFromPyUTC"><code class="docutils literal notranslate"><span class="pre">GpsSecondsFromPyUTC()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.UTCFromGps"><code class="docutils literal notranslate"><span class="pre">UTCFromGps()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.dayOfWeek"><code class="docutils literal notranslate"><span class="pre">dayOfWeek()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.gpsFromUTC"><code class="docutils literal notranslate"><span class="pre">gpsFromUTC()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.gpsWeek"><code class="docutils literal notranslate"><span class="pre">gpsWeek()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.julianDay"><code class="docutils literal notranslate"><span class="pre">julianDay()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.mkUTC"><code class="docutils literal notranslate"><span class="pre">mkUTC()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.testDayOfWeek"><code class="docutils literal notranslate"><span class="pre">testDayOfWeek()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.testGpsWeek"><code class="docutils literal notranslate"><span class="pre">testGpsWeek()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.testJulD"><code class="docutils literal notranslate"><span class="pre">testJulD()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.testPyUtilties"><code class="docutils literal notranslate"><span class="pre">testPyUtilties()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.testTimeStuff"><code class="docutils literal notranslate"><span class="pre">testTimeStuff()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.wtFromUTCpy"><code class="docutils literal notranslate"><span class="pre">wtFromUTCpy()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.ymdhmsFromPyUTC"><code class="docutils literal notranslate"><span class="pre">ymdhmsFromPyUTC()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/pyacs.lib.icosahedron.html">pyacs.lib.icosahedron</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.icosahedron.build_icosahedron.html">pyacs.lib.icosahedron.build_icosahedron</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.icosahedron.distance.html">pyacs.lib.icosahedron.distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.icosahedron.mesh_global.html">pyacs.lib.icosahedron.mesh_global</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.icosahedron.mesh_regional.html">pyacs.lib.icosahedron.mesh_regional</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.icosahedron.subdivide.html">pyacs.lib.icosahedron.subdivide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/pyacs.lib.robustestimators.html">pyacs.lib.robustestimators</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.robustestimators.errors.html">pyacs.lib.robustestimators.errors</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/pyacs.lib.shapefile.html">pyacs.lib.shapefile</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.shapefile.psvelo_to_shapefile.html">pyacs.lib.shapefile.psvelo_to_shapefile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.shapefile.pyeblock_fault.html">pyacs.lib.shapefile.pyeblock_fault</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/pyacs.lib.syscmd.html">pyacs.lib.syscmd</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.syscmd.html#pyacs.lib.syscmd.Error"><code class="docutils literal notranslate"><span class="pre">Error</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.syscmd.html#pyacs.lib.syscmd.ReturnedCodeError"><code class="docutils literal notranslate"><span class="pre">ReturnedCodeError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.syscmd.html#pyacs.lib.syscmd.getstatusoutput"><code class="docutils literal notranslate"><span class="pre">getstatusoutput()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.syscmd.html#pyacs.lib.syscmd.run_command_verbose"><code class="docutils literal notranslate"><span class="pre">run_command_verbose()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/pyacs.lib.timeperiod.html">pyacs.lib.timeperiod</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.timeperiod.begin.html">pyacs.lib.timeperiod.begin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.timeperiod.display.html">pyacs.lib.timeperiod.display</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.timeperiod.end.html">pyacs.lib.timeperiod.end</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.timeperiod.epoch_begin.html">pyacs.lib.timeperiod.epoch_begin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.timeperiod.epoch_end.html">pyacs.lib.timeperiod.epoch_end</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.timeperiod.errors.html">pyacs.lib.timeperiod.errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.timeperiod.get_info.html">pyacs.lib.timeperiod.get_info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.timeperiod.has_in.html">pyacs.lib.timeperiod.has_in</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.timeperiod.intersection.html">pyacs.lib.timeperiod.intersection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.timeperiod.isdefined.html">pyacs.lib.timeperiod.isdefined</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.timeperiod.time_period.html">pyacs.lib.timeperiod.time_period</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/pyacs.lib.units.html">pyacs.lib.units</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.units.magnitude_to_moment.html">pyacs.lib.units.magnitude_to_moment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.units.mas2rad.html">pyacs.lib.units.mas2rad</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.units.moment_to_magnitude.html">pyacs.lib.units.moment_to_magnitude</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.units.rad2mas.html">pyacs.lib.units.rad2mas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.units.radians2deg_mn_sec.html">pyacs.lib.units.radians2deg_mn_sec</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/pyacs.lib.utils.html">pyacs.lib.utils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.utils.ensure_list_of_list.html">pyacs.lib.utils.ensure_list_of_list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.utils.make_grid.html">pyacs.lib.utils.make_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.utils.numpy_array_2_numpy_recarray.html">pyacs.lib.utils.numpy_array_2_numpy_recarray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.utils.numpy_recarray_2_numpy_array.html">pyacs.lib.utils.numpy_recarray_2_numpy_array</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.utils.run_cmd.html">pyacs.lib.utils.run_cmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.utils.save_np_array_with_string.html">pyacs.lib.utils.save_np_array_with_string</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/pyacs.lib.utils.str2list_float.html">pyacs.lib.utils.str2list_float</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api/pyacs.lib.astrotime.html" class="btn btn-neutral float-right" title="pyacs.lib.astrotime" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

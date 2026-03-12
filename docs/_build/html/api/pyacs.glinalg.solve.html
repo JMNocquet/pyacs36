@@ -1,0 +1,203 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.glinalg.solve package &mdash; PYACS 0.66.18 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2262e354"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PYACS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">pyacs.glinalg.solve package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pyacs.glinalg.solve.ls">pyacs.glinalg.solve.ls module</a><ul>
+<li><a class="reference internal" href="#pyacs.glinalg.solve.ls.ls"><code class="docutils literal notranslate"><span class="pre">ls()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.glinalg.solve.lscov">pyacs.glinalg.solve.lscov module</a><ul>
+<li><a class="reference internal" href="#pyacs.glinalg.solve.lscov.lscov"><code class="docutils literal notranslate"><span class="pre">lscov()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.glinalg.solve.lsw">pyacs.glinalg.solve.lsw module</a><ul>
+<li><a class="reference internal" href="#pyacs.glinalg.solve.lsw.lsw"><code class="docutils literal notranslate"><span class="pre">lsw()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.glinalg.solve">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PYACS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">pyacs.glinalg.solve package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/pyacs.glinalg.solve.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pyacs-glinalg-solve-package">
+<h1>pyacs.glinalg.solve package<a class="headerlink" href="#pyacs-glinalg-solve-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-pyacs.glinalg.solve.ls">
+<span id="pyacs-glinalg-solve-ls-module"></span><h2>pyacs.glinalg.solve.ls module<a class="headerlink" href="#module-pyacs.glinalg.solve.ls" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.glinalg.solve.ls.ls">
+<span class="sig-prename descclassname"><span class="pre">pyacs.glinalg.solve.ls.</span></span><span class="sig-name descname"><span class="pre">ls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/glinalg/solve/ls.html#ls"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.glinalg.solve.ls.ls" title="Link to this definition"></a></dt>
+<dd><p>Solve the least-squares problem min (Gm-d).T (Gm-d).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>G</strong> (<em>ndarray</em>) – m x n model matrix (2D).</p></li>
+<li><p><strong>d</strong> (<em>ndarray</em>) – m observation vector (1D).</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbose mode.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Solution m (1D, length n). chi2 available from lstsq internally.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Solved via numpy.linalg.lstsq.</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.glinalg.solve.lscov">
+<span id="pyacs-glinalg-solve-lscov-module"></span><h2>pyacs.glinalg.solve.lscov module<a class="headerlink" href="#module-pyacs.glinalg.solve.lscov" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.glinalg.solve.lscov.lscov">
+<span class="sig-prename descclassname"><span class="pre">pyacs.glinalg.solve.lscov.</span></span><span class="sig-name descname"><span class="pre">lscov</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cov</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'chol'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/glinalg/solve/lscov.html#lscov"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.glinalg.solve.lscov.lscov" title="Link to this definition"></a></dt>
+<dd><p>Solve the least-squares problem with data covariance matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>G</strong> (<em>ndarray</em>) – m x n model matrix (2D).</p></li>
+<li><p><strong>d</strong> (<em>ndarray</em>) – m observation vector (1D).</p></li>
+<li><p><strong>cov</strong> (<em>ndarray</em>) – m x m covariance matrix for d.</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – ‘chol’ for Cholesky (default).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Solution (same as ls on whitened system).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.glinalg.solve.lsw">
+<span id="pyacs-glinalg-solve-lsw-module"></span><h2>pyacs.glinalg.solve.lsw module<a class="headerlink" href="#module-pyacs.glinalg.solve.lsw" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.glinalg.solve.lsw.lsw">
+<span class="sig-prename descclassname"><span class="pre">pyacs.glinalg.solve.lsw.</span></span><span class="sig-name descname"><span class="pre">lsw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/glinalg/solve/lsw.html#lsw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.glinalg.solve.lsw.lsw" title="Link to this definition"></a></dt>
+<dd><p>Solve least-squares with data uncertainties given as a vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>G</strong> (<em>ndarray</em>) – m x n model matrix (2D).</p></li>
+<li><p><strong>d</strong> (<em>ndarray</em>) – m observation vector (1D).</p></li>
+<li><p><strong>std</strong> (<em>ndarray</em>) – Standard deviation vector for d (length m).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Solution from ordinary LS on G&lt;- (G.T/std).T, d&lt;- d/std.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>System is weighted by 1/std and solved via ls.</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.glinalg.solve">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyacs.glinalg.solve" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

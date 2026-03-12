@@ -1,29 +1,36 @@
 ###################################################################
-def set_zero_at_date(self,date,offset=None,in_place=False):
+def set_zero_at_date(self,date, offset=None):
 ###################################################################
     """
-    make a translation of a time series, setting to 0 at a given date
-    if the provided date does not exist, uses the next date available
-    
-    :param date: date in decimal year
-    :param offset: an offset (in mm) to be added. Could be a float, a list or 1D numpy array with 3 elements 
-    
+    Translate the time series so that values are zero at a given date.
+
+    If the provided date does not exist in the series, the next available date is used.
+
+    Parameters
+    ----------
+    date : float
+        Date in decimal year.
+    offset : float or list or ndarray, optional
+        Offset in mm to add. Float (same for N,E,U) or 3-element list/array for N,E,U.
+
+    Returns
+    -------
+    Gts
+        New Gts with translation applied; .data_xyz set to None.
     """
 
     # import 
     import inspect
     import numpy as np
 
-    # check data is not None
-    from pyacs.gts.lib.errors import GtsInputDataNone
-    
-    try:
-        if self.data is None:
-            # raise exception
-            raise GtsInputDataNone(inspect.stack()[0][3],__name__,self)
-    except GtsInputDataNone as error:
-        # print PYACS WARNING
-        print( error )
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
+
+    if self.data is None:
+        ERROR("time series for site %s has no data" % self.code)
         return( self )
 
     if offset is None:
@@ -35,9 +42,7 @@ def set_zero_at_date(self,date,offset=None,in_place=False):
             [cn,ce,cu] =[offset[0]/1000.,offset[1]/1000.,offset[2]/1000.]
         elif isinstance(offset,np.ndarray):
             [cn,ce,cu] =[offset[0]/1000.,offset[1]/1000.,offset[2]/1000.]
-    
-    
-    
+
     
     new_data=self.data.copy()
 
@@ -46,10 +51,10 @@ def set_zero_at_date(self,date,offset=None,in_place=False):
     try:
         index=lindex[0][0]
     except:
-        print("!!! bad date provided")
+        ERROR("bad date provided")
         return()
     
-    print("-- Removing ",new_data[index,1],new_data[index,2],new_data[index,3])
+    VERBOSE("Removing (mm) N: %8.2lf E %8.2lf U %8.2lf " % (new_data[index,1]*1E3,new_data[index,2]*1E3,new_data[index,3]*1E3))
      
     new_data[:,1]=new_data[:,1]-new_data[index,1] + cn
     new_data[:,2]=new_data[:,2]-new_data[index,2] + ce
@@ -59,9 +64,5 @@ def set_zero_at_date(self,date,offset=None,in_place=False):
 
     # .data_xyz set to None
     new_Gts.data_xyz = None
-    
-    # origin XYZ would need to be changed
-    
-    if in_place:
-        self.data=new_Gts.data.copy()
+
     return(new_Gts)

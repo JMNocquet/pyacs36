@@ -2,14 +2,23 @@
 def decimate(self,time_step=30.,dates=[],method='median',verbose=False):
 ###################################################################
     """
-    decimate a time series
-    
-    :param time_step: time step in days
-    :param dates: list of dates where point are forced to be written regardless time_step
-    :param method: method used to be used to calculated the position. choose among ['median','mean','exact']
-    :param verbose: verbose mode
-    
-    :return : new Gts  
+    Decimate a time series to a regular time step.
+
+    Parameters
+    ----------
+    time_step : float, optional
+        Time step in days.
+    dates : list, optional
+        List of dates where points are forced to be written regardless of time_step.
+    method : str, optional
+        Method to compute position in each bin: 'median', 'mean', or 'exact'.
+    verbose : bool, optional
+        Verbose mode.
+
+    Returns
+    -------
+    Gts
+        New decimated Gts.
     """
 
     

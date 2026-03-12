@@ -1,6 +1,4 @@
-"""
-calculates Helmert transformation 
-"""
+"""Helmert (similarity) transformation estimation and matrix construction."""
 
 from pyacs.sol.errors import PyacsSol_HelmertError
 import inspect
@@ -9,15 +7,31 @@ import inspect
 ###############################################################################
 def helmert_matrix(x,y,z,tran=True,rot=True,scale=True,equilibrate=True):
 ###############################################################################
-    """
-    Generates a Helmert transformation matrix for a single point
-    Can also create translation/rotation/scale transformation matrix
-    
-    :param x,y,z: point geocentric coordinates (m)
-    :param tran,rot,scale: boolean telling that translation/rotation/scale will be included
-    :param equilibrate: (default True) changes the unit of the matrix so that x are in km and scale in mas for better conditionning of the matrix
-    
-    :returns H: the transformation matrix as 2D numpy matrix
+    """Generate Helmert transformation matrix for a single point.
+
+    Builds the design matrix for translation/rotation/scale transformation.
+
+    Parameters
+    ----------
+    x : float
+        Point geocentric X coordinate (m).
+    y : float
+        Point geocentric Y coordinate (m).
+    z : float
+        Point geocentric Z coordinate (m).
+    tran : bool, optional
+        Include translation. Default is True.
+    rot : bool, optional
+        Include rotation. Default is True.
+    scale : bool, optional
+        Include scale. Default is True.
+    equilibrate : bool, optional
+        If True (default), use km for position and mas for scale for better conditioning.
+
+    Returns
+    -------
+    numpy.matrix
+        Transformation design matrix (2D).
     """    
     
     import numpy as np
@@ -56,17 +70,31 @@ def helmert_matrix(x,y,z,tran=True,rot=True,scale=True,equilibrate=True):
 ###############################################################################
 def observation_equation_helmert_local(xf,yf,zf,xr,yr,zr,tran=True,rot=True,scale=True):
 ###############################################################################
-    """
-    Generate the linear transformation equation system for coordinate of a sites in two reference system.
-    The equation system is generated for E,N,U components
-    
-    :param xf,yf,zf: geocentric coordinates in the initial reference (also called 'free' frame) 
-    :param xr,yr,zr: geocentric coordinates in the final reference (the reference frame) 
-    :param tran,rot,scale: boolean telling that translation/rotation/scale will be included
+    """Generate linear observation equations for Helmert transformation (E,N,U).
 
-    :return A,B: the design matrix and observation vector
-    
-    :note: VCV not accounted yet 
+    Parameters
+    ----------
+    xf, yf, zf : float
+        Geocentric coordinates in the initial ('free') frame (m).
+    xr, yr, zr : float
+        Geocentric coordinates in the final (reference) frame (m).
+    tran : bool, optional
+        Include translation. Default is True.
+    rot : bool, optional
+        Include rotation. Default is True.
+    scale : bool, optional
+        Include scale. Default is True.
+
+    Returns
+    -------
+    A : numpy.matrix
+        Design matrix.
+    B : numpy.matrix
+        Observation vector.
+
+    Notes
+    -----
+    VCV (variance-covariance) is not accounted for yet.
     """
 
     import numpy as np
@@ -97,26 +125,55 @@ def estimate_helmert(H_Gpoint_ref,H_Gpoint_free,
             verbose=True):
 ###############################################################################
     
+    """Estimate Helmert (or similarity) parameters between two coordinate sets.
+
+    Default is 7-parameter transformation (translation, rotation, scale).
+
+    Parameters
+    ----------
+    H_Gpoint_ref : dict
+        Dictionary of Gpoint instances used as reference.
+    H_Gpoint_free : dict
+        Dictionary of Gpoint instances used as free (to be transformed).
+    vcv_xyz : array-like, optional
+        Variance-covariance of coordinates. Default is None.
+    psd : object, optional
+        Post-seismic deformation object from sinex library.
+    tran : bool, optional
+        Include translation. Default is True.
+    rot : bool, optional
+        Include rotation. Default is True.
+    scale : bool, optional
+        Include scale. Default is True.
+    lexclude : list, optional
+        Site codes to exclude. Default is [].
+    method : str, optional
+        'LS' (least-squares) or 'Dikin_LS' (L1 then L2). Default is 'Dikin_LS'.
+    threshold : float, optional
+        Outlier rejection threshold. Default is 5.
+    verbose : bool, optional
+        If True, print progress. Default is True.
+
+    Returns
+    -------
+    object
+        Result of the estimation (transformation parameters and related info).
     """
-    Estimates Helmert or transformation parameters between two sets of coordinates
-    Default is a 7-parameters transformation (translation, rotation & scale)
-    
-    
-    :param H_Gpoint_ref : dictionary of Geodetic Points (Gpoint instance) used as reference
-    :param H_Gpoint_free: dictionary of Geodetic Points (Gpoint instance) used as free
-    :param psd: psd object from sinex library for post-seismic deformation
-    :param tran,rot,scale: boolean telling if the transformation will use translation/rotation/scale 
-    :param method: 'LS' (Least-Squares) or 'Dikin_LS' (a sequence of L1 and L2 norm) estimation
-    :param threshold: threshold value for outlier rejection (default 5.)
-    :param verbose: boolean
-    
-    """
-    
+
+    from icecream import ic
+
     import numpy as np
     import pyacs.lib.glinalg
-    import pyacs.lib.robustestimators as RobustEstimators 
+    import pyacs.lib.robustestimators as RobustEstimators
 
-    if verbose:print("-- Helmert parameters estimation using method: ",method)
+
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
+
+    VERBOSE("Helmert parameters estimation using method: %s" % method)
 
     n_points= len(list(H_Gpoint_ref.keys()))
 
@@ -152,8 +209,8 @@ def estimate_helmert(H_Gpoint_ref,H_Gpoint_free,
             epoch = pyacs.lib.astrotime.decyear2epoch(Xfree.epoch)
             # Compute ENH post-seismic deformations
             (denh, senh) = snxutils.compute_psd(psd, code, epoch)
-            if np.any(denh) and verbose:
-                print('-- psd correction: ',code,denh * 1000. )
+            if np.any(denh):
+                VERBOSE("psd correction (mm, ENU): %s %10.2lf %10.2lf %10.2lf " % (code,denh[0] * 1000., denh[1] * 1000., denh[2] * 1000.)  )
             # Compute XYZ post-seismic deformations
             (l,p,he)=pyacs.lib.coordinates.xyz2geo(xf, yf, zf)
             R = pyacs.lib.coordinates.mat_rot_local_to_general(l, p)
@@ -174,8 +231,7 @@ def estimate_helmert(H_Gpoint_ref,H_Gpoint_free,
     if method == 'Dikin_LS':
     
     ### Robust estimators of Dikin + LS
-        if verbose:
-            print("-- Doing Dikin estimation")
+        VERBOSE("Estimating Helmert parameters - L1 norm (Dikins)")
         
         
         X,V=RobustEstimators.Dikin(A,B,W=None)
@@ -183,59 +239,69 @@ def estimate_helmert(H_Gpoint_ref,H_Gpoint_free,
         X=X.reshape(-1,1)
         V=V.reshape(-1,1)
 
-        [median_east,median_north,median_up]=np.median(np.sqrt((V.reshape(-1,3)*1000.0)**2),axis=0)
-    
-    ### reject the outliers et re-adjust by LS
-    
-        if verbose:
-            print("-- Testing outliers; Threshold for outliers detection: ",threshold)
-        
-        np_outliers = find_outliers_Helmert(V,threshold=threshold)
-
-        l_np_outliers=np_outliers.tolist()
-
-        if verbose:
-            print("-- # of outliers detected: ",len(l_np_outliers))
-
-        # remove outliers for LS Helmert and flag
-
-        FLAG_VV=V.reshape(-1,3)*0.0
-
-        if len(l_np_outliers)!=0:
-            
-
-            loutliers=[]
-            
-            for [i,j] in l_np_outliers:
-                
-                FLAG_VV[i,j]=1
-                loutliers.append(3*i+j)
-            
-            A_rejected=np.delete(A,loutliers,axis=0)
-            B_rejected=np.delete(B,loutliers,axis=0)
-
-            # raise PyacsSol_HelmertError if problem
-            if A_rejected.shape[0] < 7:
-                msg = 'Too many outliers. Cannot calculate Helmert Transformation'
-                raise PyacsSol_HelmertError(inspect.stack()[0][3],__name__,msg)
-
-            if verbose:
-                print("-- Doing LS estimation without outliers")
-            
-            LS_X=pyacs.lib.glinalg.ls(A_rejected,B_rejected)
-            LS_V = B-np.dot(A,X)
-
-                
     else:
-    ### LS estimation, no outlier detection
+        VERBOSE("Estimating Helmert parameters - L2 norm")
 
-        if verbose:print("-- Doing LS estimation without outlier detection")
-
-        LS_X=pyacs.lib.glinalg.ls(A,B)
+        X=pyacs.lib.glinalg.ls(A,B)
         V = B-np.dot(A,X)
-        l_np_outliers=[]
 
-    ### Creating residuals, accounting for rejected
+        X=X.reshape(-1,1)
+        V=V.reshape(-1,1)
+
+
+    [median_east,median_north,median_up]=np.median(np.sqrt((V.reshape(-1,3)*1000.0)**2),axis=0)
+
+### reject the outliers et re-adjust by LS
+
+    VERBOSE("Testing outliers; Threshold for outliers detection : %.1lf " % threshold)
+
+    np_outliers = find_outliers_Helmert(V,threshold=threshold)
+
+    l_np_outliers=np_outliers.tolist()
+
+    VERBOSE("# of outliers detected: %d" % len(l_np_outliers))
+
+    # remove outliers for LS Helmert and flag
+
+    FLAG_VV=V.reshape(-1,3)*0.0
+
+    if len(l_np_outliers)!=0:
+
+
+        loutliers=[]
+
+        for [i,j] in l_np_outliers:
+
+            FLAG_VV[i,j]=1
+            loutliers.append(3*i+j)
+
+        A_rejected=np.delete(A,loutliers,axis=0)
+        B_rejected=np.delete(B,loutliers,axis=0)
+
+        # raise PyacsSol_HelmertError if problem
+        if A_rejected.shape[0] < 7:
+            msg = 'Too many outliers. Cannot calculate Helmert Transformation'
+            WARNING( msg )
+            raise PyacsSol_HelmertError(inspect.stack()[0][3],__name__,msg)
+
+        VERBOSE("Doing LS estimation without outliers")
+
+        LS_X=pyacs.lib.glinalg.ls(A_rejected,B_rejected)
+        LS_V = B-np.dot(A,X)
+
+    #
+    # else:
+    # ### LS estimation, no outlier detection
+    #
+    #     #VERBOSE("Doing LS estimation without outlier detection")
+    #     VERBOSE("Using L2 estimates with outliers rejection")
+    #
+    #     X=pyacs.lib.glinalg.ls(A,B)
+    #     V = B-np.dot(A,X)
+    #     l_np_outliers=[]
+    #     FLAG_VV = V.reshape(-1, 3) * 0.0
+
+### Creating residuals, accounting for rejected
     
     LS_V = B - np.dot(A,X)
       
@@ -283,7 +349,8 @@ def find_outliers_Helmert(R,threshold=5):
     """
     Returns index outliers points
     """
-    
+    from icecream import ic
+
     import numpy as np
     np.set_printoptions(precision=2,suppress=True)
     
@@ -310,8 +377,11 @@ def find_outliers_Helmert(R,threshold=5):
     if np.size(np_outliers) !=  0:
 
         np_outliers=np_outliers[np.argsort(np_outliers[:, 0])]
-        np_outliers = np.vstack({tuple(row) for row in np_outliers })
-    
+        #np_outliers = np.vstack({tuple(row) for row in np_outliers })
+        #ic(np_outliers)
+        np_outliers = np.vstack([tuple(row) for row in np_outliers ])
+        #ic(np_outliers)
+
     return np_outliers
 
 

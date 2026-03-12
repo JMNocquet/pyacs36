@@ -1,11 +1,19 @@
 ###################################################################
 def lGts(self,lexclude=[],linclude=[]):
 ###################################################################
-    """
-    Returns the list of Gts in the current Sgts
-    :param lexclude: list of sites to be excluded
-    :param linclude: list of sites to be included, excluding all other.
-     
+    """Return list of Gts instances in this Sgts (after optional filters).
+
+    Parameters
+    ----------
+    lexclude : list, optional
+        Site codes to exclude. Default is [].
+    linclude : list, optional
+        If non-empty, only these codes are included. Default is [].
+
+    Returns
+    -------
+    list
+        List of Gts instances (sorted by code).
     """
          
     lsite=self.lcode(lexclude=lexclude,linclude=linclude)

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyacs.gts.lib.model.trajectory &#8212; PYACS 0.66.18 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../../../_static/documentation_options.js?v=2262e354"></script>
+    <script src="../../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pyacs.gts.lib.model.trajectory</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Non-linear trajectory models for geodetic time series.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="trajectory">
+<a class="viewcode-back" href="../../../../../api/pyacs.gts.lib.model.html#pyacs.gts.lib.model.trajectory.trajectory">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">trajectory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">model_type</span><span class="p">,</span>
+               <span class="n">offset_dates</span><span class="o">=</span><span class="p">[],</span>
+               <span class="n">eq_dates</span><span class="o">=</span><span class="p">[],</span>
+               <span class="n">H_fix</span><span class="o">=</span><span class="p">{},</span>
+               <span class="n">H_constraints</span><span class="o">=</span><span class="p">{},</span>
+               <span class="n">H_bounds</span><span class="o">=</span><span class="p">{},</span>
+               <span class="n">component</span><span class="o">=</span><span class="s1">&#39;NEU&#39;</span><span class="p">,</span>
+               <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Estimate parameters of a (non-linear) trajectory model for the time series.</span>
+
+<span class="sd">    Model: y(t) = trend + annual + semi-annual + offsets + post-seismic (psd_log).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    model_type : str</span>
+<span class="sd">        String of key-word parameters to estimate: &#39;trend&#39;, &#39;annual&#39;, &#39;semi-annual&#39;,</span>
+<span class="sd">        &#39;seasonal&#39;, &#39;offset&#39;, &#39;psd_log&#39;. E.g. &#39;trend-seasonal-offset-psd_log&#39; for full model.</span>
+<span class="sd">    offset_dates : list, optional</span>
+<span class="sd">        List of offset dates in decimal year.</span>
+<span class="sd">    eq_dates : list, optional</span>
+<span class="sd">        List of earthquake dates for post-seismic (psd_log) estimation.</span>
+<span class="sd">    H_fix : dict, optional</span>
+<span class="sd">        Parameters to fix, e.g. {&#39;psd_log_offset_00&#39;: [10., 15., 0.], &#39;psd_log_tau_00&#39;: [100., 100., 100.]}.</span>
+<span class="sd">    H_constraints : dict, optional</span>
+<span class="sd">        Parameters to constrain (center, sigma), e.g. {&#39;psd_log_tau_01&#39;: [[500., 50], [500., 50], [500., 50]]}.</span>
+<span class="sd">    H_bounds : dict, optional</span>
+<span class="sd">        Bounds, e.g. {&#39;psd_log_tau_02&#39;: [[2*365., 3*365.], ...]}.</span>
+<span class="sd">    component : str, optional</span>
+<span class="sd">        Components to estimate (&#39;NEU&#39; or subset).</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        Verbose mode.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        (results_dict, model_Gts, residual_Gts, daily_predictions_Gts). Unlike most pyacs.gts</span>
+<span class="sd">        functions, trajectory returns these 4 elements.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># import</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">at</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+
+
+    <span class="c1"># after this method .data  and .data_xyz are not consistent so .data_xyz is set to None</span>
+    <span class="c1">#self.data_xyz = None</span>
+
+<span class="c1"># fills the H_fix, H_constraints &amp; H_bounds for the components</span>
+
+    <span class="k">if</span> <span class="s1">&#39;N&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># H_fix</span>
+        <span class="n">H_fix_N</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">H_fix</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">H_fix_N</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">H_fix_N</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="c1"># H_constraints</span>
+        <span class="n">H_constraints_N</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">H_constraints</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">H_constraints_N</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">H_constraints_N</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="c1"># H_bounds</span>
+        <span class="n">H_bounds_N</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">H_bounds</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">H_bounds_N</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">H_bounds_N</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+    <span class="k">if</span> <span class="s1">&#39;E&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="c1"># H_fix</span>
+        <span class="n">H_fix_E</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">H_fix</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">H_fix_E</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">H_fix_E</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="c1"># H_constraints</span>
+        <span class="n">H_constraints_E</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">H_constraints</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">H_constraints_E</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">H_constraints_E</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="c1"># H_bounds</span>
+        <span class="n">H_bounds_E</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">H_bounds</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">H_bounds_E</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">H_bounds_E</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+    <span class="k">if</span> <span class="s1">&#39;U&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="c1"># H_fix</span>
+        <span class="n">H_fix_U</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">H_fix</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">H_fix_U</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">H_fix_U</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="c1"># H_constraints</span>
+        <span class="n">H_constraints_U</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">H_constraints</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">H_constraints_U</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">H_constraints_U</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="c1"># H_bounds</span>
+        <span class="n">H_bounds_U</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">H_bounds</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">H_bounds_U</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">H_bounds_U</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+    <span class="c1"># Run the estimation</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.gts.lib.model.non_linear_gts_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">nl_gts_fit</span>
+
+    <span class="n">t_mjd</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2mjd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">t_mjd_ed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">t_mjd</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">t_mjd</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">t_ed</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">mjd2decyear</span><span class="p">(</span><span class="n">t_mjd_ed</span><span class="p">)</span>
+
+    <span class="c1"># North</span>
+    <span class="k">if</span> <span class="s1">&#39;N&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+        <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Running trajectory model for site </span><span class="si">%s</span><span class="s2"> component North: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="p">(</span><span class="n">H_res_N</span><span class="p">,</span> <span class="n">model_N</span><span class="p">,</span> <span class="n">residuals_N</span><span class="p">,</span> <span class="n">model_ed_N</span><span class="p">)</span> <span class="o">=</span> <span class="n">nl_gts_fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">],</span> \
+                                                                 <span class="n">model_type</span><span class="p">,</span> <span class="n">offset_dates</span><span class="o">=</span><span class="n">offset_dates</span><span class="p">,</span>
+                                                                 <span class="n">eq_dates</span><span class="o">=</span><span class="n">eq_dates</span><span class="p">,</span> \
+                                                                 <span class="n">H_fix</span><span class="o">=</span><span class="n">H_fix_N</span><span class="p">,</span> <span class="n">H_constraints</span><span class="o">=</span><span class="n">H_constraints_N</span><span class="p">,</span>
+                                                                 <span class="n">H_bounds</span><span class="o">=</span><span class="n">H_bounds_N</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">model_N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.</span><span class="p">))</span>
+        <span class="n">residuals_N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.</span><span class="p">))</span>
+        <span class="n">model_ed_N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">t_ed</span><span class="p">,</span> <span class="n">t_ed</span> <span class="o">*</span> <span class="mf">0.</span><span class="p">))</span>
+
+    <span class="c1"># East</span>
+    <span class="k">if</span> <span class="s1">&#39;E&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+        <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Running trajectory model for site </span><span class="si">%s</span><span class="s2"> component East: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="p">(</span><span class="n">H_res_E</span><span class="p">,</span> <span class="n">model_E</span><span class="p">,</span> <span class="n">residuals_E</span><span class="p">,</span> <span class="n">model_ed_E</span><span class="p">)</span> <span class="o">=</span> <span class="n">nl_gts_fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">],</span> \
+                                                                 <span class="n">model_type</span><span class="p">,</span> <span class="n">offset_dates</span><span class="o">=</span><span class="n">offset_dates</span><span class="p">,</span>
+                                                                 <span class="n">eq_dates</span><span class="o">=</span><span class="n">eq_dates</span><span class="p">,</span> \
+                                                                 <span class="n">H_fix</span><span class="o">=</span><span class="n">H_fix_E</span><span class="p">,</span> <span class="n">H_constraints</span><span class="o">=</span><span class="n">H_constraints_E</span><span class="p">,</span>
+                                                                 <span class="n">H_bounds</span><span class="o">=</span><span class="n">H_bounds_E</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">model_E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.</span><span class="p">))</span>
+        <span class="n">residuals_E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.</span><span class="p">))</span>
+        <span class="n">model_ed_E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">t_ed</span><span class="p">,</span> <span class="n">t_ed</span> <span class="o">*</span> <span class="mf">0.</span><span class="p">))</span>
+
+    <span class="c1"># Up</span>
+    <span class="k">if</span> <span class="s1">&#39;U&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+        <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Running trajectory model for site </span><span class="si">%s</span><span class="s2"> component Up: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="p">(</span><span class="n">H_res_U</span><span class="p">,</span> <span class="n">model_U</span><span class="p">,</span> <span class="n">residuals_U</span><span class="p">,</span> <span class="n">model_ed_U</span><span class="p">)</span> <span class="o">=</span> <span class="n">nl_gts_fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">],</span> \
+                                                                 <span class="n">model_type</span><span class="p">,</span> <span class="n">offset_dates</span><span class="o">=</span><span class="n">offset_dates</span><span class="p">,</span>
+                                                                 <span class="n">eq_dates</span><span class="o">=</span><span class="n">eq_dates</span><span class="p">,</span> \
+                                                                 <span class="n">H_fix</span><span class="o">=</span><span class="n">H_fix_U</span><span class="p">,</span> <span class="n">H_constraints</span><span class="o">=</span><span class="n">H_constraints_U</span><span class="p">,</span>
+                                                                 <span class="n">H_bounds</span><span class="o">=</span><span class="n">H_bounds_U</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">model_U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.</span><span class="p">))</span>
+        <span class="n">residuals_U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.</span><span class="p">))</span>
+        <span class="n">model_ed_U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">t_ed</span><span class="p">,</span> <span class="n">t_ed</span> <span class="o">*</span> <span class="mf">0.</span><span class="p">))</span>
+
+    <span class="c1"># prepare return output</span>
+
+    <span class="n">H_res</span> <span class="o">=</span> <span class="p">[</span><span class="n">H_res_N</span><span class="p">,</span> <span class="n">H_res_E</span><span class="p">,</span> <span class="n">H_res_U</span><span class="p">]</span>
+
+    <span class="n">model_gts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">data_xyz</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">model_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_N</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">model_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_E</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">model_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_U</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">residual_gts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">data_xyz</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">residual_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">residuals_N</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">residual_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">residuals_E</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">residual_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">residuals_U</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">model_ed_gts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">data_xyz</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">model_ed_gts</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">t_ed</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">10</span><span class="p">))</span>
+    <span class="n">model_ed_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">t_ed</span>
+    <span class="n">model_ed_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_ed_N</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">model_ed_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_ed_E</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">model_ed_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_ed_U</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">H_res</span><span class="p">,</span> <span class="n">model_gts</span><span class="p">,</span> <span class="n">residual_gts</span><span class="p">,</span> <span class="n">model_ed_gts</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../index.html">PYACS</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Jean-Mathieu NOCQUET.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

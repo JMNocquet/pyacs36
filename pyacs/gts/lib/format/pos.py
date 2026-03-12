@@ -1,21 +1,32 @@
-"""
-Reads and write PBO pos files
-"""
+"""Read and write GAMIT/GLOBK PBO pos files."""
 
 
 ###################################################################
 ## Loads Gts from GAMIT/GLOBK  pos file format for time series
 ###################################################################
 def read_pos(self,tsdir='.',tsfile=None, xyz=True, verbose=False):
-    """
-    Read GAMIT/GLOBK PBO pos file in a directory and actually loads the time series
+    """Read GAMIT/GLOBK PBO pos file and load the time series into this Gts.
 
-    :param tsdir: directory of pos file
-    :param tsfile: pos file to be loaded
-    :param xyz: reads xyz sx sy sz corr_xy corr_xz corr_yz columns
-    :param verbose: verbose mode
-    :note: Since a pos file includes (almost) all the information, data, code, X0,Y0,Z0,t0 will be populated
-    :note: If tsfile=None, then read_pos will look for a file named CODE*.pos
+    Parameters
+    ----------
+    tsdir : str, optional
+        Directory containing pos file(s). Default is '.'.
+    tsfile : str, optional
+        Pos file to load. If None, a file CODE*.pos is sought. Default is None.
+    xyz : bool, optional
+        If True, read XYZ and sx,sy,sz, corr columns. Default is True.
+    verbose : bool, optional
+        If True, print progress. Default is False.
+
+    Returns
+    -------
+    Gts
+        self (data, code, X0, Y0, Z0, t0 populated).
+
+    Notes
+    -----
+    A pos file contains (almost) all needed info. If tsfile is None,
+    read_pos looks for a file named CODE*.pos.
     """
 
     # import
@@ -25,6 +36,14 @@ def read_pos(self,tsdir='.',tsfile=None, xyz=True, verbose=False):
     import os
 
 
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
+
+    from icecream import ic
 
     # name of the file to be read - if not provided, tries to guess
     
@@ -32,12 +51,11 @@ def read_pos(self,tsdir='.',tsfile=None, xyz=True, verbose=False):
         if (self.code is not None):
             from glob import glob
             try:
-                pos_file=glob(tsdir+'/'+self.code.upper()+'*.pos')[0]
+                pos_file=glob(tsdir+'/*'+self.code.upper()+'*.pos')[0]
             except:
-                print("!!! Error: Could not find any time series file for code ",self.code)
-                return()
+                ERROR("Could not find any time series file for code ",self.code, exit=True)
         else:
-            print("!!! Error: no code or file provided.")
+            ERROR("no code or file provided.", exit=True)
 
     else:
         pos_file=tsfile
@@ -48,14 +66,44 @@ def read_pos(self,tsdir='.',tsfile=None, xyz=True, verbose=False):
 
     # actual read
 
-    # get site code
-    import linecache
-    self.code = linecache.getline(pos_file, 3).split(':')[-1].strip()
+    # get site code from header, handling both 4-character and 9-character IDs
+    import re
+    self.code = None
+    with open(pos_file, "r") as f_pos:
+        for _ in range(40):
+            line = f_pos.readline()
+            if not line:
+                break
+            match = re.match(r"\s*(?:4|9)-character ID\s*:\s*(\S+)", line, flags=re.IGNORECASE)
+            if match:
+                header_id = match.group(1).strip()
+                self.code = header_id[:4].upper() if len(header_id) >= 4 else header_id.upper()
+                break
+    if self.code is None:
+        # fallback for non-standard headers: keep backward compatibility with former behavior
+        import linecache
+        header_id_line = linecache.getline(pos_file, 3)
+        header_id = header_id_line.split(':', 1)[-1].strip() if ':' in header_id_line else header_id_line.strip()
+        self.code = header_id[:4].upper() if len(header_id) >= 4 else header_id.upper()
 
-    
+    # determine the header length
+    # last header line has *YYYYMMDD
+
+    header_length = 0
+    with open(pos_file, "r") as f_pos:
+        for line in f_pos:
+            if line.strip() and not line.startswith('*YYYYMMDD'):
+                header_length += 1
+            else:
+                header_length += 1
+                break
+    if header_length == 0:
+        ERROR("Could not determine header length. Returning Gts", exit=True)
+
+
     if xyz:
     # trust xyz and re-creates dneu
-        data=np.genfromtxt(pos_file,skip_header=37,usecols=tuple(range(12)))
+        data=np.genfromtxt(pos_file,skip_header=header_length,usecols=tuple(range(12)))
         # reshape to ensure a 2D array
         if data.ndim == 1:
             data=data.reshape((1,data.shape[0]))
@@ -78,7 +126,7 @@ def read_pos(self,tsdir='.',tsfile=None, xyz=True, verbose=False):
     else:
     # for some reason, you prefer to trust dneu
         try:
-            data=np.genfromtxt(pos_file,skip_header=37,usecols=tuple(range(15,24)))
+            data=np.genfromtxt(pos_file,skip_header=header_length,usecols=tuple(range(15,24)))
             # reshape to ensure a 2D array
             if data.ndim==1:
                 data=data.reshape((1,data.shape[0]))
@@ -87,7 +135,7 @@ def read_pos(self,tsdir='.',tsfile=None, xyz=True, verbose=False):
             raise IOError("!!! Error: Could not read dN,dE,dU from file: %s " % pos_file )
         
         # convert dates to dec.year
-        mjd_data=list(np.genfromtxt(pos_file,skip_header=37,usecols= 2))
+        mjd_data=list(np.genfromtxt(pos_file,skip_header=header_length,usecols= 2))
         dec_year=pyacs.lib.astrotime.mjd2decyear(mjd_data)
 
         # XYZ reference from header
@@ -128,27 +176,52 @@ def read_pos(self,tsdir='.',tsfile=None, xyz=True, verbose=False):
 
 
 ###################################################################
-def write_pos(self,idir,add_key='' , force=None, verbose=False):
+def write_pos(self,idir='./pos',add_key='' , force=None, verbose=False):
 ###################################################################
-    """
-    Write a time series in GAMIT/GLOBK PBO pos format
+    """Write time series in GAMIT/GLOBK PBO pos format.
 
-    :param idir: output directory
-    :param add_key: if not blank then the output pos file will be CODE_add_key.pos, CODE.pos otherwise.
-    :param force: set force to 'data' or 'data_xyz' to force pos to be written from .data or .data_xyz
+    Parameters
+    ----------
+    idir : str, optional
+        Output directory. Default is './pos'.
+    add_key : str, optional
+        If non-blank, output file is CODE_add_key.pos; otherwise CODE.pos.
+    force : str, optional
+        'data' or 'data_xyz' to force source; None for default behavior.
+    verbose : bool, optional
+        If True, print progress. Default is False.
 
-    :note1:default behaviour (force = None)
-        if data and data_xyz are not None, then print them independently
-        if there are data only, then uses X0,Y0,Z0 to write data_xyz
-        if there are data_xyz only, recreate data and write it
-    
+    Returns
+    -------
+    Gts
+        self.
+
+    Notes
+    -----
+    Default (force=None): if both data and data_xyz exist, both are written;
+    if only data, uses X0,Y0,Z0 to write data_xyz; if only data_xyz, recreates
+    data and writes.
     """
+
+    # import
+    import pyacs.lib.coordinates
+    import pyacs.lib.astrotime
+    import numpy as np
+    import os
+
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
+
 
     # force option
     
     if force is not None:
         if force not in ['data','data_xyz']:
-            print('!!! ERROR: force keyword must be either data or data_xyz')
+            ERROR('force parameter must be either data or data_xyz. Returning Gts')
             return(self)
     
         if force == 'data':
@@ -161,7 +234,7 @@ def write_pos(self,idir,add_key='' , force=None, verbose=False):
     
     if force != 'data_xyz':
         if not self.cdata(data=True):
-            print('! Can not write .pos file. Problem with .data attribute.')
+            WARNING('Can not write .pos file. Problem with .data attribute. Returning Gts')
             self.cdata(data=True,verbose=True)
             return(self)
 
@@ -245,39 +318,24 @@ def write_pos(self,idir,add_key='' , force=None, verbose=False):
         import pyacs.lib.astrotime
         import numpy as np
         
-#        # data
-#        data=np.copy(gts.data)
-#        Hdata = dict(zip(gts.data[:,0],gts.data[:,1:]))
-        
+
         # check for duplicate records
+        VERBOSE('running reorder')
         self.reorder()
-        
-#        if len(Hdata.keys()) != data.shape[0]:
-#            print "!!! dates probably duplicated for site ",gts.code
-#            data=np.zeros((len(Hdata.keys()),data.shape[1]))
-#        
-#        # 
-#        data[:,0]=sorted(Hdata.keys())
-#        data[:,1:]=collections.OrderedDict(sorted(Hdata.items())).values()
-#        
-#        gts.data=data
-        
-        
-#        pos=np.zeros((gts.data.shape[0],25))
 
         dndedulamphih=np.zeros((gts.data.shape[0],6))
         dndedulamphih[:,:3]=self.data[:,1:4]
 
         # case dndedu and XYZ exists
         if isinstance(gts.data,np.ndarray) and isinstance(gts.data_xyz,np.ndarray):
-            if verbose:print("-- write NEU data & XYZ data independently")
+            VERBOSE("will write NEU data & XYZ data independently")
             # write data & data_xyz independently
             XYZ=gts.data_xyz[:,1:10]
             
         # case dndedu exits and XYZ does not exists
         if isinstance(gts.data,np.ndarray) and not isinstance(gts.data_xyz,np.ndarray):
             # creates data_xyz independently
-            if verbose:print('-- create XYZ data from NEU')
+            VERBOSE('creating XYZ data from NEU')
             
             if gts.X0 is not None:
                 dndedulamphih[:,3]=gts.X0
@@ -296,7 +354,7 @@ def write_pos(self,idir,add_key='' , force=None, verbose=False):
         # case dndedu does exist and XYZ exists
         if isinstance(gts.data_xyz,np.ndarray) and not isinstance(gts.data,np.ndarray):
             # write data & data_xyz independently
-            if verbose:print('-- create NEU data from XYZ')
+            VERBOSE('creating NEU data from XYZ')
             gts.xyz2neu(corr=True)
             XYZ=gts.data_xyz[:,1:10]
         
@@ -343,18 +401,20 @@ def write_pos(self,idir,add_key='' , force=None, verbose=False):
 
     ###############################################
 
-    import pyacs.lib.coordinates
-    import pyacs.lib.astrotime
-    import numpy as np
-    import os
 
-    # output directory
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
+
+
     if not os.path.isdir(idir):
         try:
-            os.mkdir(idir)
-            print("-- Creating directory ",idir)
+            os.makedirs(idir, exist_ok=True)
         except:
-            print("!!! Error : Could not create directory ",idir)
+            WARNING("Could not create directory ",idir)
     
     # add_key
     if add_key != '':

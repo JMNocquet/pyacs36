@@ -1,0 +1,352 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.gts.lib.l1trend.check_trend &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../libraries.html">core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyacs.gts.lib.l1trend.check_trend</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyacs.gts.lib.l1trend.check_trend</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Functions for checking and analyzing L1-trend model quality.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">at</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+
+
+<div class="viewcode-block" id="check_l1_trend">
+<a class="viewcode-back" href="../../../../../api/pyacs.gts.lib.l1trend.check_trend.html#pyacs.gts.lib.filters.refine_l1trend.check_l1_trend">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_l1_trend</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">l1ts</span><span class="p">,</span> <span class="n">component</span><span class="o">=</span><span class="s1">&#39;ENU&#39;</span><span class="p">,</span> <span class="n">min_samples_per_segment</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">threshold_bias_res_detect</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">threshold_vel</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Inspect the result from l1trend model of a time series.</span>
+<span class="sd">    Returns a list periods ([sdate,edate]) where bad modelling is suspected.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ts : pyacs.gts.Gts.Gts</span>
+<span class="sd">        Raw time series</span>
+<span class="sd">    l1ts : pyacs.gts.Gts.Gts</span>
+<span class="sd">        L1-trend time series</span>
+<span class="sd">    component : str</span>
+<span class="sd">        Components to be analyzed. Default: &#39;EN&#39;</span>
+<span class="sd">    min_samples_per_segment : int</span>
+<span class="sd">        Minimum number of samples for a segment to be inspected (default: 6)</span>
+<span class="sd">    threshold_bias_res_detect : float</span>
+<span class="sd">        Threshold to detect bias residuals (default: 40)</span>
+<span class="sd">    threshold_vel : float</span>
+<span class="sd">        Instantaneous velocity threshold for a segment to be considered in detection (default: 8 mm/yr)</span>
+<span class="sd">    plot : bool</span>
+<span class="sd">        Plot the results (default: False)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        (H_period, H_cp, H_cp_pb)</span>
+<span class="sd">        - H_period: Dictionary of suspicious periods for each component</span>
+<span class="sd">        - H_cp: Dictionary of breakpoint indices for each component</span>
+<span class="sd">        - H_cp_pb: Dictionary of problematic breakpoint indices for each component</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># initialize</span>
+    <span class="n">H_period</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">H_cp</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">H_cp_pb</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Searching suspicious periods for </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">l1ts</span><span class="o">.</span><span class="n">code</span><span class="p">))</span>
+
+    <span class="c1"># define n_median_filter</span>
+    <span class="n">n_median_filter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="mi">11</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">n_median_filter</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">n_median_filter</span> <span class="o">=</span> <span class="n">n_median_filter</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="c1"># East component</span>
+    <span class="k">if</span> <span class="s1">&#39;E&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+        <span class="n">VERBOSE</span><span class="p">(</span><span class="s1">&#39;Component E&#39;</span><span class="p">)</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.E3</span>
+        <span class="n">l1y</span> <span class="o">=</span> <span class="n">l1ts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.E3</span>
+        <span class="n">fy</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">median_filter</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n_median_filter</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.E3</span>
+        <span class="n">lidx</span> <span class="o">=</span> <span class="n">make_node_ts</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">l1y</span><span class="p">)</span>
+        <span class="n">H_cp</span><span class="p">[</span><span class="s1">&#39;E&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lidx</span>
+        <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Searching suspicious periods for component E &quot;</span><span class="p">)</span>
+        <span class="n">H_period</span><span class="p">[</span><span class="s1">&#39;E&#39;</span><span class="p">],</span> <span class="n">H_cp_pb</span><span class="p">[</span><span class="s1">&#39;E&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_measure_bias</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">l1y</span><span class="p">,</span> <span class="n">fy</span> <span class="o">-</span> <span class="n">l1y</span><span class="p">,</span> <span class="n">lidx</span><span class="p">,</span>
+                                                           <span class="n">min_samples_per_segment</span><span class="o">=</span><span class="n">min_samples_per_segment</span><span class="p">,</span>
+                                                           <span class="n">threshold_bias_res_detect</span><span class="o">=</span><span class="n">threshold_bias_res_detect</span><span class="p">,</span>
+                                                           <span class="n">threshold_vel</span><span class="o">=</span><span class="n">threshold_vel</span><span class="p">)</span>
+        <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;#</span><span class="si">%d</span><span class="s2"> periods suspected for component E&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">H_period</span><span class="p">[</span><span class="s1">&#39;E&#39;</span><span class="p">]))</span>
+    
+    <span class="c1"># North component</span>
+    <span class="k">if</span> <span class="s1">&#39;N&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+        <span class="n">VERBOSE</span><span class="p">(</span><span class="s1">&#39;Component N&#39;</span><span class="p">)</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.E3</span>
+        <span class="n">l1y</span> <span class="o">=</span> <span class="n">l1ts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.E3</span>
+        <span class="n">fy</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">median_filter</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n_median_filter</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.E3</span>
+        <span class="n">lidx</span> <span class="o">=</span> <span class="n">make_node_ts</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">l1y</span><span class="p">)</span>
+        <span class="n">H_cp</span><span class="p">[</span><span class="s1">&#39;N&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lidx</span>
+        <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Searching suspicious periods for component N &quot;</span><span class="p">)</span>
+        <span class="n">H_period</span><span class="p">[</span><span class="s1">&#39;N&#39;</span><span class="p">],</span> <span class="n">H_cp_pb</span><span class="p">[</span><span class="s1">&#39;N&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_measure_bias</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">l1y</span><span class="p">,</span> <span class="n">fy</span> <span class="o">-</span> <span class="n">l1y</span><span class="p">,</span> <span class="n">lidx</span><span class="p">,</span>
+                                                           <span class="n">min_samples_per_segment</span><span class="o">=</span><span class="n">min_samples_per_segment</span><span class="p">,</span>
+                                                           <span class="n">threshold_bias_res_detect</span><span class="o">=</span><span class="n">threshold_bias_res_detect</span><span class="p">,</span>
+                                                           <span class="n">threshold_vel</span><span class="o">=</span><span class="n">threshold_vel</span><span class="p">)</span>
+        <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;#</span><span class="si">%d</span><span class="s2"> periods suspected for component N&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">H_period</span><span class="p">[</span><span class="s1">&#39;N&#39;</span><span class="p">]))</span>
+
+    <span class="c1"># Up component</span>
+    <span class="k">if</span> <span class="s1">&#39;U&#39;</span> <span class="ow">in</span> <span class="n">component</span><span class="p">:</span>
+        <span class="n">VERBOSE</span><span class="p">(</span><span class="s1">&#39;Component U&#39;</span><span class="p">)</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.E3</span>
+        <span class="n">l1y</span> <span class="o">=</span> <span class="n">l1ts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.E3</span>
+        <span class="n">fy</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">median_filter</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n_median_filter</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.E3</span>
+        <span class="n">lidx</span> <span class="o">=</span> <span class="n">make_node_ts</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">l1y</span><span class="p">)</span>
+        <span class="n">H_cp</span><span class="p">[</span><span class="s1">&#39;U&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lidx</span>
+        <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Searching suspicious periods for component U &quot;</span><span class="p">)</span>
+        <span class="n">H_period</span><span class="p">[</span><span class="s1">&#39;U&#39;</span><span class="p">],</span> <span class="n">H_cp_pb</span><span class="p">[</span><span class="s1">&#39;U&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">compute_measure_bias</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">l1y</span><span class="p">,</span> <span class="n">fy</span> <span class="o">-</span> <span class="n">l1y</span><span class="p">,</span> <span class="n">lidx</span><span class="p">,</span>
+                                                           <span class="n">min_samples_per_segment</span><span class="o">=</span><span class="n">min_samples_per_segment</span><span class="p">,</span>
+                                                           <span class="n">threshold_bias_res_detect</span><span class="o">=</span><span class="n">threshold_bias_res_detect</span><span class="p">,</span>
+                                                           <span class="n">threshold_vel</span><span class="o">=</span><span class="n">threshold_vel</span><span class="p">)</span>
+        <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;#</span><span class="si">%d</span><span class="s2"> periods suspected for component U&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">H_period</span><span class="p">[</span><span class="s1">&#39;U&#39;</span><span class="p">]))</span>
+
+    <span class="k">if</span> <span class="n">plot</span><span class="p">:</span>
+        <span class="n">ts</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">superimposed</span><span class="o">=</span><span class="n">l1ts</span><span class="p">,</span> <span class="n">lperiod</span><span class="o">=</span><span class="n">H_period</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">H_period</span><span class="p">,</span> <span class="n">H_cp</span><span class="p">,</span> <span class="n">H_cp_pb</span></div>
+
+
+
+<div class="viewcode-block" id="measure_bias">
+<a class="viewcode-back" href="../../../../../api/pyacs.gts.lib.l1trend.check_trend.html#pyacs.gts.lib.filters.refine_l1trend.measure_bias">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">measure_bias</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Provide a measure of potential bias in a residual time series (0-100).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : ndarray</span>
+<span class="sd">        Time array.</span>
+<span class="sd">    y : ndarray</span>
+<span class="sd">        Residual values.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        (res, resv): bias score and median absolute residual.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">nsample</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">mid_date</span> <span class="o">=</span> <span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
+
+    <span class="n">lidx_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">t</span> <span class="o">&lt;</span> <span class="n">mid_date</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">lidx_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">t</span> <span class="o">&gt;</span> <span class="n">mid_date</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">n_positif1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">lidx_1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">n_negatif2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">lidx_2</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">n_negatif1</span> <span class="o">=</span> <span class="n">lidx_1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">n_positif1</span>
+    <span class="n">n_positif2</span> <span class="o">=</span> <span class="n">lidx_2</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">n_negatif2</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(((</span><span class="n">n_positif1</span> <span class="o">+</span> <span class="n">n_negatif2</span><span class="p">)</span> <span class="o">/</span> <span class="n">nsample</span> <span class="o">*</span> <span class="mf">100.</span><span class="p">)</span> <span class="o">-</span> <span class="mf">50.</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+                  <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(((</span><span class="n">n_negatif1</span> <span class="o">+</span> <span class="n">n_positif2</span><span class="p">)</span> <span class="o">/</span> <span class="n">nsample</span> <span class="o">*</span> <span class="mf">100.</span><span class="p">)</span> <span class="o">-</span> <span class="mf">50.</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">])</span>
+
+    <span class="n">resv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">res</span><span class="p">,</span> <span class="n">resv</span></div>
+
+
+
+<div class="viewcode-block" id="make_node_ts">
+<a class="viewcode-back" href="../../../../../api/pyacs.gts.lib.l1trend.check_trend.html#pyacs.gts.lib.filters.refine_l1trend.make_node_ts">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_node_ts</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">.5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find breakpoints assuming y is piecewise linear.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : ndarray</span>
+<span class="sd">        Time/abscissa.</span>
+<span class="sd">    y : ndarray</span>
+<span class="sd">        Values (piecewise linear).</span>
+<span class="sd">    threshold : float, optional</span>
+<span class="sd">        Threshold on change in slope to declare breakpoint.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+<span class="sd">        Indices of breakpoints in the time series.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="n">cp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">dy</span><span class="p">))</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">cp</span> <span class="o">+</span> <span class="mi">1</span></div>
+
+
+
+<div class="viewcode-block" id="compute_measure_bias">
+<a class="viewcode-back" href="../../../../../api/pyacs.gts.lib.l1trend.check_trend.html#pyacs.gts.lib.filters.refine_l1trend.compute_measure_bias">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_measure_bias</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">l1y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cp</span><span class="p">,</span> <span class="n">min_samples_per_segment</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">threshold_bias_res_detect</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">threshold_vel</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+                         <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute fit indicators from residual (obs minus piecewise linear).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : ndarray</span>
+<span class="sd">        Time array.</span>
+<span class="sd">    l1y : ndarray</span>
+<span class="sd">        L1-trend values.</span>
+<span class="sd">    y : ndarray</span>
+<span class="sd">        Residual (obs - piecewise_linear).</span>
+<span class="sd">    cp : ndarray</span>
+<span class="sd">        Breakpoint indices.</span>
+<span class="sd">    min_samples_per_segment : int, optional</span>
+<span class="sd">        Minimum samples per segment (default 6).</span>
+<span class="sd">    threshold_bias_res_detect : float, optional</span>
+<span class="sd">        Threshold for bias detection (default 40).</span>
+<span class="sd">    threshold_vel : float, optional</span>
+<span class="sd">        Velocity threshold in mm/yr (default 8).</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        Verbose mode.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        (list of suspicious periods [sdate, edate], list of problematic breakpoint indices).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">datetime_t</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">rms_l1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+
+    <span class="c1"># computes average velocity</span>
+    <span class="n">ivel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">l1y</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">median_vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">ivel</span><span class="p">)</span>
+    <span class="n">median_vel_change</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">ivel</span> <span class="o">-</span> <span class="n">median_vel</span><span class="p">))</span>
+    <span class="n">lperiod</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">lcp</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">wt</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">cp</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span><span class="n">cp</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">wy</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">cp</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span><span class="n">cp</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">wt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">min_samples_per_segment</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">mb</span><span class="p">,</span> <span class="n">resv</span> <span class="o">=</span> <span class="n">measure_bias</span><span class="p">(</span><span class="n">wt</span><span class="p">,</span> <span class="n">wy</span><span class="p">)</span>
+
+        <span class="c1"># threshold for velocity 4 * median scatter</span>
+        <span class="n">rvel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">l1y</span><span class="p">[</span><span class="n">cp</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span><span class="n">cp</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">wt</span><span class="p">))</span> <span class="o">-</span> <span class="n">median_vel</span><span class="p">)</span> <span class="o">/</span> <span class="n">median_vel_change</span>
+
+        <span class="k">if</span> <span class="n">mb</span> <span class="o">&gt;</span> <span class="n">threshold_bias_res_detect</span> <span class="ow">and</span> <span class="n">rvel</span> <span class="o">&gt;</span> <span class="n">threshold_vel</span><span class="p">:</span>
+            <span class="n">VERBOSE</span><span class="p">((</span><span class="s2">&quot; </span><span class="si">%s</span><span class="s2">-</span><span class="si">%s</span><span class="s2"> nsample: </span><span class="si">%3d</span><span class="s2"> velocity_bias_measure: </span><span class="si">%.1lf</span><span class="s2"> rms_l1: </span><span class="si">%.1lf</span><span class="s2"> vs </span><span class="si">%.1lf</span><span class="s2"> rvel </span><span class="si">%.1lf</span><span class="s2"> &quot;</span> <span class="o">%</span> \
+                      <span class="p">(</span><span class="n">datetime_t</span><span class="p">[</span><span class="n">cp</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()[:</span><span class="mi">10</span><span class="p">],</span> <span class="n">datetime_t</span><span class="p">[</span><span class="n">cp</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()[:</span><span class="mi">10</span><span class="p">],</span> <span class="n">wt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mb</span><span class="p">,</span>
+                       <span class="n">resv</span><span class="p">,</span> <span class="n">rms_l1</span><span class="p">,</span> <span class="n">rvel</span><span class="p">)))</span>
+
+            <span class="n">lperiod</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">t</span><span class="p">[</span><span class="n">cp</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">t</span><span class="p">[</span><span class="n">cp</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]])</span>
+            <span class="n">lcp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cp</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">lperiod</span><span class="p">,</span> <span class="n">lcp</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

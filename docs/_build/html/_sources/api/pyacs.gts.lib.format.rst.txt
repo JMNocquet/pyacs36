@@ -1,0 +1,125 @@
+pyacs.gts.lib.format package
+============================
+
+Submodules
+----------
+
+pyacs.gts.lib.format.cats module
+--------------------------------
+
+.. automodule:: pyacs.gts.lib.format.cats
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.format.force\_daily module
+----------------------------------------
+
+.. automodule:: pyacs.gts.lib.format.force_daily
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.format.get\_unr module
+------------------------------------
+
+.. automodule:: pyacs.gts.lib.format.get_unr
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.format.get\_unr\_loading module
+---------------------------------------------
+
+.. automodule:: pyacs.gts.lib.format.get_unr_loading
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.format.kenv module
+--------------------------------
+
+.. automodule:: pyacs.gts.lib.format.kenv
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.format.mb\_file module
+------------------------------------
+
+.. automodule:: pyacs.gts.lib.format.mb_file
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.format.pos module
+-------------------------------
+
+.. automodule:: pyacs.gts.lib.format.pos
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.format.pride module
+---------------------------------
+
+.. automodule:: pyacs.gts.lib.format.pride
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.format.read\_sol module
+-------------------------------------
+
+.. automodule:: pyacs.gts.lib.format.read_sol
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.format.series module
+----------------------------------
+
+.. automodule:: pyacs.gts.lib.format.series
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.format.tdp module
+-------------------------------
+
+.. automodule:: pyacs.gts.lib.format.tdp
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.format.to\_pandas\_df module
+------------------------------------------
+
+.. automodule:: pyacs.gts.lib.format.to_pandas_df
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.format.to\_pytrf module
+-------------------------------------
+
+.. automodule:: pyacs.gts.lib.format.to_pytrf
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.format.track module
+---------------------------------
+
+.. automodule:: pyacs.gts.lib.format.track
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: pyacs.gts.lib.format
+   :members:
+   :show-inheritance:
+   :undoc-members:

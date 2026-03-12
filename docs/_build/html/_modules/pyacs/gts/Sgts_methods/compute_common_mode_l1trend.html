@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyacs.gts.Sgts_methods.compute_common_mode_l1trend &#8212; PYACS 0.66.18 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../../_static/documentation_options.js?v=2262e354"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pyacs.gts.Sgts_methods.compute_common_mode_l1trend</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="compute_common_mode_l1trend">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.Sgts_methods.html#pyacs.gts.Sgts_methods.compute_common_mode_l1trend.compute_common_mode_l1trend">[docs]</a>
+<span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_common_mode_l1trend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">already_ivel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_ivel</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This approach estimates a common mode from instantaneous velocity</span>
+
+<span class="sd">    parameter already_ivel: boolean, if True ts_ref are already results from l1trend</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="c1"># import</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">icecream</span><span class="w"> </span><span class="kn">import</span> <span class="n">ic</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyeq.obs_tensor.sgts2obs_tensor</span><span class="w"> </span><span class="kn">import</span> <span class="n">sgts2tensor</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.gts.Gts</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gts</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">at</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Running Sgts.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span><span class="p">)</span>
+
+    <span class="c1"># if not ivel, then computes ivel</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">already_ivel</span><span class="p">:</span>
+        <span class="n">MESSAGE</span><span class="p">(</span><span class="s2">&quot;Computing instantaneous velocity&quot;</span><span class="p">)</span>
+        <span class="n">ts_ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gts</span><span class="p">(</span><span class="s1">&#39;disp2vel&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ts_ref</span> <span class="o">=</span> <span class="bp">self</span>
+
+    <span class="c1"># convert to observation tensor</span>
+    <span class="n">MESSAGE</span><span class="p">(</span><span class="s2">&quot;Converting to observation tensor&quot;</span><span class="p">)</span>
+    <span class="n">T</span><span class="p">,</span> <span class="n">np_name</span><span class="p">,</span> <span class="n">np_s</span> <span class="o">=</span> <span class="n">sgts2tensor</span><span class="p">(</span><span class="n">ts_ref</span><span class="p">,</span> <span class="n">rounding</span><span class="o">=</span><span class="s1">&#39;day&#39;</span><span class="p">)</span>
+    <span class="n">MESSAGE</span><span class="p">(</span><span class="s2">&quot;Read </span><span class="si">%d</span><span class="s2"> time series&quot;</span> <span class="o">%</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1"># set nan unrealistic velocities</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span> <span class="n">T</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">):</span>
+        <span class="c1"># detect too high velocities on East &amp; North only</span>
+        <span class="n">np_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">T</span><span class="p">[:,</span><span class="n">i</span><span class="p">,:</span><span class="mi">1</span><span class="p">])</span><span class="o">&gt;</span><span class="n">max_ivel</span> <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">T</span><span class="p">[</span><span class="n">np_idx</span><span class="p">,</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+
+
+    <span class="c1"># center velocity</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">T</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># removes rows with only NaN</span>
+    <span class="n">lidx</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">T</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span>
+    <span class="n">np_s</span> <span class="o">=</span> <span class="n">np_s</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span>
+
+
+    <span class="c1"># computes the median velocity at every date</span>
+    <span class="n">MESSAGE</span><span class="p">(</span><span class="s2">&quot;Computing instantaneous median velocity&quot;</span><span class="p">)</span>
+    <span class="n">np_median_velocity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">T</span> <span class="o">/</span> <span class="mf">365.25</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># interpolate to avoid nan</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">interpolate</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">lidx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">np_median_velocity</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">lidx</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">interpolate</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">np_s</span><span class="p">[</span><span class="n">lidx</span><span class="p">],</span> <span class="n">np_median_velocity</span><span class="p">[</span><span class="n">lidx</span><span class="p">,</span> <span class="n">i</span><span class="p">])</span>
+            <span class="n">np_median_velocity</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">np_s</span><span class="p">)</span>
+
+    <span class="c1"># do the integration to get a time series in mm</span>
+    <span class="n">MESSAGE</span><span class="p">(</span><span class="s2">&quot;Integrating velocity to displacement&quot;</span><span class="p">)</span>
+    <span class="n">ts_cmm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">np_median_velocity</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E-3</span>
+
+    <span class="c1"># creates a time series</span>
+    <span class="n">cmm</span> <span class="o">=</span> <span class="n">Gts</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s1">&#39;CMM_&#39;</span><span class="p">)</span>
+    <span class="n">cmm</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ts_cmm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">10</span><span class="p">))</span>
+    <span class="n">cmm</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">datetime2decyear</span><span class="p">(</span><span class="n">at</span><span class="o">.</span><span class="n">seconds2datetime</span><span class="p">(</span><span class="n">np_s</span><span class="p">))</span>
+    <span class="n">cmm</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">ts_cmm</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">cmm</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">ts_cmm</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">cmm</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">ts_cmm</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+
+    <span class="n">cmm</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">:]</span> <span class="o">=</span> <span class="mf">1.E-3</span>
+
+    <span class="c1"># detrend</span>
+    <span class="n">MESSAGE</span><span class="p">(</span><span class="s2">&quot;Removing trend&quot;</span><span class="p">)</span>
+
+    <span class="n">vel</span> <span class="o">=</span> <span class="n">cmm</span><span class="o">.</span><span class="n">detrend_seasonal</span><span class="p">()</span><span class="o">.</span><span class="n">velocity</span>
+    <span class="n">cmm_detrend</span> <span class="o">=</span> <span class="n">cmm</span><span class="o">.</span><span class="n">remove_velocity</span><span class="p">(</span><span class="n">vel</span><span class="p">)</span>
+
+    <span class="c1"># return</span>
+
+    <span class="k">return</span> <span class="n">cmm_detrend</span></div>
+
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">PYACS</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Jean-Mathieu NOCQUET.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,250 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gts.l1trendi &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Gts.make_model" href="make_model.html" />
+    <link rel="prev" title="Gts.l1trend_to_breakpoints" href="l1trend_to_breakpoints.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../libraries.html">core libraries</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../gts.html">Time series library</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../gts.html#gts-class-api">Gts class API</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../gts.html#sgts-class-api">Sgts class API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../gts.html#id1">Summary of available methods</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../gts.html#module-pyacs.gts.Sgts">Sgts full API</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="add_obs.html">Gts.add_obs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="apply_offsets.html">Gts.apply_offsets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clean_l1trend.html">Gts.clean_l1trend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="copy.html">Gts.copy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="decimate.html">Gts.decimate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="detrend.html">Gts.detrend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="detrend_annual.html">Gts.detrend_annual</a></li>
+<li class="toctree-l4"><a class="reference internal" href="detrend_median.html">Gts.detrend_median</a></li>
+<li class="toctree-l4"><a class="reference internal" href="detrend_pytrf.html">Gts.detrend_pytrf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="detrend_seasonal.html">Gts.detrend_seasonal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="disp2vel.html">Gts.disp2vel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="displacement.html">Gts.displacement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="edge_filter.html">Gts.edge_filter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="exclude_periods.html">Gts.exclude_periods</a></li>
+<li class="toctree-l4"><a class="reference internal" href="extract_dates.html">Gts.extract_dates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="extract_periods.html">Gts.extract_periods</a></li>
+<li class="toctree-l4"><a class="reference internal" href="find_offsets.html">Gts.find_offsets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="find_offsets_ivel.html">Gts.find_offsets_ivel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="find_offsets_t_scan.html">Gts.find_offsets_t_scan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="find_outlier_around_date.html">Gts.find_outlier_around_date</a></li>
+<li class="toctree-l4"><a class="reference internal" href="find_outliers_simple.html">Gts.find_outliers_simple</a></li>
+<li class="toctree-l4"><a class="reference internal" href="find_outliers_sliding_window.html">Gts.find_outliers_sliding_window</a></li>
+<li class="toctree-l4"><a class="reference internal" href="find_outliers_vondrak.html">Gts.find_outliers_vondrak</a></li>
+<li class="toctree-l4"><a class="reference internal" href="force_daily.html">Gts.force_daily</a></li>
+<li class="toctree-l4"><a class="reference internal" href="frame.html">Gts.frame</a></li>
+<li class="toctree-l4"><a class="reference internal" href="get_coseismic.html">Gts.get_coseismic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="get_unr.html">Gts.get_unr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="info.html">Gts.info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="insert_gts_data.html">Gts.insert_gts_data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="interpolate.html">Gts.interpolate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ivel.html">Gts.ivel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="l1trend_optimal_workflow.html">Gts.l1trend_optimal_workflow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="l1trend_to_breakpoints.html">Gts.l1trend_to_breakpoints</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Gts.l1trendi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="make_model.html">Gts.make_model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="median_filter.html">Gts.median_filter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="neu2xyz.html">Gts.neu2xyz</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plot.html">Gts.plot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="read.html">Gts.read</a></li>
+<li class="toctree-l4"><a class="reference internal" href="read_cats_file.html">Gts.read_cats_file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="read_pos.html">Gts.read_pos</a></li>
+<li class="toctree-l4"><a class="reference internal" href="read_pride.html">Gts.read_pride</a></li>
+<li class="toctree-l4"><a class="reference internal" href="read_series.html">Gts.read_series</a></li>
+<li class="toctree-l4"><a class="reference internal" href="realistic_sigma.html">Gts.realistic_sigma</a></li>
+<li class="toctree-l4"><a class="reference internal" href="refine_l1trend.html">Gts.refine_l1trend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="remove_outliers.html">Gts.remove_outliers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="remove_pole.html">Gts.remove_pole</a></li>
+<li class="toctree-l4"><a class="reference internal" href="reorder.html">Gts.reorder</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rotate.html">Gts.rotate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="save_offsets.html">Gts.save_offsets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="save_velocity.html">Gts.save_velocity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="set_zero_at_date.html">Gts.set_zero_at_date</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sigma_vel_tsfit.html">Gts.sigma_vel_tsfit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simplify_l1trend.html">Gts.simplify_l1trend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="smooth.html">Gts.smooth</a></li>
+<li class="toctree-l4"><a class="reference internal" href="spline.html">Gts.spline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="split.html">Gts.split</a></li>
+<li class="toctree-l4"><a class="reference internal" href="substract_ts.html">Gts.substract_ts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="suspect_offsets.html">Gts.suspect_offsets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test_offset_significance.html">Gts.test_offset_significance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="to_pandas_df.html">Gts.to_pandas_df</a></li>
+<li class="toctree-l4"><a class="reference internal" href="to_pytrf.html">Gts.to_pytrf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="trajectory.html">Gts.trajectory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vondrak.html">Gts.vondrak</a></li>
+<li class="toctree-l4"><a class="reference internal" href="wiener.html">Gts.wiener</a></li>
+<li class="toctree-l4"><a class="reference internal" href="write_cats.html">Gts.write_cats</a></li>
+<li class="toctree-l4"><a class="reference internal" href="write_pos.html">Gts.write_pos</a></li>
+<li class="toctree-l4"><a class="reference internal" href="wrms.html">Gts.wrms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="xyz2neu.html">Gts.xyz2neu</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../gts.html">Time series library</a></li>
+      <li class="breadcrumb-item active">Gts.l1trendi</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/gts_methods/l1trendi.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gts-l1trendi">
+<h1>Gts.l1trendi<a class="headerlink" href="#gts-l1trendi" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyacs.gts.Gts.</span></span><span class="sig-name descname"><span class="pre">Gts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_corr_neu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_corr_xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets_dates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets_values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outliers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">annual</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">semi_annual</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ifile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/Gts.html#Gts"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">l1trendi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ndays_mf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">criterion</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BIC'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lcomponent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ENU'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'golden'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_process</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[-2,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_samples_per_segment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold_bias_res_detect</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold_vel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_sample_segment_refinement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'L2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Performs l1 trend filter on GPS time series. For each component, optimal filter parameter is searched using specified criterion.
+Uses <a class="reference external" href="https://pypi.org/project/trendfilter/">https://pypi.org/project/trendfilter/</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alpha</strong> (<em>float</em><em> or </em><em>str</em>) – Either hyperparameter as float or ‘auto’ to find optimal filtering using criterion</p></li>
+<li><p><strong>ndays_mf</strong> (<em>int</em>) – Parameter for a median filter to be applied prior to l1-trend filtering</p></li>
+<li><p><strong>criterion</strong> (<em>str</em>) – Criterion to select automatic optimal l1-trend filtering. Options: ‘BIC’ (default), ‘AICc’, ‘Cp’</p></li>
+<li><p><strong>lcomponent</strong> (<em>str</em>) – List of components to be filtered. Other components will remain unchanged</p></li>
+<li><p><strong>algo</strong> (<em>str</em>) – Algorithm to find optimal alpha. Options: ‘golden’ (default) or ‘custom’</p></li>
+<li><p><strong>pre_process</strong> (<em>float</em>) – Pre-process time series to avoid convergence problems in l1trend. It corrects for unrealistically large
+velocity using the threshold provided (mm/yr). Correction is then added again after l1_trend.
+Default is 3600 (3.6 m/yr)</p></li>
+<li><p><strong>bounds</strong> (<em>list</em>) – Bounds for golden section search algorithm. Default is [-2, 1]</p></li>
+<li><p><strong>tol</strong> (<em>float</em>) – Tolerance for golden section search algorithm. Default is 0.01</p></li>
+<li><p><strong>refine</strong> (<em>bool</em>) – If True, will run refinement after l1 trend filtering</p></li>
+<li><p><strong>min_samples_per_segment</strong> (<em>int</em>) – Minimum number of samples per segment for refinement</p></li>
+<li><p><strong>threshold_bias_res_detect</strong> (<em>float</em>) – Threshold for bias detection in refinement</p></li>
+<li><p><strong>threshold_vel</strong> (<em>float</em>) – Threshold for velocity detection in refinement</p></li>
+<li><p><strong>min_sample_segment_refinement</strong> (<em>int</em>) – Minimum number of samples per segment in refinement</p></li>
+<li><p><strong>norm</strong> (<em>str</em>) – Norm to use for refinement. Options: ‘L2’ (default)</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Enable verbose output for debugging</p></li>
+<li><p><strong>log_dir</strong> (<em>str</em><em> or </em><em>None</em>) – If provided, directory where the log file will be created. The log file will be named ‘SITE_l1trendi.log’
+where SITE is the site code. If None, no file logging is performed.</p></li>
+<li><p><strong>component</strong> (<em>str</em><em> or </em><em>None</em>) – Components to process (‘N’, ‘E’, ‘U’, ‘NE’, ‘EN’, ‘NU’, ‘UN’, ‘EU’, ‘UE’, ‘NEU’, etc.).
+If None, uses lcomponent parameter. Used for component-specific statistics calculation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>l1-trend filtered time series as new Gts instance</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../api/pyacs.gts.Gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If invalid parameters are provided</p></li>
+<li><p><strong>RuntimeError</strong> – If processing fails</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="l1trend_to_breakpoints.html" class="btn btn-neutral float-left" title="Gts.l1trend_to_breakpoints" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="make_model.html" class="btn btn-neutral float-right" title="Gts.make_model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

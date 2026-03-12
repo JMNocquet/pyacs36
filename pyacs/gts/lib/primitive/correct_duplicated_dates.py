@@ -2,12 +2,23 @@
 def correct_duplicated_dates(self,action='correct',tol= .1, in_place=False,verbose=False):
 ###################################################################
     """
-    Check or remove duplicated dates in a time series
-    
-    :param action: 'correct' (default) or 'check'
-    :param tol: tolerance for two dates to be considered as the same (default = 0.1 day)
-    :param in_place: boolean, if True, 
-    :param verbose: verbose mode
+    Check or remove duplicated dates in a time series.
+
+    Parameters
+    ----------
+    action : str, optional
+        'correct' (default) or 'check'.
+    tol : float, optional
+        Tolerance in days for two dates to be considered the same (default 0.1 day).
+    in_place : bool, optional
+        If True, modify in place; otherwise return a new Gts.
+    verbose : bool, optional
+        Verbose mode.
+
+    Returns
+    -------
+    Gts
+        Current Gts if in_place, else new Gts with duplicates removed (when action='correct').
     """
 
     # import

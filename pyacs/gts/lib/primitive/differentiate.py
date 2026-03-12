@@ -2,9 +2,16 @@
 def differentiate(self):
 ###################################################################
     """
-    differentiate the current time series
-    :return: the differentiated time series as a new Gts object
-    :note : differentiation is made on .data. .data_xyz is set to None.
+    Differentiate the current time series (first difference along time).
+
+    Returns
+    -------
+    Gts
+        Differentiated time series as a new Gts object.
+
+    Notes
+    -----
+    Differentiation is performed on .data. .data_xyz is set to None.
     """
     # import 
     import inspect

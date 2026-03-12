@@ -1,0 +1,332 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.gts.lib.filters.minimum_component &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../libraries.html">core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyacs.gts.lib.filters.minimum_component</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyacs.gts.lib.filters.minimum_component</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Minimum component filter for Gts.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="minimum_component">
+<a class="viewcode-back" href="../../../../../api/pyacs.gts.lib.filters.minimum_component.html#pyacs.gts.lib.filters.minimum_component.minimum_component">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">minimum_component</span><span class="p">(</span><span class="bp">self</span> <span class="p">,</span> <span class="n">mask_period</span><span class="o">=</span><span class="p">[],</span> <span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fcut</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Q</span><span class="o">=</span><span class="kc">None</span> <span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">False</span> <span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span> <span class="p">):</span>
+<span class="c1">###############################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Minimum component filtering for Gts (background signal in the presence of spikes).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mask_period : list, optional</span>
+<span class="sd">        Period(s) to ignore for smoothing (list or list of lists).</span>
+<span class="sd">    p : int, optional</span>
+<span class="sd">        Polynomial degree for the fit (default 1).</span>
+<span class="sd">    fcut : float, optional</span>
+<span class="sd">        Cutoff frequency for the low-pass filter. Default f_nyq / sqrt(N).</span>
+<span class="sd">    Q : float, optional</span>
+<span class="sd">        Strength of the low-pass filter; larger Q = steeper cutoff. Default 0.1 * fcut.</span>
+<span class="sd">    in_place : bool, optional</span>
+<span class="sd">        If True, replace the current time series; otherwise return a new Gts.</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        Verbose mode.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Gts</span>
+<span class="sd">        Filtered time series.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Follows &quot;Practical Statistics for Astronomers&quot; (Wall &amp; Jenkins) and Wall, J, A&amp;A 122:371, 1997.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># import</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    
+    <span class="c1"># handle masked periods</span>
+
+    <span class="c1">###############################################################################</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__ensure_list_of_list</span><span class="p">(</span><span class="n">ll</span><span class="p">):</span>
+    <span class="c1">###############################################################################</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Ensure argument is a list of lists.</span>
+
+<span class="sd">        [a, b] returns [[a, b]]; [[a, b]] returns [[a, b]].</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ll : list</span>
+<span class="sd">            List or list of lists.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    
+        <span class="c1"># check this is a list</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ll</span><span class="p">,</span><span class="nb">list</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;!!! __ensure_list_of_list requires a list or a list of list as argument: &#39;</span><span class="p">,</span><span class="n">ll</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">ll</span> <span class="o">==</span> <span class="p">[]:</span>
+            <span class="k">return</span> <span class="p">[[]]</span>
+        
+        <span class="c1"># case simple list</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ll</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="nb">list</span><span class="p">):</span>
+            <span class="k">return</span><span class="p">([</span><span class="n">ll</span><span class="p">])</span>
+        <span class="c1"># case list of list</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span><span class="p">(</span><span class="n">ll</span><span class="p">)</span>
+    <span class="c1">###############################################################################</span>
+    
+    <span class="c1"># ensure lperiod is a list of lists</span>
+    <span class="n">lperiod</span> <span class="o">=</span> <span class="n">__ensure_list_of_list</span><span class="p">(</span> <span class="n">mask_period</span> <span class="p">)</span>
+  
+    <span class="c1"># ma = feature mask </span>
+    <span class="n">feature_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+    <span class="n">feature_mask</span><span class="p">[:]</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="n">np_index</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span><span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    
+    <span class="c1"># check lperiod is not [[]]</span>
+    <span class="k">if</span> <span class="n">lperiod</span> <span class="o">!=</span> <span class="p">[[]]:</span>
+        <span class="c1"># masked periods</span>
+        <span class="k">for</span> <span class="n">period</span> <span class="ow">in</span> <span class="n">lperiod</span><span class="p">:</span>
+            
+            <span class="c1"># make actual extraction - case data_xyz now handled</span>
+            <span class="n">start_date_period</span><span class="o">=</span> <span class="n">period</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">end_date_period</span>  <span class="o">=</span> <span class="n">period</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    
+            <span class="n">np_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">&gt;=</span><span class="n">start_date_period</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span><span class="n">end_date_period</span> <span class="p">))</span>
+            
+            <span class="n">np_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">np_index</span> <span class="p">,</span> <span class="n">np_idx</span> <span class="p">)</span>
+
+        <span class="n">feature_mask</span><span class="p">[</span> <span class="n">np_index</span> <span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1">### copy</span>
+    <span class="n">new_gts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span> <span class="n">data_xyz</span><span class="o">=</span><span class="kc">None</span> <span class="p">)</span>
+
+
+    <span class="c1">### run filter </span>
+    <span class="n">new_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">__min_component_filter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">feature_mask</span> <span class="p">,</span> \
+                                                   <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> \
+                                                   <span class="n">fcut</span><span class="o">=</span><span class="n">fcut</span> <span class="p">,</span> \
+                                                   <span class="n">Q</span><span class="o">=</span><span class="n">Q</span><span class="p">)</span>
+    
+    
+    <span class="n">new_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">__min_component_filter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">feature_mask</span> <span class="p">,</span> \
+                                                   <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> \
+                                                   <span class="n">fcut</span><span class="o">=</span><span class="n">fcut</span> <span class="p">,</span> \
+                                                   <span class="n">Q</span><span class="o">=</span><span class="n">Q</span><span class="p">)</span>
+
+    <span class="n">new_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">__min_component_filter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">3</span><span class="p">],</span> <span class="n">feature_mask</span> <span class="p">,</span> \
+                                                   <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> \
+                                                   <span class="n">fcut</span><span class="o">=</span><span class="n">fcut</span> <span class="p">,</span> \
+                                                   <span class="n">Q</span><span class="o">=</span><span class="n">Q</span><span class="p">)</span>
+
+
+    <span class="c1"># restore original values for masked periods</span>
+
+    <span class="n">new_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">np_index</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">np_index</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span>
+    <span class="n">new_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">np_index</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">np_index</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="p">)</span>
+    <span class="n">new_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">np_index</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">np_index</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="p">)</span>
+    
+
+    <span class="c1">### return</span>
+    <span class="k">if</span> <span class="n">in_place</span><span class="p">:</span>
+            <span class="bp">self</span> <span class="o">=</span> <span class="n">new_gts</span>
+            <span class="k">return</span> <span class="bp">self</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span>  <span class="n">new_gts</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">__min_component_filter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">feature_mask</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fcut</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Minimum component filtering</span>
+
+<span class="sd">    Minimum component filtering is useful for determining the background</span>
+<span class="sd">    component of a signal in the presence of spikes</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    x : array_like</span>
+<span class="sd">        1D array of evenly spaced x values</span>
+<span class="sd">    y : array_like</span>
+<span class="sd">        1D array of y values corresponding to x</span>
+<span class="sd">    feature_mask : array_like, same size as x &amp; y </span>
+<span class="sd">        1D mask array giving the locations of features in the data which</span>
+<span class="sd">        should be ignored for smoothing</span>
+<span class="sd">    p : integer (optional)</span>
+<span class="sd">        polynomial degree to be used for the fit (default = 1)</span>
+<span class="sd">    fcut : float (optional)</span>
+<span class="sd">        the cutoff frequency for the low-pass filter.  Default value is</span>
+<span class="sd">        f_nyq / sqrt(N)</span>
+<span class="sd">    Q : float (optional)</span>
+<span class="sd">        the strength of the low-pass filter.  Larger Q means a steeper cutoff</span>
+<span class="sd">        default value is 0.1 * fcut</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    y_filtered : ndarray</span>
+<span class="sd">        The filtered version of y.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    This code follows the procedure explained in the book</span>
+<span class="sd">    &quot;Practical Statistics for Astronomers&quot; by Wall &amp; Jenkins book, as</span>
+<span class="sd">    well as in Wall, J, A&amp;A 122:371, 1997</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">fftpack</span>
+    
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    
+    <span class="n">feature_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">feature_mask</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">((</span><span class="n">x</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span>
+                                                  <span class="n">feature_mask</span><span class="o">.</span><span class="n">shape</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;x, y, and feature_mask must be 1 dimensional &#39;</span>
+                         <span class="s1">&#39;with matching lengths&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">fcut</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">f_nyquist</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">/</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">fcut</span> <span class="o">=</span> <span class="n">f_nyquist</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">Q</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">Q</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">fcut</span>
+
+    <span class="c1"># compute polynomial features</span>
+    <span class="n">XX</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">**</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># compute least-squares fit to non-masked data</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">XX</span><span class="p">[</span><span class="o">~</span><span class="n">feature_mask</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="o">~</span><span class="n">feature_mask</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># subtract polynomial fit and mask the data</span>
+    <span class="n">y_mask</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">XX</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+    <span class="n">y_mask</span><span class="p">[</span><span class="n">feature_mask</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># get Fourier transforms of arrays</span>
+    <span class="n">yFT_mask</span> <span class="o">=</span> <span class="n">fftpack</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">y_mask</span><span class="p">)</span>
+
+    <span class="c1"># compute (shifted) frequency array for filter</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">fftpack</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="o">-</span> <span class="n">N</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">N</span> <span class="o">/</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+    <span class="c1"># construct low-pass filter</span>
+    <span class="n">filt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="p">(</span><span class="n">Q</span> <span class="o">*</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="o">-</span> <span class="n">fcut</span><span class="p">)</span> <span class="o">/</span> <span class="n">fcut</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">filt</span><span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">fcut</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="c1"># reconstruct filtered signal</span>
+    <span class="n">y_filtered</span> <span class="o">=</span> <span class="n">fftpack</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">yFT_mask</span> <span class="o">*</span> <span class="n">filt</span><span class="p">)</span><span class="o">.</span><span class="n">real</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">XX</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">y_filtered</span>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

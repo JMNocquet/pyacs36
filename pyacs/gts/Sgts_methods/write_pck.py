@@ -1,21 +1,43 @@
 ###################################################################
 def write_pck(self,outfile, verbose=True):
 ###################################################################
-    """
-    writes a Sgts object as a pck (pickle)
-     
-    :param outfile: output file name. If not provided, a pck extension will be added.
-    :param verbose: verbose mode
-     
+    """Write this Sgts to a pickle (.pck) file.
+
+    Parameters
+    ----------
+    outfile : str
+        Output file path (.pck added if no extension).
+    verbose : bool, optional
+        Verbose mode. Default is True.
+
+    Returns
+    -------
+    None
     """
     # import
     import pickle
     import os
-    
+    from pathlib import Path
+
+
+
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
+
+    import inspect
+
+    VERBOSE("Running Sgts.%s" % inspect.currentframe().f_code.co_name)
+
+    outfile = Path(outfile)
+
     # add pck extension if not provided
      
-    if outfile[-4:] != '.pck':
-        outfile = outfile+'.pck'
+    if outfile.suffix != '.pck':
+        outfile = outfile.with_suffix('.pck')
 
     # create dir if it does not exist
     if os.path.dirname( outfile ) != '':

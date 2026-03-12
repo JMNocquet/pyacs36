@@ -1,10 +1,17 @@
 def unit_normal( strike , dip ):
-    """
-    returns the unit vector normal to the fault plane in ENU (Up positive upward)
+    """Return unit vector normal to the fault plane in ENU (Up positive upward).
 
-    :param strike: fault strike in degrees
-    :param dip: fault dip in degrees
-    :return:
+    Parameters
+    ----------
+    strike : float
+        Fault strike in degrees.
+    dip : float
+        Fault dip in degrees.
+
+    Returns
+    -------
+    tuple of float
+        (unit_E, unit_N, unit_U) in ENU.
     """
 
     import numpy as np

@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyacs.gts.lib.metadata &#8212; PYACS 0.66.18 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../../_static/documentation_options.js?v=2262e354"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pyacs.gts.lib.metadata</h1><div class="highlight"><pre>
+<span></span><span class="c1">###################################################################</span>
+<div class="viewcode-block" id="read_lon_lat">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.metadata.read_lon_lat">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_lon_lat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">gmt_file</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read a GMT psvelo file and set Gts.lon and Gts.lat.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    gmt_file : str</span>
+<span class="sd">        Path to GMT psvelo file.</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        If True, print progress. Default is False.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Gts</span>
+<span class="sd">        self (lon, lat populated).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.lib.vel_field</span><span class="w"> </span><span class="kn">import</span> <span class="n">Velocity_Field</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Reading &quot;</span><span class="p">,</span><span class="n">gmt_file</span><span class="p">)</span>
+
+    <span class="n">vel</span><span class="o">=</span><span class="n">Velocity_Field</span><span class="p">()</span>
+    <span class="n">vel</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="n">gmt_file</span><span class="p">)</span>
+    
+    <span class="n">M</span><span class="o">=</span><span class="n">vel</span><span class="o">.</span><span class="n">site</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">lon</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">lat</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+    
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="save_velocity">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.metadata.save_velocity">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">save_velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">gmt_file</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">up</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Append velocity estimates (with uncertainties) to a GMT psvelo file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    gmt_file : str</span>
+<span class="sd">        Output GMT psvelo file (appended if it exists).</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        If True, print progress. Default is True.</span>
+<span class="sd">    comment : str, optional</span>
+<span class="sd">        Comment line; &#39;#&#39; is prepended if not present.</span>
+<span class="sd">    up : bool, optional</span>
+<span class="sd">        If True, Ve/SVe/SVen set to 0 and Vu written as 4th/6th fields. Default is False.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Gts</span>
+<span class="sd">        self.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># comment</span>
+    <span class="k">if</span> <span class="n">comment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    
+        <span class="k">if</span> <span class="n">comment</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;#&#39;</span><span class="p">:</span>
+            <span class="n">comment</span> <span class="o">=</span> <span class="s1">&#39;# &#39;</span><span class="o">+</span><span class="n">comment</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">comment</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+
+    <span class="c1"># import</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.lib.vel_field</span><span class="w"> </span><span class="kn">import</span> <span class="n">Velocity_Field</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.lib.gmtpoint</span><span class="w"> </span><span class="kn">import</span> <span class="n">GMT_Point</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
+
+    <span class="c1"># init Velocity_Field() instance</span>
+    <span class="n">vel_field</span><span class="o">=</span><span class="n">Velocity_Field</span><span class="p">()</span>
+    
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">gmt_file</span><span class="p">):</span><span class="n">vel_field</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">gmt_file</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="p">[</span><span class="n">vn</span><span class="p">,</span><span class="n">ve</span><span class="p">,</span><span class="n">vu</span><span class="p">,</span><span class="n">svn</span><span class="p">,</span><span class="n">sve</span><span class="p">,</span><span class="n">svu</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="o">*</span><span class="mf">1000.0</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">up</span><span class="p">:</span>
+        <span class="n">M</span><span class="o">=</span><span class="n">GMT_Point</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="n">comment</span><span class="p">,</span><span class="n">lon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span><span class="n">Ve</span><span class="o">=</span><span class="n">ve</span><span class="p">,</span><span class="n">Vn</span><span class="o">=</span><span class="n">vn</span><span class="p">,</span><span class="n">SVe</span><span class="o">=</span><span class="n">sve</span><span class="p">,</span><span class="n">SVn</span><span class="o">=</span><span class="n">svn</span><span class="p">,</span><span class="n">SVen</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">M</span><span class="o">=</span><span class="n">GMT_Point</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="n">comment</span><span class="p">,</span><span class="n">lon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span><span class="n">Ve</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span><span class="n">Vn</span><span class="o">=</span><span class="n">vu</span><span class="p">,</span><span class="n">SVe</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span><span class="n">SVn</span><span class="o">=</span><span class="n">svu</span><span class="p">,</span><span class="n">SVen</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+        
+    <span class="n">vel_field</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+    <span class="n">vel_field</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">gmt_file</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    
+    <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="save_offsets">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.metadata.save_offsets">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">save_offsets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">ofile</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">up</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Append offset values to a text file (GMT psvelo format).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ofile : str</span>
+<span class="sd">        Output offset file path.</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        If True, print progress. Default is True.</span>
+<span class="sd">    comment : str, optional</span>
+<span class="sd">        Comment; &#39;#&#39; is prepended if not present. Default is &#39;&#39;.</span>
+<span class="sd">    up : bool, optional</span>
+<span class="sd">        If True, Ve/SVe/SVen set to 0 and Vu as 4th/6th fields. Default is False.</span>
+<span class="sd">    info : bool, optional</span>
+<span class="sd">        If True, write extra info. Default is False.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Gts</span>
+<span class="sd">        self.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- Appending offset values for site &#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span><span class="s1">&#39; into &#39;</span><span class="p">,</span><span class="n">ofile</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">comment</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">comment</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;#&#39;</span><span class="p">:</span>
+            <span class="n">comment</span> <span class="o">=</span> <span class="s1">&#39;# &#39;</span><span class="o">+</span><span class="n">comment</span>
+
+    
+    <span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span>
+
+    
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">ofile</span><span class="p">):</span>
+        <span class="n">f_offsets</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">ofile</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">f_offsets</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">ofile</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">offsets_values</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="p">(</span><span class="n">date</span><span class="p">,</span><span class="n">dn</span><span class="p">,</span><span class="n">de</span><span class="p">,</span><span class="n">du</span><span class="p">,</span><span class="n">sdn</span><span class="p">,</span><span class="n">sde</span><span class="p">,</span><span class="n">sdu</span><span class="p">)</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">offsets_values</span><span class="p">[</span><span class="n">index</span><span class="p">,:]</span><span class="o">*</span><span class="mf">1000.0</span><span class="p">)</span>
+
+        <span class="n">date</span><span class="o">=</span><span class="n">date</span><span class="o">/</span><span class="mf">1000.0</span>
+        <span class="n">doy</span><span class="p">,</span><span class="n">_ut</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2dayno</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+        <span class="n">year</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+
+        
+        <span class="n">s_date</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%9.4lf</span><span class="s2"> = </span><span class="si">%04d</span><span class="s2"> </span><span class="si">%03d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">doy</span><span class="p">))</span>
+        <span class="n">field_8</span><span class="o">=</span><span class="s1">&#39;#&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="n">s_date</span><span class="o">+</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="n">comment</span><span class="o">+</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%10.5lf</span><span class="s2"> </span><span class="si">%10.5lf</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">du</span><span class="p">,</span><span class="n">sdu</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">up</span><span class="p">:</span>
+            <span class="n">f_offsets</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%10.5lf</span><span class="s2">  </span><span class="si">%10.5lf</span><span class="s2"> </span><span class="si">%10.3lf</span><span class="s2"> </span><span class="si">%10.3lf</span><span class="s2"> </span><span class="si">%10.3lf</span><span class="s2"> </span><span class="si">%10.3lf</span><span class="s2"> </span><span class="si">%10.3lf</span><span class="s2"> </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">du</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">sdu</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">info</span><span class="p">:</span>
+                <span class="n">f_offsets</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%10.5lf</span><span class="s2">  </span><span class="si">%10.5lf</span><span class="s2"> </span><span class="si">%10.3lf</span><span class="s2"> </span><span class="si">%10.3lf</span><span class="s2"> </span><span class="si">%10.3lf</span><span class="s2"> </span><span class="si">%10.3lf</span><span class="s2"> </span><span class="si">%10.3lf</span><span class="s2"> </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span><span class="n">de</span><span class="p">,</span><span class="n">dn</span><span class="p">,</span><span class="n">sde</span><span class="p">,</span><span class="n">sdn</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="n">field_8</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">f_offsets</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%10.5lf</span><span class="s2">  </span><span class="si">%10.5lf</span><span class="s2"> </span><span class="si">%10.3lf</span><span class="s2"> </span><span class="si">%10.3lf</span><span class="s2"> </span><span class="si">%10.3lf</span><span class="s2"> </span><span class="si">%10.3lf</span><span class="s2"> </span><span class="si">%10.3lf</span><span class="s2"> </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span><span class="n">de</span><span class="p">,</span><span class="n">dn</span><span class="p">,</span><span class="n">sde</span><span class="p">,</span><span class="n">sdn</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">))</span>
+            
+    <span class="n">f_offsets</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="read_eq_rename">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.metadata.read_eq_rename">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_eq_rename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">eq_rename</span><span class="p">,</span><span class="n">in_place</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read current site info from a globk eq_rename file.</span>
+
+<span class="sd">    Populates outliers and offsets_dates; excluded periods from the file</span>
+<span class="sd">    are added to outliers.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    eq_rename : str</span>
+<span class="sd">        Path to eq_rename file (globk format).</span>
+<span class="sd">    in_place : bool, optional</span>
+<span class="sd">        If True, modify self; if False, return a new Gts. Default is False.</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        If True, print progress. Default is False.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Gts</span>
+<span class="sd">        self (if in_place) or new Gts instance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+    <span class="n">new_Gts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">file_eq_rename</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">eq_rename</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Could not open &quot;</span><span class="p">,</span><span class="n">eq_rename</span><span class="p">)</span> 
+        <span class="k">return</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    
+    <span class="n">lcontent</span><span class="o">=</span><span class="n">file_eq_rename</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    
+    <span class="n">lsite_content</span><span class="o">=</span><span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lcontent</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span><span class="n">lsite_content</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Found &quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">lsite_content</span><span class="p">),</span><span class="s2">&quot; commands for site &quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span><span class="s2">&quot; in &quot;</span><span class="p">,</span><span class="n">eq_rename</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">lsite_content</span><span class="o">!=</span><span class="p">[]:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lsite_content</span><span class="p">:</span>
+            <span class="n">lline</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="c1"># offsets_dates</span>
+            <span class="k">if</span> <span class="s1">&#39;break&#39;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">6</span><span class="p">])</span>
+                <span class="p">(</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">mday</span><span class="p">,</span><span class="n">h</span><span class="p">,</span><span class="n">m</span><span class="p">)</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span><span class="n">lline</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">7</span><span class="p">]))</span>
+                <span class="n">decyear</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">cal2decyear</span><span class="p">(</span><span class="n">mday</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">ut</span><span class="o">=</span><span class="n">h</span><span class="o">/</span><span class="mf">24.</span><span class="o">+</span><span class="n">m</span><span class="o">/</span><span class="mf">24.</span><span class="o">/</span><span class="mf">60.</span><span class="p">)</span>
+                <span class="n">new_Gts</span><span class="o">.</span><span class="n">offsets_dates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">decyear</span><span class="p">)</span>
+                
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;-- Adding offset @ </span><span class="si">%4d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> = </span><span class="si">%10.5lf</span><span class="s2">&quot;</span> <span class="o">%</span>  <span class="p">(</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">mday</span><span class="p">,</span><span class="n">h</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">decyear</span><span class="p">)))</span>
+                
+            <span class="c1"># exclude</span>
+            <span class="k">if</span> <span class="p">((</span><span class="s1">&#39;_XPS&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="s1">&#39;_XCL&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span><span class="s1">&#39;rename&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="p">(</span><span class="n">syear</span><span class="p">,</span><span class="n">smonth</span><span class="p">,</span><span class="n">smday</span><span class="p">,</span><span class="n">sh</span><span class="p">,</span><span class="n">sm</span><span class="p">,</span><span class="n">eyear</span><span class="p">,</span><span class="n">emonth</span><span class="p">,</span><span class="n">emday</span><span class="p">,</span><span class="n">eh</span><span class="p">,</span><span class="n">em</span><span class="p">)</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span><span class="n">lline</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">13</span><span class="p">]))</span>
+                <span class="n">sdecyear</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">cal2decyear</span><span class="p">(</span><span class="n">smday</span><span class="p">,</span> <span class="n">smonth</span><span class="p">,</span> <span class="n">syear</span><span class="p">,</span> <span class="n">ut</span><span class="o">=</span><span class="n">sh</span><span class="o">/</span><span class="mf">24.</span><span class="o">+</span><span class="n">sm</span><span class="o">/</span><span class="mf">24.</span><span class="o">/</span><span class="mf">60.</span><span class="p">)</span>
+                <span class="n">edecyear</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">cal2decyear</span><span class="p">(</span><span class="n">emday</span><span class="p">,</span> <span class="n">emonth</span><span class="p">,</span> <span class="n">eyear</span><span class="p">,</span> <span class="n">ut</span><span class="o">=</span><span class="n">eh</span><span class="o">/</span><span class="mf">24.</span><span class="o">+</span><span class="n">em</span><span class="o">/</span><span class="mf">24.</span><span class="o">/</span><span class="mf">60.</span><span class="p">)</span>
+                <span class="n">lindex_tuple</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">sdecyear</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">edecyear</span><span class="p">))</span>
+                <span class="n">lindex</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">lindex_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">((</span><span class="s2">&quot;-- Flagging outliers @ </span><span class="si">%4d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%4d</span><span class="s2"> - </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> = </span><span class="si">%10.5lf</span><span class="s2"> - </span><span class="si">%10.5lf</span><span class="s2">&quot;</span> <span class="o">%</span>  <span class="p">(</span><span class="n">syear</span><span class="p">,</span><span class="n">smonth</span><span class="p">,</span><span class="n">smday</span><span class="p">,</span><span class="n">sh</span><span class="p">,</span><span class="n">sm</span><span class="p">,</span><span class="n">eyear</span><span class="p">,</span><span class="n">emonth</span><span class="p">,</span><span class="n">emday</span><span class="p">,</span><span class="n">eh</span><span class="p">,</span><span class="n">em</span><span class="p">,</span> <span class="n">sdecyear</span><span class="p">,</span><span class="n">edecyear</span><span class="p">)))</span>
+                <span class="n">new_Gts</span><span class="o">.</span><span class="n">outliers</span><span class="o">+=</span><span class="n">lindex</span>
+                
+            <span class="c1"># rename without &#39;_XGPS&#39; or &#39;_XCL&#39; indicate an offset</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;rename&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="p">((</span><span class="s1">&#39;_XPS&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="s1">&#39;_XCL&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">))):</span>
+                <span class="p">(</span><span class="n">syear</span><span class="p">,</span><span class="n">smonth</span><span class="p">,</span><span class="n">smday</span><span class="p">,</span><span class="n">sh</span><span class="p">,</span><span class="n">sm</span><span class="p">,</span><span class="n">eyear</span><span class="p">,</span><span class="n">emonth</span><span class="p">,</span><span class="n">emday</span><span class="p">,</span><span class="n">eh</span><span class="p">,</span><span class="n">em</span><span class="p">)</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span><span class="n">lline</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">13</span><span class="p">]))</span>
+                <span class="n">sdecyear</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">cal2decyear</span><span class="p">(</span><span class="n">smday</span><span class="p">,</span> <span class="n">smonth</span><span class="p">,</span> <span class="n">syear</span><span class="p">,</span> <span class="n">ut</span><span class="o">=</span><span class="n">sh</span><span class="o">/</span><span class="mf">24.</span><span class="o">+</span><span class="n">sm</span><span class="o">/</span><span class="mf">24.</span><span class="o">/</span><span class="mf">60.</span><span class="p">)</span>
+                <span class="n">edecyear</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">cal2decyear</span><span class="p">(</span><span class="n">emday</span><span class="p">,</span> <span class="n">emonth</span><span class="p">,</span> <span class="n">eyear</span><span class="p">,</span> <span class="n">ut</span><span class="o">=</span><span class="n">eh</span><span class="o">/</span><span class="mf">24.</span><span class="o">+</span><span class="n">em</span><span class="o">/</span><span class="mf">24.</span><span class="o">/</span><span class="mf">60.</span><span class="p">)</span>
+                <span class="n">decyear</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">cal2decyear</span><span class="p">(</span><span class="n">emday</span><span class="p">,</span> <span class="n">emonth</span><span class="p">,</span> <span class="n">eyear</span><span class="p">,</span> <span class="n">ut</span><span class="o">=</span><span class="n">eh</span><span class="o">/</span><span class="mf">24.</span><span class="o">+</span><span class="n">em</span><span class="o">/</span><span class="mf">24.</span><span class="o">/</span><span class="mf">60.</span><span class="p">)</span>
+                <span class="n">new_Gts</span><span class="o">.</span><span class="n">offsets_dates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">decyear</span><span class="p">)</span>
+                
+    <span class="n">file_eq_rename</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="n">new_Gts</span><span class="o">.</span><span class="n">outliers</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">new_Gts</span><span class="o">.</span><span class="n">outliers</span><span class="p">)))</span>
+    <span class="n">new_Gts</span><span class="o">.</span><span class="n">offsets_dates</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">new_Gts</span><span class="o">.</span><span class="n">offsets_dates</span><span class="p">)))</span>
+    
+    <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">new_Gts</span><span class="o">.</span><span class="n">offsets_dates</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">date</span> <span class="o">&gt;=</span>  <span class="n">new_Gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]:</span><span class="n">new_Gts</span><span class="o">.</span><span class="n">offsets_dates</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">in_place</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outliers</span><span class="o">=</span><span class="n">new_Gts</span><span class="o">.</span><span class="n">outliers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offsets_dates</span><span class="o">=</span><span class="n">new_Gts</span><span class="o">.</span><span class="n">offsets_dates</span>
+        <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">new_Gts</span><span class="p">)</span></div>
+
+    
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="save_eq_rename">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.metadata.save_eq_rename">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">save_eq_rename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">eq_rename</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">excluded_periods</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Save Gts analysis results to a globk-format eq_rename file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    eq_rename : str</span>
+<span class="sd">        Output eq_rename file path (globk format).</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        If True, print progress. Default is False.</span>
+<span class="sd">    excluded_periods : list, optional</span>
+<span class="sd">        Periods to exclude. Default is None.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Gts</span>
+<span class="sd">        self.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="nn">sys</span>
+    
+    <span class="c1">###################################################################</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__check_and_add_info__</span><span class="p">(</span><span class="n">new_info</span><span class="p">,</span><span class="n">eq_rename</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        check whether the information is already in the eq_rename</span>
+<span class="sd">        Info can be:</span>
+<span class="sd">        (&#39;XCL&#39;,date)</span>
+<span class="sd">        (&#39;XCL&#39;,period)</span>
+<span class="sd">        (&#39;break&#39;,date)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Info to be tested:&quot;</span><span class="p">,</span><span class="n">new_info</span><span class="o">.</span><span class="n">rstrip</span><span class="p">())</span>
+        
+        <span class="n">code</span><span class="o">=</span><span class="n">new_info</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+        
+        
+        <span class="n">PRINT_INFO</span><span class="o">=</span><span class="kc">True</span>
+        
+        <span class="c1"># open or create the eq_rename file</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">eq_rename</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Creating eq_rename file: &quot;</span><span class="p">,</span><span class="n">eq_rename</span><span class="p">)</span>
+            <span class="n">lcontent</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1">#if verbose:print &quot;=&gt; Opening existing eq_rename file:&quot;,eq_rename</span>
+            <span class="n">file_eq_rename</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">eq_rename</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+            <span class="n">lcontent</span><span class="o">=</span><span class="n">file_eq_rename</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&gt; Read &quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">lcontent</span><span class="p">),</span><span class="s2">&quot; commands in &quot;</span><span class="p">,</span><span class="n">eq_rename</span><span class="p">)</span>
+            <span class="n">file_eq_rename</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        
+        <span class="n">tolerance_for_break</span><span class="o">=</span><span class="mf">3.</span><span class="o">/</span><span class="mf">365.25</span>
+    
+        
+        <span class="k">if</span> <span class="n">new_info</span> <span class="ow">in</span> <span class="n">lcontent</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- &quot;</span><span class="p">,</span><span class="n">new_info</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(),</span><span class="s2">&quot; already existing. Skipping.&quot;</span><span class="p">)</span>
+            <span class="n">PRINT_INFO</span><span class="o">=</span><span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line_content</span> <span class="ow">in</span> <span class="n">lcontent</span><span class="p">:</span>
+                <span class="n">lline_content</span><span class="o">=</span><span class="n">line_content</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="c1"># offsets_dates</span>
+                <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;break&#39;</span> <span class="ow">in</span> <span class="n">line_content</span> <span class="ow">and</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">line_content</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;break&#39;</span> <span class="ow">in</span> <span class="n">new_info</span><span class="p">:</span>
+                    <span class="p">(</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">mday</span><span class="p">,</span><span class="n">h</span><span class="p">,</span><span class="n">m</span><span class="p">)</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span><span class="n">lline_content</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">7</span><span class="p">]))</span>
+                    <span class="n">existing_decyear</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">cal2decyear</span><span class="p">(</span><span class="n">mday</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">ut</span><span class="o">=</span><span class="n">h</span><span class="o">/</span><span class="mf">24.</span><span class="o">+</span><span class="n">m</span><span class="o">/</span><span class="mf">24.</span><span class="o">/</span><span class="mf">60.</span><span class="p">)</span>
+                    <span class="p">(</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">mday</span><span class="p">,</span><span class="n">h</span><span class="p">,</span><span class="n">m</span><span class="p">)</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span><span class="n">new_info</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">:</span><span class="mi">7</span><span class="p">]))</span>
+                    <span class="n">new_decyear</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">cal2decyear</span><span class="p">(</span><span class="n">mday</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">ut</span><span class="o">=</span><span class="n">h</span><span class="o">/</span><span class="mf">24.</span><span class="o">+</span><span class="n">m</span><span class="o">/</span><span class="mf">24.</span><span class="o">/</span><span class="mf">60.</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">existing_decyear</span><span class="o">-</span><span class="n">new_decyear</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tolerance_for_break</span><span class="p">:</span>
+                        
+                        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Conflicting info &quot;</span><span class="p">,</span><span class="n">new_info</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(),</span><span class="s1">&#39; --with-- &#39;</span><span class="p">,</span><span class="n">line_content</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(),</span><span class="s2">&quot; (not enough data between the two break dates)&quot;</span><span class="p">)</span>
+                        
+                        <span class="n">new_break_date</span><span class="o">=</span><span class="p">(</span><span class="n">existing_decyear</span><span class="o">+</span><span class="n">new_decyear</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span>
+                        <span class="n">year</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">new_break_date</span><span class="p">)</span>
+                        <span class="p">(</span><span class="n">mday</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">_ut</span><span class="p">)</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2cal</span><span class="p">(</span><span class="n">new_break_date</span><span class="p">)</span>
+                        <span class="n">corrected_info</span><span class="o">=</span><span class="p">((</span><span class="s2">&quot; break  </span><span class="si">%s</span><span class="s2"> </span><span class="si">%4d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> 12 00</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">mday</span><span class="p">))</span>
+                        
+                        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Replacing&quot;</span><span class="p">,</span><span class="n">line_content</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(),</span><span class="s2">&quot; in &quot;</span><span class="p">,</span><span class="n">eq_rename</span><span class="p">,</span><span class="s2">&quot; --by-- &quot;</span><span class="p">,</span><span class="n">corrected_info</span><span class="p">)</span>
+                        <span class="n">lcontent</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">line_content</span><span class="p">)</span>
+                        <span class="n">lcontent</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">corrected_info</span><span class="p">)</span>
+                        <span class="n">PRINT_INFO</span><span class="o">=</span><span class="kc">False</span>
+
+                              
+                                            
+                <span class="c1"># exclude and outliers</span>
+                <span class="k">if</span> <span class="p">(((</span><span class="s1">&#39;_XPS&#39;</span> <span class="ow">in</span> <span class="n">line_content</span> <span class="ow">or</span> <span class="s1">&#39;_XCL&#39;</span> <span class="ow">in</span> <span class="n">line_content</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;rename&#39;</span> <span class="ow">in</span> <span class="n">line_content</span><span class="p">)</span> <span class="ow">and</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">line_content</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="s1">&#39;rename&#39;</span> <span class="ow">in</span> <span class="n">new_info</span><span class="p">):</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="p">(</span><span class="n">syear</span><span class="p">,</span><span class="n">smonth</span><span class="p">,</span><span class="n">smday</span><span class="p">,</span><span class="n">sh</span><span class="p">,</span><span class="n">sm</span><span class="p">,</span><span class="n">eyear</span><span class="p">,</span><span class="n">emonth</span><span class="p">,</span><span class="n">emday</span><span class="p">,</span><span class="n">eh</span><span class="p">,</span><span class="n">em</span><span class="p">)</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span><span class="n">lline_content</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">13</span><span class="p">]))</span>
+                    <span class="k">except</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;!!! Error &quot;</span><span class="p">,</span><span class="n">line_content</span><span class="p">)</span>
+                        <span class="nb">print</span><span class="p">((</span><span class="n">syear</span><span class="p">,</span><span class="n">smonth</span><span class="p">,</span><span class="n">smday</span><span class="p">,</span><span class="n">sh</span><span class="p">,</span><span class="n">sm</span><span class="p">,</span><span class="n">eyear</span><span class="p">,</span><span class="n">emonth</span><span class="p">,</span><span class="n">emday</span><span class="p">,</span><span class="n">eh</span><span class="p">,</span><span class="n">em</span><span class="p">))</span>
+                        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+                        
+                    <span class="n">existing_sdecyear</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">cal2decyear</span><span class="p">(</span><span class="n">smday</span><span class="p">,</span> <span class="n">smonth</span><span class="p">,</span> <span class="n">syear</span><span class="p">,</span> <span class="n">ut</span><span class="o">=</span><span class="n">sh</span><span class="o">/</span><span class="mf">24.</span><span class="o">+</span><span class="n">sm</span><span class="o">/</span><span class="mf">24.</span><span class="o">/</span><span class="mf">60.</span><span class="p">)</span>
+                    <span class="n">existing_edecyear</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">cal2decyear</span><span class="p">(</span><span class="n">emday</span><span class="p">,</span> <span class="n">emonth</span><span class="p">,</span> <span class="n">eyear</span><span class="p">,</span> <span class="n">ut</span><span class="o">=</span><span class="n">eh</span><span class="o">/</span><span class="mf">24.</span><span class="o">+</span><span class="n">em</span><span class="o">/</span><span class="mf">24.</span><span class="o">/</span><span class="mf">60.</span><span class="p">)</span>
+                    <span class="n">lindex_existing</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">existing_sdecyear</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">existing_edecyear</span><span class="p">))[</span><span class="mi">0</span><span class="p">])</span>
+
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="p">(</span><span class="n">syear</span><span class="p">,</span><span class="n">smonth</span><span class="p">,</span><span class="n">smday</span><span class="p">,</span><span class="n">sh</span><span class="p">,</span><span class="n">sm</span><span class="p">,</span><span class="n">eyear</span><span class="p">,</span><span class="n">emonth</span><span class="p">,</span><span class="n">emday</span><span class="p">,</span><span class="n">eh</span><span class="p">,</span><span class="n">em</span><span class="p">)</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span><span class="n">new_info</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">:</span><span class="mi">13</span><span class="p">]))</span>
+                    <span class="k">except</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unexpected error:&quot;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;!!! Error &quot;</span><span class="p">,</span><span class="n">line_content</span><span class="p">)</span>
+                        <span class="nb">print</span><span class="p">((</span><span class="n">syear</span><span class="p">,</span><span class="n">smonth</span><span class="p">,</span><span class="n">smday</span><span class="p">,</span><span class="n">sh</span><span class="p">,</span><span class="n">sm</span><span class="p">,</span><span class="n">eyear</span><span class="p">,</span><span class="n">emonth</span><span class="p">,</span><span class="n">emday</span><span class="p">,</span><span class="n">eh</span><span class="p">,</span><span class="n">em</span><span class="p">))</span>
+                        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+                    <span class="n">new_sdecyear</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">cal2decyear</span><span class="p">(</span><span class="n">smday</span><span class="p">,</span> <span class="n">smonth</span><span class="p">,</span> <span class="n">syear</span><span class="p">,</span> <span class="n">ut</span><span class="o">=</span><span class="n">sh</span><span class="o">/</span><span class="mf">24.</span><span class="o">+</span><span class="n">sm</span><span class="o">/</span><span class="mf">24.</span><span class="o">/</span><span class="mf">60.</span><span class="p">)</span>
+                    <span class="n">new_edecyear</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">cal2decyear</span><span class="p">(</span><span class="n">emday</span><span class="p">,</span> <span class="n">emonth</span><span class="p">,</span> <span class="n">eyear</span><span class="p">,</span> <span class="n">ut</span><span class="o">=</span><span class="n">eh</span><span class="o">/</span><span class="mf">24.</span><span class="o">+</span><span class="n">em</span><span class="o">/</span><span class="mf">24.</span><span class="o">/</span><span class="mf">60.</span><span class="p">)</span>
+                    <span class="n">lindex_new</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">new_sdecyear</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">new_edecyear</span><span class="p">))[</span><span class="mi">0</span><span class="p">])</span>
+                    
+                    <span class="c1"># check overlap</span>
+                    
+                    <span class="k">def</span><span class="w"> </span><span class="nf">__intersect__</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="w">                        </span><span class="sd">&quot;&quot;&quot; return the intersection of two lists &quot;&quot;&quot;</span>
+                        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+                
+                    <span class="k">def</span><span class="w"> </span><span class="nf">__union__</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="w">                        </span><span class="sd">&quot;&quot;&quot; return the union of two lists &quot;&quot;&quot;</span>
+                        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+
+                    <span class="k">if</span> <span class="n">__intersect__</span><span class="p">(</span><span class="n">lindex_new</span><span class="p">,</span><span class="n">lindex_existing</span><span class="p">)</span> <span class="o">!=</span> <span class="p">[]:</span>
+                        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Conflicting information &quot;</span><span class="p">,</span><span class="n">new_info</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(),</span><span class="s2">&quot; --with-- &quot;</span><span class="p">,</span><span class="n">line_content</span><span class="o">.</span><span class="n">rstrip</span><span class="p">())</span>
+                        <span class="n">new_period</span><span class="o">=</span><span class="p">[</span><span class="nb">min</span><span class="p">(</span><span class="n">existing_sdecyear</span><span class="p">,</span><span class="n">new_sdecyear</span><span class="p">),</span><span class="nb">max</span><span class="p">(</span><span class="n">existing_edecyear</span><span class="p">,</span><span class="n">new_edecyear</span><span class="p">)]</span>
+                        <span class="p">[</span><span class="n">sdate</span><span class="p">,</span><span class="n">edate</span><span class="p">]</span><span class="o">=</span><span class="n">new_period</span>
+                        <span class="n">syear</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">sdate</span><span class="p">)</span>
+                        <span class="p">(</span><span class="n">smday</span><span class="p">,</span><span class="n">smonth</span><span class="p">,</span><span class="n">_sut</span><span class="p">)</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2cal</span><span class="p">(</span><span class="n">sdate</span><span class="p">)</span>
+                        <span class="n">eyear</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">edate</span><span class="p">)</span>
+                        <span class="p">(</span><span class="n">emday</span><span class="p">,</span><span class="n">emonth</span><span class="p">,</span><span class="n">_eut</span><span class="p">)</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2cal</span><span class="p">(</span><span class="n">edate</span><span class="p">)</span>
+                        <span class="n">corrected_info</span><span class="o">=</span><span class="p">((</span><span class="s2">&quot; rename  </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">_XCL </span><span class="si">%4d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> 00 00 </span><span class="si">%4d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> 23 59</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span><span class="n">syear</span><span class="p">,</span><span class="n">smonth</span><span class="p">,</span><span class="n">smday</span><span class="p">,</span><span class="n">eyear</span><span class="p">,</span><span class="n">emonth</span><span class="p">,</span><span class="n">emday</span><span class="p">))</span>
+                        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Replacing &quot;</span><span class="p">,</span><span class="n">line_content</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(),</span><span class="s2">&quot; --with-- &quot;</span><span class="p">,</span><span class="n">corrected_info</span><span class="o">.</span><span class="n">rstrip</span><span class="p">())</span>
+                        <span class="n">lcontent</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">line_content</span><span class="p">)</span>
+                        <span class="n">lcontent</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">corrected_info</span><span class="p">)</span>
+                        <span class="n">PRINT_INFO</span><span class="o">=</span><span class="kc">False</span>
+                            
+            
+            <span class="k">if</span> <span class="n">PRINT_INFO</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Added &quot;</span><span class="p">,</span><span class="n">new_info</span><span class="p">,</span><span class="s2">&quot; in &quot;</span><span class="p">,</span><span class="n">eq_rename</span><span class="p">)</span>
+                <span class="n">lcontent</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_info</span><span class="p">)</span>
+                
+
+            <span class="n">file_eq_rename</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">eq_rename</span><span class="p">,</span><span class="s1">&#39;w+&#39;</span><span class="p">)</span> 
+            <span class="n">file_eq_rename</span><span class="o">.</span><span class="n">writelines</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">item</span>  <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">lcontent</span><span class="p">))])</span>
+            <span class="n">file_eq_rename</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            
+    <span class="c1">###################################################################</span>
+  
+    
+    <span class="c1"># outliers</span>
+    <span class="k">for</span> <span class="n">index_outlier</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outliers</span><span class="p">):</span>
+        <span class="n">dec_year</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index_outlier</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">year</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">dec_year</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">mday</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">_ut</span><span class="p">)</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2cal</span><span class="p">(</span><span class="n">dec_year</span><span class="p">)</span>
+        <span class="n">new_info</span><span class="o">=</span><span class="p">((</span><span class="s2">&quot; rename  </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">_XCL </span><span class="si">%4d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> 00 00 </span><span class="si">%4d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> 23 59</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">mday</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">mday</span><span class="p">))</span>
+        
+        <span class="n">__check_and_add_info__</span><span class="p">(</span><span class="n">new_info</span><span class="p">,</span><span class="n">eq_rename</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+        
+    
+    <span class="c1"># offsets</span>
+    <span class="k">for</span> <span class="n">dec_year</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">offsets_dates</span><span class="p">):</span>
+        <span class="n">year</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">dec_year</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">mday</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">_ut</span><span class="p">)</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2cal</span><span class="p">(</span><span class="n">dec_year</span><span class="p">)</span>
+        <span class="n">new_info</span><span class="o">=</span><span class="p">((</span><span class="s2">&quot; break  </span><span class="si">%s</span><span class="s2"> </span><span class="si">%4d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> 12 00</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">mday</span><span class="p">))</span>
+        <span class="n">__check_and_add_info__</span><span class="p">(</span><span class="n">new_info</span><span class="p">,</span><span class="n">eq_rename</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+        
+    <span class="c1"># excluded_periods</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- excluded_periods &quot;</span><span class="p">,</span><span class="n">excluded_periods</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">excluded_periods</span><span class="p">,</span><span class="nb">list</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&gt; Now excluding periods&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">period</span> <span class="ow">in</span> <span class="n">excluded_periods</span><span class="p">:</span>
+            <span class="p">[</span><span class="n">sdate</span><span class="p">,</span><span class="n">edate</span><span class="p">]</span><span class="o">=</span><span class="n">period</span>
+            <span class="n">syear</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">sdate</span><span class="p">)</span>
+            <span class="p">(</span><span class="n">smday</span><span class="p">,</span><span class="n">smonth</span><span class="p">,</span><span class="n">_sut</span><span class="p">)</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2cal</span><span class="p">(</span><span class="n">sdate</span><span class="p">)</span>
+            <span class="n">eyear</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">edate</span><span class="p">)</span>
+            <span class="p">(</span><span class="n">emday</span><span class="p">,</span><span class="n">emonth</span><span class="p">,</span><span class="n">_eut</span><span class="p">)</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2cal</span><span class="p">(</span><span class="n">edate</span><span class="p">)</span>
+            <span class="n">new_info</span><span class="o">=</span><span class="p">((</span><span class="s2">&quot; rename  </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">_XCL </span><span class="si">%4d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> 00 00 </span><span class="si">%4d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> 23 59</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">,</span><span class="n">syear</span><span class="p">,</span><span class="n">smonth</span><span class="p">,</span><span class="n">smday</span><span class="p">,</span><span class="n">eyear</span><span class="p">,</span><span class="n">emonth</span><span class="p">,</span><span class="n">emday</span><span class="p">))</span>
+            
+            <span class="n">__check_and_add_info__</span><span class="p">(</span><span class="n">new_info</span><span class="p">,</span><span class="n">eq_rename</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(((</span><span class="s2">&quot;=&gt; Adding exclusion cmd   </span><span class="si">%s</span><span class="s2"> in eq_rename file: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">%</span><span class="p">(</span><span class="n">new_info</span><span class="p">,</span><span class="n">eq_rename</span><span class="p">)))</span>
+                
+    <span class="k">return</span><span class="p">()</span></div>
+
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="make_dynamic_apr">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.metadata.make_dynamic_apr">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_dynamic_apr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">apr</span><span class="p">,</span> <span class="n">time_step</span><span class="o">=</span><span class="mf">30.</span><span class="p">,</span> <span class="n">pos_tol</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">dates</span><span class="o">=</span><span class="p">[],</span> <span class="n">gap</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a dynamic apr file for GAMIT (coordinates at different times, no velocity).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    apr : str</span>
+<span class="sd">        Output apr file path (globk format).</span>
+<span class="sd">    time_step : float, optional</span>
+<span class="sd">        Time step for writing dates in days. Default is 30.</span>
+<span class="sd">    pos_tol : float, optional</span>
+<span class="sd">        Position tolerance (m); exceedance triggers a new date. Default is 0.03.</span>
+<span class="sd">    dates : list, optional</span>
+<span class="sd">        Decimal-year dates where writing is forced. Default is [].</span>
+<span class="sd">    gap : float, optional</span>
+<span class="sd">        Gap in days; if no data for longer than gap, observation is forced and tested against pos_tol. Default is 20.</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        If True, print progress. Default is False.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Gts</span>
+<span class="sd">        self.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># import</span>
+    
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span>
+
+    <span class="n">str_comment_gen</span><span class="o">=</span><span class="s1">&#39;from pyacs.gts &#39;</span>
+
+    <span class="c1"># find gaps and add observation</span>
+    
+    <span class="n">all_dates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">dates_delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">all_dates</span><span class="p">)</span>
+    
+    <span class="n">lindex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span> <span class="n">dates_delta</span>  <span class="o">&gt;</span> <span class="p">(</span><span class="n">gap</span> <span class="o">/</span> <span class="mf">365.25</span><span class="p">)</span> <span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- found &#39;</span><span class="p">,</span><span class="n">lindex</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="s1">&#39; gaps longer than &#39;</span><span class="p">,</span><span class="n">gap</span><span class="p">,</span><span class="s1">&#39; days&#39;</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">lindex</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">data_gap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">lindex</span><span class="p">,:]</span>
+        <span class="n">dates_gap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">lindex</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dates_gap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+        <span class="n">data_gap</span> <span class="o">=</span> <span class="kc">None</span>
+
+    
+    <span class="c1"># decimate gts</span>
+    
+    <span class="n">decim_ts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decimate</span><span class="p">(</span><span class="n">time_step</span><span class="o">=</span><span class="n">time_step</span><span class="p">,</span><span class="n">dates</span><span class="o">=</span><span class="p">[],</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;median&#39;</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">data_gap</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">decim_ts</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span> <span class="p">(</span><span class="n">decim_ts</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">data_gap</span><span class="p">)</span> <span class="p">)</span>
+
+    <span class="c1"># neu2xyz and reorder</span>
+    
+    <span class="n">decim_ts</span><span class="o">.</span><span class="n">neu2xyz</span><span class="p">()</span>
+    <span class="n">decim_ts</span><span class="o">.</span><span class="n">reorder</span><span class="p">()</span>
+
+    <span class="c1"># keep only dates according to pos_tol</span>
+    
+    <span class="n">current_pos</span> <span class="o">=</span> <span class="n">decim_ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span>
+    
+    <span class="n">keep_data</span> <span class="o">=</span> <span class="n">decim_ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">decim_ts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">diff_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="p">(</span> <span class="n">decim_ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">-</span> <span class="n">current_pos</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="p">)</span><span class="o">**</span><span class="mi">2</span>  <span class="p">)</span> <span class="p">)</span>
+    
+        <span class="k">if</span> <span class="n">diff_pos</span> <span class="o">&gt;</span> <span class="n">pos_tol</span><span class="p">:</span>
+            <span class="n">keep_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span> <span class="p">(</span><span class="n">keep_data</span><span class="p">,</span> <span class="n">decim_ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="n">current_pos</span> <span class="o">=</span> <span class="n">decim_ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span>
+    
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="n">date</span> <span class="o">=</span> <span class="n">decim_ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+                <span class="p">(</span><span class="n">mday</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">_ut</span><span class="p">)</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2cal</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;-- adding XYZ at date </span><span class="si">%10.5lf</span><span class="s2"> mday </span><span class="si">%02d</span><span class="s2">  month </span><span class="si">%02d</span><span class="s2"> doy </span><span class="si">%03d</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">mday</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2dayno</span><span class="p">(</span><span class="n">date</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="p">))</span>
+    
+    <span class="n">decim_ts</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">keep_data</span>
+
+    <span class="c1"># we want the first value to correspond to the first date of the time series</span>
+    
+    <span class="n">decim_ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+
+        
+    <span class="c1"># forced dates</span>
+    
+    <span class="k">for</span> <span class="n">forced_date</span> <span class="ow">in</span> <span class="n">dates</span><span class="p">:</span>
+        <span class="n">sub_ts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_periods</span><span class="p">([</span><span class="mf">1980.0</span><span class="p">,</span> <span class="n">forced_date</span><span class="p">])</span>
+        
+        <span class="k">if</span> <span class="n">sub_ts</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            
+            <span class="n">decim_ts</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span> <span class="p">(</span><span class="n">decim_ts</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">sub_ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="n">new_date</span> <span class="o">=</span> <span class="n">sub_ts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- adding forced date: &#39;</span><span class="p">,</span> <span class="n">new_date</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">,</span><span class="s1">&#39;-&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2cal</span><span class="p">(</span><span class="n">new_date</span><span class="p">))[:</span><span class="mi">2</span><span class="p">]))</span>
+
+    
+    <span class="c1"># creates .data_xyz</span>
+    <span class="n">decim_ts</span><span class="o">.</span><span class="n">neu2xyz</span><span class="p">(</span><span class="n">corr</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="c1"># write ts as apr</span>
+
+    <span class="c1"># open apr file</span>
+
+    
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">apr</span><span class="p">):</span>
+        <span class="n">apr_file</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">apr</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">apr_file</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">apr</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+
+    <span class="p">[</span><span class="n">cx</span><span class="p">,</span><span class="n">cy</span><span class="p">,</span><span class="n">cz</span><span class="p">]</span> <span class="o">=</span> <span class="n">decim_ts</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span> <span class="n">decim_ts</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">):</span>
+        
+        <span class="n">current_date</span> <span class="o">=</span> <span class="n">decim_ts</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+        
+        <span class="p">(</span><span class="n">mday</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">_ut</span><span class="p">)</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2cal</span><span class="p">(</span> <span class="n">current_date</span> <span class="p">)</span>
+        <span class="p">(</span><span class="n">doy</span><span class="p">,</span><span class="n">_ut</span><span class="p">)</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2dayno</span><span class="p">(</span> <span class="n">current_date</span> <span class="p">)</span>
+        <span class="n">year</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span> <span class="n">current_date</span> <span class="p">)</span>
+        
+        <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span> <span class="o">=</span> <span class="n">decim_ts</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+        
+        <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span> <span class="p">(</span><span class="n">cx</span><span class="o">-</span><span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">cy</span><span class="o">-</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span><span class="p">(</span><span class="n">cz</span><span class="o">-</span><span class="n">z</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span> <span class="p">)</span>
+        
+        <span class="k">if</span> <span class="p">(</span><span class="n">dates_gap</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="p">(</span><span class="n">dates_gap</span> <span class="o">-</span> <span class="n">current_date</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span> <span class="p">)</span>  <span class="o">&lt;</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">/</span> <span class="mf">365.25</span><span class="p">):</span>
+            <span class="n">str_comment</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> gap  update </span><span class="si">%d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%03d</span><span class="s2"> delta </span><span class="si">%.3lf</span><span class="s2"> m&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">str_comment_gen</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">mday</span><span class="p">,</span><span class="n">doy</span><span class="p">,</span><span class="n">d</span> <span class="p">))</span>
+        <span class="k">elif</span> <span class="p">(</span> <span class="n">dates</span> <span class="o">!=</span> <span class="p">[]</span> <span class="p">)</span> <span class="ow">and</span> <span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dates</span><span class="p">)</span> <span class="o">-</span> <span class="n">current_date</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">/</span> <span class="mf">365.25</span><span class="p">)):</span>
+            <span class="n">str_comment</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> user update </span><span class="si">%d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%03d</span><span class="s2"> delta </span><span class="si">%.3lf</span><span class="s2"> m&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">str_comment_gen</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">mday</span><span class="p">,</span><span class="n">doy</span><span class="p">,</span><span class="n">d</span> <span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">str_comment</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> tol  update </span><span class="si">%d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%02d</span><span class="s2"> </span><span class="si">%03d</span><span class="s2"> delta </span><span class="si">%.3lf</span><span class="s2"> m&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">str_comment_gen</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">mday</span><span class="p">,</span><span class="n">doy</span><span class="p">,</span><span class="n">d</span> <span class="p">))</span>
+    
+        <span class="n">apr_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="si">%s</span><span class="s1">_GPS </span><span class="si">%16.4lf</span><span class="s1">  </span><span class="si">%16.4lf</span><span class="s1">  </span><span class="si">%16.4lf</span><span class="s1">    0.0000 0.0000 0.0000 </span><span class="si">%8.4lf</span><span class="s1"> </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> \
+                       <span class="p">(</span><span class="n">decim_ts</span><span class="o">.</span><span class="n">code</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span><span class="n">decim_ts</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">decim_ts</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span><span class="n">decim_ts</span><span class="o">.</span><span class="n">data_xyz</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span><span class="n">current_date</span> <span class="p">,</span><span class="n">str_comment</span><span class="p">)</span> <span class="p">)</span>
+    
+        <span class="n">cx</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="n">cy</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="n">cz</span> <span class="o">=</span> <span class="n">z</span>
+        
+    
+    <span class="n">apr_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+     
+
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="save_apr">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.metadata.save_apr">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">save_apr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">apr</span><span class="p">,</span> <span class="n">epoch</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">excluded_periods</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Save Gts analysis results to a globk-format apr file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    apr : str</span>
+<span class="sd">        Output apr file path (globk format).</span>
+<span class="sd">    epoch : float, optional</span>
+<span class="sd">        Epoch in decimal year for coordinates. Default is None (use period mid).</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        If True, print progress. Default is False.</span>
+<span class="sd">    excluded_periods : list, optional</span>
+<span class="sd">        Periods to exclude. Default is None.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Gts</span>
+<span class="sd">        self.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Following globk convention, site names are XXXX_1PS, XXXX_2PS, etc. between offset dates.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.coordinates</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+    <span class="c1"># populates lperiod</span>
+
+    <span class="n">sdate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">edate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="n">csdate</span><span class="o">=</span><span class="n">sdate</span>
+    <span class="n">cedate</span><span class="o">=</span><span class="n">edate</span>
+
+    <span class="n">lperiod</span><span class="o">=</span><span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">offset_date</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">offsets_dates</span><span class="p">:</span>
+        <span class="n">cedate</span><span class="o">=</span><span class="n">offset_date</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- period &#39;</span><span class="p">,[</span><span class="n">csdate</span><span class="p">,</span><span class="n">cedate</span><span class="p">],</span><span class="s1">&#39; for site &#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+        <span class="n">lperiod</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">csdate</span><span class="p">,</span><span class="n">cedate</span><span class="p">])</span>
+        <span class="n">csdate</span><span class="o">=</span><span class="n">cedate</span>
+    
+    <span class="n">cedate</span><span class="o">=</span><span class="n">edate</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- period &#39;</span><span class="p">,[</span><span class="n">csdate</span><span class="p">,</span><span class="n">cedate</span><span class="p">],</span><span class="s1">&#39; for site &#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+    <span class="n">lperiod</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">csdate</span><span class="p">,</span><span class="n">cedate</span><span class="p">])</span>
+    
+    <span class="c1"># open apr file</span>
+    
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">apr</span><span class="p">):</span>
+        <span class="n">apr_file</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">apr</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">apr_file</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">apr</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    
+        
+    <span class="c1"># loop on periods</span>
+    <span class="n">index</span><span class="o">=</span><span class="mi">0</span>
+    
+    <span class="k">for</span> <span class="n">period</span> <span class="ow">in</span> <span class="n">lperiod</span><span class="p">:</span>
+        
+        <span class="n">index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+        
+        <span class="c1"># extract time series</span>
+        <span class="n">w_gts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">extract_periods</span><span class="p">([</span><span class="n">period</span><span class="p">])</span>
+        
+        <span class="c1"># calculates the NEU position - use an average of the five first days</span>
+        <span class="n">tneu</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">w_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[:</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        
+        <span class="c1"># get neu velocity</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">vel</span><span class="o">=</span><span class="n">w_gts</span><span class="o">.</span><span class="n">detrend</span><span class="p">()</span><span class="o">.</span><span class="n">velocity</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">vel</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+            
+        <span class="c1"># propagates NEU coordinates at epoch if provided</span>
+        <span class="k">if</span> <span class="n">epoch</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cepoch</span><span class="o">=</span><span class="n">epoch</span>
+            <span class="n">neu_at_cepoch</span><span class="o">=</span><span class="n">tneu</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">+</span><span class="p">(</span><span class="n">epoch</span><span class="o">-</span><span class="n">tneu</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="n">vel</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cepoch</span><span class="o">=</span><span class="n">tneu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">neu_at_cepoch</span><span class="o">=</span><span class="n">tneu</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        
+        <span class="c1"># converts NEU &amp; vel in XYZ</span>
+        
+        <span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">Z</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">denu_at_x0y0z0_to_xyz</span><span class="p">(</span><span class="n">neu_at_cepoch</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">neu_at_cepoch</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">neu_at_cepoch</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">w_gts</span><span class="o">.</span><span class="n">X0</span><span class="p">,</span> <span class="n">w_gts</span><span class="o">.</span><span class="n">Y0</span><span class="p">,</span> <span class="n">w_gts</span><span class="o">.</span><span class="n">Z0</span><span class="p">)</span>
+        <span class="n">VX</span><span class="p">,</span><span class="n">VY</span><span class="p">,</span><span class="n">VZ</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">denu_at_x0y0z0_to_xyz</span><span class="p">(</span><span class="n">vel</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">vel</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">vel</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">w_gts</span><span class="o">.</span><span class="n">X0</span><span class="p">,</span> <span class="n">w_gts</span><span class="o">.</span><span class="n">Y0</span><span class="p">,</span> <span class="n">w_gts</span><span class="o">.</span><span class="n">Z0</span><span class="p">)</span>
+
+        <span class="n">VX</span><span class="o">=</span><span class="n">VX</span><span class="o">-</span><span class="n">w_gts</span><span class="o">.</span><span class="n">X0</span>
+        <span class="n">VY</span><span class="o">=</span><span class="n">VY</span><span class="o">-</span><span class="n">w_gts</span><span class="o">.</span><span class="n">Y0</span>
+        <span class="n">VZ</span><span class="o">=</span><span class="n">VZ</span><span class="o">-</span><span class="n">w_gts</span><span class="o">.</span><span class="n">Z0</span>
+
+        
+        <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">apr_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="si">%s</span><span class="s1">_GPS </span><span class="si">%16.4lf</span><span class="s1">  </span><span class="si">%16.4lf</span><span class="s1">  </span><span class="si">%16.4lf</span><span class="s1">    0.0000 0.0000 0.0000 </span><span class="si">%8.4lf</span><span class="s1"> </span><span class="si">%15.5lf</span><span class="s1">  </span><span class="si">%15.5lf</span><span class="s1">  </span><span class="si">%15.5lf</span><span class="s1"> 0.00000 0.00000 0.00000 from pyacs </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> \
+                       <span class="p">(</span><span class="n">w_gts</span><span class="o">.</span><span class="n">code</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">Z</span><span class="p">,</span><span class="n">cepoch</span><span class="p">,</span><span class="n">VX</span><span class="p">,</span><span class="n">VY</span><span class="p">,</span><span class="n">VZ</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()))</span>
+            
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">apr_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; </span><span class="si">%s</span><span class="s1">_</span><span class="si">%1d</span><span class="s1">PS </span><span class="si">%16.4lf</span><span class="s1">  </span><span class="si">%16.4lf</span><span class="s1">  </span><span class="si">%16.4lf</span><span class="s1">    0.0000 0.0000 0.0000 </span><span class="si">%8.4lf</span><span class="s1"> </span><span class="si">%15.5lf</span><span class="s1">  </span><span class="si">%15.5lf</span><span class="s1">  </span><span class="si">%15.5lf</span><span class="s1"> 0.00000 0.00000 0.00000 from pyacs </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> \
+                       <span class="p">(</span><span class="n">w_gts</span><span class="o">.</span><span class="n">code</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span><span class="n">index</span><span class="p">,</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">Z</span><span class="p">,</span><span class="n">cepoch</span><span class="p">,</span><span class="n">VX</span><span class="p">,</span><span class="n">VY</span><span class="p">,</span><span class="n">VZ</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()))</span>
+        
+    <span class="n">apr_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+    <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="read_offset_dates">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.metadata.read_offset_dates">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_offset_dates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">offset_file</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read an offset file and set offsets_dates (pyacs format).</span>
+
+<span class="sd">    File format: code and dates; dates parsed by pyacs.guess_date.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    offset_file : str</span>
+<span class="sd">        Path to offset file.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Gts</span>
+<span class="sd">        self (offsets_dates populated).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">fs</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">offset_file</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Could not open &quot;</span><span class="p">,</span><span class="n">offset_file</span><span class="p">)</span> 
+        <span class="k">return</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">):</span><span class="k">continue</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;#&#39;</span><span class="p">):</span><span class="k">continue</span>
+        <span class="n">lline</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        
+        <span class="k">if</span> <span class="n">lline</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">offsets_dates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">guess_date</span><span class="p">(</span><span class="n">lline</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+
+<span class="c1">###################################################################</span>
+<div class="viewcode-block" id="info">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.lib.html#pyacs.gts.lib.metadata.info">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">info</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<span class="c1">###################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print various informations about the time series</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span>
+    
+    <span class="c1"># conversion from p,q to amplitud &amp; phase of seasonal terms</span>
+
+    <span class="c1">###################################################################</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__pq2aphi__</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="n">q</span><span class="p">):</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">p</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">q</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="n">q</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
+    
+
+    <span class="c1">###################################################################</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__print_header__</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;########################################################################&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;# &quot;</span><span class="p">,</span><span class="n">text</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;########################################################################&quot;</span><span class="p">)</span>
+
+
+    <span class="c1"># period</span>
+    <span class="n">time_series_length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">__print_header__</span><span class="p">((</span><span class="s2">&quot;general information site: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;# Time series period: </span><span class="si">%9.4lf</span><span class="s2"> - </span><span class="si">%9.4lf</span><span class="s2"> (</span><span class="si">%6.3lf</span><span class="s2"> yr)&quot;</span> <span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">time_series_length</span><span class="p">)))</span>
+    <span class="n">sdoy</span><span class="p">,</span><span class="n">_ut</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2dayno</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">edoy</span><span class="p">,</span><span class="n">_ut</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2dayno</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+    
+    <span class="n">smjd</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2mjd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">emjd</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2mjd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;# Time series period: </span><span class="si">%4d</span><span class="s2">  </span><span class="si">%03d</span><span class="s2"> - </span><span class="si">%4d</span><span class="s2">  </span><span class="si">%03d</span><span class="s2">  (</span><span class="si">%d</span><span class="s2"> days)&quot;</span> <span class="o">%</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]),</span><span class="n">sdoy</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]),</span><span class="n">edoy</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="n">emjd</span><span class="o">-</span><span class="n">smjd</span><span class="p">))))</span>
+    
+    <span class="c1"># obs</span>
+    <span class="n">n_obs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">n_expected_obs</span><span class="o">=</span><span class="nb">round</span><span class="p">(</span><span class="n">emjd</span><span class="o">-</span><span class="n">smjd</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+    <span class="n">loss</span><span class="o">=</span><span class="mf">100.0</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">n_obs</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">n_expected_obs</span><span class="p">)</span><span class="o">*</span><span class="mf">100.0</span>
+    <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;# Obs </span><span class="si">%5d</span><span class="s2"> # Expected </span><span class="si">%5d</span><span class="s2"> # Loss </span><span class="si">%5.1lf</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">n_obs</span><span class="p">,</span><span class="n">n_expected_obs</span><span class="p">,</span><span class="n">loss</span><span class="p">)))</span>
+    
+    <span class="c1"># approximate coordinate</span>
+    <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">)</span> <span class="o">!=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;# App. coordinates (deg.dec): longitude: </span><span class="si">%8.4lf</span><span class="s2"> latitude: </span><span class="si">%8.4lf</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">)))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;# App. coordinates (deg.dec): not provided&quot;</span><span class="p">)</span>
+
+    <span class="c1"># velocity</span>
+    <span class="n">__print_header__</span><span class="p">(</span><span class="s2">&quot;velocity&quot;</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span><span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;# Velocity estimates: not available&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;   V_North     V_East       V_Up     S_V_North    S_V_East      S_V_Up   &quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="mi">6</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;</span><span class="si">%10.2lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2">    </span><span class="si">%10.2lf</span><span class="s2">  </span><span class="si">%10.2lf</span><span class="s2">  </span><span class="si">%10.2lf</span><span class="s2">  &quot;</span> <span class="o">%</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="o">*</span><span class="mf">1000.0</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;</span><span class="si">%10.2lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2">        N/A         N/A          N/A &quot;</span> <span class="o">%</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="o">*</span><span class="mf">1000.0</span><span class="p">)))</span>
+
+    <span class="c1"># annual terms</span>
+    <span class="n">__print_header__</span><span class="p">(</span><span class="s2">&quot;seasonal terms&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">annual</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span><span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;# Annual terms     : not available&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;# Annual and semi-annual terms - phase in decimal years - amplitude in mm&quot;</span><span class="p">)</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;N_amplitude    N_phase  E_amplitude    E_phase   U_amplitude     U_phase&quot;</span><span class="p">)</span>
+        <span class="n">a_n</span><span class="p">,</span><span class="n">phi_n</span><span class="o">=</span><span class="n">__pq2aphi__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">annual</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">annual</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">a_e</span><span class="p">,</span><span class="n">phi_e</span><span class="o">=</span><span class="n">__pq2aphi__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">annual</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">annual</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">a_u</span><span class="p">,</span><span class="n">phi_u</span><span class="o">=</span><span class="n">__pq2aphi__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">annual</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">annual</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+        
+        <span class="nb">print</span><span class="p">((</span><span class="s2">&quot; </span><span class="si">%10.4lf</span><span class="s2"> </span><span class="si">%10.4lf</span><span class="s2">   </span><span class="si">%10.1lf</span><span class="s2"> </span><span class="si">%10.4lf</span><span class="s2">    </span><span class="si">%10.4lf</span><span class="s2">  </span><span class="si">%10.4lf</span><span class="s2">  (annual)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">a_n</span><span class="o">*</span><span class="mf">1000.0</span><span class="p">,</span><span class="n">phi_n</span><span class="p">,</span><span class="n">a_e</span><span class="o">*</span><span class="mf">1000.0</span><span class="p">,</span><span class="n">phi_e</span><span class="p">,</span><span class="n">a_u</span><span class="o">*</span><span class="mf">1000.0</span><span class="p">,</span><span class="n">phi_u</span><span class="p">)))</span>
+
+    <span class="c1"># semi-annual terms</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">semi_annual</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span><span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;# Semi annual terms: not available&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">a_n</span><span class="p">,</span><span class="n">phi_n</span><span class="o">=</span><span class="n">__pq2aphi__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">semi_annual</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">semi_annual</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">a_e</span><span class="p">,</span><span class="n">phi_e</span><span class="o">=</span><span class="n">__pq2aphi__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">semi_annual</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">semi_annual</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">a_u</span><span class="p">,</span><span class="n">phi_u</span><span class="o">=</span><span class="n">__pq2aphi__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">semi_annual</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">semi_annual</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+        
+        <span class="nb">print</span><span class="p">((</span><span class="s2">&quot; </span><span class="si">%10.4lf</span><span class="s2"> </span><span class="si">%10.4lf</span><span class="s2">   </span><span class="si">%10.4lf</span><span class="s2"> </span><span class="si">%10.4lf</span><span class="s2">    </span><span class="si">%10.4lf</span><span class="s2">  </span><span class="si">%10.4lf</span><span class="s2">  (semi-annual)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">a_n</span><span class="o">*</span><span class="mf">1000.0</span><span class="p">,</span><span class="n">phi_n</span><span class="p">,</span><span class="n">a_e</span><span class="o">*</span><span class="mf">1000.0</span><span class="p">,</span><span class="n">phi_e</span><span class="p">,</span><span class="n">a_u</span><span class="o">*</span><span class="mf">1000.0</span><span class="p">,</span><span class="n">phi_u</span><span class="p">)))</span>
+
+
+    <span class="c1"># offsets dates</span>
+    <span class="n">__print_header__</span><span class="p">(</span><span class="s2">&quot;offsets&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">offsets_dates</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span><span class="nb">print</span><span class="p">((</span><span class="s2">&quot;# offsets_dates    :  </span><span class="si">%4d</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;# offsets_dates    :  </span><span class="si">%4d</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">offsets_dates</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="n">info</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">offsets_dates</span><span class="p">:</span>
+                <span class="n">doy</span><span class="p">,</span><span class="n">_ut</span><span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2dayno</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+                <span class="n">mday</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">_ut</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2cal</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;   </span><span class="si">%9.4lf</span><span class="s2"> # </span><span class="si">%03d</span><span class="s2"> </span><span class="si">%4d</span><span class="s2"> # </span><span class="si">%02d</span><span class="s2">/</span><span class="si">%02d</span><span class="s2">/</span><span class="si">%4d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">date</span><span class="p">,</span><span class="n">doy</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">date</span><span class="p">),</span><span class="n">mday</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">date</span><span class="p">))))</span>
+    
+    <span class="c1"># estimated offsets dates</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">offsets_values</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;# estimated offsets:  </span><span class="si">%4d</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;# estimated offsets:        </span><span class="si">%4d</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">offsets_values</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="n">info</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; - Estimated offsets in unit*1000 of original file&quot;</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;     Date      North        East          Up     S_North      S_East        S_up&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">offsets_values</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="n">o_values</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">offsets_values</span><span class="p">[</span><span class="n">index</span><span class="p">,:]</span><span class="o">*</span><span class="mf">1000.0</span>
+                <span class="n">o_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="n">o_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mf">1000.0</span>
+                <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;</span><span class="si">%9.4lf</span><span class="s2"> </span><span class="si">%10.2lf</span><span class="s2">  </span><span class="si">%10.2lf</span><span class="s2">  </span><span class="si">%10.2lf</span><span class="s2">  </span><span class="si">%10.2lf</span><span class="s2">  </span><span class="si">%10.2lf</span><span class="s2">  </span><span class="si">%10.2lf</span><span class="s2">  &quot;</span> <span class="o">%</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">o_values</span><span class="p">)))</span>
+
+    <span class="c1"># outliers</span>
+    <span class="n">__print_header__</span><span class="p">(</span><span class="s2">&quot;outliers&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outliers</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span><span class="nb">print</span><span class="p">((</span><span class="s2">&quot;# outliers:          </span><span class="si">%4d</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;# outliers:         </span><span class="si">%4d</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outliers</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="n">info</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span> 
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; - dates of outliers&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outliers</span><span class="p">:</span>
+                <span class="n">date</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">doy</span><span class="p">,</span><span class="n">_ut</span><span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2dayno</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">mday</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">_ut</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2cal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+                <span class="nb">print</span><span class="p">((</span><span class="s2">&quot;   </span><span class="si">%9.4lf</span><span class="s2"> # </span><span class="si">%03d</span><span class="s2"> </span><span class="si">%4d</span><span class="s2"> # </span><span class="si">%02d</span><span class="s2">/</span><span class="si">%02d</span><span class="s2">/</span><span class="si">%4d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">doy</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">date</span><span class="p">),</span><span class="n">mday</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">date</span><span class="p">))))</span>
+    <span class="k">return</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">PYACS</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Jean-Mathieu NOCQUET.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

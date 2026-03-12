@@ -1,0 +1,231 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.gts.Sgts_methods.get_unr &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../libraries.html">core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyacs.gts.Sgts_methods.get_unr</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyacs.gts.Sgts_methods.get_unr</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="get_unr">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.Sgts_methods.get_unr.html#pyacs.gts.Sgts_methods.get_unr.get_unr">[docs]</a>
+<span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_unr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">lcode</span><span class="o">=</span><span class="p">[],</span> <span class="n">center</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">radius</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Download time series from UNR and append to this Sgts.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    lcode : list, optional</span>
+<span class="sd">        Site codes to download. Default is [].</span>
+<span class="sd">    center : list, optional</span>
+<span class="sd">        [lon, lat] in decimal degrees for center of search.</span>
+<span class="sd">    radius : list, optional</span>
+<span class="sd">        [min_radius, max_radius] in km.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        Time series are appended to self (in-place).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># import</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.gts.Gts</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gts</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.gts.Sgts</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sgts</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">urllib.request</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">bs4</span><span class="w"> </span><span class="kn">import</span> <span class="n">BeautifulSoup</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.coordinates</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">coo</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">at</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Running Sgts.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_name</span><span class="p">)</span>
+
+    <span class="c1"># initialize Sgts</span>
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">Sgts</span><span class="p">(</span><span class="n">read</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># case center and radius</span>
+    <span class="k">if</span> <span class="n">center</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">radius</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://geodesy.unr.edu/NGLStationPages/gpsnetmap/GPSNetMap.html&quot;</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
+            <span class="c1"># set a real User-Agent header</span>
+            <span class="c1"># to avoid 403 errors</span>
+            <span class="n">headers</span><span class="o">=</span><span class="p">{</span>
+                <span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="s1">&#39;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36&#39;</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+        <span class="c1"># perform the HTTP GET request and automatically freeing</span>
+        <span class="c1"># the resources allocated</span>
+        <span class="k">with</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
+            <span class="c1"># get the HTML content of the target web page</span>
+            <span class="n">body</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+        <span class="n">html</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+
+        <span class="c1"># decipher html and read as panda frame</span>
+        <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span><span class="n">features</span><span class="o">=</span><span class="s2">&quot;lxml&quot;</span><span class="p">)</span>
+        <span class="n">LIST_STRING</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">script</span><span class="o">.</span><span class="n">prettify</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">LIST_STRING_CLEAN</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span> <span class="k">for</span>
+                             <span class="n">line</span> <span class="ow">in</span> <span class="n">LIST_STRING</span><span class="p">]</span>
+
+        <span class="n">DF</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">LIST_STRING_CLEAN</span><span class="p">)),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;\s+&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">,</span> <span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">,</span> <span class="s2">&quot;dummy1&quot;</span><span class="p">,</span> <span class="s2">&quot;dummy2&quot;</span><span class="p">],</span>
+                         <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">,</span> <span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">])</span>
+
+        <span class="c1"># convert to numpy</span>
+        <span class="n">np_code</span> <span class="o">=</span> <span class="n">DF</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">np_lon</span> <span class="o">=</span> <span class="n">DF</span><span class="p">[</span><span class="s1">&#39;longitude&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+        <span class="n">np_lat</span> <span class="o">=</span> <span class="n">DF</span><span class="p">[</span><span class="s1">&#39;latitude&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+
+        <span class="n">lidx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np_lon</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">180</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">np_lon</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span> <span class="o">=</span> <span class="n">np_lon</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span> <span class="o">+</span> <span class="mf">360.</span>
+
+        <span class="n">lidx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np_lon</span> <span class="o">&gt;</span> <span class="mi">180</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">np_lon</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span> <span class="o">=</span> <span class="n">np_lon</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span> <span class="o">-</span> <span class="mf">360.</span>
+
+        <span class="c1"># save a dictionary of code with coordinates</span>
+        <span class="n">H_code</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">np_code</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">H_code</span><span class="p">[</span><span class="n">np_code</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="n">np_lon</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">np_lat</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+
+        <span class="c1"># convert EQ lon, lat into X,Y,Z coordinates</span>
+        <span class="p">(</span><span class="n">X_CENTER</span><span class="p">,</span> <span class="n">Y_CENTER</span><span class="p">,</span> <span class="n">Z_CENTER</span><span class="p">)</span> <span class="o">=</span> <span class="n">coo</span><span class="o">.</span><span class="n">geo2xyz</span><span class="p">(</span><span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;dec_deg&#39;</span><span class="p">)</span>
+
+        <span class="c1"># convert GPS lon, lat into X,Y,Z coordinates</span>
+        <span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">)</span> <span class="o">=</span> <span class="n">coo</span><span class="o">.</span><span class="n">geo2xyz</span><span class="p">(</span><span class="n">np_lon</span><span class="p">,</span> <span class="n">np_lat</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;dec_deg&#39;</span><span class="p">)</span>
+
+        <span class="c1"># get list of</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_CENTER</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">Y</span> <span class="o">-</span> <span class="n">Y_CENTER</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">Z</span> <span class="o">-</span> <span class="n">Z_CENTER</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.E-3</span>  <span class="c1"># to get results in km</span>
+        <span class="n">lidx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span> <span class="p">(</span><span class="n">D</span> <span class="o">&lt;=</span> <span class="n">radius</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">D</span> <span class="o">&gt;=</span> <span class="n">radius</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="p">)</span>
+        <span class="n">lcode</span> <span class="o">=</span> <span class="n">lcode</span> <span class="o">+</span> <span class="n">np_code</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">lcode</span> <span class="o">==</span> <span class="p">[]:</span>
+        <span class="n">WARNING</span><span class="p">(</span><span class="s2">&quot;No site to download. Returning empty Sgts&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ts</span>
+
+    <span class="c1"># loop on sites</span>
+
+    <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">lcode</span><span class="p">:</span>
+        <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;downloading </span><span class="si">%s</span><span class="s2"> from UNR&quot;</span> <span class="o">%</span> <span class="n">code</span> <span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">Gts</span><span class="p">(</span> <span class="p">)</span><span class="o">.</span><span class="n">get_unr</span><span class="p">(</span> <span class="n">code</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">WARNING</span><span class="p">(</span><span class="s2">&quot;Could not download time series for </span><span class="si">%s</span><span class="s2"> from UNR&quot;</span> <span class="o">%</span> <span class="n">code</span> <span class="p">)</span>
+
+    <span class="c1"># return</span>
+    <span class="k">return</span> <span class="n">ts</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

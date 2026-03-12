@@ -1,16 +1,24 @@
 ###################################################################
 def copy(self,data=True, data_xyz=True, loutliers=True):
 ###################################################################
-    """
-    makes a (deep) copy of the time series.
-    
-    By default, all attributes are also copied, including .data, .data_xyz, loutliers etc.
+    """Return a deep copy of the time series.
 
-    Default behaviour can be modified for the following attribute:
-    
-    :param data: can be set to None or a 2D numpy array of shape (n,10)
-    :param data_xyz: can be set to None or a 2D numpy array of shape (n,10)
-    :param loutliers: False will not copy the loutliers atrribute
+    By default copies .data, .data_xyz, outliers, etc. Behaviour can be
+    overridden per attribute below.
+
+    Parameters
+    ----------
+    data : bool or numpy.ndarray, optional
+        True = copy .data; False = set to None; or (n,10) array. Default is True.
+    data_xyz : bool or numpy.ndarray, optional
+        True = copy .data_xyz; False = None; or (n,10) array. Default is True.
+    loutliers : bool, optional
+        If False, do not copy outliers. Default is True.
+
+    Returns
+    -------
+    Gts
+        New Gts instance.
     """
 
     ### import 
@@ -40,7 +48,7 @@ def copy(self,data=True, data_xyz=True, loutliers=True):
     
     ### handles outliers
 
-    if isinstance(new_Gts.data,np.ndarray):
+    if isinstance(new_Gts.data,np.ndarray) and loutliers:
 
         ldate_outliers = self.data[:,0][self.outliers]
         lupdated_outliers = pyacs.gts.Gts.get_index_from_dates(ldate_outliers, new_Gts.data, tol=0.01)
@@ -49,5 +57,12 @@ def copy(self,data=True, data_xyz=True, loutliers=True):
 
     else:
         new_Gts.outliers = []
+
+    ### handles other attributes
+
+    lattributes = ['offsets_dates', 'offsets_values', 'annual', 'semi_annual', 'velocity']
+    for attribute in lattributes:
+        if hasattr(self, attribute):
+            setattr(new_Gts, attribute, getattr(self, attribute))
 
     return( new_Gts )

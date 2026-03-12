@@ -2,17 +2,33 @@
 ########################################################################################################
 def gts_to_ts( gts , date=None, unit='mm' , date_unit='decyear' , date_ref=None, set_zero_at_date=None, center= True ):
 ########################################################################################################
-    """
-    prepare a gts for plot.
-    
-    :param gts: Gts instance
-    :param date: a list of dates [start_date , end_date] in decimal degrees. Default is None for all dates.
-    :param unit: unit for output
-    :param date_unit: date unit for the x-axis
-    :param date_ref: reference date in decimal year.
-    
-    :return np_date, y, yerr
-    
+    """Prepare Gts for plotting (dates, y, yerr).
+
+    Parameters
+    ----------
+    gts : Gts
+        Gts instance.
+    date : list, optional
+        [start_date, end_date] in decimal year; None = all dates.
+    unit : str, optional
+        Output unit (e.g. 'mm'). Default is 'mm'.
+    date_unit : str, optional
+        X-axis date unit. Default is 'decyear'.
+    date_ref : float, optional
+        Reference date in decimal year. Default is None.
+    set_zero_at_date : float, optional
+        Date to set zero. Default is None.
+    center : bool, optional
+        Center series. Default is True.
+
+    Returns
+    -------
+    np_date : array
+        Dates for x-axis.
+    y : array
+        Values.
+    yerr : array
+        Errors.
     """
     
     ###########################################################################
@@ -29,9 +45,9 @@ def gts_to_ts( gts , date=None, unit='mm' , date_unit='decyear' , date_ref=None,
     tmp_gts = gts.copy( )
     
     # case date extraction
-    if date != []:
+    #if date != []:
         #tmp_gts = tmp_gts.extract_periods( pyacs.lib.utils.__ensure_list_of_list( date ) )
-        tmp_gts = tmp_gts.extract_periods( pyacs.lib.utils.__ensure_list_of_list( date ), no_reset=True )
+    #    tmp_gts = tmp_gts.extract_periods( pyacs.lib.utils.__ensure_list_of_list( date ), no_reset=True )
 
     # case set_zero_at_date
     if set_zero_at_date is not None:

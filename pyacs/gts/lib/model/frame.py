@@ -2,18 +2,24 @@
 ## change reference frame for the time series
 ###################################################################
 
-def frame(self, frame=None, in_place=False, verbose=False):
+def frame(self, frame=None, verbose=False):
     """
-    Rotates a time series according to an Euler pole
-    Returns a new Gts instance
+    Rotates a time series according to an Euler pole.
+    Returns a new Gts instance.
     """
 
     import numpy as np
     from pyacs.gts.Gts import Gts
     import inspect
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
 
     # after this method .data  and .data_xyz are not consistent so .data_xyz is set to None
-    self.data_xyz = None
+    #self.data_xyz = None
 
     ###########################################################################
     # check data is not None
@@ -25,7 +31,7 @@ def frame(self, frame=None, in_place=False, verbose=False):
             raise GtsInputDataNone(inspect.stack()[0][3], __name__, self)
     except GtsInputDataNone as error:
         # print PYACS WARNING
-        print(error)
+        ERROR(error)
         return (self)
     ###########################################################################
 
@@ -42,6 +48,4 @@ def frame(self, frame=None, in_place=False, verbose=False):
     euler_vector = np.array(lEuler[frame])
 
     new_Gts = self.remove_pole(euler_vector, verbose=verbose)
-    if in_place:
-        self.data = new_Gts.data.copy()
     return (new_Gts)

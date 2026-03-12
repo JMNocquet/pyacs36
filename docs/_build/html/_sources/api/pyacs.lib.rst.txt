@@ -1,0 +1,167 @@
+pyacs.lib package
+=================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   pyacs.lib.astrotime
+   pyacs.lib.coordinates
+   pyacs.lib.faultslip
+
+Submodules
+----------
+
+pyacs.lib.astrotime module
+--------------------------
+
+.. automodule:: pyacs.lib.astrotime
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.errors module
+-----------------------
+
+.. automodule:: pyacs.lib.errors
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.euclid module
+-----------------------
+
+.. automodule:: pyacs.lib.euclid
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.euler module
+----------------------
+
+.. automodule:: pyacs.lib.euler
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.glinalg module
+------------------------
+
+.. automodule:: pyacs.lib.glinalg
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.gmtpoint module
+-------------------------
+
+.. automodule:: pyacs.lib.gmtpoint
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.gpstime module
+------------------------
+
+.. automodule:: pyacs.lib.gpstime
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.icosahedron module
+----------------------------
+
+.. automodule:: pyacs.lib.icosahedron
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.pygamit\_module module
+--------------------------------
+
+.. automodule:: pyacs.lib.pygamit_module
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.robustestimators module
+---------------------------------
+
+.. automodule:: pyacs.lib.robustestimators
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.shapefile module
+--------------------------
+
+.. automodule:: pyacs.lib.shapefile
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.strain module
+-----------------------
+
+.. automodule:: pyacs.lib.strain
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.syscmd module
+-----------------------
+
+.. automodule:: pyacs.lib.syscmd
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.timeperiod module
+---------------------------
+
+.. automodule:: pyacs.lib.timeperiod
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.units module
+----------------------
+
+.. automodule:: pyacs.lib.units
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.utils module
+----------------------
+
+.. automodule:: pyacs.lib.utils
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.vectors module
+------------------------
+
+.. automodule:: pyacs.lib.vectors
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.lib.vel\_field module
+---------------------------
+
+.. automodule:: pyacs.lib.vel_field
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: pyacs.lib
+   :members:
+   :show-inheritance:
+   :undoc-members:

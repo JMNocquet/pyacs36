@@ -1,12 +1,19 @@
 ###################################################################
 def n(self,lexclude=[],linclude=[]):
 ###################################################################
-    """
-    Returns the number of Gts codes in the current Sgts
-    exclude is a list of code to be excluded
-     
-    :param lexclude: list of sites to be excluded
-    :param linclude: list of sites to be included, excluding all other.
+    """Return the number of Gts in this Sgts (after optional filters).
+
+    Parameters
+    ----------
+    lexclude : list, optional
+        Site codes to exclude. Default is [].
+    linclude : list, optional
+        If non-empty, only these codes are counted. Default is [].
+
+    Returns
+    -------
+    int
+        Number of time series.
     """
      
     

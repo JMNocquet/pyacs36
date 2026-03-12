@@ -1,52 +1,32 @@
 
 #from pyacs.gts.lib.offset import __fmt_date
-"""
-    The individual Geodetic Time Series Class
+"""Individual geodetic time series (Gts) class and helpers.
 
-    The Gts implemented in PYACS has the following attributes:
-
-    Mandatory attributes:
-        - data:        a 2D numpy array with 10 columns: dec.year, N, E, U, S_N, S_E, S_U, S_NE, S_NU, S_EU
-        - code:            station 4-letters code
-    Coordinates attributes
-        - lon,lat,h:       approximate longitude, latitude (geodetic, deg.dec) and ellipsoidal height (m)
-        - X0,Y0,Z0         XYZ reference position in the Geocentric Frame. N,E,U are considered with respect to X0,Y0,Z0
-        - t0               reference date in decimal year for X0,Y0,Z0
-    Not persisting attributes
-        - data_xyz:        a 2D numpy array with 10 columns: dec.year, X, Y, Z, SX, SY, SZ, S_XY, S_XZ, S_YZ
-            because many Gts methods are applied on NEU components, .data_xyz is often set to None.
-            it can however be rebuilt using the neu2xyz method
-    Attributes populated after some analysis
-        - outliers:        list of index of outliers in a time series (all components)
-        - offsets_values:  a 2D numpy array with 7 columns: dec.year N, E, U, S_N, S_E, S_U
-        - offsets_dates:   a list of dates for offsets
-        - velocity:        a 1D numpy array with 6 columns: vel_N, vel_E, vel_U, S_vel_N, S_vel_E, S_vel_U
-        - annual:          a 1D numpy array with 6 columns: Amplitude_N, Phase_N, Amplitude_E, Phase_E, Amplitude_U, Phase_U
-        - semi_annual:     a 1D numpy array with 6 columns: Amplitude_N, Phase_N, Amplitude_E, Phase_E, Amplitude_U, Phase_U
-    Metadata attributes
-        - ifile:          original input file of the time series
-        - log:            log of operations
-        - metadata:       any information the analyst would like to be recorded
-
-    Units Conventions
-        - dates are in decimal year
-        - coordinates are in meters
-        - phases are in radians
+The Gts class holds NEU (or XYZ) time series with metadata. Key attributes:
+data (2D: dec_year, N, E, U, S_N, S_E, S_U, S_NE, S_NU, S_EU), code, lon/lat/h,
+X0,Y0,Z0,t0, data_xyz, outliers, offsets_*, velocity, annual, semi_annual, ifile, log, metadata.
+Units: dates in decimal year, coordinates in m, phases in radians.
 """
 
 
 ###################################################################
 def get_index_from_dates(dates,data,tol=0.25):
 ###################################################################
-    """
-    returns the list of index in data corresponding to given dates within tolerance
-    
-    :param dates: list of dates in decimal year
-    :param data: a 2D numpy array with decimal dates in the first column
-    :param tol: date tolerance to decide that two dates are equal. (default 0.25 day)
-    
-    :return : list of index 
-     
+    """Return indices in data whose first column matches given dates within tolerance.
+
+    Parameters
+    ----------
+    dates : list of float
+        Target dates in decimal year.
+    data : numpy.ndarray
+        2D array with decimal dates in first column.
+    tol : float, optional
+        Date tolerance in days to consider a match. Default is 0.25.
+
+    Returns
+    -------
+    list
+        Indices into data for each date (or [] if no match).
     """
 
     # check argument dates
@@ -105,8 +85,11 @@ class Gts:
                   annual=None,semi_annual=None,\
                   velocity=None,\
                   ifile=None, log=None, metadata=None):
-        """
-        The Geodetic time series class
+        """Initialize a Gts (geodetic time series) instance.
+
+        All arguments are optional and set as instance attributes (data, code,
+        lon, lat, h, X0, Y0, Z0, t0, data_xyz, offsets_*, outliers, velocity,
+        annual, semi_annual, ifile, log, metadata).
         """
         
         self.code=code
@@ -151,8 +134,21 @@ class Gts:
     def read(cls, tsfile, fmt=None, verbose=False):
 ###################################################################
         
-        """
-        Reads a time series file
+        """Read a time series from file (format auto-detected or set by fmt).
+
+        Parameters
+        ----------
+        tsfile : str
+            Path to the time series file.
+        fmt : str, optional
+            Format name (e.g. 'pride', 'pride_pos', 'mb_file'). If None, formats are tried.
+        verbose : bool, optional
+            If True, print progress. Default is False.
+
+        Returns
+        -------
+        Gts or None
+            Loaded time series or None on failure.
         """
 
         # import
@@ -257,11 +253,16 @@ import pyacs.gts.lib.format.pride
 import pyacs.gts.lib.format.tdp
 import pyacs.gts.lib.format.track
 import pyacs.gts.lib.format.get_unr
+import pyacs.gts.lib.format.get_unr_loading
 import pyacs.gts.lib.format.to_pandas_df
-
+import pyacs.gts.lib.format.series
+import pyacs.gts.lib.format.read_sol
+import pyacs.gts.lib.format.to_pytrf
 
 
 Gts.read_pos         = pyacs.gts.lib.format.pos.read_pos
+Gts.read_sol         = pyacs.gts.lib.format.read_sol.read_sol
+Gts.read_series      = pyacs.gts.lib.format.series.read_series
 Gts.read_pride       = pyacs.gts.lib.format.pride.read_pride
 Gts.read_pride_pos    = pyacs.gts.lib.format.pride.read_pride_pos
 Gts.read_kenv        = pyacs.gts.lib.format.kenv.read_kenv
@@ -277,7 +278,9 @@ Gts.write_cats       = pyacs.gts.lib.format.cats.write_cats
 Gts.force_daily      = pyacs.gts.lib.format.force_daily.force_daily
 
 Gts.get_unr          = pyacs.gts.lib.format.get_unr.get_unr
+Gts.get_unr_loading  = pyacs.gts.lib.format.get_unr_loading.get_unr_loading
 Gts.to_pandas_df     = pyacs.gts.lib.format.to_pandas_df.to_pandas_df
+Gts.to_pytrf         = pyacs.gts.lib.format.to_pytrf.to_pytrf
 
 # PRIMITIVE
 import  pyacs.gts.lib.primitive.cdata
@@ -308,8 +311,12 @@ import  pyacs.gts.lib.primitive.insert_gts_data
 import  pyacs.gts.lib.primitive.find_large_uncertainty
 import  pyacs.gts.lib.primitive.split_gap
 import  pyacs.gts.lib.primitive.interpolate
+import  pyacs.gts.lib.primitive.extrapolate
 import  pyacs.gts.lib.primitive.insert_ts
-
+import  pyacs.gts.lib.primitive.n_obs
+import  pyacs.gts.lib.primitive.get_coseismic_l1trend
+import  pyacs.gts.lib.primitive.get_values_at_date
+import  pyacs.gts.lib.primitive.split
 
 Gts.cdata                      = pyacs.gts.lib.primitive.cdata.cdata
 Gts.copy                       = pyacs.gts.lib.primitive.copy.copy
@@ -339,7 +346,12 @@ Gts.insert_gts_data            = pyacs.gts.lib.primitive.insert_gts_data.insert_
 Gts.find_large_uncertainty     = pyacs.gts.lib.primitive.find_large_uncertainty.find_large_uncertainty
 Gts.split_gap                  = pyacs.gts.lib.primitive.split_gap.split_gap
 Gts.interpolate                = pyacs.gts.lib.primitive.interpolate.interpolate
+Gts.extrapolate                = pyacs.gts.lib.primitive.extrapolate.extrapolate
 Gts.insert_ts                  = pyacs.gts.lib.primitive.insert_ts.insert_ts
+Gts.n_obs                      = pyacs.gts.lib.primitive.n_obs.n_obs
+Gts.get_coseismic_l1trend      = pyacs.gts.lib.primitive.get_coseismic_l1trend.get_coseismic_l1trend
+Gts.get_values_at_date         = pyacs.gts.lib.primitive.get_values_at_date.get_values_at_date
+Gts.split                      = pyacs.gts.lib.primitive.split.split
 
 # METADATA
 
@@ -362,7 +374,6 @@ Gts.plot = pyacs.gts.lib.plot.plot.plot
 
 # MODEL
 
-import pyacs.gts.lib.model.add_vel_sigma
 import pyacs.gts.lib.model.detrend
 import pyacs.gts.lib.model.detrend_annual
 import pyacs.gts.lib.model.detrend_seasonal
@@ -373,8 +384,9 @@ import pyacs.gts.lib.model.mmodel
 import pyacs.gts.lib.model.detrend_median
 import pyacs.gts.lib.model.detrend_seasonal_median
 import pyacs.gts.lib.model.trajectory
+import pyacs.gts.lib.model.detrend_hectorp
+import pyacs.gts.lib.model.detrend_pytrf
 
-Gts.add_vel_sigma            = pyacs.gts.lib.model.add_vel_sigma.add_vel_sigma
 Gts.detrend                  = pyacs.gts.lib.model.detrend.detrend
 Gts.detrend_annual           = pyacs.gts.lib.model.detrend_annual.detrend_annual
 Gts.detrend_seasonal         = pyacs.gts.lib.model.detrend_seasonal.detrend_seasonal
@@ -385,7 +397,8 @@ Gts.mmodel                   = pyacs.gts.lib.model.mmodel.mmodel
 Gts.detrend_median           = pyacs.gts.lib.model.detrend_median.detrend_median
 Gts.detrend_seasonal_median  = pyacs.gts.lib.model.detrend_seasonal_median.detrend_seasonal_median
 Gts.trajectory               = pyacs.gts.lib.model.trajectory.trajectory
-
+Gts.detrend_hectorp          = pyacs.gts.lib.model.detrend_hectorp.detrend_hectorp
+Gts.detrend_pytrf           = pyacs.gts.lib.model.detrend_pytrf.detrend_pytrf
 # OFFSET
 
 import pyacs.gts.lib.offset
@@ -402,6 +415,7 @@ Gts.apply_offsets              = pyacs.gts.lib.offset.apply_offsets
 Gts.find_offsets               = pyacs.gts.lib.offset.find_offsets
 Gts.local_offset_robust        = pyacs.gts.lib.offset.local_offset_robust
 Gts.find_offsets_t_scan        = pyacs.gts.lib.offset.find_offsets_t_scan
+Gts.find_offsets_ivel           = pyacs.gts.lib.offset.find_offsets_ivel
 
 # OUTLIERS
 
@@ -425,7 +439,7 @@ Gts.find_outliers_simple                              = pyacs.gts.lib.outliers.f
 Gts.find_outliers_sliding_window                      = pyacs.gts.lib.outliers.find_outliers_sliding_window.find_outliers_sliding_window
 Gts.find_outlier_around_date                          = pyacs.gts.lib.outliers.find_outliers_around_date.find_outliers_around_date
 Gts.find_outliers_vondrak                             = pyacs.gts.lib.outliers.find_outliers_vondrak.find_outliers_vondrak
-Gts.find_outliers_l1trend                             = pyacs.gts.lib.outliers.find_l1trend.find_l1trend
+#Gts.find_outliers_l1trend                             = pyacs.gts.lib.outliers.find_l1trend.find_l1trend
 
 # NOISE
 
@@ -435,33 +449,67 @@ Gts.realistic_sigma   = pyacs.gts.lib.noise.realistic_sigma
 Gts.wrms              = pyacs.gts.lib.noise.wrms
 Gts.sigma_vel_tsfit   = pyacs.gts.lib.noise.sigma_vel_tsfit
 Gts.sigma_cats        = pyacs.gts.lib.noise.sigma_cats
+Gts.add_vel_sigma     = pyacs.gts.lib.noise.add_vel_sigma
 
 # FILTER
 
 import pyacs.gts.lib.filters.median
 import pyacs.gts.lib.filters.minimum_component
 import pyacs.gts.lib.filters.savitzky_golay
-import pyacs.gts.lib.filters.total_variation
 import pyacs.gts.lib.filters.vondrak
 import pyacs.gts.lib.filters.wiener
-import pyacs.gts.lib.filters.piecewise_linear
 import pyacs.gts.lib.step_detect_edge_filter
-import pyacs.gts.lib.filters.l1_trend
-#import pyacs.gts.lib.filters.el1_trend
+#import pyacs.gts.lib.filters.l1_trend
 import pyacs.gts.lib.filters.spline
 import pyacs.gts.lib.filters.smooth
+import pyacs.gts.lib.filters.disp2vel
+import pyacs.gts.lib.filters.edge_filter
+import pyacs.gts.lib.filters.ivel
+
 
 Gts.spline            = pyacs.gts.lib.filters.spline.spline
 Gts.smooth            = pyacs.gts.lib.filters.smooth.smooth
 Gts.median_filter     = pyacs.gts.lib.filters.median.median_filter
 Gts.minimum_component = pyacs.gts.lib.filters.minimum_component.minimum_component
 Gts.savitzky_golay    = pyacs.gts.lib.filters.savitzky_golay.savitzky_golay
-Gts.edge_filter       = pyacs.gts.lib.filters.total_variation.edge
-Gts.tv_l2_filter      = pyacs.gts.lib.filters.total_variation.edge_l2
+Gts.edge_filter       = pyacs.gts.lib.filters.edge_filter.edge_filter
 Gts.vondrak           = pyacs.gts.lib.filters.vondrak.vondrak
 Gts.wiener            = pyacs.gts.lib.filters.wiener.wiener
-Gts.pwlf              = pyacs.gts.lib.filters.piecewise_linear.pwlf
-Gts.l1_trend          = pyacs.gts.lib.filters.l1_trend.l1_trend
-#Gts.el1_trend          = pyacs.gts.lib.filters.el1_trend.el1_trend
+#Gts.l1_trend          = pyacs.gts.lib.filters.l1_trend.l1_trend
 Gts.find_offsets_edge_filter = pyacs.gts.lib.step_detect_edge_filter.find_offsets_edge_filter
+Gts.disp2vel          = pyacs.gts.lib.filters.disp2vel.disp2vel
+Gts.ivel              = pyacs.gts.lib.filters.ivel.ivel
 
+#L1TREND IF TRENDFILTER IS INSTALLED
+
+try:
+    from trendfilter import trend_filter
+
+    from pyacs.gts.lib.l1trend import (
+        l1trendi,
+        refine_l1trend,
+        check_l1_trend,
+        l1trend_to_breakpoints,
+        clean_l1trend,
+        simplify_l1trend,
+        simplify_l1trend_with_fisher_test,
+        l1trend_optimal_workflow,
+        flag_outliers_using_l1trend,
+        sum_l1_trend
+    )
+
+    Gts.l1trend           = l1trendi
+    Gts.l1trendi          = l1trendi
+    Gts.refine_l1trend    = refine_l1trend
+    Gts.check_l1_trend    = check_l1_trend
+    Gts.l1trend_to_breakpoints = l1trend_to_breakpoints
+    Gts.clean_l1trend     = clean_l1trend
+    Gts.simplify_l1trend  = simplify_l1trend
+    Gts.simplify_l1trend_with_fisher_test = simplify_l1trend_with_fisher_test
+    Gts.l1trend_optimal_workflow = l1trend_optimal_workflow
+    Gts.flag_outliers_using_l1trend = flag_outliers_using_l1trend
+    Gts.sum_l1_trend = sum_l1_trend
+    Gts.find_outliers_l1trend = pyacs.gts.lib.outliers.find_l1trend.find_l1trend
+except ModuleNotFoundError:
+    print("Trendfilter is not installed. L1-trend analysis will not be available.")
+    pass

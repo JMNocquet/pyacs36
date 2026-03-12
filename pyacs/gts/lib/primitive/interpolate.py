@@ -1,13 +1,24 @@
 def interpolate(self, date='day', kind='linear', gap=10, in_place=False, verbose=False):
     """
+    Interpolate the time series at regular or given dates.
 
-    :param self: Gts instance
-    :param date: 'day' will perform daily interpolation, alternatively date is a 1D numpy array with either datetime or decimal year
-    :param method: scipy.interpolate.interp1d kind argument
-    :param gap: maximum gap for interpolation
-    :param in_place: boolean.
-    :param verbose: verbose mode
-    :return:
+    Parameters
+    ----------
+    date : str or ndarray, optional
+        'day' performs daily interpolation; alternatively a 1D numpy array with datetime or decimal year.
+    kind : str, optional
+        scipy.interpolate.interp1d kind argument (e.g. 'linear').
+    gap : int or float, optional
+        Maximum gap in days for interpolation; series is split at larger gaps.
+    in_place : bool, optional
+        If True, modify in place; otherwise return a new Gts.
+    verbose : bool, optional
+        Verbose mode.
+
+    Returns
+    -------
+    Gts
+        Interpolated time series (new instance unless in_place).
     """
 
     # import
@@ -33,8 +44,9 @@ def interpolate(self, date='day', kind='linear', gap=10, in_place=False, verbose
         # handle dates
         np_seconds_data = at.decyear2seconds(wwts.data[:, 0])
 
-        if date =='day':
-            np_seconds = np.arange( np_seconds_data[0], np_seconds_data[-1], one_day_in_sec )
+        if isinstance(date,str):
+            if date =='day':
+                np_seconds = np.arange( np_seconds_data[0], np_seconds_data[-1], one_day_in_sec )
 
         else:
 

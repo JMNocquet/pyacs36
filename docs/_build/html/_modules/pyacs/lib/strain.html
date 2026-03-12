@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyacs.lib.strain &#8212; PYACS 0.66.18 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../_static/documentation_options.js?v=2262e354"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pyacs.lib.strain</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Strain rate calculation library</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="vgrad">
+<a class="viewcode-back" href="../../../api/pyacs.lib.html#pyacs.lib.strain.vgrad">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">vgrad</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">VE</span><span class="p">,</span><span class="n">VN</span><span class="p">,</span><span class="n">SVE</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">SVN</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">CVEN</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">CODE</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;WLS&#39;</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Linear estimate of horizontal velocity gradient from site velocities.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X, Y : numpy.ndarray</span>
+<span class="sd">        1D arrays of longitudes and latitudes (decimal degrees).</span>
+<span class="sd">    VE, VN : numpy.ndarray</span>
+<span class="sd">        East and north velocities (mm/yr).</span>
+<span class="sd">    SVE, SVN : numpy.ndarray, optional</span>
+<span class="sd">        Standard deviations of VE, VN (mm/yr).</span>
+<span class="sd">    CVEN : numpy.ndarray, optional</span>
+<span class="sd">        Correlation or covariance term for VE/Vn.</span>
+<span class="sd">    CODE : numpy.ndarray, optional</span>
+<span class="sd">        Site codes (strings).</span>
+<span class="sd">    method : str, optional</span>
+<span class="sd">        &#39;WLS&#39; (weighted least-squares) or &#39;L1&#39;. Default is &#39;WLS&#39;.</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        If True, print progress. Default is False.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        l0, p0, SOL, COV, RESIDUALS, chi2: barycenter (lon, lat), solution vector,</span>
+<span class="sd">        covariance, residuals, chi-square.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    
+    <span class="c1">###########################################################################</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__vgrad_obs_eq__</span><span class="p">(</span><span class="n">l0</span><span class="p">,</span><span class="n">p0</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">ve</span><span class="p">,</span><span class="n">vn</span><span class="p">,</span><span class="n">sve</span><span class="p">,</span><span class="n">svn</span><span class="p">,</span><span class="n">cven</span><span class="p">):</span>
+    <span class="c1">###########################################################################</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Observation equation for horizontal velocity gradient.</span>
+
+<span class="sd">        Observations in mm/yr; result in nstrain/yr.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">Rt</span> <span class="o">=</span> <span class="mf">6371.E3</span> <span class="c1"># Earth&#39;s radius in metres</span>
+
+        <span class="n">Rt3nstrain</span> <span class="o">=</span> <span class="n">Rt</span> <span class="o">/</span> <span class="mf">1.E6</span>
+
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.glinalg</span>
+        
+        <span class="n">Ai</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+        <span class="n">Bi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+
+        <span class="n">Corri</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+
+        <span class="c1"># velocity at the barycenter</span>
+                
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span>
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span>
+        
+        <span class="c1"># ve</span>
+        
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">l</span><span class="o">-</span><span class="n">l0</span><span class="p">)</span> <span class="o">*</span> <span class="n">Rt3nstrain</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="p">(</span><span class="n">p</span><span class="o">+</span><span class="n">p0</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="n">p0</span><span class="p">)</span> <span class="o">*</span> <span class="n">Rt3nstrain</span>
+        
+        <span class="c1"># vn</span>
+        
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">l</span><span class="o">-</span><span class="n">l0</span><span class="p">)</span> <span class="o">*</span> <span class="n">Rt3nstrain</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span> <span class="p">(</span><span class="n">p</span><span class="o">+</span><span class="n">p0</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Ai</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">p</span><span class="o">-</span><span class="n">p0</span><span class="p">)</span> <span class="o">*</span> <span class="n">Rt3nstrain</span>
+        
+        <span class="c1"># Observation vector</span>
+        
+        <span class="n">Bi</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">ve</span>
+        <span class="n">Bi</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">vn</span>
+        
+        <span class="c1"># Covariance matrix</span>
+        
+        <span class="n">Corri</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span>
+        <span class="n">Corri</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span>
+        <span class="n">Corri</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">cven</span>
+        <span class="n">Corri</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">cven</span>
+        
+        <span class="n">Cvi</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">glinalg</span><span class="o">.</span><span class="n">corr_to_cov</span><span class="p">(</span> <span class="n">Corri</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sve</span><span class="p">,</span><span class="n">svn</span><span class="p">])</span> <span class="p">)</span>
+                                
+        <span class="k">return</span><span class="p">(</span><span class="n">Ai</span><span class="p">,</span><span class="n">Bi</span><span class="p">,</span><span class="n">Cvi</span><span class="p">)</span>
+    
+    <span class="c1">###########################################################################</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__barycenter__</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">):</span>
+    <span class="c1">###########################################################################</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the barycenter of points in geographical coordinates.&quot;&quot;&quot;</span>
+        
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.coordinates</span>
+        
+        <span class="n">XYZ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">geo2xyz</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">X</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">Y</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">size</span><span class="p">))</span> <span class="p">))</span>
+
+        <span class="p">[</span><span class="n">mx</span><span class="p">,</span><span class="n">my</span><span class="p">,</span><span class="n">mz</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span> <span class="n">XYZ</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span> <span class="p">)</span>
+
+        <span class="p">[</span><span class="n">mlong</span><span class="p">,</span><span class="n">mlat</span><span class="p">,</span> <span class="n">_</span> <span class="p">]</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">xyz2geo</span><span class="p">(</span><span class="n">mx</span><span class="p">,</span> <span class="n">my</span><span class="p">,</span> <span class="n">mz</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;dec_deg&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span><span class="p">(</span><span class="n">mlong</span><span class="p">,</span><span class="n">mlat</span><span class="p">)</span>
+    
+    <span class="c1"># MAIN</span>
+    
+    <span class="c1"># barycenter of network</span>
+    
+    <span class="p">(</span><span class="n">l0</span><span class="p">,</span><span class="n">p0</span><span class="p">)</span> <span class="o">=</span> <span class="n">__barycenter__</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Barycenter at (</span><span class="si">%10.5lf</span><span class="s2"> , </span><span class="si">%10.5lf</span><span class="s2"> )&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">l0</span><span class="p">,</span><span class="n">p0</span><span class="p">))</span>
+
+
+    <span class="c1"># build the linear system</span>
+
+    <span class="n">A</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">X</span><span class="o">.</span><span class="n">size</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+    <span class="n">B</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">X</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
+    <span class="n">CV</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">X</span><span class="o">.</span><span class="n">size</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">X</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+        <span class="p">(</span><span class="n">Ai</span><span class="p">,</span><span class="n">Bi</span><span class="p">,</span><span class="n">Cvi</span><span class="p">)</span> <span class="o">=</span> <span class="n">__vgrad_obs_eq__</span><span class="p">(</span><span class="n">l0</span><span class="p">,</span><span class="n">p0</span><span class="p">,</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">VE</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">VN</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">SVE</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">SVN</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">CVEN</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        
+        <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">Ai</span>
+        <span class="n">B</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">Bi</span>
+        <span class="n">CV</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">Cvi</span> 
+    
+    <span class="c1"># Solve</span>
+    
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.glinalg</span>
+    
+    <span class="n">SOL</span><span class="p">,</span><span class="n">COV</span><span class="p">,</span><span class="n">RESIDUALS</span><span class="p">,</span> <span class="n">chi2</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">glinalg</span><span class="o">.</span><span class="n">lscov_full</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">CV</span><span class="p">)</span>
+    
+    
+    <span class="k">return</span><span class="p">(</span><span class="n">l0</span><span class="p">,</span><span class="n">p0</span><span class="p">,</span><span class="n">SOL</span><span class="p">,</span><span class="n">COV</span><span class="p">,</span><span class="n">RESIDUALS</span><span class="p">,</span> <span class="n">chi2</span><span class="p">)</span></div>
+
+
+        
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">PYACS</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Jean-Mathieu NOCQUET.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

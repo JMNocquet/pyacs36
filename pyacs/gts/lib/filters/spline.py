@@ -4,13 +4,22 @@
 
 def spline(self, smoothing=1, degree=5, date=None):
     """
-    :param smoothing: Positive smoothing factor used to choose the number of knots. Number of knots will be increased
-    until the smoothing condition is satisfied:
-        sum((w[i] * (y[i]-spl(x[i])))**2, axis=0) <= s
-    :param degree: Degree of the smoothing spline. Must be <= 5. Default is k=3, a cubic spline.
-    :param date: 1D array of interpolation dates in decimal year, or 'day' for every day. defualt None will interpolate
-    at data date only.
-    :return: new gts instance
+    Model the time series with a smoothing spline (UnivariateSpline).
+
+    Parameters
+    ----------
+    smoothing : float, optional
+        Positive smoothing factor; number of knots increased until
+        sum((w*(y-spl(x)))**2) <= s (s = smoothing * 1e-3).
+    degree : int, optional
+        Degree of the spline (<= 5). Default 5.
+    date : ndarray or str or None, optional
+        Interpolation dates: 1D array (decimal year), 'day' for daily, or None for data dates only.
+
+    Returns
+    -------
+    Gts
+        New Gts instance with spline-smoothed NEU.
     """
 
     import numpy as np

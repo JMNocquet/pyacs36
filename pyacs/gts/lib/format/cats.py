@@ -1,13 +1,28 @@
 """
-Reads and writes time series files in the CATS format
+Read and write time series files in the CATS format.
 """
 
 ###################################################################
 def read_cats_file(self,idir='.',ifile=None, gmt=True, verbose=False):
 ###################################################################
     """
-    Read cats files in a directory and actually loads the time series
-    
+    Read a CATS file and load the time series into this Gts.
+
+    Parameters
+    ----------
+    idir : str, optional
+        Directory for CATS files.
+    ifile : str, optional
+        Path to CATS file. If None, uses idir/cats_<code>.dat.
+    gmt : bool or str, optional
+        If True, read lon/lat from ../maps_en_velo.gmt; if str, path to GMT file.
+    verbose : bool, optional
+        Verbose mode.
+
+    Returns
+    -------
+    Gts
+        self (data loaded from file).
     """
     
     import numpy as np
@@ -31,24 +46,51 @@ def read_cats_file(self,idir='.',ifile=None, gmt=True, verbose=False):
     
     self.data=np.genfromtxt(cats_file_basename,comments='#')
 
+    # check that data has 7 columns
+    if self.data.shape[1] == 7:
+        # adds 3 columns of zeros
+        self.data = np.hstack((self.data, np.zeros((self.data.shape[0], 3))))
+
+    return(self)
+
 ###################################################################
-def write_cats(self,idir,offsets_dates=None,add_key=''):
+def write_cats(self,idir='./cats',offsets_dates=None,add_key=''):
 ###################################################################
     """
-    Writes a file for a cats analysis
-    if offsets_dates is not None then offsets are added at the beginning of the file
+    Write a file for CATS analysis.
+
+    If offsets_dates is not None, offset date information is added at the beginning.
+
+    Parameters
+    ----------
+    idir : str, optional
+        Directory to save the file (default './cats').
+    offsets_dates : list, optional
+        List of offset dates to write in the header.
+    add_key : str, optional
+        Additional key in the file name (e.g. cats_<code>_<add_key>.dat).
+
+    Returns
+    -------
+    None
     """
 
     import numpy as np
     import os
 
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
+
+
     if not os.path.isdir(idir):
         try:
-            os.mkdir(idir)
-            print("-- Creating directory ",idir)
+            os.makedirs( idir, exist_ok=True)
         except:
-            print("!!! Error : Could not create directory ",idir)
-    
+            WARNING("Could not create directory ",idir)
 
     
     if add_key != '':

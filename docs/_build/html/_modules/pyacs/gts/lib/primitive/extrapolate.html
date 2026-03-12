@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyacs.gts.lib.primitive.extrapolate &#8212; PYACS 0.66.18 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../../../_static/documentation_options.js?v=2262e354"></script>
+    <script src="../../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pyacs.gts.lib.primitive.extrapolate</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="extrapolate">
+<a class="viewcode-back" href="../../../../../api/pyacs.gts.lib.primitive.html#pyacs.gts.lib.primitive.extrapolate.extrapolate">[docs]</a>
+<span></span><span class="k">def</span><span class="w"> </span><span class="nf">extrapolate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">idates</span><span class="p">,</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Extrapolate the time series at dates outside the observation span.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    idates : list or ndarray</span>
+<span class="sd">        Dates in decimal year where extrapolation will be performed.</span>
+<span class="sd">    kind : str, optional</span>
+<span class="sd">        Interpolation kind for scipy.interpolate.interp1d (e.g. &#39;linear&#39;, &#39;nearest&#39;, &#39;cubic&#39;).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Gts</span>
+<span class="sd">        New Gts with extrapolated values at the given dates.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># import</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">interpolate</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">at</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># it is better to work in seconds</span>
+    <span class="n">np_date_s</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2seconds</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">rounding</span><span class="o">=</span><span class="s1">&#39;day&#39;</span><span class="p">)</span>
+    <span class="n">np_idate_s</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">decyear2seconds</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">idates</span><span class="p">),</span><span class="n">rounding</span><span class="o">=</span><span class="s1">&#39;day&#39;</span><span class="p">)</span>
+
+    <span class="c1"># check edates</span>
+    <span class="n">sdate</span> <span class="o">=</span> <span class="n">np_date_s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">edate</span> <span class="o">=</span> <span class="n">np_date_s</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">iidate</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">np_idate_s</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">date</span> <span class="o">&gt;=</span> <span class="n">sdate</span> <span class="ow">and</span> <span class="n">date</span> <span class="o">&lt;=</span> <span class="n">edate</span><span class="p">:</span>
+            <span class="n">as_datetime</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">seconds2datetime</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+            <span class="n">WARNING</span><span class="p">(</span><span class="s2">&quot;Provided date </span><span class="si">%.4lf</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">) is within the observation period of time series </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span>
+                    <span class="p">(</span><span class="n">at</span><span class="o">.</span><span class="n">datetime2decyear</span><span class="p">(</span><span class="n">as_datetime</span><span class="p">),</span><span class="n">as_datetime</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span><span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="p">))</span>
+            <span class="n">WARNING</span><span class="p">(</span><span class="s2">&quot;Removing it from interpolated dates&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">iidate</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+
+    <span class="n">tnew</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">iidate</span><span class="p">))</span>
+
+    <span class="c1"># interpolate</span>
+    <span class="c1"># north</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">interpolate</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span> <span class="n">np_date_s</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">,</span><span class="n">fill_value</span><span class="o">=</span><span class="s1">&#39;extrapolate&#39;</span><span class="p">)</span>
+    <span class="n">ynewn</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">tnew</span><span class="p">)</span>
+    <span class="c1"># east</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">interpolate</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span> <span class="n">np_date_s</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">,</span><span class="n">fill_value</span><span class="o">=</span><span class="s1">&#39;extrapolate&#39;</span><span class="p">)</span>
+    <span class="n">ynewe</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">tnew</span><span class="p">)</span>
+    <span class="c1"># up</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">interpolate</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span> <span class="n">np_date_s</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">3</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">,</span><span class="n">fill_value</span><span class="o">=</span><span class="s1">&#39;extrapolate&#39;</span><span class="p">)</span>
+    <span class="n">ynewu</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">tnew</span><span class="p">)</span>
+
+    <span class="c1"># adds interpolated values</span>
+    <span class="c1"># get uncertainty</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="mi">4</span><span class="p">:</span><span class="mi">7</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span> <span class="p">)</span>
+    <span class="c1"># fills value to be added</span>
+    <span class="n">NEW_OBS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">tnew</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">10</span><span class="p">))</span>
+    <span class="n">NEW_OBS</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">datetime2decyear</span><span class="p">(</span> <span class="n">at</span><span class="o">.</span><span class="n">seconds2datetime</span><span class="p">(</span> <span class="n">tnew</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="n">NEW_OBS</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">ynewn</span>
+    <span class="n">NEW_OBS</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">ynewe</span>
+    <span class="n">NEW_OBS</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">ynewu</span>
+    <span class="n">NEW_OBS</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="n">sigma</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_obs</span><span class="p">(</span> <span class="n">NEW_OBS</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="n">NEW_OBS</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:]</span> <span class="p">)</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../index.html">PYACS</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Jean-Mathieu NOCQUET.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

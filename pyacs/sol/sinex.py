@@ -13,6 +13,13 @@ def glx2snx(glx, snx, dir_snx='.'):
     """
     converts a GLOBK glx file into a sinex file 
     """
+
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
+
     # check dir_snx exists
     if not os.path.isdir(dir_snx):
         os.makedirs(dir_snx)
@@ -20,7 +27,7 @@ def glx2snx(glx, snx, dir_snx='.'):
     # check output path provided in snx
     
     cmd = 'glbtosnx ' + dir_snx + ' \'\' ' + glx + ' ' + snx
-    print("-- Running ", cmd)
+    VERBOSE("Running %s" % cmd)
     subprocess.getstatusoutput(cmd)
 
     
@@ -30,8 +37,15 @@ def snx2ssc(snx, ssc, dir_ssc):
     """
     simplifies a sinex file into a ssc file 
     """
-    
-    print("-- Running snx2ssc ", snx, dir_ssc + '/' + ssc)
+
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
+
+
+    VERBOSE("Running snx2ssc %s %s/%s" % (snx, dir_ssc, ssc) )
     # check dir_snx exists
     if not os.path.isdir(dir_ssc):
         os.makedirs(dir_ssc)
@@ -56,7 +70,13 @@ def glred_1_day(glx, dir_prt, dir_log, apr, eq_rename=None):
     """
     run glred over a day
     """
-    
+
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
+
     # glx basename
     
     glx_basename = glx.split('/')[-1].split('.')[-2]
@@ -67,7 +87,7 @@ def glred_1_day(glx, dir_prt, dir_log, apr, eq_rename=None):
     glorg_cmd = 'glorg_' + glx_basename + '.cmd'
     
     # Creates glred
-    print("-- Creating ", glred_cmd)
+    VERBOSE("Creating %s" % glred_cmd)
     
     fglred = open(glred_cmd, 'w')
     
@@ -97,7 +117,7 @@ def glred_1_day(glx, dir_prt, dir_log, apr, eq_rename=None):
     
     lstab_site = []
     
-    print("-- Creating ", stab_file)
+    VERBOSE("Creating %s" % stab_file)
     
     fstab = open(stab_file, 'w')
     fapr = open(apr, 'r', encoding="latin-1")
@@ -112,7 +132,7 @@ def glred_1_day(glx, dir_prt, dir_log, apr, eq_rename=None):
     
     # glorg file
     
-    print("-- Creating ", glorg_cmd)
+    VERBOSE("Creating %s " %  glorg_cmd)
     
     fglorg = open(glorg_cmd, 'w')
     
@@ -256,13 +276,20 @@ class SSinex:
         return(SUBSET)
 
 ###############################################################################
-    def apply_helmert(self, T, verbose=True):
+    def apply_helmert(self, T):
 ###############################################################################
         """
         Applies an Helmert transformation to a SINEX instance
         returns a new SINEX instance
         """
-        
+
+
+        import pyacs.message.message as MESSAGE
+        import pyacs.message.verbose_message as VERBOSE
+        import pyacs.message.error as ERROR
+        import pyacs.message.warning as WARNING
+        import pyacs.message.debug_message as DEBUG
+
         new_sinex = SSinex()
         
         new_sinex.name = self.name
@@ -270,8 +297,7 @@ class SSinex:
         
         for code, soln in list(self.estimates.keys()):
             
-            if verbose:
-                print('-- Applying Helmert to ', code, soln)
+            VERBOSE("Applying Helmert transformation to %s %s" % (code, soln))
             
             M = self.estimates[code, soln]
             N = M.apply_helmert(T)
@@ -319,14 +345,21 @@ class SSinex:
         f.close()
 
 ###############################################################################
-    def common(self, H_Gpoint, prefit=3.5, strict=True, verbose=True):
+    def common(self, H_Gpoint, prefit=3.5, strict=True):
 ###############################################################################
         """
         Returns a dictionary of Gpoint common to the current Sinex object and a dictionary (code,soln) of Gpoint
         Coordinates will be the ones from the Sinex and NOT from the list of Gpoints
         commons point are points with the same code pt and soln
         """
-        
+
+        import pyacs.message.message as MESSAGE
+        import pyacs.message.verbose_message as VERBOSE
+        import pyacs.message.error as ERROR
+        import pyacs.message.warning as WARNING
+        import pyacs.message.debug_message as DEBUG
+
+
         H_common_Gpoint = {}
         Hdistance = {}
         
@@ -338,7 +371,7 @@ class SSinex:
                 N = self.estimates[code, soln]
                 distance = M.xyz_distance(N)
                 if (distance > prefit):
-                    print("-- Bad prefit (threshold value %8.3lf)" % (prefit), "for (", M.code, ") %10.1lf m" % M.xyz_distance(N))
+                    VERBOSE("Bad prefit (threshold value %8.3lf) for %s: %10.1lf m" % (prefit, M.code, M.xyz_distance(N)))
                     
                 else:
                     Hdistance[code, soln] = distance
@@ -349,65 +382,84 @@ class SSinex:
         if strict:
             median_distance = np.median(list(Hdistance.values()))
             
-            if verbose:print(("-- Median prefit: %10.2lf mm" % (median_distance * 1.E3)))
+            VERBOSE("Median prefit: %10.2lf mm" % (median_distance * 1.E3))
             
             for code, soln in list(Hdistance.keys()):
                 if Hdistance[code, soln] > 50. * median_distance:
-                    print('-- Deleting ', code, soln, ' (bad prefit) ', Hdistance[code, soln] * 1.E3)
+                    VERBOSE("Deleting %s %s bad prefit %.1lf" % (code, soln, Hdistance[code, soln] * 1.E3 ))
                     del H_common_Gpoint[code, soln]
             
         return(H_common_Gpoint)
       
 ###############################################################################
-    def read_section_estimate(self, lexclude=[], lonly=[], discontinuity=None, rename=None, verbose=False):
+    def read_section_estimate(self, lexclude=[], lonly=[], discontinuity=None, rename=None, exclude=None):
 ###############################################################################
-        """
-        Reads the ESTIMATE section of a SINEX file.
-        a dictionary with double key 4-letters code and SOLN
-        
-        :param lexclude: list of code to be excluded from reading
-        :param lonly: lonly code on lonly will be considered
-        :param discontinuity: if provided, discontinuity will be used to populate the SOLN field. 
-        Generated by the Discontinuity module usually from a IGS soln file.
-        :param rename: a dictionary having as key the sinex file for which rename will be applied and \
-        values a list of tuples ('OLD_CODE','NEW_CODE'). The dictionary is usually generated by the Read_Conf_Pyacs module
-        :param verbose: boolean for verbose mode
-        
-        :return: a dictionary with double key 4-letters CODE and SOLN and values of Gpoint instance
-        
-        :note: Strictly, a point in a SINEX file is defined by several codes, including CODE, PT, DOMES and SOLN.\
-        The choice here is to ignore the PT and DOMES for versatility.
-         
+        """Read the ESTIMATE section of a SINEX file.
+
+        Returns a dictionary keyed by (CODE, SOLN) with Gpoint instance values.
+
+        Parameters
+        ----------
+        lexclude : list, optional
+            Site codes to exclude from reading.
+        lonly : list, optional
+            If non-empty, only these codes are considered.
+        discontinuity : object, optional
+            If provided, used to populate the SOLN field (e.g. from Discontinuity/IGS soln).
+        rename : dict, optional
+            Keys: sinex file; values: list of ('OLD_CODE', 'NEW_CODE'). Often from Read_Conf_Pyacs.
+        exclude : object, optional
+            Additional exclusion filter.
+
+        Returns
+        -------
+        dict
+            Dictionary with (CODE, SOLN) keys and Gpoint instance values.
+
+        Notes
+        -----
+        A point in SINEX is defined by CODE, PT, DOMES and SOLN; here PT and DOMES
+        are ignored for versatility.
         """
         
         import pyacs.lib.astrotime
         from pyacs.sol.gpoint import Gpoint
 
+        import pyacs.message.message as MESSAGE
+        import pyacs.message.verbose_message as VERBOSE
+        import pyacs.message.error as ERROR
+        import pyacs.message.warning as WARNING
+        import pyacs.message.debug_message as DEBUG
+
         # DEAL WITH RENAME IF PROVIDED
-        
         if rename is not None:
-            
-            if verbose:print("-- Rename info provided for sinex: ", self.name)
-
+            VERBOSE("rename info provided for sinex: %s" % self.name)
             H_rename = {}
-
             # Case for a CODE rename applying for all SINEX files
             if 'all' in rename:
-                
                 for (code, new_code) in rename['all']:
                     H_rename[code] = new_code
-            
             # Case for a CODE rename applying for the current SINEX
-            
             if self.name in list(rename.keys()):
-
                 for (code, new_code) in rename[self.name]:
                     H_rename[code] = new_code
-        
+
+        # DEAL WITH EXCLUDE IF PROVIDED
+        H_exclude = []
+        if exclude is not None:
+            VERBOSE("exclude info provided for sinex: %s" % self.name)
+            # Case for a CODE rename applying for all SINEX files
+            if 'all' in exclude:
+                for code in exclude['all']:
+                    H_exclude.append( code )
+            # Case for a CODE rename applying for the current SINEX
+            if self.name in list(exclude.keys()):
+                for code in exclude[self.name]:
+                    H_exclude.append( code )
+
+
         # FINDING SOLUTION/ESTIMATE SECTION IN SINEX
-        
-        if verbose:
-            print('-- Reading ESTIMATE section of ', self.name)
+        VERBOSE("Reading ESTIMATE section of %s" % self.name)
 
         fs = open(self.name, 'r', encoding="latin-1")
 
@@ -462,8 +514,7 @@ class SSinex:
                 
                 if rename:
                     if code in list(H_rename.keys()):
-                        if verbose:
-                            print("-- Renaming ", code, " into ", H_rename[code])
+                        VERBOSE("Renaming %s into %s" % (code, H_rename[code]))
     
                         code = H_rename[code]
 
@@ -514,13 +565,18 @@ class SSinex:
 
             # lexclude case
             if code in lexclude:
+                VERBOSE("excluding %s from reading %s" % (code,self.name))
                 del self.estimates[code, soln]
-            
+
+            # exclude case
+            if code in H_exclude:
+                VERBOSE("excluding %s from reading %s" % (code,self.name))
+                del self.estimates[code, soln]
+
             # lonly case
             if ( lonly != [] ) and ( code not in lonly ):
                 del self.estimates[code, soln]
-                
-            
+
 #             if type=='Apr':
 #                 print '-- Reading ',self.name
 #     
@@ -655,14 +711,19 @@ class SSinex:
 # GPoint routines
 ###############################################################################
 
-    def get_STA(self, code, epoch, soln=None, soln_file=None, psd_file=None, discontinuity=None, verbose=False):
+    def get_STA(self, code, epoch, soln=None, soln_file=None, psd_file=None, discontinuity=None):
         
         """
         Provides the predicted coordinates for a site at a given epoch. Accounts for soln and psd if provided.
         """
 
         import pyacs.lib.astrotime
-        
+        import pyacs.message.message as MESSAGE
+        import pyacs.message.verbose_message as VERBOSE
+        import pyacs.message.error as ERROR
+        import pyacs.message.warning as WARNING
+        import pyacs.message.debug_message as DEBUG
+
         # read soln file if provided
         
         if soln_file is not None:
@@ -691,26 +752,23 @@ class SSinex:
                 solnn = discontinuity.get_soln(code, mydate)
                 if solnn != 0:soln = solnn
 
-                if verbose:
-                    print('-- soln for site ', code, ' at epoch ', epoch, ' is ', soln, ' from soln file')
+                VERBOSE("soln for site %s %.5lf %s from soln file" % (code, epoch, soln))
             
             else:
                 soln = 1
-                if verbose:
-                    print('-- soln for site ', code, ' at epoch ', epoch, ' is ', soln, ' (no info provided)')
+                VERBOSE("soln for site %s at epoch %s is %s (non info provided)" % (code, epoch, soln))
         
         # get propagated coordinates
 
         try:
             M = self.estimates[code, soln]
         except:
-            print('! WARNING ', [code, soln], ' not present in sinex instance.')
+            WARNING("%s %s not present in sinex" %  (code, soln))
             return(None)
 
         delta_t = (epoch - M.epoch)
 
-        if verbose:
-            print('-- propagating coordinates from ', M.epoch, ' to ', epoch, ' = ', delta_t, ' years') 
+        VERBOSE("propagating coordinates from %.2lf to %.4lf delta_t %.2lf" % (M.epoch, epoch, delta_t))
 
         X_at_epoch = M.X + delta_t * M.VX
         Y_at_epoch = M.Y + delta_t * M.VY
@@ -727,8 +785,8 @@ class SSinex:
             from pyacs.sinex.sinex import sinex
             psd = sinex.read(psd_file)
             (denh, _senh) = snxutils.compute_psd(psd, code, sepoch)
-            if np.any(denh) and verbose:
-                print('-- psd ', code, denh * 1000.)
+            if np.any(denh):
+                VERBOSE("psd for %s : %.1lf mm " %( code, denh * 1000.))
 
             # Compute XYZ post-seismic deformations
             (l, p, _he) = pyacs.lib.coordinates.xyz2geo(M.X, M.Y, M.Z)
@@ -747,35 +805,51 @@ class SSinex:
         """
         print STA values for a given code and optional soln
         """
-        
+
+        import pyacs.message.message as MESSAGE
+        import pyacs.message.verbose_message as VERBOSE
+        import pyacs.message.error as ERROR
+        import pyacs.message.warning as WARNING
+        import pyacs.message.debug_message as DEBUG
+
+
         if soln is not None:
             try:
                 M = self.estimates[code, soln]
-                print(("%s %02d STAX %18.4lf STAY %18.4lf STAZ %18.4lf " % (M.code, M.soln, M.X, M.Y, M.Z)))
+                VERBOSE(("%s %02d STAX %18.4lf STAY %18.4lf STAZ %18.4lf " % (M.code, M.soln, M.X, M.Y, M.Z)))
+                VERBOSE(("%s %02d STAX %18.4lf STAY %18.4lf STAZ %18.4lf " % (M.code, M.soln, M.X, M.Y, M.Z)))
             except:
-                print('! WARNING ', code, soln, ' not present in ', self.name)
+                WARNING("%s %s not present in %s" % (code, soln, self.name))
         else:
             try:
                 for ccode, csoln in list(self.estimates.keys()):
                     if (ccode == code):
                         M = self.estimates[code, csoln]
-                        print(("%s %02d STAX %18.4lf STAY %18.4lf STAZ %18.4lf " % (M.code, M.soln, M.X, M.Y, M.Z)))
+                        VERBOSE(("%s %02d STAX %18.4lf STAY %18.4lf STAZ %18.4lf " % (M.code, M.soln, M.X, M.Y, M.Z)))
             except:
-                print('! WARNING ', code, ' not present in ', self.name)
-     
+                WARNING("%s not present in %s" % (code, self.name))
+
 ###############################################################################
     def add_to_STA(self, code, soln, add_sta):
 ###############################################################################
         """
         add sta [dx,dx,dz] to STA values for a given code and soln
         """
+
+        import pyacs.message.message as MESSAGE
+        import pyacs.message.verbose_message as VERBOSE
+        import pyacs.message.error as ERROR
+        import pyacs.message.warning as WARNING
+        import pyacs.message.debug_message as DEBUG
+
+
         M = self.estimates[code, soln]
-        print(("%s %02d STAX %18.4lf STAY %18.4lf STAZ %18.4lf " % (M.code, M.soln, M.X, M.Y, M.Z)))
-        print(("adding x=%10.4lf y=%10.4lf z=%10.4lf" % (add_sta[0], add_sta[1], add_sta[2])))
+        VERBOSE(("%s %02d STAX %18.4lf STAY %18.4lf STAZ %18.4lf " % (M.code, M.soln, M.X, M.Y, M.Z)))
+        VERBOSE(("adding x=%10.4lf y=%10.4lf z=%10.4lf" % (add_sta[0], add_sta[1], add_sta[2])))
         M.X = M.X + add_sta[0]
         M.Y = M.X + add_sta[1]
         M.Z = M.X + add_sta[2]
-        print(("%s %02d STAX %18.4lf STAY %18.4lf STAZ %18.4lf " % (M.code, M.soln, M.X, M.Y, M.Z)))
+        VERBOSE(("%s %02d STAX %18.4lf STAY %18.4lf STAZ %18.4lf " % (M.code, M.soln, M.X, M.Y, M.Z)))
 
 ###############################################################################
     def change_STA(self, code, soln, add_sta):
@@ -783,12 +857,19 @@ class SSinex:
         """
         change STA values for a given code and soln
         """
+
+        import pyacs.message.message as MESSAGE
+        import pyacs.message.verbose_message as VERBOSE
+        import pyacs.message.error as ERROR
+        import pyacs.message.warning as WARNING
+        import pyacs.message.debug_message as DEBUG
+
         M = self.estimates[code, soln]
-        print(("%s %02d STAX %18.4lf STAY %18.4lf STAZ %18.4lf " % (M.code, M.soln, M.X, M.Y, M.Z)))
+        VERBOSE(("%s %02d STAX %18.4lf STAY %18.4lf STAZ %18.4lf " % (M.code, M.soln, M.X, M.Y, M.Z)))
         M.X = add_sta[0]
         M.Y = add_sta[1]
         M.Z = add_sta[2]
-        print(("%s %02d STAX %18.4lf STAY %18.4lf STAZ %18.4lf " % (M.code, M.soln, M.X, M.Y, M.Z)))
+        VERBOSE(("%s %02d STAX %18.4lf STAY %18.4lf STAZ %18.4lf " % (M.code, M.soln, M.X, M.Y, M.Z)))
 
 ###############################################################################
     def site(self, code, soln):
@@ -804,18 +885,29 @@ class SSinex:
         """
         Print info for a given code and optionally soln
         """
+
+        import pyacs.message.message as MESSAGE
+        import pyacs.message.verbose_message as VERBOSE
+        import pyacs.message.error as ERROR
+        import pyacs.message.warning as WARNING
+        import pyacs.message.debug_message as DEBUG
+        import pyacs.debug
+        from icecream import ic
+
         if soln is not None:
             M = self.estimates[code, soln]
-            print(code, 'code, pt soln epoch', M.code, M.pt, M.soln, M.epoch)
-            print(code, 'XYZ', M.posxyz())
-            print(code, 'VXYZ', M.velxyz())
+            if pyacs.debug():
+                ic(code, 'code, pt soln epoch', M.code, M.pt, M.soln, M.epoch)
+                ic(code, 'XYZ', M.posxyz())
+                ic(code, 'VXYZ', M.velxyz())
         else:
             for ccode, csoln in list(self.estimates.keys()):
                 if code == ccode:
                     M = self.estimates[code, csoln]
-                    print(code, 'code, pt soln epoch', M.code, M.pt, M.soln, M.epoch)
-                    print(code, 'XYZ', M.posxyz())
-                    print(code, 'VXYZ', M.velxyz())
+                    if pyacs.debug():
+                        ic(code, 'code, pt soln epoch', M.code, M.pt, M.soln, M.epoch)
+                        ic(code, 'XYZ', M.posxyz())
+                        ic(code, 'VXYZ', M.velxyz())
 
 ###############################################################################
     def lcode(self):
@@ -829,30 +921,39 @@ class SSinex:
         return(lcode)
 
 ###############################################################################
-    def read_apr(self, lexclude=[], discontinuity=None, rename=None, verbose=False):
+    def read_apr(self, lexclude=[], discontinuity=None, rename=None):
 ###############################################################################
+        """Read a Globk apr file.
+
+        Parameters
+        ----------
+        lexclude : list, optional
+            Site codes to exclude from reading.
+        discontinuity : object, optional
+            If provided, used to populate the SOLN field (e.g. from Discontinuity/IGS soln).
+        rename : dict, optional
+            Keys: sinex file; values: list of ('OLD_CODE', 'NEW_CODE'). Often from Read_Conf_Pyacs.
+
+        Returns
+        -------
+        dict
+            Dictionary with (CODE, SOLN) keys and Gpoint instance values.
         """
-        Reads a Globk apr file.
-        
-        :param lexclude: list of code to be excluded from reading
-        :param discontinuity: if provided, discontinuity will be used to populate the SOLN field. 
-        Generated by the Discontinuity module usually from a IGS soln file.
-        :param rename: a dictionary having as key the sinex file for which rename will be applied and \
-        values a list of tuples ('OLD_CODE','NEW_CODE'). The dictionary is usually generated by the Read_Conf_Pyacs module
-        :param verbose: boolean for verbose mode
-        
-        :return: a dictionary with double key 4-letters CODE and SOLN and values of Gpoint instance
-         
-        """
-        
+        from icecream import ic
+
         import pyacs.lib.astrotime
         from pyacs.sol.gpoint import Gpoint
+        import pyacs.message.message as MESSAGE
+        import pyacs.message.verbose_message as VERBOSE
+        import pyacs.message.error as ERROR
+        import pyacs.message.warning as WARNING
+        import pyacs.message.debug_message as DEBUG
 
         # DEAL WITH RENAME IF PROVIDED
         
         if rename is not None:
             
-            if verbose:print("-- Rename info provided for apr file: ", self.name)
+            VERBOSE("Rename info provided for apr file: %s" % self.name)
 
             H_rename = {}
 
@@ -871,25 +972,23 @@ class SSinex:
         
         # READING APR FILE
         
-        if verbose:
-            print('-- Reading Globk apr file ', self.name)
+        VERBOSE("Reading Globk apr file %s" % self.name)
 
         try:
-            APR_VALUE = np.genfromtxt(self.name, comments='#', usecols=(1,2,3,4,5,6,7,8,9,10,11,12,12))
+            APR_VALUE = np.genfromtxt(self.name, comments='#', usecols=(1,2,3,4,5,6,7,8,9,10,11,12,13))
             APR_NAME  = np.genfromtxt(self.name, comments='#', usecols=(0), dtype=str)
         except:
-            print('!!!ERROR: could not read Globk format apr file:' , self.name)
-            import sys
-            sys.exit()
-            
+            ERROR(("Could not read Globk format apr file: %s" % self.name), exit=True)
+
+#        ic(APR_VALUE)
         for i in np.arange( APR_VALUE.shape[0])  :
-            print('-- processing ', APR_NAME[i][:4])
-            [x,y,z,sx,sy,sz,epoch, vx,vy,vz,svx,svy,svz]= APR_VALUE[i,:]
+            VERBOSE("processing %s" % APR_NAME[i][:4])
+            [x,y,z,vx,vy,vz,epoch, sx,sy,sz,svx,svy,svz]= APR_VALUE[i,:]
             M=Gpoint(X=x,Y=y,Z=z,\
                      SX=sx,SY=sy,SZ=sz,\
                      VX=vx,VY=vy,VZ=vz,SVX=svx,SVY=svy,SVZ=svz, \
                      epoch=epoch,code=APR_NAME[i][:4],pt='A',soln=1)
-            
+#            ic(M.VX)
             self.estimates[ APR_NAME[i][:4], 1 ] = M
             
                  

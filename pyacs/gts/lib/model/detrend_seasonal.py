@@ -2,25 +2,43 @@
 ## detrend_seasonal
 ###################################################################
 
-def detrend_seasonal(self, method='L2', in_place=False, periods=None, exclude_periods=None):
+def detrend_seasonal(self, method='L2', periods=None, exclude_periods=None):
     """
-    estimates a trend + annual + semi-annual terms in a time series and removes them
-    velocity, annual and semi-annual attributes are saved in Gts.velocity, Gts.annual, Gts.semi_annual
+    Estimate trend + annual + semi-annual terms and remove them from the time series.
 
-    :param periods         : periods used for estimation
-    :param exclude_periods : periods to be excluded from estimation
-    :param in_place        : if True then replace the current time series
-    :return                : the detrended time series
-    :note                  : outliers from Gts.outliers are ommitted in the estimation and
-    offsets given Gts.offsets_dates are estimated simultaneously
+    Velocity, annual and semi_annual are saved in Gts.velocity, Gts.annual, Gts.semi_annual.
+
+    Parameters
+    ----------
+    method : str, optional
+        Estimation method (e.g. 'L2').
+    periods : list, optional
+        Periods used for estimation.
+    exclude_periods : list, optional
+        Periods to exclude from estimation.
+
+    Returns
+    -------
+    Gts
+        Detrended time series (new instance).
+
+    Notes
+    -----
+    Outliers (Gts.outliers) are omitted; offsets (Gts.offsets_dates) are estimated simultaneously.
     """
 
     import numpy as np
     from pyacs.gts.Gts import Gts
     import inspect
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
 
     # after this method .data  and .data_xyz are not consistent so .data_xyz is set to None
-    self.data_xyz = None
+    #self.data_xyz = None
 
     ###########################################################################
     # check data is not None
@@ -32,7 +50,7 @@ def detrend_seasonal(self, method='L2', in_place=False, periods=None, exclude_pe
             raise GtsInputDataNone(inspect.stack()[0][3], __name__, self)
     except GtsInputDataNone as error:
         # print PYACS WARNING
-        print(error)
+        ERROR(error)
         return (self)
     ###########################################################################
 
@@ -63,7 +81,4 @@ def detrend_seasonal(self, method='L2', in_place=False, periods=None, exclude_pe
 
     new_gts.data[:, 1:4] = new_gts.data[:, 1:4] - model.data[:, 1:4]
 
-    if in_place:
-        self.data = new_gts.data
-    else:
-        return (new_gts)
+    return (new_gts)

@@ -1,0 +1,125 @@
+pyacs.gts.lib.l1trend package
+=============================
+
+Submodules
+----------
+
+pyacs.gts.lib.l1trend.breakpoints module
+----------------------------------------
+
+.. automodule:: pyacs.gts.lib.l1trend.breakpoints
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.l1trend.check\_trend module
+-----------------------------------------
+
+.. automodule:: pyacs.gts.lib.l1trend.check_trend
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.l1trend.cleaning module
+-------------------------------------
+
+.. automodule:: pyacs.gts.lib.l1trend.cleaning
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.l1trend.l1trend2d module
+--------------------------------------
+
+.. automodule:: pyacs.gts.lib.l1trend.l1trend2d
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.l1trend.l1trendi module
+-------------------------------------
+
+.. automodule:: pyacs.gts.lib.l1trend.l1trendi
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.l1trend.optimal\_l1trend\_workflow module
+-------------------------------------------------------
+
+.. automodule:: pyacs.gts.lib.l1trend.optimal_l1trend_workflow
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.l1trend.optimal\_refinement module
+------------------------------------------------
+
+.. automodule:: pyacs.gts.lib.l1trend.optimal_refinement
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.l1trend.optimization module
+-----------------------------------------
+
+.. automodule:: pyacs.gts.lib.l1trend.optimization
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.l1trend.outlier\_flagging module
+----------------------------------------------
+
+.. automodule:: pyacs.gts.lib.l1trend.outlier_flagging
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.l1trend.preprocessing module
+------------------------------------------
+
+.. automodule:: pyacs.gts.lib.l1trend.preprocessing
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.l1trend.refinement module
+---------------------------------------
+
+.. automodule:: pyacs.gts.lib.l1trend.refinement
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.l1trend.simplification module
+-------------------------------------------
+
+.. automodule:: pyacs.gts.lib.l1trend.simplification
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.l1trend.statistics module
+---------------------------------------
+
+.. automodule:: pyacs.gts.lib.l1trend.statistics
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.l1trend.sum\_l1\_trend module
+-------------------------------------------
+
+.. automodule:: pyacs.gts.lib.l1trend.sum_l1_trend
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: pyacs.gts.lib.l1trend
+   :members:
+   :show-inheritance:
+   :undoc-members:

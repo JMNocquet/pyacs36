@@ -1,44 +1,46 @@
 ###################################################################
 def substract_ts_daily(self,ts,verbose=True):
 ###################################################################
-    """
-    substract the ts provided as argument to the current time series
-    
-    :param ts: time series to be substracted as a Gts instance
-    :param verbose: verbose mode
-    :return : new Gts
-    
-    :note: this method assumes daily time series
+    """Subtract the given time series from the current one (sample-by-sample).
+
+    Parameters
+    ----------
+    ts : Gts
+        Time series to subtract (Gts instance).
+    verbose : bool, optional
+        If True, print progress. Default is True.
+
+    Returns
+    -------
+    Gts
+        New Gts instance (current minus ts).
+
+    Notes
+    -----
+    Assumes daily time series; dates are matched.
     """
 
     # import 
     import inspect
     import numpy as np
     import pyacs.lib.astrotime as at
-    
-    # check data is not None
-    from pyacs.gts.lib.errors import GtsInputDataNone
-    
-    try:
-        if self.data is None:
-            # raise exception
-            raise GtsInputDataNone(inspect.stack()[0][3],__name__,self)
-    except GtsInputDataNone as error:
-        # print PYACS WARNING
-        print( error )
+
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
+
+
+    if self.data is None:
+        ERROR("%s time series to be processed has not data" % self.code)
         return( self )
 
     # check data is not None
     
-    try:
-        if ts.data is None:
-            # raise exception
-            raise GtsInputDataNone(inspect.stack()[0][3],__name__,ts)
-    except GtsInputDataNone as error:
-        # print PYACS WARNING
-        print( error )
-        return( self )
-
+    if ts.data is None:
+        ERROR("%s user provided time series has no data" % ts.code)
+        new_data = None
 
     # find common dates
 
@@ -47,15 +49,13 @@ def substract_ts_daily(self,ts,verbose=True):
     
     np_mjd_common_dates = np.intersect1d( np_mjd_1 ,  np_mjd_2 )
 
-    if verbose:
-        print('-- ', np_mjd_common_dates.shape[0] , ' common dates found.')
+    VERBOSE("%d common dates found for %s " % (np_mjd_common_dates.shape[0] , self.code ))
 
     # test whether there are common dates
     
     if np_mjd_common_dates.shape[0] == 0:
-        print('! WARNING No common dates between ',self.code,' from ',self.ifile)
-        print('!!! and ',ts.code, ' from ',ts.ifile)
-        
+        warning = ("No common dates between for %s " % self.code)
+        WARNING(warning)
         new_data = None
 
     else:
@@ -68,8 +68,9 @@ def substract_ts_daily(self,ts,verbose=True):
         data2 = ts.data[ mask2 ]
 
         
+        
         if data1.shape != data2.shape:
-            print("!!! ERROR. Extracted data have different shapes")
+            ERROR("Extracted data have different shapes")
             new_data = None
         
         # ENU
@@ -80,10 +81,10 @@ def substract_ts_daily(self,ts,verbose=True):
         new_data[:,4:8] = np.sqrt( data1[:,4:8]**2 + data2[:,4:8]**2 )
         new_data[:,8:] = 0.
                 
-    new_code=self.code+'_'+ts.code
+    #new_code=self.code+'_'+ts.code
 
     new_Gts=self.copy(data=new_data)
-    new_Gts.code=new_code
+    #new_Gts.code=new_code
 
     # .data_xyz set to None
     new_Gts.data_xyz = None

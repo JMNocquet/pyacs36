@@ -1,13 +1,21 @@
 """
-Print messages and log
+Print messages and optional logging to file.
 """
 
 def message( message , log_file=None ):
     """
+    Print a message with [PYACS] prefix and optionally write to a log file.
 
-    :param message: message to be printed
-    :param log_file: file object where message will be written
-    :return:
+    Parameters
+    ----------
+    message : str
+        Message to print.
+    log_file : file-like or str, optional
+        File object or path; if provided, message is appended/written.
+
+    Returns
+    -------
+    None
     """
 
 

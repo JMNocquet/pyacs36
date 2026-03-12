@@ -1,14 +1,21 @@
 ###################################################################
 def sel_radius(self, center, range, verbose=True):
     ###################################################################
-    """
-    selects the time series for sites within a radius within range around center
+    """Select time series for sites within a radius range around center.
 
-    :param center: [lon, lat] in decimal degree. center for selection
-    :param range: [min_radius, max_radius] in km. Can also be a site code or simply max_radius
-    :pram verbose: verbose mode
+    Parameters
+    ----------
+    center : list or str
+        [lon, lat] in decimal degrees, or site code.
+    range : list or float
+        [min_radius_km, max_radius_km], or single max_radius_km, or site code.
+    verbose : bool, optional
+        Verbose mode. Default is True.
 
-    :return: a new Sgts instance
+    Returns
+    -------
+    Sgts
+        New Sgts instance.
     """
 
     # import
@@ -20,9 +27,14 @@ def sel_radius(self, center, range, verbose=True):
 
     from pyacs.lib.gmtpoint import GMT_Point
 
+    import inspect
+    VERBOSE("Running Sgts.%s" % inspect.currentframe().f_code.co_name)
+
     # decipher center
     if isinstance( center, str ):
         [lon_center,lat_center] = [self.__dict__[center].lon, self.__dict__[center].lat ]
+    else:
+        [lon_center, lat_center] = center
     # decipher range
     if isinstance( range , float ):
         range = [0,range]

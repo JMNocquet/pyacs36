@@ -10,6 +10,13 @@ def find_outliers_sliding_window(self, \
     import numpy as np
     from pyacs.gts.Gts import get_index_from_dates
 
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
+
 
     lindex_north = []
     lindex_east = []
@@ -47,7 +54,7 @@ def find_outliers_sliding_window(self, \
 
             loutliers = list(set(lindex_north + lindex_east + lindex_up))
 
-            if verbose: print(("-- Outliers detection pass #%02d : %03d new outliers detected" % (i, len(loutliers))))
+            VERBOSE(("Outliers detection pass #%02d : %03d new outliers detected" % (i, len(loutliers))))
 
             # print loutliers_dates,new_ts.data[loutliers,0].tolist()
             loutliers_dates += new_ts.data[loutliers, 0].tolist()
@@ -70,10 +77,9 @@ def find_outliers_sliding_window(self, \
             diff_data = np.diff(self.data[:, 1:4], n=1, axis=0)
             [median_north, median_east, median_up] = np.median(np.abs(diff_data), axis=0)
 
-        if verbose: print("-- ", len(loutliers_dates), " outliers found")
+        VERBOSE("%s outliers found for %s" % (len(loutliers_dates), self.code))
 
         loutliers_index = get_index_from_dates(loutliers_dates, self.data, tol=0.25)
-
 
     else:
         loutliers_index = self.outliers

@@ -1,0 +1,1059 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.gts.lib.primitive package &mdash; PYACS 0.66.18 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2262e354"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            PYACS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">pyacs.gts.lib.primitive package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.add_obs">pyacs.gts.lib.primitive.add_obs module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.add_obs.add_obs"><code class="docutils literal notranslate"><span class="pre">add_obs()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.add_obs_xyz">pyacs.gts.lib.primitive.add_obs_xyz module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.add_obs_xyz.add_obs_xyz"><code class="docutils literal notranslate"><span class="pre">add_obs_xyz()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.add_offsets_dates">pyacs.gts.lib.primitive.add_offsets_dates module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.add_offsets_dates.add_offsets_dates"><code class="docutils literal notranslate"><span class="pre">add_offsets_dates()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.cdata">pyacs.gts.lib.primitive.cdata module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.cdata.cdata"><code class="docutils literal notranslate"><span class="pre">cdata()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.copy">pyacs.gts.lib.primitive.copy module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.copy.copy"><code class="docutils literal notranslate"><span class="pre">copy()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.correct_duplicated_dates">pyacs.gts.lib.primitive.correct_duplicated_dates module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.correct_duplicated_dates.correct_duplicated_dates"><code class="docutils literal notranslate"><span class="pre">correct_duplicated_dates()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.decimate">pyacs.gts.lib.primitive.decimate module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.decimate.decimate"><code class="docutils literal notranslate"><span class="pre">decimate()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.differentiate">pyacs.gts.lib.primitive.differentiate module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.differentiate.differentiate"><code class="docutils literal notranslate"><span class="pre">differentiate()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.displacement">pyacs.gts.lib.primitive.displacement module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.displacement.displacement"><code class="docutils literal notranslate"><span class="pre">displacement()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.exclude_periods">pyacs.gts.lib.primitive.exclude_periods module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.exclude_periods.exclude_periods"><code class="docutils literal notranslate"><span class="pre">exclude_periods()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.extract_dates">pyacs.gts.lib.primitive.extract_dates module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.extract_dates.extract_dates"><code class="docutils literal notranslate"><span class="pre">extract_dates()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.extract_ndates_after_date">pyacs.gts.lib.primitive.extract_ndates_after_date module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.extract_ndates_after_date.extract_ndates_after_date"><code class="docutils literal notranslate"><span class="pre">extract_ndates_after_date()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.extract_ndates_around_date">pyacs.gts.lib.primitive.extract_ndates_around_date module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.extract_ndates_around_date.extract_ndates_around_date"><code class="docutils literal notranslate"><span class="pre">extract_ndates_around_date()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.extract_ndates_before_date">pyacs.gts.lib.primitive.extract_ndates_before_date module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.extract_ndates_before_date.extract_ndates_before_date"><code class="docutils literal notranslate"><span class="pre">extract_ndates_before_date()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.extract_periods">pyacs.gts.lib.primitive.extract_periods module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.extract_periods.extract_periods"><code class="docutils literal notranslate"><span class="pre">extract_periods()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.extrapolate">pyacs.gts.lib.primitive.extrapolate module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.extrapolate.extrapolate"><code class="docutils literal notranslate"><span class="pre">extrapolate()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.find_large_uncertainty">pyacs.gts.lib.primitive.find_large_uncertainty module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.find_large_uncertainty.find_large_uncertainty"><code class="docutils literal notranslate"><span class="pre">find_large_uncertainty()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.get_coseismic">pyacs.gts.lib.primitive.get_coseismic module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.get_coseismic.get_coseismic"><code class="docutils literal notranslate"><span class="pre">get_coseismic()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.get_coseismic2">pyacs.gts.lib.primitive.get_coseismic2 module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.get_coseismic2.get_coseismic2"><code class="docutils literal notranslate"><span class="pre">get_coseismic2()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.get_coseismic_l1trend">pyacs.gts.lib.primitive.get_coseismic_l1trend module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.get_coseismic_l1trend.get_coseismic_l1trend"><code class="docutils literal notranslate"><span class="pre">get_coseismic_l1trend()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.get_values_at_date">pyacs.gts.lib.primitive.get_values_at_date module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.get_values_at_date.get_values_at_date"><code class="docutils literal notranslate"><span class="pre">get_values_at_date()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.insert_gts_data">pyacs.gts.lib.primitive.insert_gts_data module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.insert_gts_data.insert_gts_data"><code class="docutils literal notranslate"><span class="pre">insert_gts_data()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.insert_ts">pyacs.gts.lib.primitive.insert_ts module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.insert_ts.insert_ts"><code class="docutils literal notranslate"><span class="pre">insert_ts()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.interpolate">pyacs.gts.lib.primitive.interpolate module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.interpolate.interpolate"><code class="docutils literal notranslate"><span class="pre">interpolate()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.n_obs">pyacs.gts.lib.primitive.n_obs module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.n_obs.n_obs"><code class="docutils literal notranslate"><span class="pre">n_obs()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.neu2xyz">pyacs.gts.lib.primitive.neu2xyz module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.neu2xyz.neu2xyz"><code class="docutils literal notranslate"><span class="pre">neu2xyz()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.remove_velocity">pyacs.gts.lib.primitive.remove_velocity module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.remove_velocity.remove_velocity"><code class="docutils literal notranslate"><span class="pre">remove_velocity()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.reorder">pyacs.gts.lib.primitive.reorder module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.reorder.reorder"><code class="docutils literal notranslate"><span class="pre">reorder()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.rotate">pyacs.gts.lib.primitive.rotate module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.rotate.rotate"><code class="docutils literal notranslate"><span class="pre">rotate()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.set_zero_at_date">pyacs.gts.lib.primitive.set_zero_at_date module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.set_zero_at_date.set_zero_at_date"><code class="docutils literal notranslate"><span class="pre">set_zero_at_date()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.split">pyacs.gts.lib.primitive.split module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.split.split"><code class="docutils literal notranslate"><span class="pre">split()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.split_gap">pyacs.gts.lib.primitive.split_gap module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.split_gap.split_gap"><code class="docutils literal notranslate"><span class="pre">split_gap()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.substract_ts">pyacs.gts.lib.primitive.substract_ts module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.substract_ts.substract_ts"><code class="docutils literal notranslate"><span class="pre">substract_ts()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.substract_ts_daily">pyacs.gts.lib.primitive.substract_ts_daily module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.substract_ts_daily.substract_ts_daily"><code class="docutils literal notranslate"><span class="pre">substract_ts_daily()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive.xyz2neu">pyacs.gts.lib.primitive.xyz2neu module</a><ul>
+<li><a class="reference internal" href="#pyacs.gts.lib.primitive.xyz2neu.xyz2neu"><code class="docutils literal notranslate"><span class="pre">xyz2neu()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-pyacs.gts.lib.primitive">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PYACS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">pyacs.gts.lib.primitive package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/pyacs.gts.lib.primitive.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pyacs-gts-lib-primitive-package">
+<h1>pyacs.gts.lib.primitive package<a class="headerlink" href="#pyacs-gts-lib-primitive-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-pyacs.gts.lib.primitive.add_obs">
+<span id="pyacs-gts-lib-primitive-add-obs-module"></span><h2>pyacs.gts.lib.primitive.add_obs module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.add_obs" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.add_obs.add_obs">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.add_obs.</span></span><span class="sig-name descname"><span class="pre">add_obs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NEUSNSESUCNECNUCEU</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/add_obs.html#add_obs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.add_obs.add_obs" title="Link to this definition"></a></dt>
+<dd><p>Add observation(s) as DN, DE, DU to a time series.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date</strong> (<em>float</em><em> or </em><em>list</em><em> or </em><em>ndarray</em>) – Date(s) in decimal year.</p></li>
+<li><p><strong>NEUSNSESUCNECNUCEU</strong> (<em>list</em><em> or </em><em>ndarray</em>) – Values to add: at least NEU (North, East, Up). Optional: SN, SE, SU, CNE, CNU, CEU
+(standard deviations and correlations). If not provided, SN=SE=SU=0.001, CNE=CNU=CEU=0.</p></li>
+<li><p><strong>in_place</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, add to current Gts; if False, return a new Gts.</p></li>
+<li><p><strong>check</strong> (<em>bool</em><em>, </em><em>optional</em>) – Check time order and duplicate dates.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbose mode.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New Gts or the modified Gts if in_place.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>If .data_xyz exists, it will be set to None for consistency.</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.add_obs_xyz">
+<span id="pyacs-gts-lib-primitive-add-obs-xyz-module"></span><h2>pyacs.gts.lib.primitive.add_obs_xyz module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.add_obs_xyz" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.add_obs_xyz.add_obs_xyz">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.add_obs_xyz.</span></span><span class="sig-name descname"><span class="pre">add_obs_xyz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XYZSXSYSZCXYCXZCYZ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/add_obs_xyz.html#add_obs_xyz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.add_obs_xyz.add_obs_xyz" title="Link to this definition"></a></dt>
+<dd><p>Add observation(s) as XYZ to a time series.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date</strong> (<em>float</em><em> or </em><em>list</em><em> or </em><em>ndarray</em>) – Date(s) in decimal year.</p></li>
+<li><p><strong>XYZSXSYSZCXYCXZCYZ</strong> (<em>list</em><em> or </em><em>ndarray</em>) – Values to add: at least X, Y, Z. Optional: SX, SY, SZ, CXY, CXZ, CYZ (standard
+deviations and correlations). If not provided, SX=SY=SZ=0.001, CXY=CXZ=CYZ=0.</p></li>
+<li><p><strong>in_place</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, add to current Gts; if False, return a new Gts.</p></li>
+<li><p><strong>check</strong> (<em>bool</em><em>, </em><em>optional</em>) – Check time order, duplicate dates, and regenerate NEU (.data).</p></li>
+<li><p><strong>neu</strong> (<em>bool</em><em>, </em><em>optional</em>) – Regenerate .data from updated .data_xyz.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbose mode.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New Gts or the modified Gts if in_place.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>By default .data is updated from .data_xyz and X0, Y0, Z0 are updated.</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.add_offsets_dates">
+<span id="pyacs-gts-lib-primitive-add-offsets-dates-module"></span><h2>pyacs.gts.lib.primitive.add_offsets_dates module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.add_offsets_dates" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.add_offsets_dates.add_offsets_dates">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.add_offsets_dates.</span></span><span class="sig-name descname"><span class="pre">add_offsets_dates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets_dates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/add_offsets_dates.html#add_offsets_dates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.add_offsets_dates.add_offsets_dates" title="Link to this definition"></a></dt>
+<dd><p>add_offsets_dates to a time series
+if in_place = True then replace the current time series</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.cdata">
+<span id="pyacs-gts-lib-primitive-cdata-module"></span><h2>pyacs.gts.lib.primitive.cdata module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.cdata" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.cdata.cdata">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.cdata.</span></span><span class="sig-name descname"><span class="pre">cdata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/cdata.html#cdata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.cdata.cdata" title="Link to this definition"></a></dt>
+<dd><p>Check data and/or data_xyz attributes for consistency and validity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, check the data attribute. Default is False.</p></li>
+<li><p><strong>data_xyz</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, check the data_xyz attribute. Default is False.</p></li>
+<li><p><strong>tol</strong> (<em>float</em><em>, </em><em>optional</em>) – Tolerance in days for two dates to be considered the same. Default is 0.001.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, print details. Default is False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if checks pass, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>In future, this routine may also check consistency between .data and .data_xyz.</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.copy">
+<span id="pyacs-gts-lib-primitive-copy-module"></span><h2>pyacs.gts.lib.primitive.copy module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.copy" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.copy.copy">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.copy.</span></span><span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loutliers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/copy.html#copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.copy.copy" title="Link to this definition"></a></dt>
+<dd><p>Return a deep copy of the time series.</p>
+<p>By default copies .data, .data_xyz, outliers, etc. Behaviour can be
+overridden per attribute below.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>bool</em><em> or </em><em>numpy.ndarray</em><em>, </em><em>optional</em>) – True = copy .data; False = set to None; or (n,10) array. Default is True.</p></li>
+<li><p><strong>data_xyz</strong> (<em>bool</em><em> or </em><em>numpy.ndarray</em><em>, </em><em>optional</em>) – True = copy .data_xyz; False = None; or (n,10) array. Default is True.</p></li>
+<li><p><strong>loutliers</strong> (<em>bool</em><em>, </em><em>optional</em>) – If False, do not copy outliers. Default is True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New Gts instance.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.correct_duplicated_dates">
+<span id="pyacs-gts-lib-primitive-correct-duplicated-dates-module"></span><h2>pyacs.gts.lib.primitive.correct_duplicated_dates module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.correct_duplicated_dates" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.correct_duplicated_dates.correct_duplicated_dates">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.correct_duplicated_dates.</span></span><span class="sig-name descname"><span class="pre">correct_duplicated_dates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'correct'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/correct_duplicated_dates.html#correct_duplicated_dates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.correct_duplicated_dates.correct_duplicated_dates" title="Link to this definition"></a></dt>
+<dd><p>Check or remove duplicated dates in a time series.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>action</strong> (<em>str</em><em>, </em><em>optional</em>) – ‘correct’ (default) or ‘check’.</p></li>
+<li><p><strong>tol</strong> (<em>float</em><em>, </em><em>optional</em>) – Tolerance in days for two dates to be considered the same (default 0.1 day).</p></li>
+<li><p><strong>in_place</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, modify in place; otherwise return a new Gts.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbose mode.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Current Gts if in_place, else new Gts with duplicates removed (when action=’correct’).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.decimate">
+<span id="pyacs-gts-lib-primitive-decimate-module"></span><h2>pyacs.gts.lib.primitive.decimate module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.decimate" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.decimate.decimate">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.decimate.</span></span><span class="sig-name descname"><span class="pre">decimate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'median'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/decimate.html#decimate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.decimate.decimate" title="Link to this definition"></a></dt>
+<dd><p>Decimate a time series to a regular time step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time_step</strong> (<em>float</em><em>, </em><em>optional</em>) – Time step in days.</p></li>
+<li><p><strong>dates</strong> (<em>list</em><em>, </em><em>optional</em>) – List of dates where points are forced to be written regardless of time_step.</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – Method to compute position in each bin: ‘median’, ‘mean’, or ‘exact’.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbose mode.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New decimated Gts.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.differentiate">
+<span id="pyacs-gts-lib-primitive-differentiate-module"></span><h2>pyacs.gts.lib.primitive.differentiate module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.differentiate" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.differentiate.differentiate">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.differentiate.</span></span><span class="sig-name descname"><span class="pre">differentiate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/differentiate.html#differentiate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.differentiate.differentiate" title="Link to this definition"></a></dt>
+<dd><p>Differentiate the current time series (first difference along time).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Differentiated time series as a new Gts object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Differentiation is performed on .data. .data_xyz is set to None.</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.displacement">
+<span id="pyacs-gts-lib-primitive-displacement-module"></span><h2>pyacs.gts.lib.primitive.displacement module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.displacement" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.displacement.displacement">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.displacement.</span></span><span class="sig-name descname"><span class="pre">displacement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sdate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'median'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speriod</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eperiod</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rounding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'day'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/displacement.html#displacement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.displacement.displacement" title="Link to this definition"></a></dt>
+<dd><p>Calculate displacement between two dates or two periods.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sdate</strong> (<em>float</em><em>, </em><em>optional</em>) – Start date in decimal year.</p></li>
+<li><p><strong>edate</strong> (<em>float</em><em>, </em><em>optional</em>) – End date in decimal year.</p></li>
+<li><p><strong>window</strong> (<em>float</em><em>, </em><em>optional</em>) – Time window in days for searching available dates.</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – Method to calculate position: ‘median’ or ‘mean’. Default is ‘median’.</p></li>
+<li><p><strong>speriod</strong> (<em>list</em><em>, </em><em>optional</em>) – Period [start, end] for calculating the start position.</p></li>
+<li><p><strong>eperiod</strong> (<em>list</em><em>, </em><em>optional</em>) – Period [start, end] for calculating the end position.</p></li>
+<li><p><strong>rounding</strong> (<em>str</em><em>, </em><em>optional</em>) – Rounding for dates: ‘day’, ‘hour’, ‘minute’, or ‘second’. Default is ‘day’.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbose mode.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Displacement as np.array([dn, de, du, sdn, sde, sdu]).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.exclude_periods">
+<span id="pyacs-gts-lib-primitive-exclude-periods-module"></span><h2>pyacs.gts.lib.primitive.exclude_periods module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.exclude_periods" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.exclude_periods.exclude_periods">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.exclude_periods.</span></span><span class="sig-name descname"><span class="pre">exclude_periods</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lperiod</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/exclude_periods.html#exclude_periods"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.exclude_periods.exclude_periods" title="Link to this definition"></a></dt>
+<dd><p>Exclude periods of a Gts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lperiod</strong> (<em>list</em>) – A list [start_date,end_date] or a list of periods e.g. [[2000.1,2003.5],[2009.3,2010.8]].</p></li>
+<li><p><strong>in_place</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, will make change in place; if False, returns a new time series.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbose mode.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ol class="arabic simple">
+<li><p>X0, Y0, Z0 attributes will be changed if necessary.</p></li>
+<li><p>Handles both .data and .data_xyz.</p></li>
+</ol>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.extract_dates">
+<span id="pyacs-gts-lib-primitive-extract-dates-module"></span><h2>pyacs.gts.lib.primitive.extract_dates module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.extract_dates" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.extract_dates.extract_dates">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.extract_dates.</span></span><span class="sig-name descname"><span class="pre">extract_dates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rounding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/extract_dates.html#extract_dates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.extract_dates.extract_dates" title="Link to this definition"></a></dt>
+<dd><p>Return a time series extracted for a given list of dates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dates</strong> (<em>list</em><em> or </em><em>ndarray</em>) – Dates as a list or 1D numpy array of decimal dates.</p></li>
+<li><p><strong>tol</strong> (<em>float</em><em>, </em><em>optional</em>) – Date tolerance in days to assert that two dates are equal (default 0.05 day).</p></li>
+<li><p><strong>rounding</strong> (<em>str</em><em>, </em><em>optional</em>) – Rounding for date comparison (‘second’, ‘minute’, ‘hour’, ‘day’). Inferred from tol if None.</p></li>
+<li><p><strong>in_place</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, will make change in place; if False, returns a new time series.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbose mode.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.extract_ndates_after_date">
+<span id="pyacs-gts-lib-primitive-extract-ndates-after-date-module"></span><h2>pyacs.gts.lib.primitive.extract_ndates_after_date module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.extract_ndates_after_date" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.extract_ndates_after_date.extract_ndates_after_date">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.extract_ndates_after_date.</span></span><span class="sig-name descname"><span class="pre">extract_ndates_after_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/extract_ndates_after_date.html#extract_ndates_after_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.extract_ndates_after_date.extract_ndates_after_date" title="Link to this definition"></a></dt>
+<dd><p>Extract n values after a given date.</p>
+<p>If n values are not available, returns all available values after date.
+.data is set to None if no value at all is available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date</strong> (<em>float</em>) – Date in decimal year.</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – Number of observations to extract.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbose mode.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New Gts with at most n observations after the given date.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.extract_ndates_around_date">
+<span id="pyacs-gts-lib-primitive-extract-ndates-around-date-module"></span><h2>pyacs.gts.lib.primitive.extract_ndates_around_date module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.extract_ndates_around_date" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.extract_ndates_around_date.extract_ndates_around_date">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.extract_ndates_around_date.</span></span><span class="sig-name descname"><span class="pre">extract_ndates_around_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/extract_ndates_around_date.html#extract_ndates_around_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.extract_ndates_around_date.extract_ndates_around_date" title="Link to this definition"></a></dt>
+<dd><p>Extract n values before and n values after a given date.</p>
+<p>If n values are not available, returns all available values.
+.data is set to None if no value at all is available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date</strong> (<em>float</em>) – Date in decimal year.</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – Number of observations to extract on each side.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New Gts with at most n observations before and n after the given date.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.extract_ndates_before_date">
+<span id="pyacs-gts-lib-primitive-extract-ndates-before-date-module"></span><h2>pyacs.gts.lib.primitive.extract_ndates_before_date module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.extract_ndates_before_date" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.extract_ndates_before_date.extract_ndates_before_date">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.extract_ndates_before_date.</span></span><span class="sig-name descname"><span class="pre">extract_ndates_before_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/extract_ndates_before_date.html#extract_ndates_before_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.extract_ndates_before_date.extract_ndates_before_date" title="Link to this definition"></a></dt>
+<dd><p>Extract n values before a given date.</p>
+<p>If n values are not available, returns all available values before date.
+.data is set to None if no value at all is available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date</strong> (<em>float</em>) – Date in decimal year.</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – Number of observations to extract.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbose mode.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New Gts with at most n observations before the given date.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.extract_periods">
+<span id="pyacs-gts-lib-primitive-extract-periods-module"></span><h2>pyacs.gts.lib.primitive.extract_periods module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.extract_periods" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.extract_periods.extract_periods">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.extract_periods.</span></span><span class="sig-name descname"><span class="pre">extract_periods</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lperiod</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_reset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_data_xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/extract_periods.html#extract_periods"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.extract_periods.extract_periods" title="Link to this definition"></a></dt>
+<dd><p>Extract periods of a Gts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lperiod</strong> (<em>list</em>) – A list [start_date,end_date] or a list of periods e.g. [[2000.1,2003.5],[2009.3,2010.8]].</p></li>
+<li><p><strong>in_place</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, will make change in place; if False, returns a new time series.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbose mode.</p></li>
+<li><p><strong>no_reset</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, do not reset X0, Y0, Z0 to first epoch of extracted data.</p></li>
+<li><p><strong>ignore_data_xyz</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, work on .data only and ignore .data_xyz.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ol class="arabic simple">
+<li><p>X0, Y0, Z0 attributes will be changed if necessary.</p></li>
+<li><p>Handles both .data and .data_xyz.</p></li>
+</ol>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.extrapolate">
+<span id="pyacs-gts-lib-primitive-extrapolate-module"></span><h2>pyacs.gts.lib.primitive.extrapolate module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.extrapolate" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.extrapolate.extrapolate">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.extrapolate.</span></span><span class="sig-name descname"><span class="pre">extrapolate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/extrapolate.html#extrapolate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.extrapolate.extrapolate" title="Link to this definition"></a></dt>
+<dd><p>Extrapolate the time series at dates outside the observation span.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>idates</strong> (<em>list</em><em> or </em><em>ndarray</em>) – Dates in decimal year where extrapolation will be performed.</p></li>
+<li><p><strong>kind</strong> (<em>str</em><em>, </em><em>optional</em>) – Interpolation kind for scipy.interpolate.interp1d (e.g. ‘linear’, ‘nearest’, ‘cubic’).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New Gts with extrapolated values at the given dates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.find_large_uncertainty">
+<span id="pyacs-gts-lib-primitive-find-large-uncertainty-module"></span><h2>pyacs.gts.lib.primitive.find_large_uncertainty module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.find_large_uncertainty" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.find_large_uncertainty.find_large_uncertainty">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.find_large_uncertainty.</span></span><span class="sig-name descname"><span class="pre">find_large_uncertainty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lcomponent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NE'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/find_large_uncertainty.html#find_large_uncertainty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.find_large_uncertainty.find_large_uncertainty" title="Link to this definition"></a></dt>
+<dd><p>Flag dates with large uncertainty as outliers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sigma_threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – Threshold in mm for flagging. Default is 20.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, print progress. Default is True.</p></li>
+<li><p><strong>lcomponent</strong> (<em>str</em><em> or </em><em>list</em><em>, </em><em>optional</em>) – Components to check (‘N’, ‘E’, ‘U’). Default is ‘NE’.</p></li>
+<li><p><strong>log_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Directory for Gts-specific log file {self.code}.log. Default is None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>self (outliers updated).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.get_coseismic">
+<span id="pyacs-gts-lib-primitive-get-coseismic-module"></span><h2>pyacs.gts.lib.primitive.get_coseismic module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.get_coseismic" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.get_coseismic.get_coseismic">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.get_coseismic.</span></span><span class="sig-name descname"><span class="pre">get_coseismic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eq_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_days</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_after</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'median'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/get_coseismic.html#get_coseismic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.get_coseismic.get_coseismic" title="Link to this definition"></a></dt>
+<dd><p>Get coseismic displacement at a given date.
+Coseismic displacement is estimated as the position difference between the median of window_days before
+the earthquake date and the median of sample_after samples after the earthquake date.</p>
+<p>note: only median method implemented</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.get_coseismic2">
+<span id="pyacs-gts-lib-primitive-get-coseismic2-module"></span><h2>pyacs.gts.lib.primitive.get_coseismic2 module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.get_coseismic2" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.get_coseismic2.get_coseismic2">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.get_coseismic2.</span></span><span class="sig-name descname"><span class="pre">get_coseismic2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eq_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_days</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_after</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'median'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_eq_day</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/get_coseismic2.html#get_coseismic2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.get_coseismic2.get_coseismic2" title="Link to this definition"></a></dt>
+<dd><p>Get coseismic displacement at a given date.</p>
+<p>Coseismic displacement is the position difference between the median (or mean) of
+window_days before the earthquake and the median (or mean) of sample_after samples
+after the earthquake date.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eq_date</strong> (<em>datetime</em><em> or </em><em>float</em>) – Earthquake date as datetime instance or decimal year.</p></li>
+<li><p><strong>window_days</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of days before the earthquake used to compute position before.</p></li>
+<li><p><strong>sample_after</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of data after the earthquake used to compute position after.</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – Method to compute positions: ‘median’ or ‘mean’.</p></li>
+<li><p><strong>exclude_eq_day</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, exclude the day of the earthquake from the data.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbose mode.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.get_coseismic_l1trend">
+<span id="pyacs-gts-lib-primitive-get-coseismic-l1trend-module"></span><h2>pyacs.gts.lib.primitive.get_coseismic_l1trend module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.get_coseismic_l1trend" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.get_coseismic_l1trend.get_coseismic_l1trend">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.get_coseismic_l1trend.</span></span><span class="sig-name descname"><span class="pre">get_coseismic_l1trend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/get_coseismic_l1trend.html#get_coseismic_l1trend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.get_coseismic_l1trend.get_coseismic_l1trend" title="Link to this definition"></a></dt>
+<dd><p>Get coseismic offsets using pyacs customized l1 trend filter</p>
+<p>param:
+date: date in decimal year, or datetime.datetime, or (mday,month,year)</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.get_values_at_date">
+<span id="pyacs-gts-lib-primitive-get-values-at-date-module"></span><h2>pyacs.gts.lib.primitive.get_values_at_date module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.get_values_at_date" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.get_values_at_date.get_values_at_date">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.get_values_at_date.</span></span><span class="sig-name descname"><span class="pre">get_values_at_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'data_xyz'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/get_values_at_date.html#get_values_at_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.get_values_at_date.get_values_at_date" title="Link to this definition"></a></dt>
+<dd><p>return the values of the time series at a given date.
+date can be provided as a datetime, string, decimal year, modified julian day, or (doy,year)
+data_type can be ‘data’ or ‘data_xyz’</p>
+<section id="parameters">
+<h3>parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>date: datetime, string, float, tuple</dt><dd><p>the date to look for</p>
+</dd>
+<dt>data_type: string</dt><dd><p>‘data’ or ‘data_xyz’ depending on the type of data to return</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.insert_gts_data">
+<span id="pyacs-gts-lib-primitive-insert-gts-data-module"></span><h2>pyacs.gts.lib.primitive.insert_gts_data module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.insert_gts_data" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.insert_gts_data.insert_gts_data">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.insert_gts_data.</span></span><span class="sig-name descname"><span class="pre">insert_gts_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/insert_gts_data.html#insert_gts_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.insert_gts_data.insert_gts_data" title="Link to this definition"></a></dt>
+<dd><p>Insert data (and/or .data_xyz) of another Gts into the current Gts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gts</strong> (<a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts"><em>Gts</em></a>) – Time series to be inserted.</p></li>
+<li><p><strong>in_place</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, modify current Gts; if False, return a new Gts.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbose mode.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New Gts or the modified Gts if in_place.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.insert_ts">
+<span id="pyacs-gts-lib-primitive-insert-ts-module"></span><h2>pyacs.gts.lib.primitive.insert_ts module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.insert_ts" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.insert_ts.insert_ts">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.insert_ts.</span></span><span class="sig-name descname"><span class="pre">insert_ts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rounding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'day'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xyz'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/insert_ts.html#insert_ts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.insert_ts.insert_ts" title="Link to this definition"></a></dt>
+<dd><p>Insert another Gts into this one (merge or overwrite over its period).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ts</strong> (<a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts"><em>Gts</em></a>) – Gts to be inserted.</p></li>
+<li><p><strong>rounding</strong> (<em>str</em><em>, </em><em>optional</em>) – Date rounding for deciding whether an entry is replaced: ‘second’, ‘minute’, ‘hour’, ‘day’.</p></li>
+<li><p><strong>data</strong> (<em>str</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Attribute to update: ‘xyz’ for .data_xyz or None for .data.</p></li>
+<li><p><strong>overlap</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, update only on matching dates; if False, ts overwrites current Gts over ts period.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New Gts. .data or .data_xyz is set to None according to the data argument.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.interpolate">
+<span id="pyacs-gts-lib-primitive-interpolate-module"></span><h2>pyacs.gts.lib.primitive.interpolate module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.interpolate" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.interpolate.interpolate">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.interpolate.</span></span><span class="sig-name descname"><span class="pre">interpolate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'day'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/interpolate.html#interpolate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.interpolate.interpolate" title="Link to this definition"></a></dt>
+<dd><p>Interpolate the time series at regular or given dates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date</strong> (<em>str</em><em> or </em><em>ndarray</em><em>, </em><em>optional</em>) – ‘day’ performs daily interpolation; alternatively a 1D numpy array with datetime or decimal year.</p></li>
+<li><p><strong>kind</strong> (<em>str</em><em>, </em><em>optional</em>) – scipy.interpolate.interp1d kind argument (e.g. ‘linear’).</p></li>
+<li><p><strong>gap</strong> (<em>int</em><em> or </em><em>float</em><em>, </em><em>optional</em>) – Maximum gap in days for interpolation; series is split at larger gaps.</p></li>
+<li><p><strong>in_place</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, modify in place; otherwise return a new Gts.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbose mode.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Interpolated time series (new instance unless in_place).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.n_obs">
+<span id="pyacs-gts-lib-primitive-n-obs-module"></span><h2>pyacs.gts.lib.primitive.n_obs module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.n_obs" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.n_obs.n_obs">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.n_obs.</span></span><span class="sig-name descname"><span class="pre">n_obs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/n_obs.html#n_obs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.n_obs.n_obs" title="Link to this definition"></a></dt>
+<dd><p>Return the number of available observations for the given date or period.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>date</strong> (<em>str</em><em> or </em><em>list</em>) – Date or period. Formats: decimal year or pandas-style (e.g. ‘2018-01-01’,
+[‘2018-01-01’,’2018-02-01’], or [2019., 2019.5] for decimal year).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Number of observations in the current time series for the given date/period.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>A specific day: ts.RIOP.n_obs(‘2018-01-01’)
+A period: ts.RIOP.n_obs([‘2018-01-01’,’2018-02-01’])
+A period in decimal year: ts.RIOP.n_obs([2019., 2019.5])</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.neu2xyz">
+<span id="pyacs-gts-lib-primitive-neu2xyz-module"></span><h2>pyacs.gts.lib.primitive.neu2xyz module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.neu2xyz" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.neu2xyz.neu2xyz">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.neu2xyz.</span></span><span class="sig-name descname"><span class="pre">neu2xyz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/neu2xyz.html#neu2xyz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.neu2xyz.neu2xyz" title="Link to this definition"></a></dt>
+<dd><p>Populate .data_xyz from .data (requires X0,Y0,Z0 or lon, lat, h).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>corr</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, compute standard deviations and correlations. Default is False.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbose mode. Default is False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>self.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.remove_velocity">
+<span id="pyacs-gts-lib-primitive-remove-velocity-module"></span><h2>pyacs.gts.lib.primitive.remove_velocity module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.remove_velocity" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.remove_velocity.remove_velocity">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.remove_velocity.</span></span><span class="sig-name descname"><span class="pre">remove_velocity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vel_neu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/remove_velocity.html#remove_velocity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.remove_velocity.remove_velocity" title="Link to this definition"></a></dt>
+<dd><p>remove velocity from a time series
+vel_neu is a 1D array of any arbitrary length, but with the velocities (NEU) to be removed in the first 3 columns
+if in_place = True then replace the current time series</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.reorder">
+<span id="pyacs-gts-lib-primitive-reorder-module"></span><h2>pyacs.gts.lib.primitive.reorder module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.reorder" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.reorder.reorder">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.reorder.</span></span><span class="sig-name descname"><span class="pre">reorder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/reorder.html#reorder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.reorder.reorder" title="Link to this definition"></a></dt>
+<dd><p>Reorder .data and/or .data_xyz by increasing dates (always in place).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbose mode.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>self (modified in place).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.rotate">
+<span id="pyacs-gts-lib-primitive-rotate-module"></span><h2>pyacs.gts.lib.primitive.rotate module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.rotate" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.rotate.rotate">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.rotate.</span></span><span class="sig-name descname"><span class="pre">rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/rotate.html#rotate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.rotate.rotate" title="Link to this definition"></a></dt>
+<dd><p>Rotate the horizontal axes (E, N) by an angle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>angle</strong> (<em>float</em>) – Angle in decimal degrees, clockwise.</p></li>
+<li><p><strong>in_place</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, replace the current time series; otherwise return a new Gts.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Rotated time series (self if in_place, else new Gts). .data_xyz set to None.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.set_zero_at_date">
+<span id="pyacs-gts-lib-primitive-set-zero-at-date-module"></span><h2>pyacs.gts.lib.primitive.set_zero_at_date module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.set_zero_at_date" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.set_zero_at_date.set_zero_at_date">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.set_zero_at_date.</span></span><span class="sig-name descname"><span class="pre">set_zero_at_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/set_zero_at_date.html#set_zero_at_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.set_zero_at_date.set_zero_at_date" title="Link to this definition"></a></dt>
+<dd><p>Translate the time series so that values are zero at a given date.</p>
+<p>If the provided date does not exist in the series, the next available date is used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date</strong> (<em>float</em>) – Date in decimal year.</p></li>
+<li><p><strong>offset</strong> (<em>float</em><em> or </em><em>list</em><em> or </em><em>ndarray</em><em>, </em><em>optional</em>) – Offset in mm to add. Float (same for N,E,U) or 3-element list/array for N,E,U.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New Gts with translation applied; .data_xyz set to None.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.split">
+<span id="pyacs-gts-lib-primitive-split-module"></span><h2>pyacs.gts.lib.primitive.split module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.split" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.split.split">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.split.</span></span><span class="sig-name descname"><span class="pre">split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_dates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/split.html#split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.split.split" title="Link to this definition"></a></dt>
+<dd><p>Split time series at given dates.</p>
+<p>Dates &lt;= split date define the left segment. Dates are converted to
+integer seconds via at.decyear2seconds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>split_dates</strong> (<em>list</em><em> or </em><em>numpy.ndarray</em>) – Decimal-year dates for split points.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbose mode. Default is True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Gts objects from the split.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of <a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.split_gap">
+<span id="pyacs-gts-lib-primitive-split-gap-module"></span><h2>pyacs.gts.lib.primitive.split_gap module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.split_gap" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.split_gap.split_gap">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.split_gap.</span></span><span class="sig-name descname"><span class="pre">split_gap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/split_gap.html#split_gap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.split_gap.split_gap" title="Link to this definition"></a></dt>
+<dd><p>Split the time series at gaps larger than a given number of days.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gap</strong> (<em>int</em><em> or </em><em>float</em><em>, </em><em>optional</em>) – Gap in days above which the series is split.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbose mode.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of Gts split from the original.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of <a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.substract_ts">
+<span id="pyacs-gts-lib-primitive-substract-ts-module"></span><h2>pyacs.gts.lib.primitive.substract_ts module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.substract_ts" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.substract_ts.substract_ts">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.substract_ts.</span></span><span class="sig-name descname"><span class="pre">substract_ts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/substract_ts.html#substract_ts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.substract_ts.substract_ts" title="Link to this definition"></a></dt>
+<dd><p>Subtract the provided time series from the current one (at common dates).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ts</strong> (<a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts"><em>Gts</em></a>) – Time series to subtract (Gts instance).</p></li>
+<li><p><strong>tol</strong> (<em>float</em><em>, </em><em>optional</em>) – Date tolerance in days to consider two dates identical (default 0.05 day).</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbose mode.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New Gts with code self.code+’_’+ts.code; .data_xyz set to None.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.substract_ts_daily">
+<span id="pyacs-gts-lib-primitive-substract-ts-daily-module"></span><h2>pyacs.gts.lib.primitive.substract_ts_daily module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.substract_ts_daily" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.substract_ts_daily.substract_ts_daily">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.substract_ts_daily.</span></span><span class="sig-name descname"><span class="pre">substract_ts_daily</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/substract_ts_daily.html#substract_ts_daily"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.substract_ts_daily.substract_ts_daily" title="Link to this definition"></a></dt>
+<dd><p>Subtract the given time series from the current one (sample-by-sample).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ts</strong> (<a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts"><em>Gts</em></a>) – Time series to subtract (Gts instance).</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, print progress. Default is True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>New Gts instance (current minus ts).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Assumes daily time series; dates are matched.</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive.xyz2neu">
+<span id="pyacs-gts-lib-primitive-xyz2neu-module"></span><h2>pyacs.gts.lib.primitive.xyz2neu module<a class="headerlink" href="#module-pyacs.gts.lib.primitive.xyz2neu" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyacs.gts.lib.primitive.xyz2neu.xyz2neu">
+<span class="sig-prename descclassname"><span class="pre">pyacs.gts.lib.primitive.xyz2neu.</span></span><span class="sig-name descname"><span class="pre">xyz2neu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pyacs/gts/lib/primitive/xyz2neu.html#xyz2neu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyacs.gts.lib.primitive.xyz2neu.xyz2neu" title="Link to this definition"></a></dt>
+<dd><p>Populate .data (NEU) from .data_xyz (XYZ); lon, lat and h are also set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>corr</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, standard deviations and correlations are propagated to NEU.</p></li>
+<li><p><strong>ref_xyz</strong> (<em>list</em><em> or </em><em>ndarray</em><em>, </em><em>optional</em>) – [X, Y, Z] for the origin of the local NEU frame. If not provided, first position is used.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Verbose mode.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>self (modified in place).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyacs.gts.html#pyacs.gts.Gts.Gts" title="pyacs.gts.Gts.Gts">Gts</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This method always modifies in place.</p>
+</dd></dl>
+
+</section>
+<section id="module-pyacs.gts.lib.primitive">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyacs.gts.lib.primitive" title="Link to this heading"></a></h2>
+<p>The primitive subpackage contains the primitive functions for the Gts class.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

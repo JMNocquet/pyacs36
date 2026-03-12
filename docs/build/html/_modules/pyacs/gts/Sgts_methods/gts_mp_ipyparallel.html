@@ -1,0 +1,372 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.gts.Sgts_methods.gts_mp_ipyparallel &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../libraries.html">core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyacs.gts.Sgts_methods.gts_mp_ipyparallel</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyacs.gts.Sgts_methods.gts_mp_ipyparallel</h1><div class="highlight"><pre>
+<span></span><span class="c1"># def gts_mp(self, method, *args, **kwargs):</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Sgts.gts_mp is the parallelized version of Sgts.gts, using ipyparallel</span>
+
+<span class="c1">#     :param method: the Gts method to be applied to all time series (gts) of the current Sgts</span>
+<span class="c1">#     :param *args, **kwargs: arguments of method to be used when calling method</span>
+<span class="c1">#     :param ncpu: ncpu is an additional kwarg to define the number of CPU used. default is 4</span>
+
+<span class="c1">#     :return: the new Sgts including the gts processed by method</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     from pyacs.gts.Sgts import Sgts</span>
+<span class="c1">#     from tqdm import tqdm</span>
+
+<span class="c1">#     import logging</span>
+<span class="c1">#     import pyacs.message.message as MESSAGE</span>
+<span class="c1">#     import pyacs.message.verbose_message as VERBOSE</span>
+<span class="c1">#     import pyacs.message.error as ERROR</span>
+<span class="c1">#     import pyacs.message.warning as WARNING</span>
+<span class="c1">#     import pyacs.message.debug_message as DEBUG</span>
+<span class="c1">#     import pyacs.debug</span>
+
+<span class="c1">#     import ipyparallel as ipp</span>
+<span class="c1">#     from icecream import ic</span>
+
+<span class="c1">#     import inspect</span>
+<span class="c1">#     VERBOSE(&quot;Running Sgts.%s&quot; % inspect.currentframe().f_code.co_name)</span>
+
+<span class="c1">#     sgts = self</span>
+<span class="c1">#     n = self.n()</span>
+
+<span class="c1">#     # get func</span>
+
+<span class="c1">#     import importlib</span>
+<span class="c1">#     import inspect</span>
+<span class="c1">#     import os</span>
+
+<span class="c1">#     try:</span>
+<span class="c1">#         func = getattr(self.__dict__[self.lcode()[0]], method)</span>
+<span class="c1">#     except:</span>
+<span class="c1">#         ERROR((&quot;There is no Gts method called %s. Exit&quot; % method), exit=True)</span>
+
+<span class="c1">#     # get func path</span>
+<span class="c1">#     ldir = []</span>
+<span class="c1">#     OK = False</span>
+<span class="c1">#     for cdir in inspect.getfile(func).split(&#39;/&#39;):</span>
+<span class="c1">#         if OK:</span>
+<span class="c1">#             ldir.append(cdir)</span>
+<span class="c1">#         if cdir == &#39;gts&#39;:</span>
+<span class="c1">#             OK = True</span>
+<span class="c1">#     ldir.pop()</span>
+
+<span class="c1">#     str_4_import = &#39;pyacs.gts.&#39; + &#39;.&#39;.join(ldir) + &#39;.&#39; + method</span>
+<span class="c1">#     mod = importlib.import_module(str_4_import)</span>
+<span class="c1">#     func = getattr(mod, method)</span>
+
+<span class="c1">#     arg = [args, kwargs]</span>
+
+<span class="c1">#     verbose = kwargs.get(&#39;verbose&#39;, False)</span>
+<span class="c1">#     ncpu = kwargs.get(&#39;ncpu&#39;, 4)</span>
+
+<span class="c1">#     if &#39;ncpu&#39; in kwargs.keys():</span>
+<span class="c1">#         kwargs.pop(&#39;ncpu&#39;)</span>
+
+<span class="c1">#     MESSAGE(&quot;Will run %s method on %d Gts using %d CPU&quot; % (method, sgts.n(), ncpu))</span>
+
+<span class="c1">#     def worker_wrapper(gts, arg):</span>
+<span class="c1">#         [args, kwargs] = arg</span>
+<span class="c1">#         #return func(gts, *args, **kwargs)</span>
+
+<span class="c1">#         try:</span>
+<span class="c1">#             return func(gts, *args, **kwargs)</span>
+<span class="c1">#         except:</span>
+<span class="c1">#             gts.data = None</span>
+<span class="c1">#             return gts</span>
+
+<span class="c1">#     # request a cluster</span>
+<span class="c1">#     with ipp.Cluster(n=ncpu, monitor_engines=True, log_level=40) as rc:</span>
+<span class="c1">#     #with ipp.Cluster(n=ncpu) as rc:</span>
+<span class="c1">#         # get a view on the cluster</span>
+<span class="c1">#         view = rc.load_balanced_view()</span>
+<span class="c1">#         # submit the tasks</span>
+<span class="c1">#         asyncresult = view.map_async(worker_wrapper, sgts.lGts(), [arg] * n)</span>
+<span class="c1">#         # wait interactively for results</span>
+<span class="c1">#         asyncresult.wait_interactive()</span>
+<span class="c1">#         # retrieve actual results</span>
+<span class="c1">#         result = asyncresult.get()</span>
+<span class="c1">#     # at this point, the cluster processes have been shutdown</span>
+
+<span class="c1">#     # get results</span>
+<span class="c1">#     new_ts = Sgts(read=False)</span>
+<span class="c1">#     for gts in result:</span>
+<span class="c1">#         if gts is not None:</span>
+<span class="c1">#             new_ts.append(gts)</span>
+
+<span class="c1">#     # print missing</span>
+<span class="c1">#     lgood_code = new_ts.lcode(force_4_digit=True)</span>
+<span class="c1">#     for code in sorted(sgts.lcode()):</span>
+<span class="c1">#         if code not in lgood_code:</span>
+<span class="c1">#             ERROR((&quot;Problem while applying %s to %s. Skipped from output Sgts.&quot; % (method, code)))</span>
+
+<span class="c1">#     return (new_ts)</span>
+<div class="viewcode-block" id="gts_mp_ipyparallel">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.Sgts_methods.gts_mp_ipyparallel.html#pyacs.gts.Sgts_methods.gts_mp_ipyparallel.gts_mp_ipyparallel">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">gts_mp_ipyparallel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parallel version of Sgts.gts using ipyparallel with fault-tolerant recovery. Deprecated.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    method : str</span>
+<span class="sd">        Gts method to apply.</span>
+<span class="sd">    *args : tuple</span>
+<span class="sd">        Positional arguments for the method.</span>
+<span class="sd">    **kwargs : dict</span>
+<span class="sd">        Keyword arguments; ncpu (int) sets number of CPUs (default 4).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Sgts</span>
+<span class="sd">        New Sgts with processed Gts.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.gts.Sgts</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sgts</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ipyparallel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cluster</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ipyparallel.error</span><span class="w"> </span><span class="kn">import</span> <span class="n">EngineError</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">traceback</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+
+    <span class="n">VERBOSE</span><span class="p">(</span><span class="s2">&quot;Running Sgts.gts_mp&quot;</span><span class="p">)</span>
+
+    <span class="n">sgts</span> <span class="o">=</span> <span class="bp">self</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">()</span>
+    <span class="n">ncpu</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;ncpu&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;verbose&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Get the method</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">lcode</span><span class="p">()[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">method</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">ERROR</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No such method: </span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">exit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Resolve correct import path for func</span>
+    <span class="n">ldir</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">OK</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">cdir</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getfile</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">OK</span><span class="p">:</span>
+            <span class="n">ldir</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cdir</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cdir</span> <span class="o">==</span> <span class="s1">&#39;gts&#39;</span><span class="p">:</span>
+            <span class="n">OK</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">ldir</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+
+    <span class="n">str_4_import</span> <span class="o">=</span> <span class="s1">&#39;pyacs.gts.&#39;</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ldir</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">method</span>
+    <span class="n">mod</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">str_4_import</span><span class="p">)</span>
+    <span class="n">func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">method</span><span class="p">)</span>
+
+    <span class="n">arg</span> <span class="o">=</span> <span class="p">[</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">]</span>
+    <span class="n">MESSAGE</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Will run </span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2"> on </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> Gts using </span><span class="si">{</span><span class="n">ncpu</span><span class="si">}</span><span class="s2"> CPU(s)&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">worker_wrapper</span><span class="p">(</span><span class="n">gts</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="p">[</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">]</span> <span class="o">=</span> <span class="n">arg</span>
+        <span class="c1">#return func(gts, *args, **kwargs)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">gts</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">gts</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="n">gts</span>
+
+    <span class="n">new_ts</span> <span class="o">=</span> <span class="n">Sgts</span><span class="p">(</span><span class="n">read</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">Cluster</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">ncpu</span><span class="p">,</span> <span class="n">monitor_engines</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">rc</span><span class="p">:</span>
+        <span class="n">view</span> <span class="o">=</span> <span class="n">rc</span><span class="o">.</span><span class="n">load_balanced_view</span><span class="p">()</span>
+        <span class="n">asyncresult</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">map_async</span><span class="p">(</span><span class="n">worker_wrapper</span><span class="p">,</span> <span class="n">sgts</span><span class="o">.</span><span class="n">lGts</span><span class="p">(),</span> <span class="p">[</span><span class="n">arg</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;⏳ Waiting for tasks...&quot;</span><span class="p">)</span>
+        <span class="n">asyncresult</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+
+        <span class="n">partial_results</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">partial_results</span> <span class="o">=</span> <span class="n">asyncresult</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">EngineError</span> <span class="k">as</span> <span class="n">ee</span><span class="p">:</span>
+            <span class="n">ERROR</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;💥 Engine crash: </span><span class="si">{</span><span class="n">ee</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="c1"># Attempt to retrieve what we can</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sgts</span><span class="o">.</span><span class="n">lGts</span><span class="p">())):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">partial_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">asyncresult</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">ERROR</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;⚠️ Task </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> retrieval failed: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">partial_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">ERROR</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;❌ Unexpected exception: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1">#            partial_results = [None] * len(sgts.lGts())</span>
+            <span class="c1"># Attempt to retrieve what we can</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sgts</span><span class="o">.</span><span class="n">lGts</span><span class="p">())):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">partial_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">asyncresult</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">ERROR</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;⚠️ Task </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> retrieval failed: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">partial_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+
+
+        <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">partial_results</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">code</span><span class="p">,</span> <span class="n">gts_result</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">res</span>
+                <span class="k">if</span> <span class="n">gts_result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">ERROR</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;⚠️ </span><span class="si">{</span><span class="n">code</span><span class="si">}</span><span class="s2"> failed:</span><span class="se">\n</span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">new_ts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gts_result</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">res</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">new_ts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ERROR</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;⚠️ Missing result (engine crash or task failure)&quot;</span><span class="p">)</span>
+
+
+    <span class="c1"># Collect successful results</span>
+    <span class="k">for</span> <span class="n">gts_result</span> <span class="ow">in</span> <span class="n">partial_results</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">gts_result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">new_ts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gts_result</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ERROR</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;⚠️ Failed to process a Gts&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Check missing outputs</span>
+
+    <span class="n">lpb</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">lgood_code</span> <span class="o">=</span> <span class="n">new_ts</span><span class="o">.</span><span class="n">lcode</span><span class="p">(</span><span class="n">force_4_digit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">sgts</span><span class="o">.</span><span class="n">lcode</span><span class="p">()):</span>
+        <span class="k">if</span> <span class="n">code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lgood_code</span><span class="p">:</span>
+            <span class="n">ERROR</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;❌ Missing output for </span><span class="si">{</span><span class="n">code</span><span class="si">}</span><span class="s2"> — skipped in final Sgts.&quot;</span><span class="p">)</span>
+            <span class="n">lpb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+
+    <span class="c1"># Check for inconsistencies between input and output Sgts</span>
+    <span class="k">if</span> <span class="n">new_ts</span><span class="o">.</span><span class="n">n</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">():</span>
+        <span class="n">ERROR</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of Gts in output Sgts (</span><span class="si">{</span><span class="n">new_ts</span><span class="o">.</span><span class="n">n</span><span class="p">()</span><span class="si">}</span><span class="s2">) does not match input Sgts (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">()</span><span class="si">}</span><span class="s2">).&quot;</span><span class="p">)</span>
+    <span class="n">lcode_output</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">x</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">new_ts</span><span class="o">.</span><span class="n">lcode</span><span class="p">()])</span>
+    <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lcode</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lcode_output</span><span class="p">:</span>
+            <span class="n">WARNING</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">code</span><span class="si">}</span><span class="s2"> is missing in output Sgts. Check why.&quot;</span><span class="p">)</span>
+            <span class="n">lpb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Check for None values in l1trend_sts_aicc</span>
+            <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lcode</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">new_ts</span><span class="o">.</span><span class="vm">__dict__</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">WARNING</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">code</span><span class="si">}</span><span class="s2"> was not properly processed and is None.&quot;</span><span class="p">)</span>
+                    <span class="n">lpb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">new_ts</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">WARNING</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">code</span><span class="si">}</span><span class="s2"> has None data in l1trend_sts_aicc&quot;</span><span class="p">)</span>
+                        <span class="n">lpb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lpb</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">WARNING</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of missing output time series: </span><span class="si">{</span><span class="n">lpb</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">MESSAGE</span><span class="p">(</span><span class="s2">&quot;All time series were properly processed.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">new_ts</span><span class="o">.</span><span class="n">delnone</span><span class="p">()</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

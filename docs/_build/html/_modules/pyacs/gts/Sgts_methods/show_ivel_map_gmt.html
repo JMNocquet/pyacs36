@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pyacs.gts.Sgts_methods.show_ivel_map_gmt &#8212; PYACS 0.66.18 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../../_static/documentation_options.js?v=2262e354"></script>
+    <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pyacs.gts.Sgts_methods.show_ivel_map_gmt</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="show_ivel_map_gmt">
+<a class="viewcode-back" href="../../../../api/pyacs.gts.Sgts_methods.html#pyacs.gts.Sgts_methods.show_ivel_map_gmt.show_ivel_map_gmt">[docs]</a>
+<span></span><span class="k">def</span><span class="w"> </span><span class="nf">show_ivel_map_gmt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span>
+                        <span class="n">topo</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;M10&quot;</span><span class="p">,</span>
+                        <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">eq_lon_lat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">scale_gps</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                        <span class="n">gps_scale</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+                        <span class="n">no_clip</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">show</span><span class="o">=</span><span class="s1">&#39;external&#39;</span><span class="p">,</span>
+                        <span class="n">save_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Make a map of instantaneous velocity (ivel) using pygmt.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    day (tuple, datetime, float, or list): Day to read. Can be (day, month, year) tuple, datetime object, decimal year, or a list of these.</span>
+<span class="sd">    topo (bool): If True, shaded topography will be shown in the background. Default is False.</span>
+<span class="sd">    projection (str): Projection type for the map. Default is &quot;M10&quot;.</span>
+<span class="sd">    region (list): List defining the region to plot [min_lon, max_lon, min_lat, max_lat]. If None, it will be determined from data.</span>
+<span class="sd">    eq_lon_lat (tuple): Tuple of earthquake longitude and latitude to plot. Default is None.</span>
+<span class="sd">    scale_gps (float): Scale for GPS vectors. Default is 0.1.</span>
+<span class="sd">    gps_scale (float): Scale for GPS uncertainty vectors. Default is 0.01.</span>
+<span class="sd">    no_clip (bool): If True, vectors will not be clipped at the map boundaries. Default is True.</span>
+<span class="sd">    show (str): &#39;external&#39; or &#39;notebook&#39; to show the plot. Anything else will not show the plot. Default is &#39;external&#39;.</span>
+<span class="sd">    save_dir (str): Directory to save the plot. If None, the plot will not be saved. Default is None.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pygmt</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">at</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MESSAGE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.verbose_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">VERBOSE</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.error</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ERROR</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.warning</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">WARNING</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.message.debug_message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DEBUG</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.debug</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyeq.obs_tensor.sgts2obs_tensor2</span><span class="w"> </span><span class="kn">import</span> <span class="n">sgts2tensor2</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">decipher_day</span><span class="p">(</span><span class="n">day</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Decipher the input day and convert it into integer MJD.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        day (tuple, datetime, float): Day to decipher.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        int: MJD of the input day.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">at</span><span class="o">.</span><span class="n">cal2mjd</span><span class="p">(</span><span class="n">day</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">day</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">day</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="n">day</span> <span class="o">&gt;</span> <span class="mi">1980</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">at</span><span class="o">.</span><span class="n">decyear2mjd</span><span class="p">(</span><span class="n">day</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="n">datetime</span><span class="p">):</span>
+                <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">at</span><span class="o">.</span><span class="n">datetime2mjd</span><span class="p">(</span><span class="n">day</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid day format&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">ERROR</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not decipher day: </span><span class="si">{</span><span class="n">day</span><span class="si">}</span><span class="s2">. Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">exit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">lmjd</span> <span class="o">=</span> <span class="p">[</span><span class="n">decipher_day</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">day</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">decipher_day</span><span class="p">(</span><span class="n">day</span><span class="p">)]</span>
+
+    <span class="c1"># Convert Sgts to obs_tensor</span>
+    <span class="n">OBS</span><span class="p">,</span> <span class="n">np_names</span><span class="p">,</span> <span class="n">np_coor</span><span class="p">,</span> <span class="n">np_seconds_sol</span> <span class="o">=</span> <span class="n">sgts2tensor2</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    <span class="n">np_coor</span> <span class="o">=</span> <span class="n">np_coor</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">np_mjd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">at</span><span class="o">.</span><span class="n">datetime2mjd</span><span class="p">(</span><span class="n">at</span><span class="o">.</span><span class="n">seconds2datetime</span><span class="p">(</span><span class="n">np_seconds_sol</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="c1"># Map settings and pygmt parameters</span>
+    <span class="n">arrow_shape</span> <span class="o">=</span> <span class="s2">&quot;.4c+n50/0.5+h.5+a40+gblack+e+z+qk&quot;</span>
+
+    <span class="k">if</span> <span class="n">topo</span><span class="p">:</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">load_earth_relief</span><span class="p">(</span><span class="n">resolution</span><span class="o">=</span><span class="s2">&quot;01m&quot;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">)</span>
+        <span class="n">shade</span> <span class="o">=</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">grdgradient</span><span class="p">(</span><span class="n">grid</span><span class="o">=</span><span class="n">grid</span><span class="p">,</span> <span class="n">azimuth</span><span class="o">=</span><span class="s2">&quot;0/90&quot;</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="s2">&quot;t1&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">region</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">min_lon</span><span class="p">,</span> <span class="n">min_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">np_coor</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">max_lon</span><span class="p">,</span> <span class="n">max_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np_coor</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">delta_lon</span> <span class="o">=</span> <span class="n">max_lon</span> <span class="o">-</span> <span class="n">min_lon</span>
+        <span class="n">delta_lat</span> <span class="o">=</span> <span class="n">max_lat</span> <span class="o">-</span> <span class="n">min_lat</span>
+        <span class="n">region</span> <span class="o">=</span> <span class="p">[</span><span class="n">min_lon</span> <span class="o">-</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="n">delta_lon</span><span class="p">,</span> <span class="n">max_lon</span> <span class="o">+</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="n">delta_lon</span><span class="p">,</span> <span class="n">min_lat</span> <span class="o">-</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="n">delta_lat</span><span class="p">,</span> <span class="n">max_lat</span> <span class="o">+</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="n">delta_lat</span><span class="p">]</span>
+
+    <span class="n">arrow_scale</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;e</span><span class="si">{</span><span class="n">gps_scale</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">/0./0&quot;</span>
+
+    <span class="n">TMP_OBS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">OBS</span><span class="p">)</span>
+    <span class="n">TMP_OBS</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">TMP_OBS</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">mjd_ivel</span> <span class="ow">in</span> <span class="n">lmjd</span><span class="p">:</span>
+        <span class="n">str_date</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">mjd2datetime</span><span class="p">(</span><span class="n">mjd_ivel</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np_mjd</span> <span class="o">==</span> <span class="n">mjd_ivel</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="n">ERROR</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No day </span><span class="si">{</span><span class="n">str_date</span><span class="si">}</span><span class="s2"> in the current Sgts&quot;</span><span class="p">,</span> <span class="n">exit</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">lidx_largest</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">TMP_OBS</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">TMP_OBS</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)[</span><span class="o">-</span><span class="mi">5</span><span class="p">:]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-------------------------------------------------------&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">lidx_largest</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">str_date</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">np_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">OBS</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">10.1f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">OBS</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">10.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+            <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">np_coor</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">np_coor</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="s2">&quot;east_velocity&quot;</span><span class="p">:</span> <span class="n">OBS</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="s2">&quot;north_velocity&quot;</span><span class="p">:</span> <span class="n">OBS</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="s2">&quot;east_sigma&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">np_names</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="s2">&quot;north_sigma&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">np_names</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="s2">&quot;correlation_EN&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np_names</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="s2">&quot;SITE&quot;</span><span class="p">:</span> <span class="n">np_names</span>
+        <span class="p">})</span>
+
+        <span class="n">df_scale</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+            <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="p">(</span><span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">region</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.02</span> <span class="o">*</span> <span class="p">(</span><span class="n">region</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">region</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
+            <span class="s2">&quot;east_velocity&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">100</span><span class="p">],</span>
+            <span class="s2">&quot;north_velocity&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="s2">&quot;east_sigma&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="s2">&quot;north_sigma&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="s2">&quot;correlation_EN&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="s2">&quot;SITE&quot;</span><span class="p">:</span> <span class="s1">&#39;100 mm/yr&#39;</span>
+        <span class="p">})</span>
+
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+
+        <span class="n">pygmt</span><span class="o">.</span><span class="n">makecpt</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;terra&quot;</span><span class="p">)</span>
+        <span class="n">pygmt</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">MAP_FRAME_TYPE</span><span class="o">=</span><span class="s2">&quot;plain&quot;</span><span class="p">)</span>
+        <span class="n">pygmt</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">FORMAT_GEO_MAP</span><span class="o">=</span><span class="s2">&quot;ddd.x&quot;</span><span class="p">)</span>
+        <span class="n">pygmt</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">FONT_TITLE</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+        <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;+tHorizontal daily velocity </span><span class="si">{</span><span class="n">str_date</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">basemap</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;a1f1&quot;</span><span class="p">,</span> <span class="n">title</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">topo</span><span class="p">:</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">grdimage</span><span class="p">(</span><span class="n">grid</span><span class="o">=</span><span class="n">grid</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">shading</span><span class="o">=</span><span class="n">shade</span><span class="p">,</span> <span class="n">transparency</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">coast</span><span class="p">(</span><span class="n">shorelines</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">coast</span><span class="p">(</span><span class="n">land</span><span class="o">=</span><span class="s2">&quot;grey80&quot;</span><span class="p">,</span> <span class="n">water</span><span class="o">=</span><span class="s2">&quot;191/239/255&quot;</span><span class="p">)</span>
+
+        <span class="c1"># check that df.east_velocity and df.north_velocity are not all nan</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">east_velocity</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="n">ERROR</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No value for </span><span class="si">{</span><span class="n">str_date</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># plot dots at gps sites location</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;c0.1c&quot;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">pen</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+            <span class="c1"># plot red dots at gps sites location with missing data</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">east_velocity</span><span class="p">)],</span> <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">east_velocity</span><span class="p">)],</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;c0.1c&quot;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">pen</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+            <span class="c1"># plot velocity vectors</span>
+
+        <span class="n">arrow_shape</span> <span class="o">=</span> <span class="s2">&quot;.4c+n50/0.8+gblack+e+z+qk&quot;</span>
+        <span class="c1"># plot dots at gps sites location</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;c0.1c&quot;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">pen</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+        <span class="c1"># plot red dots at gps sites location with missing data</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">east_velocity</span><span class="p">)],</span> <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">east_velocity</span><span class="p">)],</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;c0.1c&quot;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">pen</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+        <span class="c1"># plot velocity vectors</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">velo</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">pen</span><span class="o">=</span><span class="s2">&quot;1p,black&quot;</span><span class="p">,</span> <span class="n">uncertaintyfill</span><span class="o">=</span><span class="s2">&quot;lightblue1&quot;</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">spec</span><span class="o">=</span><span class="n">arrow_scale</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span> <span class="n">vector</span><span class="o">=</span><span class="n">arrow_shape</span><span class="p">,</span> <span class="n">no_clip</span><span class="o">=</span><span class="n">no_clip</span><span class="p">)</span>
+        <span class="c1"># plot scale vector</span>
+        <span class="n">arrow_scale_scale</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;e</span><span class="si">{</span><span class="n">gps_scale</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">/0./12&quot;</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">velo</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df_scale</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">pen</span><span class="o">=</span><span class="s2">&quot;1p,black&quot;</span><span class="p">,</span> <span class="n">uncertaintyfill</span><span class="o">=</span><span class="s2">&quot;lightblue1&quot;</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">spec</span><span class="o">=</span><span class="n">arrow_scale_scale</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span> <span class="n">vector</span><span class="o">=</span><span class="n">arrow_shape</span><span class="p">,</span> <span class="n">no_clip</span><span class="o">=</span><span class="n">no_clip</span><span class="p">)</span>
+        <span class="c1"># plot earthquake location is provided</span>
+        <span class="k">if</span> <span class="n">eq_lon_lat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">eq_lon_lat</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">eq_lon_lat</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;a0.5c&quot;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;yellow&quot;</span><span class="p">,</span> <span class="n">pen</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+
+        <span class="c1"># show</span>
+        <span class="k">if</span> <span class="n">show</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;notebook&#39;</span><span class="p">,</span> <span class="s1">&#39;external&#39;</span><span class="p">]:</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;external&#39;</span><span class="p">)</span>
+
+        <span class="c1"># save</span>
+        <span class="k">if</span> <span class="n">save_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">save_dir</span><span class="si">}</span><span class="s2">/ivel_</span><span class="si">{</span><span class="n">str_date</span><span class="si">}</span><span class="s2">.pdf&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">ERROR</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not save </span><span class="si">{</span><span class="n">save_dir</span><span class="si">}</span><span class="s2">/ivel_</span><span class="si">{</span><span class="n">str_date</span><span class="si">}</span><span class="s2">.pdf. Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">PYACS</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, Jean-Mathieu NOCQUET.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,16 +1,29 @@
 ###################################################################
 def rake_from_euler(longitude, latitude, strike, dip, euler):
 ###################################################################
-    """
-    predicts rake for a given fault according to an Euler pole, position and strike of the fault
+    """Predict rake for a fault from Euler pole, position and fault strike/dip.
 
-    :param longitude,latitude: in decimal degrees
-    :param strike: fault strike from north in decimal degrees
-    :param dip: fault dip from north in decimal degrees
-    :param euler: Euler pole as a string '/long/lat/w/style' (style among 'inverse', 'normal', 'leftlateral','rightlateral')
+    Parameters
+    ----------
+    longitude : float or numpy.ndarray
+        Longitude in decimal degrees.
+    latitude : float or numpy.ndarray
+        Latitude in decimal degrees.
+    strike : float or numpy.ndarray
+        Fault strike from north in decimal degrees.
+    dip : float or numpy.ndarray
+        Fault dip from north in decimal degrees.
+    euler : str
+        Euler pole as '/long/lat/w/style' (style: 'inverse', 'normal', 'leftlateral', 'rightlateral').
 
-    :return rake: in decimal degrees
-    :note: style needs to be provided to ensure the correct sense of slip.
+    Returns
+    -------
+    float or numpy.ndarray
+        Rake in decimal degrees.
+
+    Notes
+    -----
+    Style needs to be provided to ensure the correct sense of slip.
     """
 
     ###########################################################################

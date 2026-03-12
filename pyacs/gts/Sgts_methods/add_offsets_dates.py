@@ -8,8 +8,17 @@ def add_offsets_dates(self,dates,verbose=False):
     # import
     from pyacs.gts.Sgts import Sgts
     from pyacs.gts.Gts import Gts
+    import logging
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
 
-    
+
+    import inspect
+    VERBOSE("Running Sgts.%s" % inspect.currentframe().f_code.co_name)
+
     New_Sgts=Sgts(read=False)
     
     for gts in self.lGts():

@@ -8,17 +8,31 @@ def find_l1trend(self,
                            verbose=False,
                            in_place=False):
     """
+    Find outliers using L1 trend filtering and residual threshold.
 
-    :param self: Gts instance
-    :param lam: lambda parameter for L1 trend filtering
-    :param threshold: All residuals with threshold * standard deviation will be flagged as outliers
-    :param period: period(s) for searching outliers. Could be a single of a list of periods.
-    :param gap: number of days to consider that there is a gap. Default is gap=10.
-    :param components: components used for outliers detection
-    :param plot: boolean. If True, will plot the filter result and the flagged outliers
-    :param verbose: boolean. Verbose mode.
-    :param in_place: boolean. if True, apply to the original Gts. Default is False, returning a new Gts
-    :return: a new Gts instance if in_place is False or the current Gts
+    Parameters
+    ----------
+    lam : float
+        Lambda parameter for L1 trend filtering.
+    threshold : float
+        Residuals above threshold * (scale) are flagged as outliers.
+    period : list or None, optional
+        Period(s) for searching outliers.
+    gap : int or float, optional
+        Gap in days to split series (default 10).
+    components : str, optional
+        Components for detection (default 'NE').
+    plot : bool, optional
+        If True, plot filter result and flagged outliers.
+    verbose : bool, optional
+        Verbose mode.
+    in_place : bool, optional
+        If True, modify current Gts; otherwise return a new Gts.
+
+    Returns
+    -------
+    Gts
+        Gts with outliers set (new instance or self if in_place).
     """
 
     # import

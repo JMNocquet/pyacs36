@@ -1,0 +1,841 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyacs.gts.lib.plot.plot &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../index.html" class="icon icon-home">
+            PYACS 0.66.20
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html">What is PYACS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#the-philosophy-of-pyacs">The philosophy of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#main-components-of-pyacs">Main components of PYACS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#related-software">Related software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../foreword.html#typical-workflow">Typical workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../libraries.html">core libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../gts.html">Time series library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../vel_field.html">velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../make_time_series.html">pyacs_make_time_series.py</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../api.html">PYACS API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">PYACS 0.66.20</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyacs.gts.lib.plot.plot</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyacs.gts.lib.plot.plot</h1><div class="highlight"><pre>
+<span></span><span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="plot">
+<a class="viewcode-back" href="../../../../../api/pyacs.gts.lib.plot.plot.html#pyacs.gts.lib.plot.plot.plot">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+         <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">loffset</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+         <span class="n">loutliers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+         <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+         <span class="n">date</span><span class="o">=</span><span class="p">[],</span>
+         <span class="n">yaxis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">min_yaxis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">yupaxis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">xticks_minor_locator</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+         <span class="n">lcomponent</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;N&#39;</span><span class="p">,</span><span class="s1">&#39;E&#39;</span><span class="p">,</span><span class="s1">&#39;U&#39;</span><span class="p">],</span>
+         <span class="n">error_scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+         <span class="n">lperiod</span><span class="o">=</span><span class="p">[[]],</span>
+         <span class="n">lvline</span><span class="o">=</span><span class="p">[],</span>
+         <span class="n">save_dir_plots</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span>
+         <span class="n">save</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+         <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;mm&#39;</span><span class="p">,</span>
+         <span class="n">date_unit</span><span class="o">=</span><span class="s1">&#39;cal&#39;</span><span class="p">,</span>
+         <span class="n">date_ref</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+         <span class="n">superimposed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">lcolor</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="s1">&#39;c&#39;</span><span class="p">,</span><span class="s1">&#39;m&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="s1">&#39;k&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">],</span>
+         <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+         <span class="n">set_zero_at_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">grid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+         <span class="n">plot_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">info</span> <span class="o">=</span> <span class="p">[],</span>
+         <span class="n">xlabel_fmt</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+         <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="c1">###############################################################################</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot North-East-Up time series with offsets/outliers using Matplotlib.</span>
+
+<span class="sd">    Coordinates in meters; default display unit is mm (use unit=&#39;m&#39; for meters).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    title : str, optional</span>
+<span class="sd">        Plot title (added to site name). Default is None.</span>
+<span class="sd">    loffset : bool, optional</span>
+<span class="sd">        Draw vertical lines at offset dates. Default is True.</span>
+<span class="sd">    loutliers : bool, optional</span>
+<span class="sd">        Plot outliers. Default is True.</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        Verbose mode. Default is False.</span>
+<span class="sd">    date : list, optional</span>
+<span class="sd">        [sdate, edate] for plot range (decimal years or days per date_unit). Default is [].</span>
+<span class="sd">    yaxis : list, optional</span>
+<span class="sd">        [min_y, max_y] for y-axis; auto if not provided.</span>
+<span class="sd">    min_yaxis : list, optional</span>
+<span class="sd">        Alternative y-axis limits.</span>
+<span class="sd">    yupaxis : list, optional</span>
+<span class="sd">        Same as yaxis for Up component only.</span>
+<span class="sd">    xticks_minor_locator : float or str, optional</span>
+<span class="sd">        Minor tick spacing; float for &#39;decyear&#39;/&#39;days&#39;, str e.g. &#39;%Y&#39; for &#39;cal&#39;. Default is 1.</span>
+<span class="sd">    lcomponent : list, optional</span>
+<span class="sd">        Components to plot. Default is [&#39;N&#39;,&#39;E&#39;,&#39;U&#39;].</span>
+<span class="sd">    error_scale : float, optional</span>
+<span class="sd">        Error bar scale (0 = no bars). Default is 1.0.</span>
+<span class="sd">    lperiod : list or dict, optional</span>
+<span class="sd">        Background periods (light salmon); or dict per component. Default is [[]].</span>
+<span class="sd">    lvline : list, optional</span>
+<span class="sd">        Dates for vertical lines (green). Default is [].</span>
+<span class="sd">    save_dir_plots : str, optional</span>
+<span class="sd">        Directory for saving. Default is &#39;.&#39;.</span>
+<span class="sd">    save : bool or str, optional</span>
+<span class="sd">        True = auto name, or filename. Default is None.</span>
+<span class="sd">    show : bool, optional</span>
+<span class="sd">        If True, show plot. Default is True.</span>
+<span class="sd">    unit : str, optional</span>
+<span class="sd">        &#39;m&#39;, &#39;cm&#39;, &#39;mm&#39;. Default is &#39;mm&#39;.</span>
+<span class="sd">    date_unit : str, optional</span>
+<span class="sd">        &#39;decyear&#39;, &#39;cal&#39;, or &#39;days&#39;. Default is &#39;cal&#39;.</span>
+<span class="sd">    date_ref : float, optional</span>
+<span class="sd">        Reference date. Default is 0.0.</span>
+<span class="sd">    center : bool, optional</span>
+<span class="sd">        Center y-axis on mean. Default is True.</span>
+<span class="sd">    superimposed : Gts, optional</span>
+<span class="sd">        Gts to overlay. Default is None.</span>
+<span class="sd">    lcolor : list, optional</span>
+<span class="sd">        Colors for superimposed. Default is [&#39;r&#39;,&#39;g&#39;,&#39;c&#39;,&#39;m&#39;,&#39;y&#39;,&#39;k&#39;,&#39;b&#39;].</span>
+<span class="sd">    label : str, optional</span>
+<span class="sd">        Legend label for superimposed. Default is None.</span>
+<span class="sd">    legend : bool, optional</span>
+<span class="sd">        Show legend. Default is False.</span>
+<span class="sd">    set_zero_at_date : float or list, optional</span>
+<span class="sd">        Date (or [date, off_n, off_e, off_u]) to align master and superimposed. Default is None.</span>
+<span class="sd">    grid : bool, optional</span>
+<span class="sd">        Draw grid. Default is True.</span>
+<span class="sd">    plot_size : tuple, optional</span>
+<span class="sd">        Figure size. Default is best guess.</span>
+<span class="sd">    info : list, optional</span>
+<span class="sd">        Titles for subplots. Default is [].</span>
+<span class="sd">    xlabel_fmt : str, optional</span>
+<span class="sd">        Format for x-axis labels. Default is None.</span>
+<span class="sd">    **kwargs : dict, optional</span>
+<span class="sd">        Passed to matplotlib.pyplot.errorbar (linewidth, marker, markersize, etc.).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># import</span>
+    <span class="c1">###########################################################################</span>
+
+    <span class="c1"># system</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
+    
+    <span class="c1"># matplotlib</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.ticker</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ticker</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.ticker</span><span class="w"> </span><span class="kn">import</span> <span class="n">MultipleLocator</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.dates</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mdates</span>    
+    
+    <span class="c1"># pyacs</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.gts.lib.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">GtsInputDataNone</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.gts.lib.plot.init_plot_settings</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.astrotime</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pyacs.gts.Gts</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gts</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.lib.utils</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.gts.lib.plot.make_stitle</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyacs.gts.lib.plot.gts_to_ts</span>
+
+
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># lcolor</span>
+    <span class="c1">###########################################################################</span>
+    
+    <span class="k">if</span> <span class="p">(</span> <span class="n">superimposed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">superimposed</span><span class="p">,</span><span class="nb">list</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">superimposed</span><span class="p">)</span> <span class="o">&gt;</span><span class="mi">7</span><span class="p">):</span> 
+        <span class="n">lcolor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">superimposed</span><span class="p">),</span><span class="mi">3</span><span class="p">)</span>
+    
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># check data is not None</span>
+    <span class="c1">###########################################################################</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># raise exception</span>
+            <span class="k">raise</span> <span class="n">GtsInputDataNone</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span><span class="vm">__name__</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">GtsInputDataNone</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+        <span class="c1"># print PYACS WARNING</span>
+        <span class="nb">print</span><span class="p">(</span> <span class="n">error</span> <span class="p">)</span>
+        <span class="k">return</span><span class="p">(</span> <span class="bp">self</span> <span class="p">)</span>
+
+
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># ensure superimposed is either None or a list of gts</span>
+    <span class="c1">###########################################################################</span>
+    
+    <span class="k">if</span> <span class="n">superimposed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">superimposed</span><span class="p">,</span><span class="nb">list</span><span class="p">):</span>
+            <span class="n">superimposed</span><span class="o">=</span><span class="p">[</span><span class="n">superimposed</span><span class="p">]</span> 
+
+        <span class="k">for</span> <span class="n">agts</span> <span class="ow">in</span> <span class="n">superimposed</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">agts</span><span class="p">,</span><span class="n">Gts</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span>
+    
+    
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># ensure lperiod is a dictionnary of list of list</span>
+    <span class="c1">###########################################################################</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lperiod</span><span class="p">,</span><span class="nb">dict</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;E&#39;</span><span class="p">,</span><span class="s1">&#39;N&#39;</span><span class="p">,</span><span class="s1">&#39;U&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">lperiod</span><span class="p">:</span>
+                <span class="n">lperiod</span><span class="p">[</span><span class="n">component</span><span class="p">]</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">__ensure_list_of_list</span><span class="p">(</span> <span class="n">lperiod</span><span class="p">[</span><span class="n">component</span><span class="p">]</span> <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">lperiod</span><span class="p">[</span><span class="n">component</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">lperiod_all_components</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">__ensure_list_of_list</span><span class="p">(</span> <span class="n">lperiod</span> <span class="p">)</span>
+        <span class="n">lperiod</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;E&#39;</span><span class="p">,</span><span class="s1">&#39;N&#39;</span><span class="p">,</span><span class="s1">&#39;U&#39;</span><span class="p">]:</span>
+            <span class="n">lperiod</span><span class="p">[</span><span class="n">component</span><span class="p">]</span> <span class="o">=</span> <span class="n">lperiod_all_components</span>
+
+    
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># init default plot settings</span>
+    <span class="c1">###########################################################################</span>
+    
+    <span class="n">H_plot_settings</span> <span class="p">,</span> <span class="n">H_kwargs_errorbar</span> <span class="p">,</span> <span class="n">H_kwargs_errorbar_superimposed</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">init_plot_settings</span><span class="o">.</span><span class="n">__init_kwargs</span><span class="p">()</span>
+
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># init plot settings with user provided values</span>
+    <span class="c1">###########################################################################</span>
+
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">H_kwargs_errorbar</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span> 
+    
+    <span class="c1"># turn show to off by default</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ioff</span><span class="p">()</span>
+    
+    <span class="c1"># some drawing default parameters</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;legend.fontsize&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">}</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="c1"># For figure caption</span>
+    <span class="n">txt_component</span><span class="o">=</span><span class="p">{}</span>
+    <span class="n">txt_component</span><span class="p">[</span><span class="s1">&#39;N&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;North&#39;</span>
+    <span class="n">txt_component</span><span class="p">[</span><span class="s1">&#39;E&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;East&#39;</span>
+    <span class="n">txt_component</span><span class="p">[</span><span class="s1">&#39;U&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;Up&#39;</span>
+
+    <span class="c1"># plot size</span>
+    <span class="k">if</span> <span class="n">plot_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lcomponent</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span><span class="n">plot_size</span> <span class="o">=</span> <span class="n">H_plot_settings</span><span class="p">[</span><span class="s1">&#39;plot_size_1_component&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lcomponent</span><span class="p">)</span><span class="o">==</span><span class="mi">2</span><span class="p">:</span><span class="n">plot_size</span> <span class="o">=</span> <span class="n">H_plot_settings</span><span class="p">[</span><span class="s1">&#39;plot_size_2_component&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lcomponent</span><span class="p">)</span><span class="o">==</span><span class="mi">3</span><span class="p">:</span><span class="n">plot_size</span> <span class="o">=</span> <span class="n">H_plot_settings</span><span class="p">[</span><span class="s1">&#39;plot_size_3_component&#39;</span><span class="p">]</span>
+
+
+    <span class="n">lperiod_facecolor</span><span class="o">=</span><span class="s1">&#39;r&#39;</span>
+    <span class="n">lperiod_alpha</span><span class="o">=</span><span class="mf">0.4</span>
+
+
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># format for printing duration in subplot titles</span>
+    <span class="c1">###########################################################################</span>
+
+    <span class="k">if</span> <span class="n">date</span> <span class="o">!=</span> <span class="p">[]:</span><span class="n">duration</span><span class="o">=</span><span class="n">date</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">date</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span><span class="n">duration</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># x-tick label</span>
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># adjust tickers for the decyear case</span>
+    <span class="k">if</span> <span class="n">date_unit</span><span class="o">==</span><span class="s1">&#39;decyear&#39;</span> <span class="ow">or</span> <span class="n">date_unit</span><span class="o">==</span><span class="s1">&#39;days&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">xlabel_fmt</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>        
+            <span class="n">fmt</span><span class="o">=</span><span class="n">ticker</span><span class="o">.</span><span class="n">FormatStrFormatter</span><span class="p">(</span> <span class="n">xlabel_fmt</span> <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">duration</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">:</span><span class="n">fmt</span><span class="o">=</span><span class="n">ticker</span><span class="o">.</span><span class="n">FormatStrFormatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%4.0lf</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">duration</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">:</span><span class="n">fmt</span><span class="o">=</span><span class="n">ticker</span><span class="o">.</span><span class="n">FormatStrFormatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%6.2lf</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">duration</span> <span class="o">&lt;</span> <span class="mf">0.2</span><span class="p">:</span><span class="n">fmt</span><span class="o">=</span><span class="n">ticker</span><span class="o">.</span><span class="n">FormatStrFormatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%6.3lf</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">duration</span> <span class="o">&lt;</span> <span class="mf">0.1</span><span class="p">:</span><span class="n">fmt</span><span class="o">=</span><span class="n">ticker</span><span class="o">.</span><span class="n">FormatStrFormatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%6.4lf</span><span class="s1">&#39;</span><span class="p">)</span>
+            
+        <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.formatter.limits&#39;</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span><span class="mi">17</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">date_unit</span><span class="o">==</span><span class="s1">&#39;cal&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">xlabel_fmt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>        
+            <span class="n">fmt</span> <span class="o">=</span> <span class="n">mdates</span><span class="o">.</span><span class="n">DateFormatter</span><span class="p">(</span> <span class="n">xlabel_fmt</span> <span class="p">)</span>
+
+    
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># title and subtitle</span>
+    <span class="c1">###########################################################################</span>
+    
+    <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">stitle</span> <span class="o">=</span> <span class="n">title</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">stitle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span>
+
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># info</span>
+    <span class="c1">###########################################################################</span>
+    
+    <span class="k">if</span> <span class="n">info</span> <span class="o">==</span> <span class="p">[]:</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lcomponent</span><span class="p">)</span> <span class="o">*</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]</span>
+
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># to_unit</span>
+    <span class="c1">###########################################################################</span>
+
+    <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s1">&#39;cm&#39;</span><span class="p">:</span>
+        <span class="n">to_unit</span> <span class="o">=</span> <span class="mf">100.</span>
+
+    <span class="k">if</span> <span class="n">unit</span> <span class="o">==</span> <span class="s1">&#39;mm&#39;</span><span class="p">:</span>
+        <span class="n">to_unit</span> <span class="o">=</span> <span class="mf">1000.</span>
+
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># START PLOTTING</span>
+    <span class="c1">###########################################################################</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ioff</span><span class="p">()</span>
+    <span class="n">f</span> <span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span><span class="n">lcomponent</span><span class="p">)</span> <span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span> <span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">plot_size</span><span class="p">)</span>
+
+
+    <span class="c1">###########################################################################</span>
+    <span class="c1"># rotate xticks labels</span>
+    <span class="c1">###########################################################################</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">autofmt_xdate</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
+
+    <span class="c1"># handle case where only one component and ax is not subscriptable</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="n">ax</span> <span class="p">])</span>
+
+    <span class="c1"># get data</span>
+    <span class="n">np_date</span> <span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">gts_to_ts</span><span class="o">.</span><span class="n">gts_to_ts</span><span class="p">(</span> <span class="bp">self</span> <span class="p">,</span> \
+                                                             <span class="n">date</span><span class="o">=</span><span class="n">date</span><span class="p">,</span> \
+                                                             <span class="n">unit</span><span class="o">=</span><span class="n">unit</span> <span class="p">,</span> \
+                                                             <span class="n">date_unit</span><span class="o">=</span><span class="n">date_unit</span> <span class="p">,</span> \
+                                                             <span class="n">date_ref</span><span class="o">=</span><span class="n">date_ref</span><span class="p">,</span> \
+                                                             <span class="n">set_zero_at_date</span> <span class="o">=</span> <span class="n">set_zero_at_date</span><span class="p">,</span> \
+                                                             <span class="n">center</span> <span class="o">=</span> <span class="n">center</span> <span class="p">)</span>
+    <span class="c1"># get date axis</span>
+
+    <span class="k">if</span> <span class="n">date</span> <span class="o">==</span> <span class="p">[]:</span>
+        <span class="n">fake_gts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">loutliers</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">fake_gts</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:</span><span class="mi">2</span><span class="p">,:])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">fake_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># time series only has one epoch</span>
+            <span class="n">fake_gts</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+            <span class="n">fake_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="o">/</span><span class="mf">365.25</span>
+            <span class="n">fake_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="o">/</span><span class="mf">365.25</span>
+        <span class="n">np_date_axis</span> <span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">gts_to_ts</span><span class="o">.</span><span class="n">gts_to_ts</span><span class="p">(</span> <span class="n">fake_gts</span> <span class="p">,</span> \
+                                                             <span class="n">date</span><span class="o">=</span><span class="n">date</span><span class="p">,</span> \
+                                                             <span class="n">unit</span><span class="o">=</span><span class="n">unit</span> <span class="p">,</span> \
+                                                             <span class="n">date_unit</span><span class="o">=</span><span class="n">date_unit</span> <span class="p">,</span> \
+                                                             <span class="n">date_ref</span><span class="o">=</span><span class="n">date_ref</span><span class="p">,</span> \
+                                                             <span class="n">center</span> <span class="o">=</span> <span class="n">center</span> <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">fake_gts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">loutliers</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">fake_gts</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:</span><span class="mi">2</span><span class="p">,:])</span>
+        <span class="n">fake_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">date</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">fake_gts</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">date</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">np_date_axis</span> <span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">gts_to_ts</span><span class="o">.</span><span class="n">gts_to_ts</span><span class="p">(</span> <span class="n">fake_gts</span> <span class="p">,</span> \
+                                                             <span class="n">date</span><span class="o">=</span><span class="n">date</span><span class="p">,</span> \
+                                                             <span class="n">unit</span><span class="o">=</span><span class="n">unit</span> <span class="p">,</span> \
+                                                             <span class="n">date_unit</span><span class="o">=</span><span class="n">date_unit</span> <span class="p">,</span> \
+                                                             <span class="n">date_ref</span><span class="o">=</span><span class="n">date_ref</span><span class="p">,</span> \
+                                                             <span class="n">center</span> <span class="o">=</span> <span class="n">center</span> <span class="p">)</span>
+
+
+    <span class="c1"># master time series</span>
+    <span class="c1">###########################################################################</span>
+    <span class="n">idx_ax</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">lcomponent</span><span class="p">:</span>
+        <span class="c1"># idx_component</span>
+        <span class="k">if</span> <span class="n">component</span> <span class="o">==</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">component</span> <span class="o">==</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">component</span> <span class="o">==</span> <span class="s1">&#39;U&#39;</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="mi">2</span>
+
+        <span class="c1"># subplot title</span>
+        <span class="n">str_title</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">make_stitle</span><span class="o">.</span><span class="n">make_stitle</span><span class="p">(</span><span class="n">component</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="n">info</span><span class="p">[</span> <span class="n">idx_ax</span> <span class="p">])</span>
+        <span class="n">ax</span><span class="p">[</span><span class="n">idx_ax</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">str_title</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span> <span class="s1">&#39;11&#39;</span><span class="p">)</span>
+   
+        <span class="c1"># plot the data</span>
+<span class="c1">#        print( H_kwargs_errorbar )</span>
+        <span class="n">ax</span><span class="p">[</span><span class="n">idx_ax</span><span class="p">]</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">np_date</span><span class="p">,</span><span class="n">data</span><span class="p">[:,</span><span class="n">idx</span><span class="p">],</span> <span class="n">yerr</span><span class="o">=</span><span class="n">data</span><span class="p">[:,</span><span class="n">idx</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="n">error_scale</span><span class="p">,</span> <span class="o">**</span><span class="n">H_kwargs_errorbar</span><span class="p">)</span>
+
+        <span class="c1"># plot outliers</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">outliers</span> <span class="o">!=</span> <span class="p">[]:</span>
+            <span class="n">ax</span><span class="p">[</span><span class="n">idx_ax</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np_date</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">outliers</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">outliers</span><span class="p">,</span><span class="n">idx</span><span class="p">],</span> <span class="s1">&#39;r*&#39;</span> <span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="n">H_kwargs_errorbar</span><span class="p">[</span><span class="s1">&#39;markersize&#39;</span><span class="p">]</span><span class="o">+</span><span class="mi">5</span><span class="p">)</span>
+            
+
+
+        <span class="c1"># Y-label    </span>
+        <span class="n">ax</span><span class="p">[</span><span class="n">idx_ax</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span>
+
+        <span class="c1"># grid</span>
+        <span class="n">ax</span><span class="p">[</span> <span class="n">idx_ax</span> <span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span> <span class="n">grid</span> <span class="p">)</span>
+
+        <span class="c1"># xticks</span>
+        <span class="k">if</span> <span class="n">date_unit</span> <span class="o">==</span> <span class="s1">&#39;decyear&#39;</span><span class="p">:</span>
+            <span class="n">ax</span><span class="p">[</span><span class="n">idx_ax</span><span class="p">]</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">date_unit</span> <span class="o">==</span> <span class="s1">&#39;cal&#39;</span> <span class="ow">and</span> <span class="n">xlabel_fmt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ax</span><span class="p">[</span><span class="n">idx_ax</span><span class="p">]</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span> <span class="n">fmt</span> <span class="p">)</span>
+
+        <span class="n">idx_ax</span> <span class="o">=</span> <span class="n">idx_ax</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="c1"># superimposed time series</span>
+    <span class="c1">###########################################################################</span>
+    
+    <span class="k">if</span> <span class="n">superimposed</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">wsuperimposed</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">wsuperimposed</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span> <span class="n">superimposed</span> <span class="p">)</span>
+    
+    <span class="c1"># Get label</span>
+    
+    <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">my_ts</span> <span class="ow">in</span> <span class="n">wsuperimposed</span><span class="p">:</span>
+            <span class="n">label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">my_ts</span><span class="o">.</span><span class="n">code</span> <span class="p">)</span> 
+    
+    <span class="c1"># test</span>
+    <span class="n">np_date</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="kc">None</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span><span class="n">wsuperimposed</span><span class="p">)</span> <span class="p">):</span>
+        
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-- plotting superimposed time series: &#39;</span> <span class="p">,</span> <span class="n">label</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    
+        <span class="n">np_date</span> <span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">gts</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">gts_to_ts</span><span class="o">.</span><span class="n">gts_to_ts</span><span class="p">(</span> <span class="n">wsuperimposed</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">,</span> \
+                                                                 <span class="n">date</span><span class="o">=</span><span class="n">date</span><span class="p">,</span> \
+                                                                 <span class="n">unit</span><span class="o">=</span><span class="n">unit</span> <span class="p">,</span> \
+                                                                 <span class="n">date_unit</span><span class="o">=</span><span class="n">date_unit</span> <span class="p">,</span> \
+                                                                 <span class="n">date_ref</span><span class="o">=</span><span class="n">date_ref</span><span class="p">,</span> \
+                                                                 <span class="n">set_zero_at_date</span> <span class="o">=</span> <span class="n">set_zero_at_date</span><span class="p">,</span> \
+                                                                 <span class="n">center</span> <span class="o">=</span> <span class="n">center</span> <span class="p">)</span>
+        
+
+        <span class="n">idx_ax</span> <span class="o">=</span> <span class="mi">0</span>
+    
+        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">lcomponent</span><span class="p">:</span>
+            <span class="c1"># idx_component</span>
+            <span class="k">if</span> <span class="n">component</span> <span class="o">==</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">component</span> <span class="o">==</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">component</span> <span class="o">==</span> <span class="s1">&#39;U&#39;</span><span class="p">:</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="mi">2</span>
+    
+            <span class="c1"># plot the data</span>
+            <span class="n">error_scale</span><span class="o">=</span><span class="mf">0.</span>
+            <span class="n">ax</span><span class="p">[</span><span class="n">idx_ax</span><span class="p">]</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">np_date</span><span class="p">,</span><span class="n">data</span><span class="p">[:,</span><span class="n">idx</span><span class="p">],</span> <span class="n">yerr</span><span class="o">=</span><span class="n">data</span><span class="p">[:,</span><span class="n">idx</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="n">error_scale</span> <span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">lcolor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">label</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span>
+            <span class="n">idx_ax</span> <span class="o">=</span> <span class="n">idx_ax</span> <span class="o">+</span><span class="mi">1</span> 
+
+    <span class="c1"># plot offset_date of the master time series</span>
+    <span class="c1">###########################################################################</span>
+    <span class="k">if</span> <span class="n">loffset</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">date_unit</span> <span class="o">==</span> <span class="s1">&#39;days&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">date_ref</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">date_ref</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="c1"># reference data is year.000</span>
+                <span class="n">date_ref</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
+             
+            <span class="n">ldate_offsets_in_date_unit</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2mjd</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">offsets_dates</span> <span class="p">)</span> <span class="o">-</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2mjd</span><span class="p">(</span> <span class="n">date_ref</span> <span class="p">)</span> 
+    
+        <span class="k">if</span> <span class="n">date_unit</span> <span class="o">==</span> <span class="s1">&#39;decyear&#39;</span><span class="p">:</span>
+            <span class="n">ldate_offsets_in_date_unit</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">offsets_dates</span><span class="p">)</span><span class="o">-</span><span class="n">date_ref</span>
+         
+        <span class="k">if</span> <span class="n">date_unit</span> <span class="o">==</span> <span class="s1">&#39;cal&#39;</span><span class="p">:</span>
+            <span class="n">ldate_offsets_in_date_unit</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">offsets_dates</span><span class="p">)</span>
+    
+        <span class="n">idx_ax</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">lcomponent</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">odate</span> <span class="ow">in</span> <span class="n">ldate_offsets_in_date_unit</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="n">idx_ax</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span> <span class="n">odate</span> <span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+            <span class="n">idx_ax</span> <span class="o">=</span> <span class="n">idx_ax</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="c1"># lperiod option: periods to be highlighted </span>
+    <span class="c1">###########################################################################</span>
+         
+    <span class="k">if</span> <span class="n">lperiod</span> <span class="o">!=</span> <span class="p">[[]]:</span>
+        <span class="c1"># Handle lperiod as dictionary with component keys or as list</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lperiod</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="c1"># Dictionary case: lperiod has keys for each component</span>
+            <span class="n">idx_ax</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">lcomponent</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">lperiod</span><span class="p">:</span>
+                    <span class="n">component_periods</span> <span class="o">=</span> <span class="n">lperiod</span><span class="p">[</span><span class="n">component</span><span class="p">]</span>
+                    
+                    <span class="k">if</span> <span class="n">date_unit</span> <span class="o">==</span> <span class="s1">&#39;days&#39;</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">date_ref</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">date_ref</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                            <span class="c1"># reference data is year.000</span>
+                            <span class="n">date_ref</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
+                        <span class="n">component_periods</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">day_since_decyear</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">component_periods</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span><span class="n">date_ref</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+                    
+                    <span class="k">if</span> <span class="n">date_unit</span> <span class="o">==</span> <span class="s1">&#39;decyear&#39;</span><span class="p">:</span>
+                        <span class="n">component_periods</span><span class="o">=</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">component_periods</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">-</span><span class="n">date_ref</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+                    
+                    <span class="k">if</span> <span class="n">date_unit</span> <span class="o">==</span> <span class="s1">&#39;cal&#39;</span><span class="p">:</span>
+                        <span class="n">component_periods</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">component_periods</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+                
+                    <span class="c1"># plot color background for periods for this component</span>
+                    <span class="k">for</span> <span class="n">period</span> <span class="ow">in</span> <span class="n">component_periods</span><span class="p">:</span>
+                        <span class="p">(</span><span class="n">sdate</span><span class="p">,</span><span class="n">edate</span><span class="p">)</span><span class="o">=</span><span class="n">period</span>
+                        <span class="n">ax</span><span class="p">[</span><span class="n">idx_ax</span><span class="p">]</span><span class="o">.</span><span class="n">axvspan</span><span class="p">(</span><span class="n">sdate</span><span class="p">,</span> <span class="n">edate</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">lperiod_facecolor</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">lperiod_alpha</span><span class="p">)</span>
+                
+                <span class="n">idx_ax</span> <span class="o">=</span> <span class="n">idx_ax</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># List case: same periods for all components (original behavior)</span>
+            <span class="k">if</span> <span class="n">date_unit</span> <span class="o">==</span> <span class="s1">&#39;days&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">date_ref</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">date_ref</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                    <span class="c1"># reference data is year.000</span>
+                    <span class="n">date_ref</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
+
+                <span class="n">lperiod</span><span class="o">=</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">day_since_decyear</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lperiod</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span><span class="n">date_ref</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">date_unit</span> <span class="o">==</span> <span class="s1">&#39;decyear&#39;</span><span class="p">:</span>
+                <span class="n">lperiod</span><span class="o">=</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lperiod</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">-</span><span class="n">date_ref</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">date_unit</span> <span class="o">==</span> <span class="s1">&#39;cal&#39;</span><span class="p">:</span>
+                <span class="n">lperiod</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lperiod</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+        
+            <span class="c1"># plot color background for periods</span>
+            <span class="n">idx_ax</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">lcomponent</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">period</span> <span class="ow">in</span> <span class="n">lperiod</span><span class="p">:</span>
+                    <span class="p">(</span><span class="n">sdate</span><span class="p">,</span><span class="n">edate</span><span class="p">)</span><span class="o">=</span><span class="n">period</span>
+                    <span class="n">ax</span><span class="p">[</span><span class="n">idx_ax</span><span class="p">]</span><span class="o">.</span><span class="n">axvspan</span><span class="p">(</span><span class="n">sdate</span><span class="p">,</span> <span class="n">edate</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">lperiod_facecolor</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">lperiod_alpha</span><span class="p">)</span>
+                
+                <span class="n">idx_ax</span> <span class="o">=</span> <span class="n">idx_ax</span> <span class="o">+</span> <span class="mi">1</span>
+    
+    <span class="c1"># vertical lines option</span>
+    <span class="c1">###########################################################################</span>
+
+    <span class="k">if</span> <span class="n">lvline</span> <span class="o">!=</span> <span class="p">[]:</span>
+    
+        <span class="k">if</span> <span class="n">date_unit</span> <span class="o">==</span> <span class="s1">&#39;decyear&#39;</span><span class="p">:</span>
+            <span class="n">lvline_in_date_unit</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">lvline</span> <span class="p">)</span><span class="o">-</span><span class="n">date_ref</span>
+
+        <span class="k">if</span> <span class="n">date_unit</span> <span class="o">==</span> <span class="s1">&#39;days&#39;</span><span class="p">:</span>
+            <span class="n">lvline_in_date_unit</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="n">lvline</span> <span class="p">)</span><span class="o">-</span><span class="n">date_ref</span>
+
+        
+        <span class="k">if</span> <span class="n">date_unit</span> <span class="o">==</span> <span class="s1">&#39;cal&#39;</span><span class="p">:</span>
+            <span class="n">lvline_in_date_unit</span> <span class="o">=</span> <span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span> <span class="n">lvline</span> <span class="p">)</span>
+    
+        <span class="n">idx_ax</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">lcomponent</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">odate</span> <span class="ow">in</span> <span class="n">lvline_in_date_unit</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="n">idx_ax</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span> <span class="n">odate</span> <span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+            <span class="n">idx_ax</span> <span class="o">=</span> <span class="n">idx_ax</span> <span class="o">+</span> <span class="mi">1</span>
+
+        
+    <span class="c1"># title</span>
+    <span class="c1">###########################################################################</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="n">stitle</span><span class="p">)</span>
+
+    <span class="c1"># yaxis</span>
+    <span class="c1">###########################################################################</span>
+
+
+    <span class="c1"># added JMN 13/01/2021 to set a minimum value for y-scale</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">min_yaxis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">yaxis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+
+        <span class="n">idx_ax</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">lcomponent</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">component</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">]:</span>
+                <span class="n">cyaxis</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="n">idx_ax</span><span class="p">]</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span>
+                <span class="n">ax</span><span class="p">[</span><span class="n">idx_ax</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="n">cyaxis</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="o">-</span><span class="n">min_yaxis</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="n">cyaxis</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">min_yaxis</span><span class="p">]))</span>
+            <span class="k">if</span> <span class="n">component</span> <span class="o">==</span> <span class="s1">&#39;U&#39;</span><span class="p">:</span>
+                <span class="n">cyupaxis</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="n">idx_ax</span><span class="p">]</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span>
+                <span class="n">ax</span><span class="p">[</span><span class="n">idx_ax</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="n">cyupaxis</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="o">-</span><span class="n">min_yaxis</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="n">cyupaxis</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">min_yaxis</span><span class="p">]))</span>
+
+            <span class="n">idx_ax</span> <span class="o">=</span> <span class="n">idx_ax</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">yaxis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">idx_ax</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">lcomponent</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">component</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;N&#39;</span><span class="p">,</span><span class="s1">&#39;E&#39;</span><span class="p">]:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="n">idx_ax</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span> <span class="n">yaxis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="n">yaxis</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span>
+            <span class="k">if</span> <span class="n">component</span> <span class="o">==</span> <span class="s1">&#39;U&#39;</span> <span class="ow">and</span> <span class="n">yupaxis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="n">idx_ax</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span> <span class="n">yupaxis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span> <span class="n">yupaxis</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span>
+            
+            <span class="n">idx_ax</span> <span class="o">=</span> <span class="n">idx_ax</span> <span class="o">+</span> <span class="mi">1</span>
+
+
+    <span class="c1"># date</span>
+    <span class="c1">###########################################################################</span>
+
+    <span class="c1"># if date != []:</span>
+
+    <span class="c1">#     # case &#39;days&#39;</span>
+    <span class="c1">#     if date_unit == &#39;days&#39;:</span>
+    <span class="c1">#         if (date_ref is None) or (date_ref == 0):</span>
+    <span class="c1">#             np_date_x = pyacs.lib.astrotime.decyear2mjd(np.array(date)) - pyacs.lib.astrotime.decyear2mjd(</span>
+    <span class="c1">#                 date[0])</span>
+    <span class="c1">#         else:</span>
+    <span class="c1">#             np_date_x = pyacs.lib.astrotime.decyear2mjd(np.array(date)) - pyacs.lib.astrotime.decyear2mjd(</span>
+    <span class="c1">#                 date_ref)</span>
+
+    <span class="c1">#     # case &#39;decyear&#39;</span>
+    <span class="c1">#     if date_unit == &#39;decyear&#39;:</span>
+    <span class="c1">#         if (date_ref is None) or (date_ref == 0):</span>
+    <span class="c1">#             np_date_x = np.array(date)</span>
+    <span class="c1">#         else:</span>
+    <span class="c1">#             np_date_x = np.array(date) - date_ref</span>
+
+    <span class="c1">#     # case &#39;cal&#39;</span>
+    <span class="c1">#     if date_unit == &#39;cal&#39;:</span>
+    <span class="c1">#         np_date_x = pyacs.lib.astrotime.decyear2datetime(np.array(date))</span>
+    <span class="n">idx_ax</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">lcomponent</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">component</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">]:</span>
+            <span class="n">ax</span><span class="p">[</span><span class="n">idx_ax</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">np_date_axis</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">np_date_axis</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">component</span> <span class="o">==</span> <span class="s1">&#39;U&#39;</span> <span class="ow">and</span> <span class="n">yupaxis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ax</span><span class="p">[</span><span class="n">idx_ax</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">np_date_axis</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">np_date_axis</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">idx_ax</span> <span class="o">=</span> <span class="n">idx_ax</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="c1"># X Label</span>
+    <span class="c1">###########################################################################</span>
+    
+    <span class="k">if</span> <span class="n">date_unit</span><span class="o">==</span><span class="s1">&#39;decyear&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">date_ref</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">date_ref</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">):</span>
+            <span class="n">str_xlabel</span><span class="o">=</span><span class="s1">&#39;year&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">str_xlabel</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;decimal year since </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">date_ref</span><span class="p">))</span>
+    
+
+    <span class="k">if</span> <span class="n">date_unit</span><span class="o">==</span><span class="s1">&#39;days&#39;</span><span class="p">:</span>
+        
+        <span class="k">if</span> <span class="p">(</span><span class="n">date_ref</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">date_ref</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="c1"># reference data is year.000</span>
+            <span class="n">date_ref</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]))</span>
+        
+        <span class="n">str_xlabel</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;days since </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="n">pyacs</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">astrotime</span><span class="o">.</span><span class="n">decyear2datetime</span><span class="p">(</span><span class="n">date_ref</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">date_unit</span><span class="o">==</span><span class="s1">&#39;cal&#39;</span><span class="p">:</span>
+        <span class="n">str_xlabel</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;calendar date&quot;</span><span class="p">)</span>
+
+    
+    <span class="n">ax</span><span class="p">[</span><span class="n">idx_ax</span> <span class="o">-</span><span class="mi">1</span> <span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">str_xlabel</span><span class="p">)</span>
+
+
+    <span class="c1"># xtcicks minor locator</span>
+    <span class="c1">###########################################################################    </span>
+    <span class="k">if</span> <span class="n">date_unit</span> <span class="o">==</span> <span class="s1">&#39;decyear&#39;</span><span class="p">:</span>
+        <span class="n">idx_ax</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">lcomponent</span><span class="p">:</span>
+            <span class="n">ax</span><span class="p">[</span><span class="n">idx_ax</span><span class="p">]</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">MultipleLocator</span><span class="p">(</span> <span class="nb">float</span><span class="p">(</span><span class="n">xticks_minor_locator</span><span class="p">)</span> <span class="p">))</span>
+            <span class="n">idx_ax</span> <span class="o">=</span> <span class="n">idx_ax</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">date_unit</span> <span class="o">!=</span> <span class="s1">&#39;days&#39;</span><span class="p">:</span>
+        <span class="n">idx_ax</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">duration</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+            <span class="n">xticks_minor_locator</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="k">if</span> <span class="n">duration</span> <span class="o">&gt;</span> <span class="mi">1000</span><span class="p">:</span>
+            <span class="n">xticks_minor_locator</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="k">if</span> <span class="n">duration</span> <span class="o">&gt;</span> <span class="mi">10000</span><span class="p">:</span>
+            <span class="n">xticks_minor_locator</span> <span class="o">=</span> <span class="mi">1000</span>
+            
+        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">lcomponent</span><span class="p">:</span>
+            
+            <span class="n">ax</span><span class="p">[</span><span class="n">idx_ax</span><span class="p">]</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">MultipleLocator</span><span class="p">(</span> <span class="nb">float</span><span class="p">(</span><span class="n">xticks_minor_locator</span><span class="p">)</span> <span class="p">))</span>
+            <span class="n">idx_ax</span> <span class="o">=</span> <span class="n">idx_ax</span> <span class="o">+</span> <span class="mi">1</span>
+
+
+    <span class="k">if</span> <span class="n">date_unit</span> <span class="o">==</span> <span class="s1">&#39;cal&#39;</span><span class="p">:</span>
+        <span class="c1"># default</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">5.</span><span class="p">:</span>
+            <span class="n">locator</span> <span class="o">=</span> <span class="n">mdates</span><span class="o">.</span><span class="n">YearLocator</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">locator</span> <span class="o">=</span> <span class="n">mdates</span><span class="o">.</span><span class="n">MonthLocator</span><span class="p">()</span>
+        
+        <span class="c1"># user provided default    </span>
+        <span class="k">if</span> <span class="n">xticks_minor_locator</span> <span class="o">==</span> <span class="s1">&#39;%Y&#39;</span><span class="p">:</span>
+            <span class="n">locator</span> <span class="o">=</span> <span class="n">mdates</span><span class="o">.</span><span class="n">YearLocator</span><span class="p">()</span>   <span class="c1"># every year</span>
+        <span class="k">if</span> <span class="n">xticks_minor_locator</span> <span class="o">==</span> <span class="s1">&#39;%m&#39;</span><span class="p">:</span>
+            <span class="n">locator</span> <span class="o">=</span> <span class="n">mdates</span><span class="o">.</span><span class="n">MonthLocator</span><span class="p">()</span>   <span class="c1"># every month</span>
+        <span class="k">if</span> <span class="n">xticks_minor_locator</span> <span class="o">==</span> <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">:</span>
+            <span class="n">locator</span> <span class="o">=</span> <span class="n">mdates</span><span class="o">.</span><span class="n">DayLocator</span><span class="p">()</span>   <span class="c1"># every day</span>
+        
+        <span class="n">idx_ax</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">lcomponent</span><span class="p">:</span>
+            <span class="n">ax</span><span class="p">[</span><span class="n">idx_ax</span><span class="p">]</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span> <span class="n">locator</span> <span class="p">)</span>
+            <span class="n">idx_ax</span> <span class="o">=</span> <span class="n">idx_ax</span> <span class="o">+</span> <span class="mi">1</span>
+        
+
+    <span class="c1"># legend</span>
+    <span class="c1">###########################################################################</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">legend</span><span class="p">,</span><span class="nb">int</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">if</span> <span class="n">legend</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">idx_ax</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">lcomponent</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="n">idx_ax</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="n">legend</span><span class="p">)</span>
+                <span class="n">idx_ax</span> <span class="o">=</span> <span class="n">idx_ax</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">legend</span><span class="p">,</span><span class="nb">bool</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">if</span> <span class="n">legend</span><span class="p">:</span>
+            <span class="n">idx_ax</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">lcomponent</span><span class="p">:</span>
+                <span class="n">ax</span><span class="p">[</span><span class="n">idx_ax</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+                <span class="n">idx_ax</span> <span class="o">=</span> <span class="n">idx_ax</span> <span class="o">+</span> <span class="mi">1</span>
+
+
+    <span class="c1"># tight_layout</span>
+    <span class="c1">###########################################################################</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span> <span class="n">H_plot_settings</span><span class="p">[</span><span class="s1">&#39;hspace&#39;</span><span class="p">])</span>
+    
+    <span class="c1"># end of subplots</span>
+    <span class="c1">###########################################################################</span>
+
+    
+    <span class="c1"># save file as png if save option is set</span>
+    <span class="c1">###########################################################################</span>
+    
+    <span class="k">if</span> <span class="n">save</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        
+        <span class="c1"># case save is a string</span>
+        
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">save</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            
+            <span class="c1"># check whether save includes a path or simply a file name</span>
+            
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="ow">in</span> <span class="n">save</span><span class="p">:</span>
+                <span class="c1"># save includes a path information</span>
+                <span class="n">fname</span> <span class="o">=</span> <span class="n">save</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># else</span>
+                <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">save_dir_plots</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">save</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">save</span><span class="p">:</span>
+            <span class="c1"># save is simply set to True for automatic output file naming</span>
+                <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span> <span class="n">save_dir_plots</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span><span class="o">+</span><span class="s1">&#39;.png&#39;</span> <span class="p">)</span>
+        
+        <span class="c1"># saving output file</span>
+        
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-- Saving file to &quot;</span><span class="p">,</span><span class="n">fname</span><span class="p">)</span>
+        
+        <span class="c1"># creates the directory of it does not exist</span>
+        
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="ow">in</span> <span class="n">fname</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">fname</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        
+<span class="c1">#        plt.savefig(fname, dpi=150, facecolor=&#39;w&#39;, edgecolor=&#39;w&#39;, orientation=&#39;portrait&#39;, papertype=&#39;a4&#39;, format=&#39;png&#39;,transparent=False, pad_inches=0.1)</span>
+<span class="c1"># change 05/04/2021 papertype appears to be decommissioned for matplotlib 3.3</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;portrait&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">,</span><span class="n">transparent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pad_inches</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+    <span class="c1"># show</span>
+    <span class="c1">###########################################################################</span>
+    <span class="k">if</span> <span class="n">show</span><span class="p">:</span> 
+        <span class="c1"># do not block program execution when displaying figures</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ion</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span> <span class="n">f</span> <span class="p">)</span>
+
+    <span class="c1"># returns the Gts for pyacs convention compatibility        </span>
+    <span class="n">new_Gts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    
+    <span class="k">return</span><span class="p">(</span> <span class="n">new_Gts</span> <span class="p">)</span></div>
+
+    
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Jean-Mathieu NOCQUET.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,33 +1,40 @@
 ######################################################################################################################
 ## estimate the offsets of time serie: y = a + b.t + [c.sin(2.pi.t)+d.cos(2.pi.t)]+[e.sin(4.pi.t)+f.cos(4.pi.t)] + offsets
 ######################################################################################################################
-def make_model(self, option='detrend', method='L2', loutlier=None, in_place=False):
+def make_model(self, option='detrend', method='L2', loutlier=None):
     """
-        Estimate linear model parameters using least squares
-        input: data: Gts format
-        option are: 'detrend'/'detrend_annual'/'detrend_seasonal'
-        output: new Gts object: time series is now the residuals wrt to the model and its associated values (vel, annual, semi-annual etc)
+    Estimate linear model parameters using least squares.
+    input: data: Gts format
+    option are: 'detrend'/'detrend_annual'/'detrend_seasonal'
+    output: new Gts object: time series is now the residuals wrt to the model and its associated values (vel, annual, semi-annual etc).
     """
 
     import numpy as np
     from pyacs.gts.Gts import Gts
     import inspect
 
+    import pyacs.message.message as MESSAGE
+    import pyacs.message.verbose_message as VERBOSE
+    import pyacs.message.error as ERROR
+    import pyacs.message.warning as WARNING
+    import pyacs.message.debug_message as DEBUG
+    import pyacs.debug
+    from icecream import ic
+
     # after this method .data  and .data_xyz are not consistent so .data_xyz is set to None
-    self.data_xyz = None
+    #self.data_xyz = None
 
     ###########################################################################
     # check data is not None
-    from pyacs.gts.lib.errors import GtsInputDataNone
 
-    try:
-        if self.data is None:
-            # raise exception
-            raise GtsInputDataNone(inspect.stack()[0][3], __name__, self)
-    except GtsInputDataNone as error:
-        # print PYACS WARNING
-        print(error)
-        return (self)
+    if self.data is None:
+        WARNING("time series has no data. Return time series")
+        return self
+
+    if self.data.shape[0] < 2:
+        WARNING("%s time series only has %d epoch measurements. Return time series" % (self.code,self.data.shape[0]) )
+        return self
+
     ###########################################################################
 
     import pyacs.lib.glinalg as glinalg
@@ -108,6 +115,8 @@ def make_model(self, option='detrend', method='L2', loutlier=None, in_place=Fals
         A = np.delete(A, del_index, axis=1)
 
         # solve
+        if pyacs.debug():
+            ic(np.min(data[:, k + 3]))
 
         (X, COV, V) = glinalg.lsw_full(A, data[:, k], data[:, k + 3])
 
@@ -156,10 +165,4 @@ def make_model(self, option='detrend', method='L2', loutlier=None, in_place=Fals
     new_Gts.velocity = vel
 
     new_Gts.data = residuals
-
-    if in_place:
-        self = new_Gts.copy()
-        del new_Gts
-        return (self)
-    else:
-        return (new_Gts)
+    return (new_Gts)

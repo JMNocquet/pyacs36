@@ -1,0 +1,125 @@
+pyacs.gts.lib.model package
+===========================
+
+Submodules
+----------
+
+pyacs.gts.lib.model.add\_vel\_sigma module
+------------------------------------------
+
+.. automodule:: pyacs.gts.lib.model.add_vel_sigma
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.model.detrend module
+----------------------------------
+
+.. automodule:: pyacs.gts.lib.model.detrend
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.model.detrend\_annual module
+------------------------------------------
+
+.. automodule:: pyacs.gts.lib.model.detrend_annual
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.model.detrend\_hectorp module
+-------------------------------------------
+
+.. automodule:: pyacs.gts.lib.model.detrend_hectorp
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.model.detrend\_median module
+------------------------------------------
+
+.. automodule:: pyacs.gts.lib.model.detrend_median
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.model.detrend\_pytrf module
+-----------------------------------------
+
+.. automodule:: pyacs.gts.lib.model.detrend_pytrf
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.model.detrend\_seasonal module
+--------------------------------------------
+
+.. automodule:: pyacs.gts.lib.model.detrend_seasonal
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.model.detrend\_seasonal\_median module
+----------------------------------------------------
+
+.. automodule:: pyacs.gts.lib.model.detrend_seasonal_median
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.model.frame module
+--------------------------------
+
+.. automodule:: pyacs.gts.lib.model.frame
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.model.make\_model module
+--------------------------------------
+
+.. automodule:: pyacs.gts.lib.model.make_model
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.model.mmodel module
+---------------------------------
+
+.. automodule:: pyacs.gts.lib.model.mmodel
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.model.non\_linear\_gts\_model module
+--------------------------------------------------
+
+.. automodule:: pyacs.gts.lib.model.non_linear_gts_model
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.model.remove\_pole module
+---------------------------------------
+
+.. automodule:: pyacs.gts.lib.model.remove_pole
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pyacs.gts.lib.model.trajectory module
+-------------------------------------
+
+.. automodule:: pyacs.gts.lib.model.trajectory
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: pyacs.gts.lib.model
+   :members:
+   :show-inheritance:
+   :undoc-members:

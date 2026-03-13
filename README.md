@@ -10,7 +10,7 @@
 Python ≥ 3.8 (current version tested with Python 3.12)
 
 Documentation:  
-https://jmnocquet.github.io/pyacs_docs/pyacs
+https://jmnocquet.github.io/pyacs36
 
 Source code:  
 https://github.com/JMNocquet/pyacs36

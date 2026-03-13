@@ -32,7 +32,7 @@ dependencies:
   - sphinxcontrib-bibtex
   - sphinxcontrib-napoleon
   - sphinxcontrib-svg2pdfconverter
-  - sphinxcontrib-imagesvg
+# deprecated  - sphinxcontrib-imagesvg
 # pip only install
 # proxy_tv does not properly installed. Used in obsoleted pyacs36/pyacs/gts/lib/filters/total_variation.py
 # pip install pyacs_main/dis_local/trendfilter 

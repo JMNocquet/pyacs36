@@ -188,7 +188,7 @@ Report bugs or desired enhancement in the [Github issues][github_issues].
 PYACS has been developed by [Jean-Mathieu Nocquet][web_nocquet] and [Dinh Trong Tran][tran_researchgate] as part of his PhD.  
 
 [latest_pyacs]:https://github.com/JMNocquet/pyacs36/tree/master/dist
-[pyacs_doc]:https://jmnocquet.github.io/pyacs_docs/pyacs
+[pyacs_doc]:https://jmnocquet.github.io/pyacs36
 [web_nocquet]:https://jmnocquet.github.io/
 [tran_researchgate]:https://www.researchgate.net/profile/Dinh-Tran-14
 [github_issues]:https://github.com/JMNocquet/pyacs36/issues

@@ -82,7 +82,7 @@ bash Miniforge3-$(uname)-$(uname -m).sh
 ```
 Open a new terminal after installation.
 
-Download the environment configuration file from https://github.com/JMNocquet/pyacs36/tree/master/environment.yaml.
+Download the environment configuration file from https://github.com/JMNocquet/pyacs36/blob/master/environment.yaml.
 
 Create the PYACS environment:
 ```

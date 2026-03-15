@@ -95,7 +95,8 @@ mamba activate pyacs
 If you already use Anaconda or Miniconda, you can install mamba in the base environment:
 
 ```
-Download the environment configuration file from https://github.com/JMNocquet/pyacs36/tree/master/environment.yaml
+Download the environment configuration file from 
+https://github.com/JMNocquet/pyacs36/blob/master/environment.yaml
 conda install -n base -c conda-forge mamba
 mamba env create -f environment.yaml
 ```

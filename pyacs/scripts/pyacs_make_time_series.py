@@ -136,6 +136,7 @@ def get_H_common( ref_ts, H_Gpoint_free, prefit=3.5):
 
 
 def main():
+    import pyacs  # ensure pyacs is in local scope so all pyacs.* references work
     start = time.time()
     str_date = datetime.datetime.now().strftime("%Y_%m_%d")
 

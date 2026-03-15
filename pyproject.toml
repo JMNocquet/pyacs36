@@ -7,7 +7,7 @@ name = "pyacs"
 version = "0.66.20"
 description = "PYACS: Geodetic analysis and modeling tools for Tectonics"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.8"
 authors = [
   { name = "Jean-Mathieu Nocquet", email = "nocquet@geoazur.unice.fr" }
 ]

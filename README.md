@@ -168,7 +168,13 @@ ts.info()
 ```
 
 # Building a PYACS distribution
-Advanced users can build their own distribution using
+Advanced users can build their own distribution. New release identifyer can be updated in
+```
+pyproject.toml
+pyacs/__init__.py
+```
+
+Then build the distribution using
 ```
 python -m build
 ```

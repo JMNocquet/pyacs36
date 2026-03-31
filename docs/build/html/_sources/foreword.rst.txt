@@ -21,7 +21,7 @@ Documentation
 
 Online documentation:
 
-https://jmnocquet.github.io/pyacs_docs/pyacs
+https://jmnocquet.github.io/pyacs36
 
 Source code:
 

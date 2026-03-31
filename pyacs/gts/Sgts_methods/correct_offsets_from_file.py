@@ -41,7 +41,7 @@ def correct_offsets_from_file(self, offset_file, fill_offsets_dates=False):
 
     # reads offset file
     # for compatibility with pandas new release - JMN 06/11/2025
-    data = pd.read_csv(offset_file, sep='\s+',
+    data = pd.read_csv(offset_file, sep=r'\s+',
                        names=['lon', 'lat', 'de', 'dn', 'du', 'sde', 'sdn', 'sdu', 'code', 'offset_date',
                               'offset_info'], comment='#')
     # old 

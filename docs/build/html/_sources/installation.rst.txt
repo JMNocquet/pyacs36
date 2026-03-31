@@ -131,7 +131,12 @@ and run::
 Building a PYACS distribution
 -----------------------------
 
-Advanced users can build their own distribution using::
+Advanced users can build their own distribution. New release identifyer can be updated in::
+
+    pyproject.toml
+    pyacs/__init__.py
+
+Then, build the new distribution using::
 
     python -m build
 
@@ -143,7 +148,7 @@ Documentation
 
 An HTML documentation is available online:
 
-https://jmnocquet.github.io/pyacs_docs/pyacs
+https://jmnocquet.github.io/pyacs36/
 
 Alternatively, the documentation can be generated locally::
 

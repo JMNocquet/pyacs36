@@ -41,8 +41,8 @@ as compared to some algorigthms found in the literature and on the web.
 """
 
 __author__ = 'Duncan Brown <duncan@gravity.phys.uwm.edu>'
-__date__ = '$Date: 2006/02/16 04:36:09 $'
-__version__ = '$Revision: 1.6 $'[11:-2]
+__date__ = 'Date: 2006/02/16 04:36:09'
+__version__ = 'Revision: 1.6 $'[11:-2]
 
 import time, math
 

@@ -123,18 +123,24 @@ Model and detrending
      - Remove annual signal.
    * - :meth:`~pyacs.gts.Gts.Gts.detrend_seasonal`
      - Remove seasonal signal.
+   * - :meth:`~pyacs.gts.Gts.Gts.detrend_seasonal_median`
+     - Velocity from yearly median of displacements (MIDAS-like), then remove repeating yearly signal.
    * - :meth:`~pyacs.gts.Gts.Gts.detrend_median`
      - Detrend using median filter.
+   * - :meth:`~pyacs.gts.Gts.Gts.detrend_hectorp`
+     - Detrend using the Hector model (HECTOR / estimatetrend; Machiel Bos).
+   * - :meth:`~pyacs.gts.Gts.Gts.detrend_pytrf`
+     - Detrend using PyTRF (realistic noise and sigmas).
    * - :meth:`~pyacs.gts.Gts.Gts.trajectory`
      - Compute trajectory model.
    * - :meth:`~pyacs.gts.Gts.Gts.frame`
      - Transform to another reference frame (Euler).
    * - :meth:`~pyacs.gts.Gts.Gts.make_model`
      - Build parametric model.
+   * - :meth:`~pyacs.gts.Gts.Gts.mmodel`
+     - Generate a modeled time series from parameters stored on the object.
    * - :meth:`~pyacs.gts.Gts.Gts.remove_pole`
      - Remove pole from velocity field.
-   * - :meth:`~pyacs.gts.Gts.Gts.detrend_pytrf`
-     - Detrend using PyTRF (realistic noise and sigmas).
 
 
 Offsets

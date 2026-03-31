@@ -1,4 +1,7 @@
 # VERSION HISTORY
+## 0.66.21 on 31/03/2025
+- correct a bug introduced 0.66.20 in pyacs_make_time_series.py. Running parallel workers was starting the whole pyacs_make_time_series.py again. That problem was arising from adding main which changed the expected calls/import for parralel processing.
+- regular expression syntax corrected using raw string
 ## 0.66.20 on 04/03/2025
 - pyproject.toml added
 - installation documentation revised
@@ -13,12 +16,12 @@
 - pyacs.lib.euler, glinalg, gmtpoint, icoshaedron, robustestimators, shafile, timeperiod, units, utils modules converted to packages
 - remove lib.pygamit_module. Was saved in pygeca.
 - work in progress towards documentation build
-- pyacs36/make_pyacs_doc_html_sphinx.sh script now stable to build documentation. Documentation still need update.
+- pyacs36/make_pyacs_doc_html_sphinx.sh script now stable to build documentation. Documentation still needs update.
 - clean setup.py
 - remove all previous implementations of l1trend using prox_tv or plwf
 - pyacs.gts.lib offset methods have been refactored. This needs further testing.
 ## 0.66.18 on 26/02/2025
-- All Docstring were reformatted to follow Numpy-style
+- All docstrings were reformatted to follow Numpy-style
 - remove pyacs.lib.astrotime.py and pyacs.lib.coordinates.py files since they were converted to package since pyacs.00.66.16 
 ## 0.66.17 on 23/02/2025
 - make read_pos more robust to read UGA & Geodesy Plotter (https://www.poleterresolide.fr/geodesy-plotter/#/) pos format

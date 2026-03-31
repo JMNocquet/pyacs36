@@ -50,10 +50,6 @@ import multiprocessing
 from pyacs.gts.Gts import Gts
 from pyacs.gts.Sgts import Sgts
 
-from art import tprint
-tprint('PYACS ')
-MESSAGE("pyacs version: %s" % str(pyacs.__version__))
-
 ###################################################################
 # routine H_common from pck
 ###################################################################
@@ -130,6 +126,20 @@ def get_H_common( ref_ts, H_Gpoint_free, prefit=3.5):
     return (H_common_Gpoint)
 
 
+def merge_time_series_worker(worker_arg):
+    """Merge one site for replace mode; must be top-level for ProcessPoolExecutor (spawn)."""
+    code, sts_gts, ots_has_code, ots_gts = worker_arg
+    try:
+        if ots_has_code:
+            merged_gts = ots_gts.insert_ts(sts_gts, rounding='hour', data='xyz', overlap=True)
+        else:
+            merged_gts = sts_gts.copy()
+        merged_gts.xyz2neu(corr=True)
+        return code, merged_gts, None
+    except Exception as e:
+        return code, None, str(e)
+
+
 ###################################################################
 # START TIME
 ###################################################################
@@ -137,6 +147,9 @@ def get_H_common( ref_ts, H_Gpoint_free, prefit=3.5):
 
 def main():
     import pyacs  # ensure pyacs is in local scope so all pyacs.* references work
+    from art import tprint
+    tprint('PYACS ')
+    MESSAGE("pyacs version: %s" % str(pyacs.__version__))
     start = time.time()
     str_date = datetime.datetime.now().strftime("%Y_%m_%d")
 
@@ -801,27 +814,7 @@ def main():
             HAS_TQDM = True
         except ImportError:
             HAS_TQDM = False
-    
-        def merge_time_series_worker(args):
-            """Worker function for parallel time series merging"""
-            code, sts_gts, ots_has_code, ots_gts = args
-        
-            try:
-                if ots_has_code:
-                    # Merge with existing time series
-                    merged_gts = ots_gts.insert_ts(sts_gts, rounding='hour', data='xyz', overlap=True)
-                else:
-                    # Copy new time series
-                    merged_gts = sts_gts.copy()
-            
-                # Calculate .data from .data_xyz
-                merged_gts.xyz2neu(corr=True)
-            
-                return code, merged_gts, None
-            
-            except Exception as e:
-                return code, None, str(e)
-    
+
         # Prepare arguments for parallel processing
         MESSAGE("Using %d CPUs for parallel processing" % ncpu)
     

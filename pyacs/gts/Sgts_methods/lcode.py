@@ -36,10 +36,10 @@ def lcode(self,lexclude=[],linclude=[],min_obs=None,max_obs=None, min_duration=N
     lcode=[]
     if linclude != []:
         for k in list(self.__dict__.keys()):
-            if ((re.match('[A-Z0-9_]{4}',k))) and (k not in lexclude) and (k in linclude):lcode.append(k)
+            if ((re.match(r'[A-Z0-9_]{4}',k))) and (k not in lexclude) and (k in linclude):lcode.append(k)
     else:
         for k in list(self.__dict__.keys()):
-            if ((re.match('[A-Z0-9_]{4}',k))) and (k not in lexclude):lcode.append(k)
+            if ((re.match(r'[A-Z0-9_]{4}',k))) and (k not in lexclude):lcode.append(k)
 
     # min_obs
     if min_obs is not None:

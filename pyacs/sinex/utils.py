@@ -118,20 +118,20 @@ def ps2png(ps, png, rotate=0, margin=20):
 def sed_keywords(s, t):
   
   # Date elements
-  s = re.subn('\$yyyy', t.yyyy, s)[0]
-  s = re.subn('\$doy' , t.doy, s)[0]
-  s = re.subn('\$yy', t.yy, s)[0]
-  s = re.subn('\$mm', t.mm, s)[0]
-  s = re.subn('\$dd', t.dd, s)[0]
-  s = re.subn('\$hour', t.hour, s)[0]
-  s = re.subn('\$min' , t.min, s)[0]
-  s = re.subn('\$sec' , t.sec, s)[0]
-  s = re.subn('\$week', t.week, s)[0]
-  s = re.subn('\$dow' , t.dow, s)[0]
-  s = re.subn('\$wk', t.wk, s)[0]
+  s = re.subn(r'\$yyyy', t.yyyy, s)[0]
+  s = re.subn(r'\$doy' , t.doy, s)[0]
+  s = re.subn(r'\$yy', t.yy, s)[0]
+  s = re.subn(r'\$mm', t.mm, s)[0]
+  s = re.subn(r'\$dd', t.dd, s)[0]
+  s = re.subn(r'\$hour', t.hour, s)[0]
+  s = re.subn(r'\$min' , t.min, s)[0]
+  s = re.subn(r'\$sec' , t.sec, s)[0]
+  s = re.subn(r'\$week', t.week, s)[0]
+  s = re.subn(r'\$dow' , t.dow, s)[0]
+  s = re.subn(r'\$wk', t.wk, s)[0]
   
   # Operating system
-  s = re.subn('\$os', os.uname()[0], s)[0]
+  s = re.subn(r'\$os', os.uname()[0], s)[0]
   
   return s
 

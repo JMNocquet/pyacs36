@@ -69,7 +69,7 @@ def get_unr(self,lcode=[], center=None,radius=None):
         LIST_STRING_CLEAN = [line.replace('"', "").replace("[", "").replace("]", "").strip(',').replace(",", " ") for
                              line in LIST_STRING]
 
-        DF = pd.read_csv(io.StringIO('\n'.join(LIST_STRING_CLEAN)), sep='\s+', header=None,
+        DF = pd.read_csv(io.StringIO('\n'.join(LIST_STRING_CLEAN)), sep=r'\s+', header=None,
                          names=["code", "latitude", "longitude", "dummy1", "dummy2"],
                          usecols=["code", "latitude", "longitude"])
 

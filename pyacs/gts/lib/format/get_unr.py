@@ -38,7 +38,8 @@ def get_unr( self , site , verbose=False ):
     try:
         urllib.request.urlretrieve(url = url, filename = "test.dat")
     except HTTPError as error:
-        print('Data not retrieved because %s\nURL: %s', error, url)
+        print('Data not retrieved because %s ', error)
+        print('URL: %s', url)
     except URLError as error:
         if isinstance(error.reason, socket.timeout):
             print('socket timed out - URL %s', url)

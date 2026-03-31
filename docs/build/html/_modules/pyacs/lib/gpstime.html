@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pyacs.lib.gpstime &mdash; PYACS 0.66.20 0.66.20 documentation</title>
+  <title>pyacs.lib.gpstime &mdash; PYACS 0.66.21 0.66.21 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=aca1a097"></script>
+      <script src="../../../_static/documentation_options.js?v=08d9248e"></script>
       <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -29,7 +29,7 @@
           
           
           <a href="../../../index.html" class="icon icon-home">
-            PYACS 0.66.20
+            PYACS 0.66.21
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -60,7 +60,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">PYACS 0.66.20</a>
+          <a href="../../../index.html">PYACS 0.66.21</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -122,8 +122,8 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Duncan Brown &lt;duncan@gravity.phys.uwm.edu&gt;&#39;</span>
-<span class="n">__date__</span> <span class="o">=</span> <span class="s1">&#39;$Date: 2006/02/16 04:36:09 $&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;$Revision: 1.6 $&#39;</span><span class="p">[</span><span class="mi">11</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">__date__</span> <span class="o">=</span> <span class="s1">&#39;Date: 2006/02/16 04:36:09&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;Revision: 1.6 $&#39;</span><span class="p">[</span><span class="mi">11</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span><span class="o">,</span><span class="w"> </span><span class="nn">math</span>
 
@@ -132,7 +132,7 @@
 <span class="n">gpsEpoch</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1980</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># (year, month, day, hh, mm, ss)</span>
 
 <div class="viewcode-block" id="dayOfWeek">
-<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.dayOfWeek.html#pyacs.lib.gpstime.dayOfWeek">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.dayOfWeek">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">dayOfWeek</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return GPS day of week: 0=Sun, 1=Mon, ..., 6=Sat.</span>
 
@@ -154,7 +154,7 @@
 
 
 <div class="viewcode-block" id="gpsWeek">
-<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.gpsWeek.html#pyacs.lib.gpstime.gpsWeek">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.gpsWeek">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">gpsWeek</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return full GPS week number for given UTC date.</span>
 
@@ -177,7 +177,7 @@
 
 
 <div class="viewcode-block" id="julianDay">
-<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.julianDay.html#pyacs.lib.gpstime.julianDay">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.julianDay">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">julianDay</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return day of year (1-366) for given date.</span>
 
@@ -198,7 +198,7 @@
 
 
 <div class="viewcode-block" id="mkUTC">
-<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.mkUTC.html#pyacs.lib.gpstime.mkUTC">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.mkUTC">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">mkUTC</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">sec</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert UTC date/time to seconds since epoch (like mktime but for UTC).</span>
 
@@ -218,7 +218,7 @@
 
 
 <div class="viewcode-block" id="ymdhmsFromPyUTC">
-<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.ymdhmsFromPyUTC.html#pyacs.lib.gpstime.ymdhmsFromPyUTC">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.ymdhmsFromPyUTC">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">ymdhmsFromPyUTC</span><span class="p">(</span><span class="n">pyUTC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return (year, month, day, hour, minute, sec) from Python UTC time.</span>
 
@@ -237,7 +237,7 @@
 
 
 <div class="viewcode-block" id="wtFromUTCpy">
-<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.wtFromUTCpy.html#pyacs.lib.gpstime.wtFromUTCpy">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.wtFromUTCpy">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">wtFromUTCpy</span><span class="p">(</span><span class="n">pyUTC</span><span class="p">,</span> <span class="n">leapSecs</span><span class="o">=</span><span class="mi">14</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert Python UTC time to GPS week and time of week.</span>
 
@@ -259,7 +259,7 @@
 
 
 <div class="viewcode-block" id="gpsFromUTC">
-<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.gpsFromUTC.html#pyacs.lib.gpstime.gpsFromUTC">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.gpsFromUTC">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">gpsFromUTC</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">ssec</span><span class="p">,</span> <span class="n">leapSecs</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert UTC to GPS week, seconds of week, GPS day, seconds of day.</span>
 
@@ -305,7 +305,7 @@
 
 
 <div class="viewcode-block" id="UTCFromGps">
-<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.UTCFromGps.html#pyacs.lib.gpstime.UTCFromGps">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.UTCFromGps">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">UTCFromGps</span><span class="p">(</span><span class="n">gpsWeek</span><span class="p">,</span> <span class="n">SOW</span><span class="p">,</span> <span class="n">leapSecs</span><span class="o">=</span><span class="mi">14</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert GPS week and seconds of week to UTC.</span>
 
@@ -334,7 +334,7 @@
 
 
 <div class="viewcode-block" id="GpsSecondsFromPyUTC">
-<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.GpsSecondsFromPyUTC.html#pyacs.lib.gpstime.GpsSecondsFromPyUTC">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.GpsSecondsFromPyUTC">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">GpsSecondsFromPyUTC</span><span class="p">(</span><span class="n">pyUTC</span><span class="p">,</span> <span class="n">_leapSecs</span><span class="o">=</span><span class="mi">14</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert Python epoch time to GPS seconds (since GPS epoch).</span>
 
@@ -365,7 +365,7 @@
 <span class="c1">#===== Tests  =========================================</span>
 
 <div class="viewcode-block" id="testTimeStuff">
-<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.testTimeStuff.html#pyacs.lib.gpstime.testTimeStuff">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.testTimeStuff">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">testTimeStuff</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="o">*</span><span class="mi">20</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">()</span>
@@ -389,26 +389,26 @@
 
 
 <div class="viewcode-block" id="testJulD">
-<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.testJulD.html#pyacs.lib.gpstime.testJulD">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.testJulD">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">testJulD</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;2002, 10, 11 -&gt; 284  ==??== &#39;</span><span class="p">,</span> <span class="n">julianDay</span><span class="p">(</span><span class="mi">2002</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="testGpsWeek">
-<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.testGpsWeek.html#pyacs.lib.gpstime.testGpsWeek">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.testGpsWeek">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">testGpsWeek</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;2002, 10, 11 -&gt; 1187  ==??== &#39;</span><span class="p">,</span> <span class="n">gpsWeek</span><span class="p">(</span><span class="mi">2002</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="testDayOfWeek">
-<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.testDayOfWeek.html#pyacs.lib.gpstime.testDayOfWeek">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.testDayOfWeek">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">testDayOfWeek</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;2002, 10, 12 -&gt; 6  ==??== &#39;</span><span class="p">,</span> <span class="n">dayOfWeek</span><span class="p">(</span><span class="mi">2002</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;2002, 10, 6  -&gt; 0  ==??== &#39;</span><span class="p">,</span> <span class="n">dayOfWeek</span><span class="p">(</span><span class="mi">2002</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="testPyUtilties">
-<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.testPyUtilties.html#pyacs.lib.gpstime.testPyUtilties">[docs]</a>
+<a class="viewcode-back" href="../../../api/pyacs.lib.gpstime.html#pyacs.lib.gpstime.testPyUtilties">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">testPyUtilties</span><span class="p">():</span>
     <span class="n">ymdhms</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2002</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mf">12.3</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;testing for: &quot;</span><span class="p">,</span> <span class="n">ymdhms</span><span class="p">)</span>
